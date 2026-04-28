@@ -6,5 +6,5 @@ coverage/
 *.log
 .env*
 !.env.example
-*.mp4
+homefront-planning-stage.mp4
 _old_project/
