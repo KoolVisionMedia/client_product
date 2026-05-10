@@ -51,13 +51,13 @@ export default function Navbar() {
           <div className="flex items-center gap-3 relative z-[70]">
             <Link to="/" className="flex flex-col items-center group">
               <img 
-                src="/assets/logo-main.png" 
+                src="/logo-main.png" 
                 alt="Homefront Builders Logo" 
                 className={`transition-all duration-500 w-auto ${isScrolled ? 'h-10 md:h-12' : 'h-14 md:h-16'}`} 
                 onError={(e) => {
                   if (e.currentTarget.getAttribute('data-fallback') !== 'true') {
                     e.currentTarget.setAttribute('data-fallback', 'true');
-                    e.currentTarget.src = "/assets/logo-main.png.png";
+                    e.currentTarget.src = "/logo-main.png.png";
                   }
                 }}
               />
