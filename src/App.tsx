@@ -14,6 +14,7 @@ import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import Testimonials from './pages/Testimonials';
 import Listings from './pages/Listings';
+import Floorplans from './pages/Floorplans';
 import Blog from './pages/Blog';
 import ContactUs from './pages/ContactUs';
 import Warranties from './pages/Warranties';
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/listings" element={<Listings />} />
+          <Route path="/floorplans" element={<Floorplans />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/warranties" element={<Warranties />} />

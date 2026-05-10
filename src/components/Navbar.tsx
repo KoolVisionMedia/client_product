@@ -28,7 +28,8 @@ export default function Navbar() {
     { 
       name: 'LISTINGS', 
       dropdown: [
-        { name: 'Active Listings', href: '/listings' }
+        { name: 'Active Listings', href: '/listings' },
+        { name: 'Floorplans', href: '/floorplans' }
       ]
     },
     { name: 'WARRANTIES', href: '/warranties' },
