@@ -12,13 +12,13 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3 mb-8">
               <img
-                src="/logo-round.png"
+                src="/assets/logo-round.png"
                 alt="Homefront Builders"
                 className="w-14 h-14 object-contain filter invert brightness-0"
                 onError={(e) => {
                   if (e.currentTarget.getAttribute('data-fallback') !== 'true') {
                     e.currentTarget.setAttribute('data-fallback', 'true');
-                    e.currentTarget.src = "/logo-round.png.png";
+                    e.currentTarget.src = "/assets/logo-round.png.png";
                   }
                 }}
               />
