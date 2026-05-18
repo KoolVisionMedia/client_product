@@ -2,11 +2,11 @@ import { motion } from 'motion/react';
 
 const listings = [
   {
-    name: 'The Patterson',
-    location: '124 Legacy Court, Clarksville',
+    name: '24 Solitude Way',
+    location: '24 Solitude Way',
     price: '$1,150,000',
     stats: '5 beds • 4.5 baths • 4,200 sqft',
-    image: '/assets/DSC04388-Edit.jpg',
+    image: '/assets/active_listings/24 Solitude Way/Kool Vision Media 001.jpg',
     status: 'Available',
   },
   {
@@ -90,6 +90,9 @@ export default function Listings() {
                 viewport={{ once: true, margin: '0px 0px -60px 0px' }}
                 transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="group cursor-pointer"
+                onClick={() => {
+                  alert(`Clicked on ${listing.name}. Please specify what should happen on click!`);
+                }}
               >
                 {/* Image Container */}
                 <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-5">
