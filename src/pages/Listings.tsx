@@ -33,7 +33,7 @@ const listings = [
       '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia004.jpg',
       '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia005.jpg'
     ],
-    video: '/assets/active_listings/193-solitude-way/193 Solitude Way Final.mp4',
+    video: 'https://youtube.com/shorts/HdOP20eKP74',
     status: 'Available',
   },
   {
@@ -253,12 +253,23 @@ export default function Listings() {
                 {/* Right 1/3: Vertical Video */}
                 <div className="w-full md:w-1/3 bg-[#0a0a0a] flex flex-col border-t md:border-t-0 md:border-l border-neutral-800">
                   {selectedListing.video ? (
-                    <video 
-                      src={selectedListing.video} 
-                      controls 
-                      controlsList="nodownload"
-                      className="w-full h-full object-contain max-h-[50vh] md:max-h-full"
-                    />
+                    selectedListing.video.includes('youtube.com') || selectedListing.video.includes('youtu.be') ? (
+                      <iframe 
+                        src={`https://www.youtube.com/embed/${
+                          selectedListing.video.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/)?.[2]
+                        }`} 
+                        className="w-full h-full min-h-[50vh] md:min-h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowFullScreen
+                      />
+                    ) : (
+                      <video 
+                        src={selectedListing.video} 
+                        controls 
+                        controlsList="nodownload"
+                        className="w-full h-full object-contain max-h-[50vh] md:max-h-full"
+                      />
+                    )
                   ) : (
                     <div className="flex items-center justify-center h-full text-neutral-600 font-sans text-sm p-10 text-center">
                       No video tour available for this property
