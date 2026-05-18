@@ -8,14 +8,15 @@ const listings = [
     price: '$1,150,000',
     stats: '5 beds • 4.5 baths • 4,200 sqft',
     description: "A stunning architectural masterpiece situated on a prime lot at 24 Solitude Way. This custom home features a grand open-concept layout, soaring ceilings, high-end designer finishes, a chef's kitchen with top-of-the-line appliances, and a luxurious primary suite. Experience true elegance and unparalleled craftsmanship in every detail.",
-    image: '/assets/active_listings/24-solitude-way/KoolVisionMedia100.jpg',
+    image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
     images: [
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia100.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia101.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia102.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia103.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia104.jpg'
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia002.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia003.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia004.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia005.jpg'
     ],
+    video: '/assets/active_listings/24-solitude-way/24 Solitude Dr..mp4',
     status: 'Available',
   },
   {
@@ -24,14 +25,15 @@ const listings = [
     price: '$1,250,000',
     stats: '5 beds • 5 baths • 4,800 sqft',
     description: "Welcome to 193 Solitude Way, an exquisite custom-built estate that blends modern luxury with timeless design. This spectacular property boasts an expansive floor plan with custom millwork, an oversized gourmet kitchen, multiple living areas perfect for entertaining, and a private backyard oasis. A rare opportunity in a highly sought-after neighborhood.",
-    image: '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia001.jpg',
+    image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
     images: [
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia001.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia002.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia003.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia004.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia005.jpg'
+      '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
+      '/assets/active_listings/193-solitude-way/KoolVisionMedia002.jpg',
+      '/assets/active_listings/193-solitude-way/KoolVisionMedia003.jpg',
+      '/assets/active_listings/193-solitude-way/KoolVisionMedia004.jpg',
+      '/assets/active_listings/193-solitude-way/KoolVisionMedia005.jpg'
     ],
+    video: '/assets/active_listings/193-solitude-way/193 Solitude Way Final.mp4',
     status: 'Available',
   },
   {
@@ -48,6 +50,7 @@ const listings = [
       '/assets/active_listings/413-sheas-way/KoolVisionMedia004.jpg',
       '/assets/active_listings/413-sheas-way/KoolVisionMedia005.jpg'
     ],
+    video: '/assets/active_listings/413-sheas-way/413-shea\'s-way-video.mp4',
     status: 'Available',
   },
   {
@@ -211,52 +214,57 @@ export default function Listings() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
 
-              {/* Gallery Slider */}
-              <div className="relative aspect-video bg-black flex items-center justify-center group overflow-hidden">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={currentImageIndex}
-                    src={selectedListing.images[currentImageIndex]}
-                    alt={`${selectedListing.name} - View ${currentImageIndex + 1}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-full h-full object-contain"
-                  />
-                </AnimatePresence>
-
-                {/* Slider Controls */}
-                {selectedListing.images.length > 1 && (
-                  <>
-                    <button 
-                      className="absolute left-4 p-3 rounded-full bg-black/40 hover:bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-md"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentImageIndex(prev => prev === 0 ? selectedListing.images.length - 1 : prev - 1);
-                      }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    </button>
-                    <button 
-                      className="absolute right-4 p-3 rounded-full bg-black/40 hover:bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-md"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentImageIndex(prev => prev === selectedListing.images.length - 1 ? 0 : prev + 1);
-                      }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </button>
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                      {selectedListing.images.map((_, idx) => (
+              {/* Media Section */}
+              <div className="flex flex-col md:flex-row bg-black overflow-hidden border-b border-gray-200">
+                {/* Left 2/3: Image Gallery & Thumbnails */}
+                <div className="w-full md:w-2/3 relative flex flex-col">
+                  {/* Main Large Image */}
+                  <div className="relative aspect-video flex-1 flex items-center justify-center bg-black overflow-hidden group">
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={currentImageIndex}
+                        src={selectedListing.images[currentImageIndex]}
+                        alt={`${selectedListing.name} - View ${currentImageIndex + 1}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full h-full object-contain"
+                      />
+                    </AnimatePresence>
+                  </div>
+                  
+                  {/* Thumbnail Row (4 at a time) */}
+                  {selectedListing.images.length > 1 && (
+                    <div className="flex bg-neutral-900 p-2 gap-2 overflow-x-auto snap-x hide-scrollbar">
+                      {selectedListing.images.map((imgSrc, idx) => (
                         <div 
-                          key={idx} 
-                          className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImageIndex ? 'w-6 bg-[#c9a96e]' : 'w-2 bg-white/50'}`}
-                        />
+                          key={idx}
+                          onClick={() => setCurrentImageIndex(idx)}
+                          className={`relative flex-none w-[calc(25%-0.375rem)] aspect-[4/3] cursor-pointer rounded overflow-hidden snap-center ${idx === currentImageIndex ? 'ring-2 ring-[#c9a96e]' : 'opacity-40 hover:opacity-100 transition-opacity'}`}
+                        >
+                          <img src={imgSrc} className="w-full h-full object-cover" />
+                        </div>
                       ))}
                     </div>
-                  </>
-                )}
+                  )}
+                </div>
+
+                {/* Right 1/3: Vertical Video */}
+                <div className="w-full md:w-1/3 bg-[#0a0a0a] flex flex-col border-t md:border-t-0 md:border-l border-neutral-800">
+                  {selectedListing.video ? (
+                    <video 
+                      src={selectedListing.video} 
+                      controls 
+                      controlsList="nodownload"
+                      className="w-full h-full object-contain max-h-[50vh] md:max-h-full"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-neutral-600 font-sans text-sm p-10 text-center">
+                      No video tour available for this property
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Description & Details */}
