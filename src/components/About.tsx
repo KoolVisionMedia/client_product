@@ -47,31 +47,33 @@ export default function About() {
         <div className="flex-1 relative w-full h-[600px] lg:h-[800px] mt-12 lg:mt-0">
           <motion.div 
             className="absolute top-0 right-0 w-[85%] h-[75%] bg-surface-alt z-10 overflow-hidden"
-            initial={{ opacity: 0, scale: 0.8, x: 100, rotate: 5 }}
-            whileInView={{ opacity: 1, scale: 1, x: 0, rotate: 0 }}
-            viewport={{ once: true, margin: "0px" }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.img 
               src="/assets/DSC04388-Edit.jpg" 
               alt="Luxury Home Exterior" 
               className="w-full h-full object-cover"
+              loading="lazy"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
             />
           </motion.div>
           <motion.div 
             className="absolute bottom-0 left-0 w-[55%] h-[55%] bg-white p-2 z-20 shadow-2xl"
-            initial={{ opacity: 0, x: -150, y: 150, rotate: -10 }}
-            whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-            viewport={{ once: true, margin: "0px" }}
-            transition={{ duration: 1.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
              <div className="w-full h-full overflow-hidden">
                 <motion.img 
                   src="/assets/Harmony.jpg" 
                   alt="Luxury Home Interior" 
                   className="w-full h-full object-cover"
+                  loading="lazy"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 1.5, ease: "easeOut" }}
                 />
