@@ -25,13 +25,13 @@ const listings = [
     price: '$1,250,000',
     stats: '5 beds • 5 baths • 4,800 sqft',
     description: "Welcome to 193 Solitude Way, an exquisite custom-built estate that blends modern luxury with timeless design. This spectacular property boasts an expansive floor plan with custom millwork, an oversized gourmet kitchen, multiple living areas perfect for entertaining, and a private backyard oasis. A rare opportunity in a highly sought-after neighborhood.",
-    image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
+    image: '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia001.jpg',
     images: [
-      '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
-      '/assets/active_listings/193-solitude-way/KoolVisionMedia002.jpg',
-      '/assets/active_listings/193-solitude-way/KoolVisionMedia003.jpg',
-      '/assets/active_listings/193-solitude-way/KoolVisionMedia004.jpg',
-      '/assets/active_listings/193-solitude-way/KoolVisionMedia005.jpg'
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia001.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia002.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia003.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia004.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia005.jpg'
     ],
     video: '/assets/active_listings/193-solitude-way/193 Solitude Way Final.mp4',
     status: 'Available',
