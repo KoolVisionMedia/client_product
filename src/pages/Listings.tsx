@@ -14,7 +14,11 @@ const listings = [
       '/assets/active_listings/24-solitude-way/KoolVisionMedia002.jpg',
       '/assets/active_listings/24-solitude-way/KoolVisionMedia003.jpg',
       '/assets/active_listings/24-solitude-way/KoolVisionMedia004.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia005.jpg'
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia005.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia006.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia007.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia008.jpg',
+      '/assets/active_listings/24-solitude-way/KoolVisionMedia009.jpg'
     ],
     video: '/assets/active_listings/24-solitude-way/24 Solitude Dr..mp4',
     status: 'Available',
@@ -31,7 +35,11 @@ const listings = [
       '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia002.jpg',
       '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia003.jpg',
       '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia004.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia005.jpg'
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia005.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia006.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia007.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia008.jpg',
+      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia009.jpg'
     ],
     video: 'https://youtube.com/shorts/HdOP20eKP74',
     status: 'Available',
@@ -48,7 +56,11 @@ const listings = [
       '/assets/active_listings/413-sheas-way/KoolVisionMedia002.jpg',
       '/assets/active_listings/413-sheas-way/KoolVisionMedia003.jpg',
       '/assets/active_listings/413-sheas-way/KoolVisionMedia004.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia005.jpg'
+      '/assets/active_listings/413-sheas-way/KoolVisionMedia005.jpg',
+      '/assets/active_listings/413-sheas-way/KoolVisionMedia006.jpg',
+      '/assets/active_listings/413-sheas-way/KoolVisionMedia007.jpg',
+      '/assets/active_listings/413-sheas-way/KoolVisionMedia008.jpg',
+      '/assets/active_listings/413-sheas-way/KoolVisionMedia009.jpg'
     ],
     video: '/assets/active_listings/413-sheas-way/413-shea\'s-way-video.mp4',
     status: 'Available',
@@ -88,6 +100,12 @@ const listings = [
 export default function Listings() {
   const [selectedListing, setSelectedListing] = useState<typeof listings[0] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const getYouTubeId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
 
   return (
     <div className="bg-white">
@@ -255,11 +273,11 @@ export default function Listings() {
                   {selectedListing.video ? (
                     selectedListing.video.includes('youtube.com') || selectedListing.video.includes('youtu.be') ? (
                       <iframe 
-                        src={`https://www.youtube.com/embed/${
-                          selectedListing.video.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/)?.[2]
-                        }`} 
-                        className="w-full h-full min-h-[50vh] md:min-h-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        src={`https://www.youtube.com/embed/${getYouTubeId(selectedListing.video)}`} 
+                        title="YouTube video player"
+                        frameBorder="0"
+                        className="w-full h-full min-h-[50vh] md:min-h-[60vh] object-cover"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowFullScreen
                       />
                     ) : (
@@ -267,7 +285,7 @@ export default function Listings() {
                         src={selectedListing.video} 
                         controls 
                         controlsList="nodownload"
-                        className="w-full h-full object-contain max-h-[50vh] md:max-h-full"
+                        className="w-full h-full object-contain max-h-[50vh] md:max-h-[60vh]"
                       />
                     )
                   ) : (
