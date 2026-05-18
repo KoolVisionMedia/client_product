@@ -44,14 +44,8 @@ export default function About() {
         </div>
 
         {/* Image Collage */}
-        <div className="flex-1 relative w-full h-[600px] lg:h-[800px] mt-12 lg:mt-0">
-          <motion.div 
-            className="absolute top-0 right-0 w-[85%] h-[75%] bg-surface-alt z-10 overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
+        <div className="flex-1 relative w-full h-[500px] md:h-[600px] lg:h-[800px] mt-12 lg:mt-0">
+          <div className="absolute top-0 right-0 w-[85%] h-[75%] bg-surface-alt z-10 overflow-hidden shadow-xl">
             <motion.img 
               src="/assets/DSC04388-Edit.jpg" 
               alt="Luxury Home Exterior" 
@@ -60,14 +54,8 @@ export default function About() {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
             />
-          </motion.div>
-          <motion.div 
-            className="absolute bottom-0 left-0 w-[55%] h-[55%] bg-white p-2 z-20 shadow-2xl"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          >
+          </div>
+          <div className="absolute bottom-0 left-0 w-[60%] h-[55%] bg-white p-2 md:p-3 z-20 shadow-2xl">
              <div className="w-full h-full overflow-hidden">
                 <motion.img 
                   src="/assets/Harmony.jpg" 
@@ -78,7 +66,7 @@ export default function About() {
                   transition={{ duration: 1.5, ease: "easeOut" }}
                 />
              </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
