@@ -1,6 +1,10 @@
-import { motion } from 'motion/react';
+import { motion, useInView } from 'motion/react';
+import { useRef } from 'react';
 
 export default function About() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+
   return (
     <section id="about" className="py-32 md:py-40 bg-surface px-6 md:px-12 overflow-hidden">
       <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-20 items-center">
@@ -44,8 +48,13 @@ export default function About() {
         </div>
 
         {/* Image Collage */}
-        <div className="flex-1 relative w-full h-[500px] md:h-[600px] lg:h-[800px] mt-12 lg:mt-0">
-          <div className="absolute top-0 right-0 w-[85%] h-[75%] bg-surface-alt z-10 overflow-hidden shadow-xl">
+        <div ref={ref} className="flex-1 relative w-full h-[600px] lg:h-[800px] mt-12 lg:mt-0">
+          <motion.div 
+            className="absolute top-0 right-0 w-[85%] h-[75%] bg-surface-alt z-10 overflow-hidden shadow-xl"
+            initial={{ opacity: 0, scale: 0.8, x: 100, rotate: 5 }}
+            animate={isInView ? { opacity: 1, scale: 1, x: 0, rotate: 0 } : {}}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
             <motion.img 
               src="/assets/DSC04388-Edit.jpg" 
               alt="Luxury Home Exterior" 
@@ -54,8 +63,13 @@ export default function About() {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
             />
-          </div>
-          <div className="absolute bottom-0 left-0 w-[60%] h-[55%] bg-white p-2 md:p-3 z-20 shadow-2xl">
+          </motion.div>
+          <motion.div 
+            className="absolute bottom-0 left-0 w-[55%] h-[55%] bg-white p-2 md:p-3 z-20 shadow-2xl"
+            initial={{ opacity: 0, x: -150, y: 150, rotate: -10 }}
+            animate={isInView ? { opacity: 1, x: 0, y: 0, rotate: 0 } : {}}
+            transition={{ duration: 1.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
              <div className="w-full h-full overflow-hidden">
                 <motion.img 
                   src="/assets/Harmony.jpg" 
@@ -66,7 +80,7 @@ export default function About() {
                   transition={{ duration: 1.5, ease: "easeOut" }}
                 />
              </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
