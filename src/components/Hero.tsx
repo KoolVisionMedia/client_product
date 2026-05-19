@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -37,18 +38,22 @@ export default function Hero() {
             className="mb-10"
           >
             <div className="text-white text-xs md:text-sm tracking-[0.4em] uppercase font-sans font-medium opacity-90">
-              Setting The New Standard For Home Construction
+              Setting the Gold Standard for Home Construction
             </div>
           </motion.div>
 
-          <motion.button
-            className="bg-accent hover:bg-accent-dark text-white px-10 py-5 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 font-bold"
+          <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
           >
-            View Our Work
-          </motion.button>
+            <Link
+              to="/listings"
+              className="inline-block bg-accent hover:bg-accent-dark text-white px-10 py-5 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 font-bold"
+            >
+              View Our Builds
+            </Link>
+          </motion.div>
         </div>
 
         {/* Scroll Indicator */}
