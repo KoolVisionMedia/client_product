@@ -36,34 +36,17 @@ const listings = [
     status: 'Available',
   },
   {
-    name: 'The Nolan',
-    location: '215 Oakheart Lane, Springfield',
-    price: '$785,000',
-    stats: '3 beds • 2.5 baths • 2,900 sqft',
-    description: "A gorgeous modern farmhouse design featuring a spacious wrap-around porch and a light-filled interior. Perfect for family gatherings.",
-    image: '/assets/Harmony.jpg',
-    images: ['/assets/Harmony.jpg'],
-    status: 'Available',
-  },
-  {
-    name: 'The Willow Custom',
-    location: '56 Pineview Ridge, Middle TN',
-    price: '$1,250,000',
-    stats: '5 beds • 5 baths • 4,800 sqft',
-    description: "Nestled on a wooded lot, The Willow Custom offers privacy and serenity with high-end luxury finishes throughout.",
-    image: '/assets/Magnolia.jpg',
-    images: ['/assets/Magnolia.jpg'],
+    name: '5 Pace Road',
+    location: '5 Pace Road',
+    price: 'Coming Soon',
+    stats: 'Under Construction',
+    description: "Welcome to 5 Pace Road. This upcoming luxury property is currently under construction and will feature the highest standards of architectural design and premium craftsmanship. Stay tuned for full details, video tours, and a complete gallery as we progress toward completion.",
+    image: '/assets/active_listings/5-pace-rd/DJI_0030__1_.jpg',
+    images: [
+      '/assets/active_listings/5-pace-rd/DJI_0030__1_.jpg',
+      '/assets/active_listings/5-pace-rd/KoolVisionMedia-10.jpg'
+    ],
     status: 'Coming Soon',
-  },
-  {
-    name: 'The Juniper Estate',
-    location: '12 Elderberry Path, Clarksville',
-    price: '$890,000',
-    stats: '4 beds • 4 baths • 3,800 sqft',
-    description: "The Juniper Estate combines classic architecture with modern amenities, creating a timeless and elegant living space.",
-    image: '/assets/content2.jpg',
-    images: ['/assets/content2.jpg'],
-    status: 'Available',
   },
 ];
 
@@ -133,6 +116,7 @@ export default function Listings() {
                     <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold backdrop-blur-md ${
                       listing.status === 'Available' ? 'bg-[#c9a96e] text-white' : 
                       listing.status === 'Pending' ? 'bg-black/60 text-white' : 
+                      listing.status === 'Coming Soon' ? 'bg-black text-white' :
                       'bg-white/90 text-primary'
                     }`}>
                       {listing.status}
