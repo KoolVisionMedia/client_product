@@ -11,7 +11,7 @@ const listings = [
     image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 81}, (_, i) => `/assets/active_listings/24-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/QXDeAi2wibY?feature=share',
-    status: 'Available',
+    status: 'Sold',
   },
   {
     name: '193 Solitude Way',
@@ -22,7 +22,7 @@ const listings = [
     image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 85}, (_, i) => `/assets/active_listings/193-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/HdOP20eKP74',
-    status: 'Available',
+    status: 'Sold',
   },
   {
     name: "413 Shea's Way",
@@ -33,7 +33,7 @@ const listings = [
     image: '/assets/active_listings/413-sheas-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 89}, (_, i) => `/assets/active_listings/413-sheas-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/ik8RLnMr9Y8',
-    status: 'Available',
+    status: 'Sold',
   },
   {
     name: '5 Pace Road',
@@ -117,6 +117,7 @@ export default function Listings() {
                       listing.status === 'Available' ? 'bg-[#c9a96e] text-white' : 
                       listing.status === 'Pending' ? 'bg-black/60 text-white' : 
                       listing.status === 'Coming Soon' ? 'bg-black text-white' :
+                      listing.status === 'Sold' ? 'bg-red-600 text-white' :
                       'bg-white/90 text-primary'
                     }`}>
                       {listing.status}
