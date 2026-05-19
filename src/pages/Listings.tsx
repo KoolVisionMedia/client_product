@@ -32,7 +32,7 @@ const listings = [
     description: "Located at 413 Shea's Way in Clarksville, this exceptional home offers the perfect balance of comfort and sophistication. Featuring a bright, open interior, premium hardwood flooring, custom cabinetry, a beautifully appointed primary bathroom, and ample outdoor living space. Built to the highest standards, this home is ready for you to make lasting memories.",
     image: '/assets/active_listings/413-sheas-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 89}, (_, i) => `/assets/active_listings/413-sheas-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
-    video: '/assets/active_listings/413-sheas-way/413-shea\'s-way-video.mp4',
+    video: 'https://youtube.com/shorts/ik8RLnMr9Y8',
     status: 'Available',
   },
   {
