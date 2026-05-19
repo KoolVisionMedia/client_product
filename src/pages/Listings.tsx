@@ -9,18 +9,8 @@ const listings = [
     stats: '5 beds • 4.5 baths • 4,200 sqft',
     description: "A stunning architectural masterpiece situated on a prime lot at 24 Solitude Way. This custom home features a grand open-concept layout, soaring ceilings, high-end designer finishes, a chef's kitchen with top-of-the-line appliances, and a luxurious primary suite. Experience true elegance and unparalleled craftsmanship in every detail.",
     image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
-    images: [
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia002.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia003.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia004.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia005.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia006.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia007.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia008.jpg',
-      '/assets/active_listings/24-solitude-way/KoolVisionMedia009.jpg'
-    ],
-    video: '/assets/active_listings/24-solitude-way/24 Solitude Dr..mp4',
+    images: Array.from({length: 81}, (_, i) => `/assets/active_listings/24-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
+    video: 'https://youtube.com/shorts/QXDeAi2wibY?feature=share',
     status: 'Available',
   },
   {
@@ -29,18 +19,8 @@ const listings = [
     price: '$1,250,000',
     stats: '5 beds • 5 baths • 4,800 sqft',
     description: "Welcome to 193 Solitude Way, an exquisite custom-built estate that blends modern luxury with timeless design. This spectacular property boasts an expansive floor plan with custom millwork, an oversized gourmet kitchen, multiple living areas perfect for entertaining, and a private backyard oasis. A rare opportunity in a highly sought-after neighborhood.",
-    image: '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia001.jpg',
-    images: [
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia001.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia002.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia003.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia004.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia005.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia006.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia007.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia008.jpg',
-      '/assets/active_listings/193-solitude-way/NEWKoolVisionMedia009.jpg'
-    ],
+    image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
+    images: Array.from({length: 85}, (_, i) => `/assets/active_listings/193-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/HdOP20eKP74',
     status: 'Available',
   },
@@ -51,17 +31,7 @@ const listings = [
     stats: '4 beds • 3.5 baths • 3,600 sqft',
     description: "Located at 413 Shea's Way in Clarksville, this exceptional home offers the perfect balance of comfort and sophistication. Featuring a bright, open interior, premium hardwood flooring, custom cabinetry, a beautifully appointed primary bathroom, and ample outdoor living space. Built to the highest standards, this home is ready for you to make lasting memories.",
     image: '/assets/active_listings/413-sheas-way/KoolVisionMedia001.jpg',
-    images: [
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia001.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia002.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia003.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia004.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia005.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia006.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia007.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia008.jpg',
-      '/assets/active_listings/413-sheas-way/KoolVisionMedia009.jpg'
-    ],
+    images: Array.from({length: 89}, (_, i) => `/assets/active_listings/413-sheas-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: '/assets/active_listings/413-sheas-way/413-shea\'s-way-video.mp4',
     status: 'Available',
   },
@@ -261,7 +231,7 @@ export default function Listings() {
                           onClick={() => setCurrentImageIndex(idx)}
                           className={`relative flex-none w-[calc(25%-0.375rem)] aspect-[4/3] cursor-pointer rounded overflow-hidden snap-center ${idx === currentImageIndex ? 'ring-2 ring-[#c9a96e]' : 'opacity-40 hover:opacity-100 transition-opacity'}`}
                         >
-                          <img src={imgSrc} className="w-full h-full object-cover" />
+                          <img src={imgSrc} loading="lazy" className="w-full h-full object-cover" />
                         </div>
                       ))}
                     </div>
