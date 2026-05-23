@@ -259,7 +259,7 @@ export default function Floorplans() {
 
               <div className="h-full flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
                 {/* Left Column: Info & Specs */}
-                <div className="w-full lg:w-[38%] bg-surface p-4 md:p-5 flex flex-col gap-3 lg:overflow-y-auto shrink-0">
+                <div className="w-full lg:w-[38%] bg-surface p-5 md:p-7 flex flex-col gap-3 lg:overflow-y-auto shrink-0">
                   <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden shadow-sm border border-gray-200/50 bg-white shrink-0">
                     <img 
                       src={selectedPlan.exterior} 
@@ -318,7 +318,7 @@ export default function Floorplans() {
                 </div>
 
                 {/* Right Column: Blueprint Layouts (fills remaining height) */}
-                <div className="w-full lg:w-[62%] p-4 md:p-5 bg-white flex flex-col gap-3 lg:h-full">
+                <div className="w-full lg:w-[62%] p-5 md:p-7 bg-white flex flex-col gap-3 lg:h-full">
                   <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-gray-100 pb-1.5 shrink-0">
                     <h3 className="font-serif text-lg text-primary">Floorplan Layout Sheets</h3>
                     <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-accent font-semibold">
