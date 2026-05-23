@@ -257,94 +257,86 @@ export default function Floorplans() {
                 <X size={24} />
               </button>
 
-              <div className="overflow-y-auto flex-grow p-4 md:p-6 flex flex-col gap-4">
-                {/* Top Section: Exterior Photo (Left) & Title / Specs Description (Right) */}
-                <div className="flex flex-col lg:flex-row gap-5 items-start w-full border-b border-gray-100 pb-4">
-                  {/* Left Side: Large premium exterior photo */}
-                  <div className="w-full lg:w-[45%] shrink-0">
-                    <div className="relative aspect-[3/2] w-full rounded-2xl overflow-hidden shadow-sm border border-gray-200/50 bg-surface">
-                      <img 
-                        src={selectedPlan.exterior} 
-                        alt={selectedPlan.title} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+              <div className="h-full flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
+                {/* Left Column: Info & Specs */}
+                <div className="w-full lg:w-[38%] bg-surface p-4 md:p-5 flex flex-col gap-3 lg:overflow-y-auto shrink-0">
+                  <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden shadow-sm border border-gray-200/50 bg-white shrink-0">
+                    <img 
+                      src={selectedPlan.exterior} 
+                      alt={selectedPlan.title} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   
-                  {/* Right Side: Title, Brochure PDF link, Description, and Horizontal Specifications Grid */}
-                  <div className="w-full lg:w-[55%] flex flex-col h-full justify-between">
-                    <div className="mb-2">
-                      <h2 className="font-serif text-3xl md:text-4xl text-primary mb-0.5 leading-tight">{selectedPlan.title}</h2>
-                      <p className="font-sans text-[10px] tracking-[0.2em] uppercase text-accent font-semibold">Custom Home Plan</p>
-                    </div>
-                    
-                    <p className="font-sans text-base leading-relaxed text-primary/80 mb-3">
-                      {selectedPlan.description}
-                    </p>
-                    
-                    {/* Horizontal Specification Metrics Grid (Spans the wide details column) */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-surface rounded-xl p-3 border border-gray-100 mb-3">
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Bedrooms</span>
-                        <span className="font-sans text-base text-primary flex items-center gap-1 font-bold">
-                          <Bed size={16} className="text-accent" /> {selectedPlan.beds}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Bathrooms</span>
-                        <span className="font-sans text-base text-primary flex items-center gap-1 font-bold">
-                          <Bath size={16} className="text-accent" /> {selectedPlan.baths}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Square Feet</span>
-                        <span className="font-sans text-base text-primary flex items-center gap-1 font-bold">
-                          <Square size={16} className="text-accent" /> {selectedPlan.sqft}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Type</span>
-                        <span className="font-sans text-base text-primary flex items-center gap-1 font-bold">
-                          <HomeIcon size={16} className="text-accent" /> Custom
-                        </span>
-                      </div>
-                    </div>
-
-                    <a
-                      href="/assets/floorplans/Homefront Builders Floorplan Book.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-3 font-sans text-sm md:text-base tracking-wide text-accent hover:text-primary transition-all duration-300 group/pdf w-fit mt-2"
-                    >
-                      <FileText size={20} className="text-accent group-hover/pdf:text-primary transition-colors duration-300" />
-                      <span className="border-b-2 border-accent/20 group-hover/pdf:border-primary/50 transition-all duration-300 pb-1 font-bold">
-                        Homefront Builders Floorplan Book.pdf
-                      </span>
-                    </a>
+                  <div>
+                    <h2 className="font-serif text-2xl md:text-3xl text-primary mb-0.5 leading-tight">{selectedPlan.title}</h2>
+                    <p className="font-sans text-[10px] tracking-[0.2em] uppercase text-accent font-semibold">Custom Home Plan</p>
                   </div>
+                  
+                  <p className="font-sans text-sm leading-relaxed text-primary/80">
+                    {selectedPlan.description}
+                  </p>
+                  
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 bg-white rounded-xl p-3 border border-gray-100">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Bedrooms</span>
+                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
+                        <Bed size={14} className="text-accent" /> {selectedPlan.beds}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Bathrooms</span>
+                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
+                        <Bath size={14} className="text-accent" /> {selectedPlan.baths}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Square Feet</span>
+                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
+                        <Square size={14} className="text-accent" /> {selectedPlan.sqft}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Type</span>
+                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
+                        <HomeIcon size={14} className="text-accent" /> Custom
+                      </span>
+                    </div>
+                  </div>
+
+                  <a
+                    href="/assets/floorplans/Homefront Builders Floorplan Book.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2.5 font-sans text-sm tracking-wide text-accent hover:text-primary transition-all duration-300 group/pdf w-fit"
+                  >
+                    <FileText size={18} className="text-accent group-hover/pdf:text-primary transition-colors duration-300" />
+                    <span className="border-b-2 border-accent/20 group-hover/pdf:border-primary/50 transition-all duration-300 pb-0.5 font-bold">
+                      Homefront Builders Floorplan Book.pdf
+                    </span>
+                  </a>
                 </div>
 
-                {/* Bottom Section: Blueprints (Occupying Full Modal Width) */}
-                <div className="w-full flex flex-col gap-3">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5 border-b border-gray-100 pb-1.5">
-                    <h3 className="font-serif text-xl text-primary">Floorplan Layout Sheets</h3>
-                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-accent font-semibold">
+                {/* Right Column: Blueprint Layouts (fills remaining height) */}
+                <div className="w-full lg:w-[62%] p-4 md:p-5 bg-white flex flex-col gap-3 lg:h-full">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-gray-100 pb-1.5 shrink-0">
+                    <h3 className="font-serif text-lg text-primary">Floorplan Layout Sheets</h3>
+                    <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-accent font-semibold">
                       {selectedPlan.plans.length} {selectedPlan.plans.length > 1 ? 'Sheets' : 'Sheet'} Included
                     </span>
                   </div>
                   
-                  <div className={`w-full grid gap-4 ${selectedPlan.plans.length > 1 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                  <div className={`w-full flex-grow grid gap-3 ${selectedPlan.plans.length > 1 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} min-h-0`}>
                     {selectedPlan.plans.map((planImg, i) => (
-                      <div key={i} className="w-full bg-white rounded-2xl p-2 border border-gray-100 shadow-sm flex flex-col items-center justify-center relative group/blueprint overflow-hidden">
-                        {/* Interactive zoom decoration */}
-                        <div className="absolute top-4 right-4 bg-primary/95 text-white text-[9px] uppercase tracking-widest font-semibold py-1.5 px-3 rounded-full shadow-md opacity-0 group-hover/blueprint:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                      <div key={i} className="w-full bg-surface rounded-xl p-2 border border-gray-100 shadow-sm flex items-center justify-center relative group/blueprint overflow-hidden min-h-0">
+                        <div className="absolute top-3 right-3 bg-primary/95 text-white text-[8px] uppercase tracking-widest font-semibold py-1 px-2.5 rounded-full shadow-md opacity-0 group-hover/blueprint:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
                           {i === 0 && selectedPlan.plans.length > 1 ? 'Main Level' : i === 1 && selectedPlan.plans.length > 1 ? 'Upper Level' : 'Floor Plan'}
                         </div>
                         
                         <img 
                           src={planImg} 
                           alt={`${selectedPlan.title} Layout ${i + 1}`} 
-                          className="max-w-full h-auto object-contain max-h-[500px] md:max-h-[700px] transition-transform duration-500 group-hover/blueprint:scale-[1.01]"
+                          className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover/blueprint:scale-[1.01]"
                         />
                       </div>
                     ))}
