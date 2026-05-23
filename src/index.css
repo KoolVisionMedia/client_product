@@ -47,3 +47,292 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Custom Scrollbar for Infographic */
+.custom-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: #A0ACA0 transparent;
+}
+.custom-scroller::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scroller::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.custom-scroller::-webkit-scrollbar-thumb {
+  background: #A0ACA0; 
+  border-radius: 10px;
+}
+
+/* 3D Container & Fade Mask */
+.perspective-1200 { perspective: 1200px; }
+.transform-style-3d { transform-style: preserve-3d; }
+.scroll-mask {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+/* Reveal Animations */
+.reveal {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 1.2s cubic-bezier(0.5, 0, 0, 1);
+}
+.reveal.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0) scale(1);
+}
+.reveal-left { transform: translateX(-100px); }
+.reveal-right { transform: translateX(100px); }
+.reveal-up { transform: translateY(80px); }
+
+/* Blob and Floating Keyframes */
+.blob-shape {
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  animation: morph 8s ease-in-out infinite;
+}
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes morph {
+  0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+  67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* ==========================================================================
+   3D Book Animation Concept (Dribbble Inspired)
+   ========================================================================== */
+.book-container {
+  perspective: 1500px;
+}
+
+.book-wrap {
+  width: 320px;
+  height: 420px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: rotateY(-8deg) rotateX(4deg);
+}
+
+.book-container:hover .book-wrap {
+  transform: rotateY(-18deg) rotateX(8deg);
+}
+
+.book-cover {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 5;
+  cursor: pointer;
+  border-radius: 4px 12px 12px 4px;
+}
+
+.book-container:hover .book-cover {
+  transform: rotateY(-145deg);
+}
+
+.book-cover-back {
+  position: absolute;
+  inset: 0;
+  background: #fafaf5;
+  transform: rotateY(180deg);
+  transform-origin: left center;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 12px 4px 4px 12px;
+  border: 1px solid #e5e5e0;
+  box-shadow: inset -4px 0 10px rgba(0,0,0,0.05);
+}
+
+.book-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 100%;
+  background: #1e261d;
+  transform: rotateY(-90deg);
+  transform-origin: left center;
+  z-index: 6;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+}
+
+.book-page {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 304px;
+  height: 404px;
+  background: #fafaf5;
+  border: 1px solid #e5e5e0;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.06);
+  transform-origin: left center;
+  transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 3;
+}
+
+/* Fanning pages on hover */
+.book-page-1 {
+  z-index: 3;
+}
+.book-container:hover .book-page-1 {
+  transform: rotateY(-30deg) scale(0.98);
+}
+
+.book-page-2 {
+  z-index: 2;
+  background: #f7f7f0;
+}
+.book-container:hover .book-page-2 {
+  transform: rotateY(-18deg) scale(0.96);
+}
+
+.book-page-3 {
+  z-index: 1;
+  background: #f3f3eb;
+}
+.book-container:hover .book-page-3 {
+  transform: rotateY(-6deg) scale(0.94);
+}
+
+/* ==========================================================================
+   3D Bookshelf & Multi-Book Slider Styling
+   ========================================================================== */
+.bookshelf-shelf {
+  position: absolute;
+  bottom: 0px;
+  left: 2%;
+  width: 96%;
+  height: 16px;
+  background: linear-gradient(180deg, #d2d2bd 0%, #b8b8a3 100%);
+  border-radius: 4px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.12), 0px 4px 8px rgba(0, 0, 0, 0.08);
+  z-index: 1;
+}
+
+.bookshelf-shelf::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 5%;
+  width: 90%;
+  height: 6px;
+  background-color: rgba(46, 54, 44, 0.15);
+  filter: blur(4px);
+}
+
+/* 3D Depth Offsets for Realistic Layering */
+.bookshelf-book {
+  transform-style: preserve-3d;
+}
+
+.bookshelf-book-cover {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform: translateZ(12px) rotateY(0deg);
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 15;
+}
+
+.bookshelf-book-wrapper:hover .bookshelf-book-cover {
+  transform: translateZ(12px) rotateY(-130deg) !important;
+}
+
+.bookshelf-book-pages {
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: calc(100% - 8px);
+  height: calc(100% - 6px);
+  transform: translateZ(2px) !important;
+  transform-style: preserve-3d;
+  z-index: 3;
+}
+
+/* Depth shadow stack for inside pages */
+.book-page-stack::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #eaeae5;
+  transform: translateZ(-2px);
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  top: 0;
+  left: 0;
+  border-radius: 0 10px 10px 0;
+}
+
+.book-page-stack::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #e2e2da;
+  transform: translateZ(-4px);
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  top: 0;
+  left: 0;
+  border-radius: 0 10px 10px 0;
+}
+
+/* Central booklet book layered on top and shifted forward in 3D */
+.bookshelf-book-wrapper--booklet {
+  transform: translateZ(24px) !important;
+  z-index: 30 !important;
+}
+
+.bookshelf-book-wrapper--booklet .bookshelf-book {
+  transform: rotateY(-8deg) rotateX(4deg) translateZ(24px) !important;
+}
+
+.bookshelf-book-wrapper--booklet:hover .bookshelf-book {
+  transform: translateY(-24px) translateZ(50px) rotateY(-12deg) !important;
+}
+
+.bookshelf-book-wrapper--booklet .bookshelf-book-cover {
+  transform: translateZ(16px) rotateY(0deg) !important;
+}
+
+.bookshelf-book-wrapper--booklet:hover .bookshelf-book-cover {
+  transform: translateZ(16px) rotateY(-130deg) !important;
+}
+
+.bookshelf-book-wrapper--booklet .bookshelf-book-pages {
+  transform: translateZ(4px) !important;
+}
+
+/* Defocus non-hovered books on the shelf */
+.bookshelf-slider:hover .bookshelf-book-wrapper:not(:hover) {
+  opacity: 0.65;
+  transform: scale(0.96) translateZ(-35px) translateY(10px);
+}
+
+.bookshelf-book-wrapper {
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-style: preserve-3d;
+}
+
+/* Hide clunky scrollbars but maintain functional scrolling on all devices */
+.scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
