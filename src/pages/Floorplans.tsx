@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Bed, Bath, Square, Home as HomeIcon } from 'lucide-react';
+import { X, Bed, Bath, Square, Home as HomeIcon, FileText } from 'lucide-react';
 
 const floorPlans = [
   {
@@ -170,7 +170,19 @@ export default function Floorplans() {
                   </div>
                   
                   <h2 className="font-serif text-4xl md:text-5xl text-primary mb-2">{selectedPlan.title}</h2>
-                  <p className="font-sans text-[10px] tracking-[0.2em] uppercase text-accent mb-8">Custom Home Plan</p>
+                  <p className="font-sans text-[10px] tracking-[0.2em] uppercase text-accent mb-4">Custom Home Plan</p>
+                  
+                  <a
+                    href="/assets/floorplans/Homefront Builders Floorplan Book.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 mb-8 font-sans text-xs tracking-wider text-accent hover:text-primary transition-all duration-300 group/pdf w-fit"
+                  >
+                    <FileText size={16} className="text-accent group-hover/pdf:text-primary transition-colors duration-300" />
+                    <span className="border-b border-accent/20 group-hover/pdf:border-primary/50 transition-all duration-300 pb-0.5 font-medium">
+                      Homefront Builders Floorplan Book.pdf
+                    </span>
+                  </a>
                   
                   <div className="grid grid-cols-2 gap-6 mb-8 border-y border-gray-200 py-8">
                     <div className="flex flex-col gap-2">
