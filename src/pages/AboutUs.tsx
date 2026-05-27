@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import ContactSection from '../components/ContactSection';
+import { X, Send, Video, Phone, Mail, Award } from 'lucide-react';
 
 const partners = [
   {
@@ -9,6 +10,7 @@ const partners = [
     image: '/assets/team/Carissa Ockey.jpeg',
     bio: `I grew up around construction, so I've always seen homes a little differently. Over the past 6.5 years, I've built my career around new construction: guiding projects from concept to completion with a strong focus on both design and functionality.\n\nMy background in interior design allows me to look beyond the floorplans and think about how a home will actually feel to live in. As a mom, I appreciate a home that's not just beautiful, but functions day to day. Elevated but practical.\n\nI'm big on relationships and believe the best projects come from collaboration and trust. The end goal is always the same: a home that feels as good as it looks.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
   },
   {
     name: 'Kyla',
@@ -16,6 +18,7 @@ const partners = [
     image: '/assets/team/Kelsey Michaud.jpg',
     bio: `Kyla left the corporate world in 2019 and jumped headfirst into real estate sales and investing. She started as an associate agent in Middle Tennessee and quickly rose to lead agent, closing 49 deals in her first year while earning exceptional client reviews. In August 2021, she joined Heather Eisenmann's team at ClarksvilleHomeowner.com, where she has loved being part of a strong, supportive team. She became licensed in Kentucky in 2022 and now has four years of experience serving clients there as well.\n\nKyla's business has continued to grow year after year. In 2025 alone, she closed 90 transactions with a $31 million sales volume, reflecting her dedication, market knowledge, and commitment to delivering results for her clients.\n\nWith a strong understanding of the local market and a genuine passion for helping others, Kyla is committed to guiding buyers, sellers, and investors through every step of the process. She has built a proven track record through hard work, consistency, and care, and she works tirelessly to help her clients achieve the best possible outcome.\n\nMore than anything, Kyla becomes personally invested in the happiness of each client she serves. She believes there is no better feeling than handing someone the keys to their dream home on closing day.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
   },
   {
     name: 'Hannah Myers',
@@ -23,6 +26,7 @@ const partners = [
     image: '/assets/team/Hannah Myers.jpeg',
     bio: `Hannah Myers is a trusted Realtor and founder of The Home Alchemist™ Exclusive, known for delivering a highly intentional and client-focused experience. With over a decade in real estate, she brings a thoughtful, strategic approach to every transaction—grounded in patience, transparency, and deep market knowledge.\n\nHannah is highly selective about the builders she partners with, choosing only those whose quality, integrity, and craftsmanship she can stand behind with complete confidence. Her alignment with HomeFront reflects that standard.\n\nWith a natural eye for design, Hannah is drawn to warm, timeless aesthetics—rich browns, layered linens, and elevated finishes that create a luxury feel without unnecessary price inflation. She believes beautiful homes should feel both refined and attainable, and she takes pride in helping clients achieve that balance.\n\nAbove all, Hannah is committed to creating a seamless, informed, and elevated experience for every client she serves.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
   },
   {
     name: 'Colleen Marquez',
@@ -30,6 +34,7 @@ const partners = [
     image: '/assets/team/Colleen Marquez 2.jpg',
     bio: `Colleen Marquez is the founder of the Home on the Rock Real Estate Team and a listing agent for Homefront Builders, where she blends real estate expertise, design intelligence, and development strategy to serve clients across Middle Tennessee.\n\nColleen specializes in custom home builds, land sourcing, greenfield development, and home design, including interior selections, floorplan planning, and architectural modifications. Her hands-on experience working alongside builders, architects, and design teams allows her to translate a client's vision into a functional, beautiful, and investment-smart home.\n\nProudly featured on Inside Success Network's Women in Power series, Colleen is recognized for her leadership, innovation, and influence in real estate, construction, and community development.\n\nAs a Certified Seller Representative Specialist (SRS) and Military Relocation Professional (MRP), Colleen brings advanced training in negotiation, pricing strategy, and client advocacy. She also provides professional staging services, ensuring every listing enters the market with editorial-quality presentation and maximum buyer appeal.\n\nServing Clarksville, Springfield, Nashville and the surrounding Middle Tennessee region, Colleen is the trusted partner for clients seeking land, custom construction, new development, or elevated residential real estate representation.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
   },
   {
     name: 'Patricia Shipley',
@@ -37,6 +42,7 @@ const partners = [
     image: '/assets/team/Patricia Shipley.webp',
     bio: `Patricia Shipley has been a realtor for 9 years and she has always dedicated her and her team to provide exceptional service. She works with land, new construction and existing homes in Clarksville and all Mid TN. She is the Director of Sales and her role is dedicated to create an exceptional client experience from first contact through project completion. She oversees and develops high-performing sales teams, implements data-driven processes, and cultivates strong relationships with clients, partners, and other Realtors in the Mid TN area. Using local trends and customer needs, she aligns sales strategies with the company's mission to deliver quality craftsmanship and personalize homebuilding solutions. Her role combines leadership, operational insight, and a commitment to excellence to support long-term business growth.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: 'https://www.youtube.com/embed/YUHia0wL22M',
   },
   {
     name: 'Karen Grimes',
@@ -44,6 +50,7 @@ const partners = [
     image: '/assets/team/Karen Grimes.jpeg',
     bio: `Karen Grimes is a licensed real estate Broker who has been actively practicing Real Estate since 2012, bringing over a decade of experience to the industry. With a strong foundation in contract strategy, negotiation, and transaction management, she is known for delivering a high level of professionalism and precision in every deal.\n\nSpecializing in luxury new construction, Karen has developed a niche working with discerning buyers, builders, and investors who expect both elevated service and expert guidance. She understands the complexities of new construction transactions—from builder contracts and customization phases to timelines and final delivery—allowing her clients to move forward with clarity and confidence.\n\nKaren's approach is strategic and client-focused. She prioritizes protecting her clients' interests while creating a seamless, efficient experience from contract to closing. Her ability to anticipate challenges, communicate clearly, and execute at a high level has made her a trusted resource for those navigating competitive and high-value real estate markets.\n\nWhether representing buyers, sellers, or builders, Karen is committed to delivering results while building lasting relationships grounded in trust, discretion, and performance.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
   },
 ];
 
@@ -82,7 +89,7 @@ function PlayIcon() {
 }
 
 /* ── Partner Card ── */
-function PartnerCard({ partner, index }: { partner: typeof partners[0]; index: number }) {
+function PartnerCard({ partner, index, onClick }: { partner: typeof partners[0]; index: number; onClick: () => void }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -91,17 +98,18 @@ function PartnerCard({ partner, index }: { partner: typeof partners[0]; index: n
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -60px 0px' }}
       transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative rounded-3xl overflow-hidden cursor-pointer"
+      className="group relative rounded-3xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
       style={{ aspectRatio: '3 / 4' }}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
+      onClick={onClick}
     >
       {/* Background Image */}
       <motion.img
         src={partner.image}
         alt={partner.name}
         className="absolute inset-0 w-full h-full object-cover object-top"
-        animate={{ scale: expanded ? 1.08 : 1 }}
+        animate={{ scale: expanded ? 1.05 : 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       />
 
@@ -143,27 +151,28 @@ function PartnerCard({ partner, index }: { partner: typeof partners[0]; index: n
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="overflow-hidden"
         >
-          <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
-            {partner.bio.split('\\n\\n').map((para, i) => (
+          <div className="max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
+            {partner.bio.split('\n\n').map((para, i) => (
               <p key={i} className="font-sans text-[12px] leading-relaxed text-white/70 mb-2.5 last:mb-0">
                 {para}
               </p>
             ))}
           </div>
 
-          <div className="flex items-center gap-3 pt-4 mt-3 border-t border-white/10">
-            <a href={partner.social.facebook} aria-label={`${partner.name} Facebook`}
-              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
-              <FacebookIcon />
-            </a>
-            <a href={partner.social.instagram} aria-label={`${partner.name} Instagram`}
-              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
-              <InstagramIcon />
-            </a>
-            <a href={partner.social.linkedin} aria-label={`${partner.name} LinkedIn`}
-              className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
-              <LinkedInIcon />
-            </a>
+          <div className="flex items-center justify-between pt-4 mt-3 border-t border-white/10">
+            <div className="flex items-center gap-3">
+              <a href={partner.social.facebook} aria-label={`${partner.name} Facebook`} onClick={(e) => e.stopPropagation()}
+                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
+                <FacebookIcon />
+              </a>
+              <a href={partner.social.instagram} aria-label={`${partner.name} Instagram`} onClick={(e) => e.stopPropagation()}
+                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
+                <InstagramIcon />
+              </a>
+            </div>
+            <span className="text-[10px] font-sans uppercase tracking-widest text-[#c9a96e] group-hover:underline">
+              View Interview
+            </span>
           </div>
         </motion.div>
       </div>
@@ -171,8 +180,166 @@ function PartnerCard({ partner, index }: { partner: typeof partners[0]; index: n
   );
 }
 
+/* ── Partner Modal Component ── */
+function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClose: () => void }) {
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/75 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 30 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+        className="bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close Button */}
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-all shadow-md"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Top Part: Full-Width 16:9 Video Player */}
+        <div className="w-full relative aspect-video bg-black shrink-0">
+          {partner.video ? (
+            <iframe
+              src={`${partner.video}?autoplay=1`}
+              title={`${partner.name} Interview`}
+              className="w-full h-full border-0 absolute inset-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div className="absolute inset-0 bg-primary/90 flex flex-col items-center justify-center text-center p-8">
+              <Video className="w-16 h-16 text-[#c9a96e] mb-4" strokeWidth={1} />
+              <h4 className="font-serif text-2xl text-white">Interview Coming Soon</h4>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Part: Content Area */}
+        <div className="w-full p-6 md:p-10 overflow-y-auto bg-surface/30 flex-grow custom-scrollbar">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+            
+            {/* Left Col (Bio) — 3 cols wide on large screens */}
+            <div className="lg:col-span-3">
+              {/* Header */}
+              <div className="mb-6">
+                <span className="text-[10px] font-sans tracking-[0.2em] uppercase text-[#c9a96e] flex items-center gap-1.5 mb-1.5">
+                  <Award className="w-3.5 h-3.5" /> Featured Partner
+                </span>
+                <h2 className="font-serif text-3xl md:text-4xl text-primary leading-tight">{partner.name}</h2>
+                <p className="font-sans text-xs uppercase tracking-widest text-[#c9a96e] mt-1">{partner.title}</p>
+              </div>
+
+              {/* Description */}
+              <div className="font-sans text-sm text-primary-light leading-relaxed space-y-4">
+                {partner.bio.split('\n\n').map((para, i) => (
+                  <p key={i} className="mb-3 last:mb-0">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Col (Form) — 2 cols wide on large screens */}
+            <div className="lg:col-span-2">
+              <div className="bg-white border border-primary/5 rounded-2xl p-5 md:p-6 shadow-sm">
+                {submitted ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-8"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
+                      <Send className="w-5 h-5 text-accent animate-pulse" />
+                    </div>
+                    <h4 className="font-serif text-xl text-primary mb-2">Message Sent</h4>
+                    <p className="font-sans text-xs text-primary-light max-w-xs mx-auto">
+                      Thank you! Your message has been sent directly to **{partner.name}**. They will get back to you shortly.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <h4 className="font-serif text-lg text-primary mb-1">Contact {partner.name.split(' ')[0]} Directly</h4>
+                    <p className="font-sans text-[11px] text-primary-light/70 leading-relaxed mb-3">
+                      Interested in working together or asking a specific question? Send a direct message below.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        required
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e]"
+                      />
+                      <input
+                        type="email"
+                        required
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e]"
+                      />
+                    </div>
+
+                    <input
+                      type="tel"
+                      placeholder="Phone Number (Optional)"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e]"
+                    />
+
+                    <textarea
+                      required
+                      placeholder="Type your message..."
+                      rows={3}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e] resize-none"
+                    />
+
+                    <button
+                      type="submit"
+                      className="w-full py-3 bg-primary text-white font-sans text-[10px] uppercase tracking-widest hover:bg-[#c9a96e] transition-all rounded-xl flex items-center justify-center gap-2"
+                    >
+                      <Send className="w-3.5 h-3.5" /> Send Direct Message
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /* ── Page ── */
 export default function AboutUs() {
+  const [selectedPartner, setSelectedPartner] = useState<typeof partners[0] | null>(null);
+
   return (
     <div>
       {/* ─── Hero Banner ─── */}
@@ -300,7 +467,7 @@ export default function AboutUs() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <h2 className="font-serif text-5xl lg:text-6xl text-primary">Meet Our Partners</h2>
               <p className="text-primary-light font-sans max-w-xs text-xs leading-relaxed">
-                The dedicated professionals behind every home we build — committed to craftsmanship, integrity, and your vision.
+                Click any partner to watch their featured interview video and get in direct contact with them.
               </p>
             </div>
             <div className="mt-8 h-[1px] bg-primary/10 w-full" />
@@ -309,11 +476,26 @@ export default function AboutUs() {
           {/* Cards — 3 per row */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-6">
             {partners.map((partner, i) => (
-              <PartnerCard key={partner.name} partner={partner} index={i} />
+              <PartnerCard 
+                key={partner.name} 
+                partner={partner} 
+                index={i} 
+                onClick={() => setSelectedPartner(partner)}
+              />
             ))}
           </div>
         </div>
       </section>
+
+      {/* Partner Detail Modal Overlay */}
+      <AnimatePresence>
+        {selectedPartner && (
+          <PartnerModal 
+            partner={selectedPartner} 
+            onClose={() => setSelectedPartner(null)} 
+          />
+        )}
+      </AnimatePresence>
 
       {/* ─── Contact Us Section ─── */}
       <ContactSection />
@@ -321,17 +503,17 @@ export default function AboutUs() {
       {/* Custom scrollbar styles */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
-          width: 3px;
+          width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(201, 169, 110, 0.3);
+          background: rgba(201, 169, 110, 0.2);
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(201, 169, 110, 0.6);
+          background: rgba(201, 169, 110, 0.5);
         }
       `}</style>
     </div>
