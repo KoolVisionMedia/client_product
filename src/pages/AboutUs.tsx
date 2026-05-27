@@ -467,7 +467,7 @@ export default function AboutUs() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <h2 className="font-serif text-5xl lg:text-6xl text-primary">Meet Our Partners</h2>
               <p className="text-primary-light font-sans max-w-xs text-xs leading-relaxed">
-                Click any partner to watch their featured interview video and get in direct contact with them.
+                Contact agents directly here or select their profile to contact them.
               </p>
             </div>
             <div className="mt-8 h-[1px] bg-primary/10 w-full" />
