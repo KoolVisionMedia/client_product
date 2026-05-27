@@ -19,6 +19,7 @@ import Floorplans from './pages/Floorplans';
 import Blog from './pages/Blog';
 import ContactUs from './pages/ContactUs';
 import Warranties from './pages/Warranties';
+import ProcessPage from './pages/ProcessPage';
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/warranties" element={<Warranties />} />
+          <Route path="/process" element={<ProcessPage />} />
         </Routes>
       </main>
 

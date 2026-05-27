@@ -24,7 +24,7 @@ export default function Navbar() {
         { name: 'Testimonials', href: '/testimonials' }
       ]
     },
-    { name: 'OUR PROCESS', href: '/#process' },
+    { name: 'OUR PROCESS', href: '/process' },
     { 
       name: 'LISTINGS', 
       dropdown: [

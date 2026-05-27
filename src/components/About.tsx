@@ -1,5 +1,6 @@
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function About() {
   const ref = useRef(null);
@@ -41,9 +42,9 @@ export default function About() {
             viewport={{ once: true, margin: "0px" }}
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <a href="#about" className="inline-block border-b border-primary/30 pb-2 text-primary hover:text-accent hover:border-accent transition-all duration-300 font-sans uppercase tracking-[0.2em] text-xs font-semibold">
+            <Link to="/about-us" className="inline-block border-b border-primary/30 pb-2 text-primary hover:text-accent hover:border-accent transition-all duration-300 font-sans uppercase tracking-[0.2em] text-xs font-semibold">
               More About Us
-            </a>
+            </Link>
           </motion.div>
         </div>
 

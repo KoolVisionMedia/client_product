@@ -52,7 +52,7 @@ export default function Footer() {
             <ul className="space-y-4 font-sans text-xs text-white/60 tracking-widest uppercase">
               <li><Link to="/" className="hover:text-[#c9a96e] transition-colors">Home</Link></li>
               <li><Link to="/about-us" className="hover:text-[#c9a96e] transition-colors">About Us</Link></li>
-              <li><Link to="/portfolio" className="hover:text-[#c9a96e] transition-colors">Portfolio</Link></li>
+              <li><Link to="/listings" className="hover:text-[#c9a96e] transition-colors">Listings</Link></li>
               <li><Link to="/testimonials" className="hover:text-[#c9a96e] transition-colors">Testimonials</Link></li>
               <li><Link to="/blog" className="hover:text-[#c9a96e] transition-colors">Blog</Link></li>
             </ul>

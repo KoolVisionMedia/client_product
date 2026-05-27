@@ -1,5 +1,6 @@
 import Hero from '../components/Hero';
 import About from '../components/About';
+import CoreValues from '../components/CoreValues';
 import Process from '../components/Process';
 import Portfolio from '../components/Portfolio';
 import CustomCare from '../components/CustomCare';
@@ -10,6 +11,7 @@ export default function Home() {
     <>
       <Hero />
       <About />
+      <CoreValues />
       <Process />
       <Portfolio />
       <CustomCare />
