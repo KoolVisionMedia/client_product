@@ -10,7 +10,7 @@ const partners = [
     image: '/assets/team/Carissa Ockey.jpeg',
     bio: `I grew up around construction, so I've always seen homes a little differently. Over the past 6.5 years, I've built my career around new construction: guiding projects from concept to completion with a strong focus on both design and functionality.\n\nMy background in interior design allows me to look beyond the floorplans and think about how a home will actually feel to live in. As a mom, I appreciate a home that's not just beautiful, but functions day to day. Elevated but practical.\n\nI'm big on relationships and believe the best projects come from collaboration and trust. The end goal is always the same: a home that feels as good as it looks.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
+    video: '',
   },
   {
     name: 'Kyla',
@@ -18,7 +18,7 @@ const partners = [
     image: '/assets/team/Kelsey Michaud.jpg',
     bio: `Kyla left the corporate world in 2019 and jumped headfirst into real estate sales and investing. She started as an associate agent in Middle Tennessee and quickly rose to lead agent, closing 49 deals in her first year while earning exceptional client reviews. In August 2021, she joined Heather Eisenmann's team at ClarksvilleHomeowner.com, where she has loved being part of a strong, supportive team. She became licensed in Kentucky in 2022 and now has four years of experience serving clients there as well.\n\nKyla's business has continued to grow year after year. In 2025 alone, she closed 90 transactions with a $31 million sales volume, reflecting her dedication, market knowledge, and commitment to delivering results for her clients.\n\nWith a strong understanding of the local market and a genuine passion for helping others, Kyla is committed to guiding buyers, sellers, and investors through every step of the process. She has built a proven track record through hard work, consistency, and care, and she works tirelessly to help her clients achieve the best possible outcome.\n\nMore than anything, Kyla becomes personally invested in the happiness of each client she serves. She believes there is no better feeling than handing someone the keys to their dream home on closing day.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
+    video: '',
   },
   {
     name: 'Hannah Myers',
@@ -26,7 +26,7 @@ const partners = [
     image: '/assets/team/Hannah Myers.jpeg',
     bio: `Hannah Myers is a trusted Realtor and founder of The Home Alchemist™ Exclusive, known for delivering a highly intentional and client-focused experience. With over a decade in real estate, she brings a thoughtful, strategic approach to every transaction—grounded in patience, transparency, and deep market knowledge.\n\nHannah is highly selective about the builders she partners with, choosing only those whose quality, integrity, and craftsmanship she can stand behind with complete confidence. Her alignment with HomeFront reflects that standard.\n\nWith a natural eye for design, Hannah is drawn to warm, timeless aesthetics—rich browns, layered linens, and elevated finishes that create a luxury feel without unnecessary price inflation. She believes beautiful homes should feel both refined and attainable, and she takes pride in helping clients achieve that balance.\n\nAbove all, Hannah is committed to creating a seamless, informed, and elevated experience for every client she serves.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
+    video: '',
   },
   {
     name: 'Colleen Marquez',
@@ -34,7 +34,7 @@ const partners = [
     image: '/assets/team/Colleen Marquez 2.jpg',
     bio: `Colleen Marquez is the founder of the Home on the Rock Real Estate Team and a listing agent for Homefront Builders, where she blends real estate expertise, design intelligence, and development strategy to serve clients across Middle Tennessee.\n\nColleen specializes in custom home builds, land sourcing, greenfield development, and home design, including interior selections, floorplan planning, and architectural modifications. Her hands-on experience working alongside builders, architects, and design teams allows her to translate a client's vision into a functional, beautiful, and investment-smart home.\n\nProudly featured on Inside Success Network's Women in Power series, Colleen is recognized for her leadership, innovation, and influence in real estate, construction, and community development.\n\nAs a Certified Seller Representative Specialist (SRS) and Military Relocation Professional (MRP), Colleen brings advanced training in negotiation, pricing strategy, and client advocacy. She also provides professional staging services, ensuring every listing enters the market with editorial-quality presentation and maximum buyer appeal.\n\nServing Clarksville, Springfield, Nashville and the surrounding Middle Tennessee region, Colleen is the trusted partner for clients seeking land, custom construction, new development, or elevated residential real estate representation.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
+    video: '',
   },
   {
     name: 'Patricia Shipley',
@@ -50,7 +50,7 @@ const partners = [
     image: '/assets/team/Karen Grimes.jpeg',
     bio: `Karen Grimes is a licensed real estate Broker who has been actively practicing Real Estate since 2012, bringing over a decade of experience to the industry. With a strong foundation in contract strategy, negotiation, and transaction management, she is known for delivering a high level of professionalism and precision in every deal.\n\nSpecializing in luxury new construction, Karen has developed a niche working with discerning buyers, builders, and investors who expect both elevated service and expert guidance. She understands the complexities of new construction transactions—from builder contracts and customization phases to timelines and final delivery—allowing her clients to move forward with clarity and confidence.\n\nKaren's approach is strategic and client-focused. She prioritizes protecting her clients' interests while creating a seamless, efficient experience from contract to closing. Her ability to anticipate challenges, communicate clearly, and execute at a high level has made her a trusted resource for those navigating competitive and high-value real estate markets.\n\nWhether representing buyers, sellers, or builders, Karen is committed to delivering results while building lasting relationships grounded in trust, discretion, and performance.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/5qap5aO4i9A',
+    video: '',
   },
 ];
 
