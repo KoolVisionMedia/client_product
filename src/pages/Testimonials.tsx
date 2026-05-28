@@ -370,7 +370,7 @@ export default function Testimonials() {
           >
             <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#B48C36] mb-4">Follow Along</p>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <h2 className="font-serif text-5xl md:text-6xl text-[#2E362C]">Our Social Feed</h2>
+              <h2 className="font-serif text-5xl md:text-6xl text-[#2E362C]">Find Us Online</h2>
               <div className="flex items-center gap-5">
                 {[
                   { label: 'Facebook', url: 'https://www.facebook.com/HomeFrontBuilderstn/', color: '#1877F2' },
