@@ -59,40 +59,28 @@ const featuredReviews = [
 // Facebook reviews — names redacted to initials per client privacy
 const facebookReviews = [
   {
-    initials: 'C.O.',
-    image: '/assets/Carissa Ockey.jpeg',
-    date: 'December 2024',
-    text: '"Whoa this is absolutely a show stopper. Homefront Builders exceeded every expectation — the quality, the design, the communication throughout. I tell everyone I know about them."',
+    initials: 'A.S.',
+    image: null,
+    date: 'Sep 24, 2025',
+    text: '"While custom homes can be costly, this builder offers great value. The quality, service, and attention to detail make every dollar worth it. You will be impressed with the high-quality materials and finishes used. The craftsmanship in details like cabinetry and overall design is exceptional."',
   },
   {
-    initials: 'C.M.',
-    image: '/assets/Colleen Marquez 2.jpg',
-    date: 'February 2025',
-    text: '"From start to finish, working with Homefront Builders was a flawless experience. Our home is everything we dreamed of and more. The team made the entire process feel effortless."',
-  },
-  {
-    initials: 'H.M.',
-    image: '/assets/Hannah Myers.jpeg',
-    date: 'January 2025',
-    text: '"Incredible attention to detail and unmatched craftsmanship. The Homefront team kept us informed at every single step and delivered a home that is truly one of a kind."',
+    initials: 'K.T.',
+    image: null,
+    date: 'Jul 16, 2025',
+    text: '"HomeFront Builders and their team are hands down the best in middle Tennessee. They truly care about delivering a quality product to each and every client. Amber is an incredible architect who can take napkin drawings and turn them into the floorplan of your dreams. 10 out of 10 recommend!"',
   },
   {
     initials: 'K.G.',
     image: '/assets/Karen Grimes.jpeg',
-    date: 'March 2025',
-    text: '"The process was seamless and the results speak for themselves. Homefront Builders really cares about the people they build for — you can feel it in every detail of our home."',
-  },
-  {
-    initials: 'K.M.',
-    image: '/assets/Kelsey Michaud.jpg',
-    date: 'April 2025',
-    text: '"Professional, creative, and genuinely passionate about what they do. Our home is not just beautiful — it is built to last. Homefront sets the standard for custom home building in Tennessee."',
+    date: 'Jul 16, 2025',
+    text: '"I\'ve worked with this builder many times and my clients have raved about the professionalism and focus on customer satisfaction and appreciation. They also love that the options are far and above most if not all in the area."',
   },
   {
     initials: 'P.S.',
     image: '/assets/Patricia Shipley.webp',
-    date: 'May 2025',
-    text: '"Choosing Homefront Builders was the best decision we made for our family. The team was professional, honest, and truly brought our vision to life. We couldn\'t be happier."',
+    date: 'Jul 16, 2025',
+    text: '"I have worked with this builder for several years, and the professionalism and communication is unmatched. The homes are beautiful and well built, this builder takes the time with each home because they do a limited number of homes each year. SO when it comes to customization, hands down this is the team you want to work with."',
   },
 ];
 
@@ -359,8 +347,11 @@ export default function Testimonials() {
               className="flex-none w-[300px] md:w-[340px] bg-white/[0.05] border border-white/10 rounded-2xl p-7 flex flex-col gap-5"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full overflow-hidden flex-none bg-[#1b2518] border border-white/10">
-                  <img src={r.image} alt={r.initials} className="w-full h-full object-cover" />
+                <div className="w-12 h-12 rounded-full overflow-hidden flex-none bg-[#2a3628] border border-white/10 flex items-center justify-center">
+                  {r.image
+                    ? <img src={r.image} alt={r.initials} className="w-full h-full object-cover" />
+                    : <span className="font-serif text-[#c9a96e] text-sm select-none">{r.initials}</span>
+                  }
                 </div>
                 <div>
                   <p className="font-serif text-white text-lg">{r.initials}</p>
