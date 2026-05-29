@@ -124,11 +124,13 @@ export default function Warranties() {
                   className="w-48 object-contain"
                 />
                 <div className="h-[1px] w-full bg-primary/10" />
-                <img
-                  src="/assets/qbw_book.png"
-                  alt="QBW Warranty Book"
-                  className="w-full max-w-[320px] object-contain rounded-lg shadow-lg"
-                />
+                <a href="https://simplebooklet.com/qbw_warrantybook1122singlec#page=1" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:opacity-90 transition-opacity">
+                  <img
+                    src="/assets/qbw_book.png"
+                    alt="QBW Warranty Book"
+                    className="w-full max-w-[320px] object-contain rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                  />
+                </a>
                 <p className="font-sans text-xs text-primary-light/60 text-center uppercase tracking-[0.2em]">
                   Your complete warranty documentation
                 </p>
