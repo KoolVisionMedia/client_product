@@ -162,15 +162,15 @@ export default function Process() {
                 },
                 exit: { opacity: 0, scale: 0.98, filter: "blur(4px)", transition: { duration: 0.2, ease: "easeIn" } }
               }}
-              className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative overflow-hidden flex flex-col md:flex-row gap-8 items-center md:items-start"
+              className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start"
             >
-              {/* Green round logo in the upper right corner */}
+              {/* Green round logo overlapping the upper right corner like a premium stamp */}
               <motion.div
                 variants={{
                   hidden: { opacity: 0, scale: 0.8, rotate: 15 },
                   visible: { opacity: 1, scale: 1, rotate: 0, transition: { type: "spring", stiffness: 300, damping: 22, delay: 0.1 } }
                 }}
-                className="absolute top-6 right-6 md:top-8 md:right-8 w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border border-[#c9a96e]/15 shadow-sm bg-white shrink-0 z-20 pointer-events-none"
+                className="absolute -top-6 -right-6 md:-top-8 md:-right-8 w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] bg-white shrink-0 z-30 pointer-events-none"
               >
                 <img
                   src="/logo-round.png"
@@ -179,21 +179,24 @@ export default function Process() {
                 />
               </motion.div>
 
-              {/* Animated background abstract shapes */}
-              <motion.div 
-                variants={{
-                  hidden: { scale: 0.5, opacity: 0, rotate: -45 },
-                  visible: { scale: 1, opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut" } }
-                }}
-                className="absolute -top-32 -right-32 w-80 h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none"
-              ></motion.div>
-              <motion.div 
-                variants={{
-                  hidden: { scale: 0.5, opacity: 0, rotate: 45 },
-                  visible: { scale: 1, opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut", delay: 0.2 } }
-                }}
-                className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-2xl pointer-events-none"
-              ></motion.div>
+              {/* Background clipping wrapper for shapes */}
+              <div className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none z-0">
+                {/* Animated background abstract shapes */}
+                <motion.div 
+                  variants={{
+                    hidden: { scale: 0.5, opacity: 0, rotate: -45 },
+                    visible: { scale: 1, opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut" } }
+                  }}
+                  className="absolute -top-32 -right-32 w-80 h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none"
+                ></motion.div>
+                <motion.div 
+                  variants={{
+                    hidden: { scale: 0.5, opacity: 0, rotate: 45 },
+                    visible: { scale: 1, opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut", delay: 0.2 } }
+                  }}
+                  className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-2xl pointer-events-none"
+                ></motion.div>
+              </div>
               
               <motion.div 
                 variants={{
