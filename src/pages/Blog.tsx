@@ -1,10 +1,11 @@
 import { motion } from 'motion/react';
-import { Link } from 'react-router-dom';
+import Tilt from 'react-parallax-tilt';
+import { ArrowRight, Calendar, Tag } from 'lucide-react';
 
 const posts = [
   {
     title: 'The Art of Modern Farmhouse Design',
-    excerpt: 'Exploring the timeless elements that make the modern farmhouse a favorite for Middle Tennessee families.',
+    excerpt: 'Exploring the timeless elements that make the modern farmhouse a favorite for Middle Tennessee families. From wrap-around porches to soaring vaulted ceilings, discover how we blend rustic charm with modern luxury.',
     date: 'May 12, 2024',
     category: 'Design Trends',
     image: '/assets/Harmony.jpg',
@@ -29,70 +30,161 @@ const posts = [
 ];
 
 export default function Blog() {
+  const featuredPost = posts[0];
+  const remainingPosts = posts.slice(1);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  };
+
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero */}
-      <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <div className="absolute inset-0 bg-[#1b2518]" />
-        <div className="relative z-10 h-full flex flex-col items-center justify-center pt-20 px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center"
-          >
-            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">The Journal</p>
-            <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-white tracking-wide">
-              Insights & Inspiration
-            </h1>
-          </motion.div>
-        </div>
+    <div className="bg-[#F4F3F0] min-h-screen">
+      {/* Hero with Parallax & Glassmorphism */}
+      <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
+        <motion.img
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
+          src="/assets/DSC04388-Edit.jpg"
+          alt="Blog Hero Background"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[#1b2518]/40" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-10 md:p-16 rounded-3xl text-center max-w-3xl mx-4 shadow-2xl"
+        >
+          <p className="text-xs md:text-sm font-sans tracking-[0.4em] uppercase text-[#c9a96e] mb-4 drop-shadow-md">The Journal</p>
+          <h1 className="font-serif text-4xl md:text-6xl text-white tracking-wide drop-shadow-lg">
+            Insights & Inspiration
+          </h1>
+        </motion.div>
       </section>
 
-      {/* Blog Grid */}
+      {/* Featured Post (Index 0) */}
+      <section className="px-6 md:px-12 max-w-7xl mx-auto -mt-16 md:-mt-24 relative z-20">
+        <Tilt
+          tiltMaxAngleX={3}
+          tiltMaxAngleY={3}
+          scale={1.02}
+          transitionSpeed={2500}
+          className="cursor-pointer"
+          glareEnable={true}
+          glareMaxOpacity={0.15}
+          glarePosition="all"
+        >
+          <motion.article
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row group"
+          >
+            {/* Image Half */}
+            <div className="lg:w-3/5 relative overflow-hidden aspect-video lg:aspect-auto">
+              <img
+                src={featuredPost.image}
+                alt={featuredPost.title}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute top-6 left-6">
+                <span className="bg-white/90 backdrop-blur-md px-4 py-2 text-xs font-sans tracking-[0.2em] uppercase font-bold text-primary rounded-sm shadow-sm">
+                  Featured Article
+                </span>
+              </div>
+            </div>
+            
+            {/* Content Half */}
+            <div className="lg:w-2/5 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+              <div className="flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-4">
+                <span className="flex items-center gap-1.5"><Calendar size={14} /> {featuredPost.date}</span>
+                <span className="hidden md:block w-1 h-1 rounded-full bg-primary/20" />
+                <span className="flex items-center gap-1.5"><Tag size={14} /> {featuredPost.category}</span>
+              </div>
+              
+              <h2 className="font-serif text-3xl md:text-4xl text-primary mb-6 leading-tight group-hover:text-[#c9a96e] transition-colors duration-500">
+                {featuredPost.title}
+              </h2>
+              
+              <p className="text-primary-light/80 font-sans text-base leading-relaxed mb-8">
+                {featuredPost.excerpt}
+              </p>
+              
+              <div className="mt-auto pt-8 border-t border-gray-100 flex items-center gap-3 text-sm font-sans tracking-[0.2em] uppercase font-bold text-primary">
+                Read Full Story
+                <ArrowRight size={18} className="text-[#c9a96e] transform group-hover:translate-x-2 transition-transform duration-300" />
+              </div>
+            </div>
+          </motion.article>
+        </Tilt>
+      </section>
+
+      {/* Standard Grid */}
       <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {posts.map((post, i) => (
-            <motion.article
-              key={post.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.1 }}
-              className="group cursor-pointer"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden rounded-xl mb-6">
-                <motion.img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.8 }}
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-sans tracking-widest uppercase font-semibold text-primary">
-                    {post.category}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-3">
-                <p className="text-[10px] font-sans tracking-widest text-[#c9a96e] uppercase">{post.date}</p>
-                <h3 className="font-serif text-2xl text-primary group-hover:text-[#c9a96e] transition-colors duration-300">
-                  {post.title}
-                </h3>
-                <p className="text-primary-light/70 font-sans text-sm leading-relaxed line-clamp-2">
-                  {post.excerpt}
-                </p>
-                <div className="pt-4 flex items-center gap-2 text-[10px] font-sans tracking-[0.2em] uppercase font-bold text-primary">
-                  Read Article
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-2 transition-transform duration-300">
-                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </div>
-              </div>
-            </motion.article>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-12"
+        >
+          {remainingPosts.map((post) => (
+            <motion.div key={post.title} variants={itemVariants}>
+              <Tilt
+                tiltMaxAngleX={5}
+                tiltMaxAngleY={5}
+                scale={1.03}
+                transitionSpeed={2000}
+                className="cursor-pointer h-full"
+                glareEnable={true}
+                glareMaxOpacity={0.1}
+                glarePosition="all"
+              >
+                <article className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full flex flex-col group">
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-white/95 px-3 py-1 text-[10px] font-sans tracking-widest uppercase font-bold text-primary rounded-sm shadow-sm">
+                        {post.category}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="p-8 flex flex-col flex-1">
+                    <p className="text-[10px] font-sans tracking-widest text-[#c9a96e] uppercase mb-3 flex items-center gap-1.5">
+                      <Calendar size={12} /> {post.date}
+                    </p>
+                    <h3 className="font-serif text-2xl text-primary mb-4 group-hover:text-[#c9a96e] transition-colors duration-500">
+                      {post.title}
+                    </h3>
+                    <p className="text-primary-light/70 font-sans text-sm leading-relaxed line-clamp-3 mb-6">
+                      {post.excerpt}
+                    </p>
+                    <div className="mt-auto pt-6 border-t border-gray-50 flex items-center gap-2 text-[11px] font-sans tracking-[0.2em] uppercase font-bold text-primary">
+                      Read Article
+                      <ArrowRight size={14} className="text-[#c9a96e] transform group-hover:translate-x-2 transition-transform duration-300" />
+                    </div>
+                  </div>
+                </article>
+              </Tilt>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
     </div>
   );
