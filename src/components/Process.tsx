@@ -122,9 +122,10 @@ export default function Process() {
                   onClick={() => setActiveStep(index)}
                   onMouseEnter={() => setActiveStep(index)}
                   className={`snap-center shrink-0 cursor-pointer rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden group
+                    w-[80px] md:w-[100px] lg:w-[120px] h-[110px] md:h-[135px] lg:h-[160px]
                     ${isActive 
-                      ? 'w-[90px] md:w-[110px] lg:w-[130px] h-[120px] md:h-[150px] lg:h-[180px] bg-primary text-white border-primary shadow-xl scale-[1.05] z-10' 
-                      : 'w-[75px] md:w-[90px] lg:w-[110px] h-[100px] md:h-[120px] lg:h-[140px] bg-surface/90 text-accent border-gray-100 hover:bg-white hover:shadow-md hover:-translate-y-1'
+                      ? 'bg-primary text-white border-primary shadow-xl scale-[1.12] z-10' 
+                      : 'bg-surface/90 text-accent border-gray-100 hover:bg-white hover:shadow-md hover:scale-[1.05] hover:-translate-y-1 z-0'
                     }`}
                 >
                   {isActive && (
@@ -162,7 +163,7 @@ export default function Process() {
                 },
                 exit: { opacity: 0, scale: 0.98, filter: "blur(4px)", transition: { duration: 0.2, ease: "easeIn" } }
               }}
-              className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start"
+              className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start min-h-[380px] sm:min-h-[340px] md:min-h-[280px] lg:min-h-[250px] w-full"
             >
               {/* Green round logo overlapping the upper right corner like a premium stamp */}
               <motion.div
