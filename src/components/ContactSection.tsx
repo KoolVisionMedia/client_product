@@ -4,19 +4,20 @@ import { motion, useScroll, useTransform, useMotionTemplate } from 'motion/react
 interface ChatBubbleProps {
   sender: string;
   name: string;
-  initials: string;
+  avatar: string;
   message: string;
   time: string;
   range: [number, number];
   scrollYProgress: any;
+  isTyping?: boolean;
 }
 
-function ChatBubble({ sender, name, initials, message, time, range, scrollYProgress }: ChatBubbleProps) {
+function ChatBubble({ sender, name, avatar, message, time, range, scrollYProgress, isTyping }: ChatBubbleProps) {
   const isClient = sender === 'client';
 
-  // Map scrollYProgress range to motion values
+  // Map scrollYProgress range to motion values for scroll-linked progress
   const opacity = useTransform(scrollYProgress, [0, range[0], range[1], 1], [0, 0, 1, 1]);
-  const y = useTransform(scrollYProgress, [0, range[0], range[1], 1], [30, 30, 0, 0]);
+  const y = useTransform(scrollYProgress, [0, range[0], range[1], 1], [40, 40, 0, 0]);
   const scale = useTransform(scrollYProgress, [0, range[0], range[1], 1], [0.95, 0.95, 1, 1]);
   const blurVal = useTransform(scrollYProgress, [0, range[0], range[1], 1], [6, 6, 0, 0]);
   const filter = useMotionTemplate`blur(${blurVal}px)`;
@@ -24,36 +25,46 @@ function ChatBubble({ sender, name, initials, message, time, range, scrollYProgr
   return (
     <motion.div
       style={{ opacity, y, scale, filter }}
-      className={`flex items-start gap-3 ${isClient ? 'flex-row' : 'flex-row-reverse'}`}
+      className={`flex items-start gap-4 max-w-[850px] mx-auto ${isClient ? 'flex-row' : 'flex-row-reverse'}`}
     >
       {/* Avatar */}
-      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border text-[10px] font-sans font-semibold tracking-wider ${
-        isClient 
-          ? 'bg-[#c9a96e]/10 border-[#c9a96e]/25 text-[#c9a96e]' 
-          : 'bg-[#1b2518] border-[#c9a96e]/30 text-[#c9a96e]'
-      }`}>
-        {initials}
+      <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-primary/10 shadow-sm bg-white flex items-center justify-center">
+        <img
+          src={avatar}
+          alt={name}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Bubble Content */}
-      <div className="max-w-[75%] md:max-w-[60%] flex flex-col gap-1">
-        <span className={`font-sans text-[9px] tracking-wider font-semibold text-primary/45 uppercase ${
+      <div className="max-w-[70%] md:max-w-[60%] flex flex-col gap-1">
+        <span className={`font-sans text-[9px] tracking-[0.15em] font-semibold text-primary/45 uppercase ${
           isClient ? 'text-left' : 'text-right'
         }`}>
           {name}
         </span>
-        <div className={`p-4 rounded-2xl text-sm font-sans leading-relaxed shadow-sm ${
+        <div className={`p-4 md:p-5 rounded-3xl text-sm font-sans leading-relaxed shadow-sm ${
           isClient
-            ? 'bg-white text-primary rounded-tl-none border border-primary/5'
-            : 'bg-[#1b2518] text-white rounded-tr-none border border-[#c9a96e]/20'
+            ? 'bg-[#F4F3F0] text-primary rounded-tl-none border border-primary/5'
+            : 'bg-[#c9a96e] text-[#1b2518] rounded-tr-none border border-[#c9a96e]/20 font-medium'
         }`}>
-          {message}
+          {isTyping ? (
+            <div className="flex gap-1.5 py-1.5 px-3 items-center justify-center">
+              <span className="w-2 h-2 rounded-full bg-[#1b2518]/60 animate-bounce [animation-delay:-0.3s]" />
+              <span className="w-2 h-2 rounded-full bg-[#1b2518]/60 animate-bounce [animation-delay:-0.15s]" />
+              <span className="w-2 h-2 rounded-full bg-[#1b2518]/60 animate-bounce" />
+            </div>
+          ) : (
+            message
+          )}
         </div>
-        <span className={`font-sans text-[8px] text-primary/30 tracking-wider ${
-          isClient ? 'text-left' : 'text-right'
-        }`}>
-          {time}
-        </span>
+        {!isTyping && (
+          <span className={`font-sans text-[8px] text-primary/30 tracking-wider ${
+            isClient ? 'text-left' : 'text-right'
+          }`}>
+            {time}
+          </span>
+        )}
       </div>
     </motion.div>
   );
@@ -88,123 +99,144 @@ export default function ContactSection() {
   const chatMessages = [
     {
       sender: 'client',
-      name: 'You / Future Homeowner',
-      initials: 'Y',
-      message: "Hey there! My husband and I are looking to build a custom home in the Clarksville area. We have a lot in Sango but we're totally lost on where to even start. Do you guys build on client-owned lots?",
+      name: 'Carissa Ockey',
+      avatar: '/assets/Carissa Ockey.jpeg',
+      message: "Hey! We have a lot in Sango, but we've never built a custom home before. Can you help us from start to finish?",
       time: "10:24 AM",
-      range: [0.08, 0.15] as [number, number]
+      range: [0.03, 0.09] as [number, number]
     },
     {
       sender: 'business',
       name: 'Homefront Builders',
-      initials: 'HB',
-      message: "Hey! Yes, we absolutely do! Congrats on the lot in Sango—that is a gorgeous area. We actually specialize in building on client-owned land. We handle everything from the initial site prep and soil tests to the architectural design and final construction. Have you guys started working on a floor plan yet?",
+      avatar: '/logo-round.png',
+      message: "Absolutely! We handle everything: soil tests, zoning, custom architectural blueprints, interior design selections, and the entire construction process.",
       time: "10:25 AM",
-      range: [0.15, 0.23] as [number, number]
+      range: [0.09, 0.16] as [number, number]
     },
     {
       sender: 'client',
-      name: 'You / Future Homeowner',
-      initials: 'Y',
-      message: "No, not yet. We've been browsing blueprints online but honestly it's so overwhelming. Some builders told us we have to bring our own blueprints, but we don't even know any architects.",
+      name: 'Kelsey Michaud',
+      avatar: '/assets/Kelsey Michaud.jpg',
+      message: "We've heard horror stories about builders going way over budget and disappearing. How do we keep control?",
       time: "10:26 AM",
-      range: [0.23, 0.31] as [number, number]
+      range: [0.16, 0.23] as [number, number]
     },
     {
       sender: 'business',
       name: 'Homefront Builders',
-      initials: 'HB',
-      message: "I completely understand, it can feel like a lot! The good news is you don't need blueprints. We are a design-build company, which means we have in-house designers who will draft a completely custom floor plan with you from scratch to fit your exact budget and Sango lot dimensions.",
+      avatar: '/logo-round.png',
+      message: "In-house means in-control. We use an interactive online portal where you approve selection sheets and track daily logs, keeping you in charge of every dollar.",
       time: "10:28 AM",
-      range: [0.31, 0.39] as [number, number]
+      range: [0.23, 0.30] as [number, number]
     },
     {
       sender: 'client',
-      name: 'You / Future Homeowner',
-      initials: 'Y',
-      message: "Oh wow, that is a huge relief! I was worried we'd have to manage a million different people. How does communication work once construction actually starts?",
+      name: 'Hannah Myers',
+      avatar: '/assets/Hannah Myers.jpeg',
+      message: "How do we stay updated on the build when we're busy with work?",
       time: "10:29 AM",
-      range: [0.39, 0.47] as [number, number]
+      range: [0.30, 0.37] as [number, number]
     },
     {
       sender: 'business',
       name: 'Homefront Builders',
-      initials: 'HB',
-      message: "We keep it simple and stress-free. You'll get access to our online client portal where you can see real-time photo updates, track daily progress, select your finishes, and approve change orders right from your phone. Plus, you'll have a dedicated superintendent and direct access to me for any questions. We make sure you're never in the dark.",
+      avatar: '/logo-round.png',
+      message: "You'll get real-time photo and video uploads from your job site directly to your client dashboard, plus a direct line to your dedicated site superintendent.",
       time: "10:30 AM",
-      range: [0.47, 0.55] as [number, number]
+      range: [0.37, 0.44] as [number, number]
     },
     {
       sender: 'client',
-      name: 'You / Future Homeowner',
-      initials: 'Y',
-      message: "That sounds exactly like what we need. We'd love to set up a time to chat or meet up at your office!",
+      name: 'Karen Grimes',
+      avatar: '/assets/Karen Grimes.jpeg',
+      message: "Quality is our absolute priority. Do you have third-party inspections or structural warranties?",
       time: "10:31 AM",
-      range: [0.55, 0.63] as [number, number]
+      range: [0.44, 0.51] as [number, number]
     },
     {
       sender: 'business',
       name: 'Homefront Builders',
-      initials: 'HB',
-      message: "We'd love that too! Just drop your info in the contact form right below this chat, and I'll reach out to schedule a casual cup of coffee at our office to go over your ideas. Looking forward to it!",
+      avatar: '/logo-round.png',
+      message: "That makes two of us. Every Homefront build is verified by independent third-party inspectors and backed by our comprehensive 10-year structural warranty.",
       time: "10:32 AM",
-      range: [0.63, 0.71] as [number, number]
+      range: [0.51, 0.58] as [number, number]
+    },
+    {
+      sender: 'client',
+      name: 'Patricia Shipley',
+      avatar: '/assets/Patricia Shipley.webp',
+      message: "That sounds exactly like what we need. We'd love to chat. How do we get started?",
+      time: "10:33 AM",
+      range: [0.58, 0.65] as [number, number]
+    },
+    {
+      sender: 'business',
+      name: 'Homefront Builders',
+      avatar: '/logo-round.png',
+      message: "",
+      time: "",
+      range: [0.65, 0.70] as [number, number],
+      isTyping: true
+    },
+    {
+      sender: 'business',
+      name: 'Homefront Builders',
+      avatar: '/logo-round.png',
+      message: "We'd love to chat too! Just drop your info in the contact form right below this conversation, and I'll reach out to schedule a casual consultation to map out your ideas. Looking forward to it!",
+      time: "10:35 AM",
+      range: [0.70, 0.77] as [number, number]
     }
   ];
 
   return (
-    <section className="bg-white py-16 md:py-28 px-4 md:px-12">
+    <section className="bg-white py-16 md:py-28 px-4 md:px-12 overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
 
-        {/* Scroll-Driven "Why Us" SMS Chat Log Simulation at the Top */}
-        <div ref={containerRef} className="max-w-[800px] mx-auto mb-20 md:mb-28">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-12"
-          >
-            <span className="block w-10 h-[1px] bg-[#c9a96e] mx-auto mb-6" />
-            <span className="font-sans text-[10px] uppercase tracking-[0.35em] text-[#c9a96e] block mb-3 font-semibold">Why Us</span>
-            <h3 className="font-serif text-3xl md:text-4xl text-primary">The Homefront Builder Standard</h3>
-            <p className="font-sans text-xs text-primary-light/60 mt-3 max-w-md mx-auto">
-              Scroll down to preview a real consultation chat with our custom design team.
-            </p>
-          </motion.div>
+        {/* Scroll-Driven "Why Us" Header */}
+        <div className="text-center mb-6 relative z-20">
+          <h2 className="font-serif text-[4.5rem] md:text-[8rem] lg:text-[10rem] tracking-tight text-primary leading-none select-none font-bold">
+            Why us?
+          </h2>
+        </div>
 
-          {/* Elegant mock messaging/chat UI panel */}
-          <div className="bg-[#F8F7F4] border border-[#c9a96e]/15 rounded-2xl shadow-sm overflow-hidden backdrop-blur-sm">
-            {/* Chat Header */}
-            <div className="bg-[#1b2518] px-6 py-4 flex items-center gap-3 border-b border-[#c9a96e]/10">
-              <div className="w-10 h-10 rounded-full bg-[#c9a96e]/10 flex items-center justify-center border border-[#c9a96e]/30">
-                <span className="font-serif text-xs font-semibold text-[#c9a96e] tracking-wider">HB</span>
-              </div>
-              <div>
-                <h4 className="font-sans text-xs font-semibold text-white tracking-wide">Homefront Builders</h4>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="font-sans text-[9px] text-white/50 tracking-wider">Client Consultation (Online)</span>
-                </div>
-              </div>
+        {/* Crossed Slanted Banner Tickers */}
+        <div className="relative h-[160px] md:h-[220px] w-full my-8 z-10 select-none overflow-hidden">
+          {/* Ribbon 1: Black background, white text */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[3deg] bg-black py-3 md:py-4 w-[160%] shadow-lg border-y border-[#c9a96e]/10 overflow-hidden whitespace-nowrap">
+            <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase">
+              ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
             </div>
-
-            {/* Chat Thread Area */}
-            <div className="p-6 md:p-8 space-y-6">
-              {chatMessages.map((chat, idx) => (
-                <ChatBubble
-                  key={idx}
-                  sender={chat.sender}
-                  name={chat.name}
-                  initials={chat.initials}
-                  message={chat.message}
-                  time={chat.time}
-                  range={chat.range}
-                  scrollYProgress={scrollYProgress}
-                />
-              ))}
+            <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase pl-4">
+              ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
             </div>
           </div>
+
+          {/* Ribbon 2: Gold background, dark text */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[3deg] bg-[#c9a96e] py-3 md:py-4 w-[160%] shadow-lg border-y border-[#1b2518]/10 overflow-hidden whitespace-nowrap">
+            <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase">
+              EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
+            </div>
+            <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase pl-4">
+              EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll-Driven SMS Chat Log Simulation directly on white background */}
+        <div ref={containerRef} className="max-w-[1000px] mx-auto py-12 space-y-10 md:space-y-14 relative z-20">
+          {chatMessages.map((chat, idx) => (
+            <ChatBubble
+              key={idx}
+              sender={chat.sender}
+              name={chat.name}
+              avatar={chat.avatar}
+              message={chat.message}
+              time={chat.time}
+              range={chat.range}
+              scrollYProgress={scrollYProgress}
+              isTyping={chat.isTyping}
+            />
+          ))}
         </div>
 
         {/* Divider */}
@@ -376,6 +408,26 @@ export default function ContactSection() {
         </div>
 
       </div>
+
+      {/* Global CSS for Scrolling Marquee Loop */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes marqueeLeft {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marqueeRight {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0%); }
+        }
+        .animate-marquee-left {
+          display: inline-block;
+          animation: marqueeLeft 32s linear infinite;
+        }
+        .animate-marquee-right {
+          display: inline-block;
+          animation: marqueeRight 32s linear infinite;
+        }
+      `}} />
     </section>
   );
 }
