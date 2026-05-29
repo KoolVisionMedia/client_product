@@ -17,18 +17,18 @@ function ChatBubble({ sender, name, avatar, message, time, range, scrollYProgres
 
   // Map scrollYProgress range to motion values for scroll-linked progress
   const opacity = useTransform(scrollYProgress, [0, range[0], range[1], 1], [0, 0, 1, 1]);
-  const y = useTransform(scrollYProgress, [0, range[0], range[1], 1], [40, 40, 0, 0]);
-  const scale = useTransform(scrollYProgress, [0, range[0], range[1], 1], [0.95, 0.95, 1, 1]);
-  const blurVal = useTransform(scrollYProgress, [0, range[0], range[1], 1], [6, 6, 0, 0]);
+  const y = useTransform(scrollYProgress, [0, range[0], range[1], 1], [20, 20, 0, 0]);
+  const scale = useTransform(scrollYProgress, [0, range[0], range[1], 1], [0.97, 0.97, 1, 1]);
+  const blurVal = useTransform(scrollYProgress, [0, range[0], range[1], 1], [4, 4, 0, 0]);
   const filter = useMotionTemplate`blur(${blurVal}px)`;
 
   return (
     <motion.div
       style={{ opacity, y, scale, filter }}
-      className={`flex items-start gap-4 max-w-[850px] mx-auto ${isClient ? 'flex-row' : 'flex-row-reverse'}`}
+      className={`flex items-start gap-3 max-w-[850px] mx-auto ${isClient ? 'flex-row' : 'flex-row-reverse'}`}
     >
       {/* Avatar */}
-      <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-primary/10 shadow-sm bg-white flex items-center justify-center">
+      <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-primary/10 shadow-sm bg-white flex items-center justify-center">
         <img
           src={avatar}
           alt={name}
@@ -37,29 +37,29 @@ function ChatBubble({ sender, name, avatar, message, time, range, scrollYProgres
       </div>
 
       {/* Bubble Content */}
-      <div className="max-w-[70%] md:max-w-[60%] flex flex-col gap-1">
-        <span className={`font-sans text-[9px] tracking-[0.15em] font-semibold text-primary/45 uppercase ${
+      <div className="max-w-[75%] md:max-w-[65%] flex flex-col gap-0.5">
+        <span className={`font-sans text-[8px] tracking-[0.15em] font-semibold text-primary/45 uppercase ${
           isClient ? 'text-left' : 'text-right'
         }`}>
           {name}
         </span>
-        <div className={`p-4 md:p-5 rounded-3xl text-sm font-sans leading-relaxed shadow-sm ${
+        <div className={`py-3 px-4 rounded-2xl text-xs md:text-sm font-sans leading-relaxed shadow-sm ${
           isClient
             ? 'bg-[#F4F3F0] text-primary rounded-tl-none border border-primary/5'
             : 'bg-[#c9a96e] text-[#1b2518] rounded-tr-none border border-[#c9a96e]/20 font-medium'
         }`}>
           {isTyping ? (
-            <div className="flex gap-1.5 py-1.5 px-3 items-center justify-center">
-              <span className="w-2 h-2 rounded-full bg-[#1b2518]/60 animate-bounce [animation-delay:-0.3s]" />
-              <span className="w-2 h-2 rounded-full bg-[#1b2518]/60 animate-bounce [animation-delay:-0.15s]" />
-              <span className="w-2 h-2 rounded-full bg-[#1b2518]/60 animate-bounce" />
+            <div className="flex gap-1 py-1 px-2 items-center justify-center">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1b2518]/60 animate-bounce [animation-delay:-0.3s]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1b2518]/60 animate-bounce [animation-delay:-0.15s]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1b2518]/60 animate-bounce" />
             </div>
           ) : (
             message
           )}
         </div>
         {!isTyping && (
-          <span className={`font-sans text-[8px] text-primary/30 tracking-wider ${
+          <span className={`font-sans text-[7px] text-primary/30 tracking-wider ${
             isClient ? 'text-left' : 'text-right'
           }`}>
             {time}
@@ -67,6 +67,27 @@ function ChatBubble({ sender, name, avatar, message, time, range, scrollYProgres
         )}
       </div>
     </motion.div>
+  );
+}
+
+// Letter animation helper for Webflow style text animation
+function AnimatedLetters({ text, variants }: { text: string; variants: any }) {
+  return (
+    <span className="inline-flex flex-wrap leading-tight">
+      {text.split(" ").map((word, wordIdx) => (
+        <span key={wordIdx} className="inline-block whitespace-nowrap mr-2 md:mr-3 overflow-hidden py-1">
+          {Array.from(word).map((char, charIdx) => (
+            <motion.span
+              key={charIdx}
+              variants={variants}
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </span>
   );
 }
 
@@ -96,6 +117,7 @@ export default function ContactSection() {
     setSubmitted(true);
   };
 
+  // Compact ranges for closer scrolling flow
   const chatMessages = [
     {
       sender: 'client',
@@ -103,7 +125,7 @@ export default function ContactSection() {
       avatar: '/assets/Carissa Ockey.jpeg',
       message: "Hey! We have a lot in Sango, but we've never built a custom home before. Can you help us from start to finish?",
       time: "10:24 AM",
-      range: [0.03, 0.09] as [number, number]
+      range: [0.03, 0.07] as [number, number]
     },
     {
       sender: 'business',
@@ -111,7 +133,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "Absolutely! We handle everything: soil tests, zoning, custom architectural blueprints, interior design selections, and the entire construction process.",
       time: "10:25 AM",
-      range: [0.09, 0.16] as [number, number]
+      range: [0.07, 0.12] as [number, number]
     },
     {
       sender: 'client',
@@ -119,7 +141,7 @@ export default function ContactSection() {
       avatar: '/assets/Kelsey Michaud.jpg',
       message: "We've heard horror stories about builders going way over budget and disappearing. How do we keep control?",
       time: "10:26 AM",
-      range: [0.16, 0.23] as [number, number]
+      range: [0.12, 0.17] as [number, number]
     },
     {
       sender: 'business',
@@ -127,7 +149,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "In-house means in-control. We use an interactive online portal where you approve selection sheets and track daily logs, keeping you in charge of every dollar.",
       time: "10:28 AM",
-      range: [0.23, 0.30] as [number, number]
+      range: [0.17, 0.22] as [number, number]
     },
     {
       sender: 'client',
@@ -135,7 +157,7 @@ export default function ContactSection() {
       avatar: '/assets/Hannah Myers.jpeg',
       message: "How do we stay updated on the build when we're busy with work?",
       time: "10:29 AM",
-      range: [0.30, 0.37] as [number, number]
+      range: [0.22, 0.27] as [number, number]
     },
     {
       sender: 'business',
@@ -143,7 +165,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "You'll get real-time photo and video uploads from your job site directly to your client dashboard, plus a direct line to your dedicated site superintendent.",
       time: "10:30 AM",
-      range: [0.37, 0.44] as [number, number]
+      range: [0.27, 0.32] as [number, number]
     },
     {
       sender: 'client',
@@ -151,7 +173,7 @@ export default function ContactSection() {
       avatar: '/assets/Karen Grimes.jpeg',
       message: "Quality is our absolute priority. Do you have third-party inspections or structural warranties?",
       time: "10:31 AM",
-      range: [0.44, 0.51] as [number, number]
+      range: [0.32, 0.37] as [number, number]
     },
     {
       sender: 'business',
@@ -159,7 +181,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "That makes two of us. Every Homefront build is verified by independent third-party inspectors and backed by our comprehensive 10-year structural warranty.",
       time: "10:32 AM",
-      range: [0.51, 0.58] as [number, number]
+      range: [0.37, 0.42] as [number, number]
     },
     {
       sender: 'client',
@@ -167,7 +189,7 @@ export default function ContactSection() {
       avatar: '/assets/Patricia Shipley.webp',
       message: "That sounds exactly like what we need. We'd love to chat. How do we get started?",
       time: "10:33 AM",
-      range: [0.58, 0.65] as [number, number]
+      range: [0.42, 0.47] as [number, number]
     },
     {
       sender: 'business',
@@ -175,7 +197,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "",
       time: "",
-      range: [0.65, 0.70] as [number, number],
+      range: [0.47, 0.51] as [number, number],
       isTyping: true
     },
     {
@@ -184,9 +206,44 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "We'd love to chat too! Just drop your info in the contact form right below this conversation, and I'll reach out to schedule a casual consultation to map out your ideas. Looking forward to it!",
       time: "10:35 AM",
-      range: [0.70, 0.77] as [number, number]
+      range: [0.51, 0.56] as [number, number]
     }
   ];
+
+  // Variants for character-level Webflow slide-up text effect
+  const wordVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.015,
+      }
+    }
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: "1.1em" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.9,
+        ease: [0.16, 1, 0.3, 1], // Ease-out-expo curve
+      }
+    }
+  };
+
+  const textBlockVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 1.2,
+        delay: 0.4,
+        ease: [0.16, 1, 0.3, 1],
+      }
+    }
+  };
 
   return (
     <section className="bg-white py-16 md:py-28 px-4 md:px-12 overflow-hidden">
@@ -222,8 +279,8 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* Scroll-Driven SMS Chat Log Simulation directly on white background */}
-        <div ref={containerRef} className="max-w-[1000px] mx-auto py-12 space-y-10 md:space-y-14 relative z-20">
+        {/* Scroll-Driven SMS Chat Log Simulation (Tighter spacing: space-y-4 md:space-y-5) */}
+        <div ref={containerRef} className="max-w-[1000px] mx-auto py-10 space-y-4 md:space-y-5 relative z-20">
           {chatMessages.map((chat, idx) => (
             <ChatBubble
               key={idx}
@@ -240,26 +297,32 @@ export default function ContactSection() {
         </div>
 
         {/* Divider */}
-        <div className="w-full h-[1px] bg-[#c9a96e]/20 my-16 md:my-20" />
+        <div className="w-full h-[1px] bg-[#c9a96e]/20 my-16 md:my-24" />
 
         {/* Left & Right Form Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20">
 
-          {/* Left — Info Panel */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-2 flex flex-col gap-8 md:gap-10"
-          >
-            <div>
+          {/* Left — Info Panel with letter-by-letter slide-up animation */}
+          <div className="lg:col-span-2 flex flex-col gap-8 md:gap-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={wordVariants}
+              className="flex flex-col items-start"
+            >
               <span className="block w-10 h-[1px] bg-[#c9a96e] mb-6" />
-              <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">We'd Love to Hear From You</h2>
-              <p className="font-sans text-sm text-primary-light leading-relaxed">
-                Whether you're ready to start building or simply exploring your options, our team is here to guide you through every step.
-              </p>
-            </div>
+              <h2 className="font-serif text-4xl md:text-5xl text-primary mb-6 flex flex-col">
+                <AnimatedLetters text="Tell us more about" variants={letterVariants} />
+                <AnimatedLetters text="your project" variants={letterVariants} />
+              </h2>
+              <motion.p
+                variants={textBlockVariants}
+                className="font-sans text-sm text-primary-light leading-relaxed"
+              >
+                If you are looking for more information about any materials or special projects, we are more than glad to chat with you.
+              </motion.p>
+            </motion.div>
 
             <div className="space-y-6">
               {/* Address */}
@@ -322,7 +385,7 @@ export default function ContactSection() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right — Form */}
           <motion.div
@@ -346,13 +409,13 @@ export default function ContactSection() {
                   <div className="flex flex-col gap-2">
                     <label htmlFor="firstName" className="font-sans text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">First Name</label>
                     <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required
-                      className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
+                       className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
                       placeholder="John" />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="lastName" className="font-sans text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">Last Name</label>
                     <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required
-                      className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
+                       className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
                       placeholder="Doe" />
                   </div>
                 </div>
@@ -361,13 +424,13 @@ export default function ContactSection() {
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-sans text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">Email</label>
                     <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
-                      className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
+                       className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
                       placeholder="john@example.com" />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="phone" className="font-sans text-[10px] uppercase tracking-[0.2em] text-primary font-semibold">Phone</label>
                     <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange}
-                      className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
+                       className="w-full bg-transparent border-b border-primary/20 py-3 font-sans text-sm text-primary outline-none focus:border-[#c9a96e] transition-colors placeholder:text-primary-light/40"
                       placeholder="(555) 000-0000" />
                   </div>
                 </div>
