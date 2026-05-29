@@ -141,6 +141,54 @@ export default function Warranties() {
         </div>
       </section>
 
+      {/* Coverage Diagram Section */}
+      <section className="bg-white py-12 md:py-20 px-6 md:px-12 border-t border-gray-100">
+        <div className="max-w-[1000px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-center text-center mb-12"
+          >
+            <span className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Protection Plan</span>
+            <h2 className="font-serif text-3xl md:text-5xl text-primary mb-6">Comprehensive Coverage</h2>
+            <p className="font-sans text-sm md:text-base text-primary-light max-w-2xl leading-relaxed">
+              Our 10-year Quality Builders Warranty protects the most critical components of your custom home. From lot grading and drainage in the first year to load-bearing structural elements throughout the decade, explore the detailed coverage map below to see exactly what is included.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full bg-[#F4F3F0] rounded-3xl p-4 md:p-8 shadow-sm flex flex-col items-center"
+          >
+            <a href="https://www.homefrontbuilderstn.com/warranty-graphic" target="_blank" rel="noopener noreferrer" className="block w-full cursor-pointer hover:opacity-95 transition-opacity">
+              <img 
+                src="/assets/qbw_info.jpg" 
+                alt="QBW Premier Protection Plan Coverage Map" 
+                className="w-full h-auto object-contain rounded-xl shadow-md hover:shadow-xl transition-shadow"
+              />
+            </a>
+            <div className="mt-8">
+              <a
+                href="https://www.homefrontbuilderstn.com/warranty-graphic"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.25em] hover:bg-[#c9a96e] transition-colors duration-300 rounded-sm"
+              >
+                View Full Coverage Details
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Warranty Actions Grid */}
       <section className="bg-[#F4F3F0] py-24 md:py-28 px-6 md:px-12">
         <div className="max-w-[1200px] mx-auto">
