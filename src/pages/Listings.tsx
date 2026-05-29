@@ -33,7 +33,7 @@ const listings = [
     image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 81}, (_, i) => `/assets/active_listings/24-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/QXDeAi2wibY?feature=share',
-    status: 'Available',
+    status: 'Sold',
   },
   {
     name: '193 Solitude Way',
@@ -56,7 +56,7 @@ const listings = [
     images: Array.from({length: 89}, (_, i) => `/assets/active_listings/413-sheas-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`)
       .filter(img => !img.endsWith('Media049.jpg') && !img.endsWith('Media074.jpg')),
     video: 'https://youtube.com/shorts/ik8RLnMr9Y8',
-    status: 'Available',
+    status: 'Sold',
   },
   {
     name: '1215 Hill Ln',
@@ -77,7 +77,7 @@ const listings = [
     image: '/assets/active_listings/16-gholson-rd/1-web-or-mls-1177-gholson-rd.jpg',
     images: Array.from({length: 74}, (_, i) => `/assets/active_listings/16-gholson-rd/${i + 1}-web-or-mls-1177-gholson-rd.jpg`)
       .filter(img => !img.endsWith('70-web-or-mls-1177-gholson-rd.jpg') && !img.endsWith('73-web-or-mls-1177-gholson-rd.jpg')),
-    status: 'Available',
+    status: 'Sold',
   },
   {
     name: '183 Solitude Dr',
@@ -162,7 +162,7 @@ const listings = [
     description: "This elegant custom home at 482 Ridge Top Court showcases exceptional design and superior construction. With an inviting open floor plan, designer kitchen, custom millwork, and a stunning primary suite, every space has been crafted to the highest standards. The beautifully landscaped grounds and outdoor entertaining areas make this property truly special.",
     image: '/assets/active_listings/482-ridge-top-ct/1-web-or-mls-482-ridge-top-ct.jpg',
     images: Array.from({length: 35}, (_, i) => `/assets/active_listings/482-ridge-top-ct/${i + 1}-web-or-mls-482-ridge-top-ct.jpg`),
-    status: 'Available',
+    status: 'Sold',
   },
 ];
 
