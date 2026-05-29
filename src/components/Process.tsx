@@ -113,35 +113,36 @@ export default function Process() {
             {processSteps.map((step, index) => {
               const isActive = activeStep === index;
               return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  onClick={() => setActiveStep(index)}
-                  onMouseEnter={() => setActiveStep(index)}
-                  className={`snap-center shrink-0 cursor-pointer rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden group
-                    w-[80px] md:w-[100px] lg:w-[120px] h-[110px] md:h-[135px] lg:h-[160px]
-                    ${isActive 
-                      ? 'bg-primary text-white border-primary shadow-xl scale-[1.12] z-10' 
-                      : 'bg-surface/90 text-accent border-gray-100 hover:bg-white hover:shadow-md hover:scale-[1.05] hover:-translate-y-1 z-0'
-                    }`}
-                >
-                  {isActive && (
-                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-accent to-accent-dark"></div>
-                  )}
-                  <span className={`font-serif leading-none select-none drop-shadow-sm transition-all duration-300
-                    ${isActive ? 'text-[60px] md:text-[80px] lg:text-[100px] text-white' : 'text-[50px] md:text-[60px] lg:text-[80px] text-accent'}
-                  `}>
-                    {step.letter}
-                  </span>
-                  <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-full transition-colors
-                    ${isActive ? 'bg-white/10 text-white/90' : 'bg-primary/5 text-primary/60 opacity-0 group-hover:opacity-100'}
-                  `}>
-                    0{index + 1}
-                  </span>
-                </motion.div>
+                <Link to="/process" key={index} className="shrink-0 snap-center outline-none">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    onClick={() => setActiveStep(index)}
+                    onMouseEnter={() => setActiveStep(index)}
+                    className={`cursor-pointer rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden group
+                      w-[80px] md:w-[100px] lg:w-[120px] h-[110px] md:h-[135px] lg:h-[160px]
+                      ${isActive 
+                        ? 'bg-primary text-white border-primary shadow-xl scale-[1.12] z-10' 
+                        : 'bg-surface/90 text-accent border-gray-100 hover:bg-white hover:shadow-md hover:scale-[1.05] hover:-translate-y-1 z-0'
+                      }`}
+                  >
+                    {isActive && (
+                      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-accent to-accent-dark"></div>
+                    )}
+                    <span className={`font-serif leading-none select-none drop-shadow-sm transition-all duration-300
+                      ${isActive ? 'text-[60px] md:text-[80px] lg:text-[100px] text-white' : 'text-[50px] md:text-[60px] lg:text-[80px] text-accent'}
+                    `}>
+                      {step.letter}
+                    </span>
+                    <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-full transition-colors
+                      ${isActive ? 'bg-white/10 text-white/90' : 'bg-primary/5 text-primary/60 opacity-0 group-hover:opacity-100'}
+                    `}>
+                      0{index + 1}
+                    </span>
+                  </motion.div>
+                </Link>
               );
             })}
           </div>
