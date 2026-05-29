@@ -39,7 +39,7 @@ const partners = [
   {
     name: 'Patricia Shipley',
     title: 'Director of Sales, Homefront Builders',
-    image: '/assets/team/Patricia Shipley.webp',
+    image: '',
     bio: `Patricia Shipley has been a realtor for 9 years and she has always dedicated her and her team to provide exceptional service. She works with land, new construction and existing homes in Clarksville and all Mid TN. She is the Director of Sales and her role is dedicated to create an exceptional client experience from first contact through project completion. She oversees and develops high-performing sales teams, implements data-driven processes, and cultivates strong relationships with clients, partners, and other Realtors in the Mid TN area. Using local trends and customer needs, she aligns sales strategies with the company's mission to deliver quality craftsmanship and personalize homebuilding solutions. Her role combines leadership, operational insight, and a commitment to excellence to support long-term business growth.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
     video: 'https://www.youtube.com/embed/YUHia0wL22M',
@@ -47,7 +47,7 @@ const partners = [
   {
     name: 'Karen Grimes',
     title: 'Licensed Real Estate Broker',
-    image: '/assets/team/Karen Grimes.jpeg',
+    image: '',
     bio: `Karen Grimes is a licensed real estate Broker who has been actively practicing Real Estate since 2012, bringing over a decade of experience to the industry. With a strong foundation in contract strategy, negotiation, and transaction management, she is known for delivering a high level of professionalism and precision in every deal.\n\nSpecializing in luxury new construction, Karen has developed a niche working with discerning buyers, builders, and investors who expect both elevated service and expert guidance. She understands the complexities of new construction transactions—from builder contracts and customization phases to timelines and final delivery—allowing her clients to move forward with clarity and confidence.\n\nKaren's approach is strategic and client-focused. She prioritizes protecting her clients' interests while creating a seamless, efficient experience from contract to closing. Her ability to anticipate challenges, communicate clearly, and execute at a high level has made her a trusted resource for those navigating competitive and high-value real estate markets.\n\nWhether representing buyers, sellers, or builders, Karen is committed to delivering results while building lasting relationships grounded in trust, discretion, and performance.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
     video: '',
@@ -104,14 +104,25 @@ function PartnerCard({ partner, index, onClick }: { partner: typeof partners[0];
       onMouseLeave={() => setExpanded(false)}
       onClick={onClick}
     >
-      {/* Background Image */}
-      <motion.img
-        src={partner.image}
-        alt={partner.name}
-        className="absolute inset-0 w-full h-full object-cover object-top"
-        animate={{ scale: expanded ? 1.05 : 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      />
+      {/* Background Image or Initials Fallback */}
+      {partner.image ? (
+        <motion.img
+          src={partner.image}
+          alt={partner.name}
+          className="absolute inset-0 w-full h-full object-cover object-top"
+          animate={{ scale: expanded ? 1.05 : 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        />
+      ) : (
+        <div className="absolute inset-0 bg-[#1b2518] flex flex-col items-center justify-center border border-gray-100">
+          <div className="w-24 h-24 rounded-full bg-accent/10 flex items-center justify-center border border-[#c9a96e]/20 mb-2">
+            <span className="font-serif text-3xl text-[#c9a96e] font-bold tracking-widest uppercase">
+              {partner.name.split(' ').map(n => n[0]).join('')}
+            </span>
+          </div>
+          <span className="font-sans text-[10px] uppercase tracking-widest text-[#c9a96e]/60">Click to View Profile</span>
+        </div>
+      )}
 
       {/* Gradient */}
       <motion.div
