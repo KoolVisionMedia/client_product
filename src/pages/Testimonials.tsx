@@ -78,13 +78,13 @@ const facebookReviews = [
   },
   {
     initials: 'K.G.',
-    image: '/assets/Karen Grimes.jpeg',
+    image: null,
     date: 'Jul 16, 2025',
     text: '"I\'ve worked with this builder many times and my clients have raved about the professionalism and focus on customer satisfaction and appreciation. They also love that the options are far and above most if not all in the area."',
   },
   {
     initials: 'P.S.',
-    image: '/assets/Patricia Shipley.webp',
+    image: null,
     date: 'Jul 16, 2025',
     text: '"I have worked with this builder for several years, and the professionalism and communication is unmatched. The homes are beautiful and well built, this builder takes the time with each home because they do a limited number of homes each year. SO when it comes to customization, hands down this is the team you want to work with."',
   },

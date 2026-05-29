@@ -39,7 +39,7 @@ const partners = [
   {
     name: 'Patricia Shipley',
     title: 'Director of Sales, Homefront Builders',
-    image: '',
+    image: '/assets/team/Patricia Shipley.webp',
     bio: `Patricia Shipley has been a realtor for 9 years and she has always dedicated her and her team to provide exceptional service. She works with land, new construction and existing homes in Clarksville and all Mid TN. She is the Director of Sales and her role is dedicated to create an exceptional client experience from first contact through project completion. She oversees and develops high-performing sales teams, implements data-driven processes, and cultivates strong relationships with clients, partners, and other Realtors in the Mid TN area. Using local trends and customer needs, she aligns sales strategies with the company's mission to deliver quality craftsmanship and personalize homebuilding solutions. Her role combines leadership, operational insight, and a commitment to excellence to support long-term business growth.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
     video: 'https://www.youtube.com/embed/YUHia0wL22M',
@@ -47,7 +47,7 @@ const partners = [
   {
     name: 'Karen Grimes',
     title: 'Licensed Real Estate Broker',
-    image: '',
+    image: '/assets/team/Karen Grimes.jpeg',
     bio: `Karen Grimes is a licensed real estate Broker who has been actively practicing Real Estate since 2012, bringing over a decade of experience to the industry. With a strong foundation in contract strategy, negotiation, and transaction management, she is known for delivering a high level of professionalism and precision in every deal.\n\nSpecializing in luxury new construction, Karen has developed a niche working with discerning buyers, builders, and investors who expect both elevated service and expert guidance. She understands the complexities of new construction transactions—from builder contracts and customization phases to timelines and final delivery—allowing her clients to move forward with clarity and confidence.\n\nKaren's approach is strategic and client-focused. She prioritizes protecting her clients' interests while creating a seamless, efficient experience from contract to closing. Her ability to anticipate challenges, communicate clearly, and execute at a high level has made her a trusted resource for those navigating competitive and high-value real estate markets.\n\nWhether representing buyers, sellers, or builders, Karen is committed to delivering results while building lasting relationships grounded in trust, discretion, and performance.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
     video: '',
