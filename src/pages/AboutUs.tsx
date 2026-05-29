@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactSection from '../components/ContactSection';
 import { X, Send, Video, Phone, Mail, Award } from 'lucide-react';
@@ -89,7 +89,7 @@ function PlayIcon() {
 }
 
 /* ── Partner Card ── */
-function PartnerCard({ partner, index, onClick }: { partner: typeof partners[0]; index: number; onClick: () => void }) {
+function PartnerCard({ partner, index, onClick }: { key?: any; partner: typeof partners[0]; index: number; onClick: () => void }) {
   const [expanded, setExpanded] = useState(false);
 
   return (

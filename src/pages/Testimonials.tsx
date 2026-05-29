@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 
 declare global {
@@ -115,7 +115,7 @@ const instagramPosts = [
 // ── Sticky Review Card (Webflow-style stacked scroll) ─────────────────
 type FeaturedReview = typeof featuredReviews[0];
 
-const ReviewCard = ({ review, index, total }: { review: FeaturedReview; index: number; total: number }) => {
+const ReviewCard = ({ review, index, total }: { key?: any; review: FeaturedReview; index: number; total: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: cardRef,

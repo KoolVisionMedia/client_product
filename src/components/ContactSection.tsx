@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate } from 'motion/react';
 
 interface ChatBubbleProps {
+  key?: any;
   sender: string;
   name: string;
   avatar: string;

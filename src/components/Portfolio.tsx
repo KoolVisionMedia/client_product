@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 
 const floorPlans = [
@@ -34,7 +34,7 @@ const floorPlans = [
   }
 ];
 
-const FloorPlanCard = ({ plan, index, total }: { plan: any, index: number, total: number }) => {
+const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: number, total: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   
   // Track this card's scroll to scale it down slightly when the next card covers it
