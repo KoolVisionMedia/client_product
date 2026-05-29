@@ -91,7 +91,7 @@ function AnimatedLetters({ text, variants }: { text: string; variants: any }) {
   );
 }
 
-export default function ContactSection() {
+export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boolean }) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -249,55 +249,66 @@ export default function ContactSection() {
     <section className="bg-white py-16 md:py-28 px-4 md:px-12 overflow-hidden">
       <div className="max-w-[1200px] mx-auto">
 
-        {/* Scroll-Driven "Why Us" Header */}
-        <div className="text-center mb-6 relative z-20">
-          <h2 className="font-serif text-[4.5rem] md:text-[8rem] lg:text-[10rem] tracking-tight text-primary leading-none select-none font-bold">
-            Why us?
-          </h2>
-        </div>
-
-        {/* Crossed Slanted Banner Tickers */}
-        <div className="relative h-[160px] md:h-[220px] w-full my-8 z-10 select-none overflow-hidden">
-          {/* Ribbon 1: Black background, white text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[3deg] bg-black py-3 md:py-4 w-[160%] shadow-lg border-y border-[#c9a96e]/10 overflow-hidden whitespace-nowrap">
-            <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase">
-              ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
+        {showWhyUs && (
+          <>
+            {/* Scroll-Driven "Why Us" Header with Green Round Logo to the right */}
+            <div className="flex items-center justify-center gap-4 md:gap-8 mb-6 relative z-20">
+              <h2 className="font-serif text-[4.5rem] md:text-[8rem] lg:text-[10rem] tracking-tight text-primary leading-none select-none font-bold">
+                Why us?
+              </h2>
+              <div className="w-14 h-14 md:w-20 md:h-20 lg:w-28 lg:h-28 rounded-full overflow-hidden shrink-0 border border-[#c9a96e]/15 shadow-md bg-white flex items-center justify-center">
+                <img
+                  src="/logo-round.png"
+                  alt="Homefront Builders Logo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
-            <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase pl-4">
-              ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
-            </div>
-          </div>
 
-          {/* Ribbon 2: Gold background, dark text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[3deg] bg-[#c9a96e] py-3 md:py-4 w-[160%] shadow-lg border-y border-[#1b2518]/10 overflow-hidden whitespace-nowrap">
-            <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase">
-              EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
-            </div>
-            <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase pl-4">
-              EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
-            </div>
-          </div>
-        </div>
+            {/* Crossed Slanted Banner Tickers */}
+            <div className="relative h-[160px] md:h-[220px] w-full my-8 z-10 select-none overflow-hidden">
+              {/* Ribbon 1: Black background, white text */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[3deg] bg-black py-3 md:py-4 w-[160%] shadow-lg border-y border-[#c9a96e]/10 overflow-hidden whitespace-nowrap">
+                <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase">
+                  ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
+                </div>
+                <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase pl-4">
+                  ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
+                </div>
+              </div>
 
-        {/* Scroll-Driven SMS Chat Log Simulation (Tighter spacing: space-y-4 md:space-y-5) */}
-        <div ref={containerRef} className="max-w-[1000px] mx-auto py-10 space-y-4 md:space-y-5 relative z-20">
-          {chatMessages.map((chat, idx) => (
-            <ChatBubble
-              key={idx}
-              sender={chat.sender}
-              name={chat.name}
-              avatar={chat.avatar}
-              message={chat.message}
-              time={chat.time}
-              range={chat.range}
-              scrollYProgress={scrollYProgress}
-              isTyping={chat.isTyping}
-            />
-          ))}
-        </div>
+              {/* Ribbon 2: Gold background, dark text */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[3deg] bg-[#c9a96e] py-3 md:py-4 w-[160%] shadow-lg border-y border-[#1b2518]/10 overflow-hidden whitespace-nowrap">
+                <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase">
+                  EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
+                </div>
+                <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase pl-4">
+                  EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
+                </div>
+              </div>
+            </div>
 
-        {/* Divider */}
-        <div className="w-full h-[1px] bg-[#c9a96e]/20 my-16 md:my-24" />
+            {/* Scroll-Driven SMS Chat Log Simulation (Tighter spacing) */}
+            <div ref={containerRef} className="max-w-[1000px] mx-auto py-10 space-y-4 md:space-y-5 relative z-20">
+              {chatMessages.map((chat, idx) => (
+                <ChatBubble
+                  key={idx}
+                  sender={chat.sender}
+                  name={chat.name}
+                  avatar={chat.avatar}
+                  message={chat.message}
+                  time={chat.time}
+                  range={chat.range}
+                  scrollYProgress={scrollYProgress}
+                  isTyping={chat.isTyping}
+                />
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="w-full h-[1px] bg-[#c9a96e]/20 my-16 md:my-24" />
+          </>
+        )}
 
         {/* Left & Right Form Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20">

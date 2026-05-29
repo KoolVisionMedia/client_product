@@ -509,7 +509,7 @@ export default function AboutUs() {
       </AnimatePresence>
 
       {/* ─── Contact Us Section ─── */}
-      <ContactSection />
+      <ContactSection showWhyUs={false} />
 
       {/* Custom scrollbar styles */}
       <style>{`
