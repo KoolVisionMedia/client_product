@@ -164,6 +164,21 @@ export default function Process() {
               }}
               className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative overflow-hidden flex flex-col md:flex-row gap-8 items-center md:items-start"
             >
+              {/* Green round logo in the upper right corner */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8, rotate: 15 },
+                  visible: { opacity: 1, scale: 1, rotate: 0, transition: { type: "spring", stiffness: 300, damping: 22, delay: 0.1 } }
+                }}
+                className="absolute top-6 right-6 md:top-8 md:right-8 w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border border-[#c9a96e]/15 shadow-sm bg-white shrink-0 z-20 pointer-events-none"
+              >
+                <img
+                  src="/logo-round.png"
+                  alt="Homefront Builders Logo"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+
               {/* Animated background abstract shapes */}
               <motion.div 
                 variants={{
