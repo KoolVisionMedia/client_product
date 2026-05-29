@@ -117,7 +117,7 @@ export default function ContactSection() {
     setSubmitted(true);
   };
 
-  // Compact ranges for closer scrolling flow
+  // Shifted ranges to start appearing later in the scroll
   const chatMessages = [
     {
       sender: 'client',
@@ -125,7 +125,7 @@ export default function ContactSection() {
       avatar: '/assets/Carissa Ockey.jpeg',
       message: "Hey! We have a lot in Sango, but we've never built a custom home before. Can you help us from start to finish?",
       time: "10:24 AM",
-      range: [0.03, 0.07] as [number, number]
+      range: [0.18, 0.23] as [number, number]
     },
     {
       sender: 'business',
@@ -133,7 +133,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "Absolutely! We handle everything: soil tests, zoning, custom architectural blueprints, interior design selections, and the entire construction process.",
       time: "10:25 AM",
-      range: [0.07, 0.12] as [number, number]
+      range: [0.23, 0.29] as [number, number]
     },
     {
       sender: 'client',
@@ -141,7 +141,7 @@ export default function ContactSection() {
       avatar: '/assets/Kelsey Michaud.jpg',
       message: "We've heard horror stories about builders going way over budget and disappearing. How do we keep control?",
       time: "10:26 AM",
-      range: [0.12, 0.17] as [number, number]
+      range: [0.29, 0.35] as [number, number]
     },
     {
       sender: 'business',
@@ -149,7 +149,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "In-house means in-control. We use an interactive online portal where you approve selection sheets and track daily logs, keeping you in charge of every dollar.",
       time: "10:28 AM",
-      range: [0.17, 0.22] as [number, number]
+      range: [0.35, 0.41] as [number, number]
     },
     {
       sender: 'client',
@@ -157,7 +157,7 @@ export default function ContactSection() {
       avatar: '/assets/Hannah Myers.jpeg',
       message: "How do we stay updated on the build when we're busy with work?",
       time: "10:29 AM",
-      range: [0.22, 0.27] as [number, number]
+      range: [0.41, 0.47] as [number, number]
     },
     {
       sender: 'business',
@@ -165,7 +165,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "You'll get real-time photo and video uploads from your job site directly to your client dashboard, plus a direct line to your dedicated site superintendent.",
       time: "10:30 AM",
-      range: [0.27, 0.32] as [number, number]
+      range: [0.47, 0.53] as [number, number]
     },
     {
       sender: 'client',
@@ -173,7 +173,7 @@ export default function ContactSection() {
       avatar: '/assets/Karen Grimes.jpeg',
       message: "Quality is our absolute priority. Do you have third-party inspections or structural warranties?",
       time: "10:31 AM",
-      range: [0.32, 0.37] as [number, number]
+      range: [0.53, 0.59] as [number, number]
     },
     {
       sender: 'business',
@@ -181,7 +181,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "That makes two of us. Every Homefront build is verified by independent third-party inspectors and backed by our comprehensive 10-year structural warranty.",
       time: "10:32 AM",
-      range: [0.37, 0.42] as [number, number]
+      range: [0.59, 0.65] as [number, number]
     },
     {
       sender: 'client',
@@ -189,7 +189,7 @@ export default function ContactSection() {
       avatar: '/assets/Patricia Shipley.webp',
       message: "That sounds exactly like what we need. We'd love to chat. How do we get started?",
       time: "10:33 AM",
-      range: [0.42, 0.47] as [number, number]
+      range: [0.65, 0.71] as [number, number]
     },
     {
       sender: 'business',
@@ -197,7 +197,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "",
       time: "",
-      range: [0.47, 0.51] as [number, number],
+      range: [0.71, 0.75] as [number, number],
       isTyping: true
     },
     {
@@ -206,7 +206,7 @@ export default function ContactSection() {
       avatar: '/logo-round.png',
       message: "We'd love to chat too! Just drop your info in the contact form right below this conversation, and I'll reach out to schedule a casual consultation to map out your ideas. Looking forward to it!",
       time: "10:35 AM",
-      range: [0.51, 0.56] as [number, number]
+      range: [0.75, 0.81] as [number, number]
     }
   ];
 
