@@ -165,7 +165,7 @@ export default function Warranties() {
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="w-full bg-[#F4F3F0] rounded-3xl p-4 md:p-8 shadow-sm flex flex-col items-center"
           >
-            <a href="https://www.homefrontbuilderstn.com/warranty-graphic" target="_blank" rel="noopener noreferrer" className="block w-full cursor-pointer hover:opacity-95 transition-opacity">
+            <a href="https://simplebooklet.com/qbw_warrantybook1122singlec#page=1" target="_blank" rel="noopener noreferrer" className="block w-full cursor-pointer hover:opacity-95 transition-opacity">
               <img 
                 src="/assets/qbw_info.jpg" 
                 alt="QBW Premier Protection Plan Coverage Map" 
@@ -174,12 +174,12 @@ export default function Warranties() {
             </a>
             <div className="mt-8">
               <a
-                href="https://www.homefrontbuilderstn.com/warranty-graphic"
+                href="https://simplebooklet.com/qbw_warrantybook1122singlec#page=1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.25em] hover:bg-[#c9a96e] transition-colors duration-300 rounded-sm"
               >
-                View Full Coverage Details
+                View Digital Warranty Book
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
                 </svg>
