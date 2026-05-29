@@ -170,7 +170,7 @@ export default function Process() {
                   hidden: { opacity: 0, scale: 0.8, rotate: 15 },
                   visible: { opacity: 1, scale: 1, rotate: 0, transition: { type: "spring", stiffness: 300, damping: 22, delay: 0.1 } }
                 }}
-                className="absolute -top-6 -right-6 md:-top-8 md:-right-8 w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] bg-white shrink-0 z-30 pointer-events-none"
+                className="absolute -top-12 -right-12 md:-top-16 md:-right-16 w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] bg-white shrink-0 z-30 pointer-events-none"
               >
                 <img
                   src="/logo-round.png"
