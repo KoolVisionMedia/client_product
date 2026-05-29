@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ShieldCheck, Heart, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function CustomCare() {
   return (
@@ -95,9 +96,9 @@ export default function CustomCare() {
               transition={{ duration: 1, delay: 0.5 }}
               className="pt-8"
             >
-              <button className="bg-primary hover:bg-primary-dark text-white px-10 py-4 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300">
-                Explore Custom Care
-              </button>
+              <Link to="/warranties" className="inline-block bg-primary hover:bg-primary-dark text-white px-10 py-4 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300">
+                Explore Warranties
+              </Link>
             </motion.div>
           </div>
         </div>
