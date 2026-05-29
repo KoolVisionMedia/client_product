@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { Link } from 'react-router-dom';
 
 const floorPlans = [
   {
@@ -82,15 +83,24 @@ const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: nu
             {plan.plans.map((p: string, i: number) => (
               <div 
                 key={i} 
-                className="flex-1 min-w-0 min-h-0 bg-white rounded-[20px] shadow-sm border border-gray-100 flex items-center justify-center p-4 hover:shadow-lg transition-shadow duration-500"
+                className="flex-1 min-w-0 min-h-0 bg-white rounded-[20px] shadow-sm border border-gray-100 flex items-center justify-center p-4 hover:shadow-lg transition-shadow duration-500 overflow-hidden group/plan"
               >
                 <img 
                   src={p} 
                   alt={`${plan.title} Floor Plan ${i + 1}`} 
-                  className="max-w-full max-h-full w-full h-full object-contain"
+                  className="max-w-full max-h-full w-full h-full object-contain transition-transform duration-500 group-hover/plan:scale-110"
                 />
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 shrink-0 flex justify-center">
+            <Link 
+              to="/listings" 
+              className="px-8 py-3 bg-primary text-white font-sans text-xs tracking-widest uppercase rounded-full hover:bg-[#c9a96e] transition-colors duration-300 text-center w-full max-w-sm"
+            >
+              View active listings with this floor plan
+            </Link>
           </div>
         </div>
       </motion.div>
