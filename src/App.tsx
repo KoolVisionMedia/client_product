@@ -9,6 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import ChatWidget from './components/ChatWidget';
 
 // Pages
 import Home from './pages/Home';
@@ -44,6 +45,7 @@ export default function App() {
       <Footer />
       <Analytics />
       <SpeedInsights />
+      <ChatWidget />
     </div>
   );
 }

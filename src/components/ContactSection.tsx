@@ -127,7 +127,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
+          access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
           subject: `New Lead: ${formData.subject} - ${formData.firstName} ${formData.lastName}`,
           from_name: "Homefront Builders Website",
           ...formData,
