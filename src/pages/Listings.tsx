@@ -204,8 +204,7 @@ export default function Listings() {
       {/* Gallery Section */}
       <section className="py-16 md:py-32 px-4 md:px-12">
         <div className="max-w-[1400px] mx-auto">
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
             {listings.map((listing, i) => (
               <motion.div
                 key={listing.name}
@@ -219,8 +218,8 @@ export default function Listings() {
                   setCurrentImageIndex(0);
                 }}
               >
-                {/* Image Container */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl mb-5">
+                {/* Image Container with Info Overlay */}
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-lg">
                   <motion.img
                     src={listing.image}
                     alt={listing.name}
@@ -228,33 +227,38 @@ export default function Listings() {
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   />
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold backdrop-blur-md ${
+                  
+                  {/* Status Badge */}
+                  <div className="absolute top-4 left-4 flex gap-2 z-20">
+                    <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold backdrop-blur-md shadow-sm ${
                       listing.status === 'Available' ? 'bg-[#c9a96e] text-white' : 
-                      listing.status === 'Pending' ? 'bg-black/60 text-white' : 
-                      listing.status === 'Coming Soon' ? 'bg-black text-white' :
+                      listing.status === 'Pending' ? 'bg-black/80 text-white' : 
+                      listing.status === 'Coming Soon' ? 'bg-black/80 text-white' :
                       listing.status === 'Sold' ? 'bg-red-600 text-white' :
                       'bg-white/90 text-primary'
                     }`}>
                       {listing.status}
                     </span>
                   </div>
-                </div>
 
-                {/* Info */}
-                <div className="flex flex-col gap-1.5 md:gap-2">
-                  <div className="flex justify-between items-start">
-                    <h3 className="font-serif text-xl md:text-2xl text-primary group-hover:text-[#c9a96e] transition-colors">{listing.name}</h3>
-                    <span className="font-serif text-lg md:text-xl text-[#c9a96e]">{listing.price}</span>
-                  </div>
-                  <p className="font-sans text-[10px] md:text-xs text-primary-light/60 uppercase tracking-widest">{listing.location}</p>
-                  <p className="font-sans text-[10px] md:text-xs text-primary-light italic">{listing.stats}</p>
-                  
-                  <div className="mt-3 pt-4 border-t border-primary/5 flex justify-between items-center opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="text-[10px] font-sans tracking-widest uppercase text-primary font-bold">View Full Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#c9a96e] transform lg:translate-x-[-10px] lg:group-hover:translate-x-0 transition-transform">
-                      <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                    </svg>
+                  {/* Gradient Overlay for Text Readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none z-10" />
+
+                  {/* Info Overlay at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-1.5 z-20">
+                    <div className="flex justify-between items-end gap-2">
+                      <h3 className="font-serif text-xl md:text-2xl text-white group-hover:text-[#c9a96e] transition-colors">{listing.name}</h3>
+                      <span className="font-serif text-lg text-[#c9a96e] whitespace-nowrap">{listing.price}</span>
+                    </div>
+                    <p className="font-sans text-[9px] md:text-[10px] text-white/70 uppercase tracking-widest">{listing.location}</p>
+                    <p className="font-sans text-[10px] md:text-xs text-white/90 italic">{listing.stats}</p>
+                    
+                    <div className="mt-3 pt-3 border-t border-white/20 flex justify-between items-center opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500">
+                      <span className="text-[10px] font-sans tracking-widest uppercase text-white font-bold">View Full Details</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#c9a96e] transform lg:translate-x-[-10px] lg:group-hover:translate-x-0 transition-transform">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </motion.div>
