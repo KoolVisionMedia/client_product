@@ -86,7 +86,7 @@ export default function ChatWidget() {
                 <img src="/logo-round.png" alt="Homefront Builders Logo" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h3 className="text-white font-serif text-lg leading-tight">HomeFront Assistant</h3>
+                <h3 className="text-white font-serif text-lg leading-tight">Homefront Assistant</h3>
                 <p className="text-[#c9a96e] text-[10px] font-sans tracking-widest uppercase">Online</p>
               </div>
             </div>

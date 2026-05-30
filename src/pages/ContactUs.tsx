@@ -1,9 +1,15 @@
 import { motion } from 'motion/react';
 import ContactSection from '../components/ContactSection';
+import SEO from '../components/SEO';
 
 export default function ContactUs() {
   return (
     <div>
+      <SEO
+        title="Contact Us"
+        description="Ready to build your dream home in Clarksville, TN? Contact Homefront Builders to start your custom home journey today."
+        path="/contact-us"
+      />
       {/* Hero Banner */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
         <img loading="lazy" decoding="async" src="/assets/content2.jpg"

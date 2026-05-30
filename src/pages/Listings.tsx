@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const listings = [
   {
@@ -227,6 +228,11 @@ export default function Listings() {
 
   return (
     <div className="bg-white">
+      <SEO
+        title="Custom Home Listings in Clarksville, TN"
+        description="Browse active custom home listings in Clarksville, TN from Homefront Builders. Luxury new construction available now in Middle Tennessee."
+        path="/listings"
+      />
       {/* Hero Header */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
         <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.jpg"

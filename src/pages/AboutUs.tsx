@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactSection from '../components/ContactSection';
 import { X, Send, Video, Phone, Mail, Award } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const partners = [
   {
@@ -421,6 +422,11 @@ export default function AboutUs() {
 
   return (
     <div>
+      <SEO
+        title="About Us — Luxury Custom Homes in Middle Tennessee"
+        description="Learn about Homefront Builders — Clarksville's premier luxury custom home builder with over two decades of expertise in Middle Tennessee design and construction."
+        path="/about-us"
+      />
       {/* ─── Hero Banner ─── */}
       <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
         <motion.img

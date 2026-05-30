@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from 'motion/react';
+import SEO from '../components/SEO';
 
 declare global {
   interface Window {
@@ -302,6 +303,11 @@ export default function Testimonials() {
 
   return (
     <div className="bg-[#FAFAF5] min-h-screen overflow-x-hidden">
+      <SEO
+        title="Client Testimonials"
+        description="See what Homefront Builders clients say about building their luxury custom home in Clarksville, TN and Middle Tennessee."
+        path="/testimonials"
+      />
 
       {/* ── Hero ───────────────────────────────────────────────────── */}
       <section ref={heroRef} className="relative h-[400px] md:h-[450px] overflow-hidden">

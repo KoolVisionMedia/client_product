@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import SEO from '../components/SEO';
 
 const warrantyActions = [
   {
@@ -50,6 +51,11 @@ const warrantyActions = [
 export default function Warranties() {
   return (
     <div>
+      <SEO
+        title="New Home Warranty Program"
+        description="Homefront Builders' Custom Care Program offers proactive warranty support and scheduled maintenance to protect your new home investment for years to come."
+        path="/warranties"
+      />
       {/* Hero Banner */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
         <img loading="lazy" decoding="async" src="/assets/content2.jpg"

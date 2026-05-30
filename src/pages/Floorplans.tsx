@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Bed, Bath, Square, Home as HomeIcon, FileText } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const floorPlans = [
   {
@@ -72,6 +73,11 @@ export default function Floorplans() {
 
   return (
     <div className="bg-surface min-h-screen pt-32 pb-24">
+      <SEO
+        title="Custom Home Floor Plans"
+        description="Explore Homefront Builders' custom floor plans — the Cypress, Dogwood, Harmony, Magnolia, and Myrtle. Stunning exteriors, highly functional layouts."
+        path="/floorplans"
+      />
       {/* Booklet Hero Section */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-16 mt-4">
         <div className="flex flex-col items-center text-center space-y-6 max-w-4xl mx-auto">

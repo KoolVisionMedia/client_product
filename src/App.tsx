@@ -40,6 +40,8 @@ const Blog = lazy(() => import('./pages/Blog'));
 const ContactUs = lazy(() => import('./pages/ContactUs'));
 const Warranties = lazy(() => import('./pages/Warranties'));
 const ProcessPage = lazy(() => import('./pages/ProcessPage'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const Terms = lazy(() => import('./pages/Terms'));
 
 export default function App() {
   return (
@@ -47,7 +49,7 @@ export default function App() {
       <RouteTracker />
       <ScrollToTop />
       <Navbar />
-      
+
       <main className="flex-grow">
         <Suspense fallback={
           <div className="flex items-center justify-center min-h-[50vh]">
@@ -64,6 +66,8 @@ export default function App() {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/warranties" element={<Warranties />} />
             <Route path="/process" element={<ProcessPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
           </Routes>
         </Suspense>
       </main>

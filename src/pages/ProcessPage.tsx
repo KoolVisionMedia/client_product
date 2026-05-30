@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight, Download, X } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const processSteps = [
   {
@@ -84,6 +85,45 @@ const processSteps = [
   },
 ];
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How long does it take to build a custom home in Tennessee?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most custom home builds in Middle Tennessee take 9 to 14 months from design through move-in, depending on the complexity of the home and site conditions. The design, budgeting, and permitting phase typically takes 2–3 months before construction begins."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does it cost to build a custom home in Clarksville, TN?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Custom home costs in Clarksville, TN vary based on size, finishes, and site conditions. Clarksville generally offers 30–40% lower construction costs than Nashville. Contact Homefront Builders for a detailed budget consultation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is included in Homefront Builders' process?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Homefront Builders' process includes an initial site visit and design consultation, detailed line-item budgeting, construction management with weekly photo updates, and a meticulous final walkthrough before move-in."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you build custom homes outside of Clarksville?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Homefront Builders serves Clarksville and the broader Middle Tennessee region, including surrounding communities within Montgomery County and beyond."
+      }
+    }
+  ]
+};
+
 export default function ProcessPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -139,6 +179,12 @@ export default function ProcessPage() {
 
   return (
     <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-hidden relative">
+      <SEO
+        title="Our Custom Home Building Process"
+        description="From site analysis to final walkthrough, see how Homefront Builders manages every stage of your custom home build with precision and full transparency."
+        path="/process"
+        schema={faqSchema}
+      />
       
       {/* Background elements */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.08]">

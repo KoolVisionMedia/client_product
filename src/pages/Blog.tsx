@@ -4,6 +4,7 @@ import Tilt from 'react-parallax-tilt';
 import { ArrowRight, Calendar, Tag, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { blogArticles } from '../data/blogArticles';
+import SEO from '../components/SEO';
 
 const posts = [
   {
@@ -53,6 +54,11 @@ export default function Blog() {
 
   return (
     <div className="bg-[#F4F3F0] min-h-screen">
+      <SEO
+        title="Home Building Tips & Design Inspiration"
+        description="Home building tips, design inspiration, and local market insights from the team at Homefront Builders in Clarksville, TN."
+        path="/blog"
+      />
       {/* Hero with Parallax & Glassmorphism */}
       <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
         <motion.img
