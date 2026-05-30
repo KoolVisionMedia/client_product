@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useVelocity, useSpring } from 'motion/react';
 
 declare global {
   interface Window {
@@ -111,58 +111,64 @@ const communityImages = [
   '/assets/Magnolia.jpg',
 ];
 
-// ── Sticky Review Card (Webflow-style stacked scroll) ─────────────────
+// ── Interactive Velocity-Based Carousel ───────────────────────────────
 type FeaturedReview = typeof featuredReviews[0];
 
-const ReviewCard = ({ review, index, total }: { key?: any; review: FeaturedReview; index: number; total: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start start', 'end start'],
-  });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, index === total - 1 ? 1 : 0.93]);
-  const opacity = useTransform(scrollYProgress, [0, 0.75, 1], [1, 1, index === total - 1 ? 1 : 0.55]);
+const VelocityCarousel = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollX } = useScroll({ container: containerRef });
+  const scrollVelocity = useVelocity(scrollX);
+  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
+  
+  const blur = useTransform(smoothVelocity, [-2000, 0, 2000], [12, 0, 12]);
+  const scale = useTransform(smoothVelocity, [-2000, 0, 2000], [0.94, 1, 0.94]);
+  const rotateY = useTransform(smoothVelocity, [-2000, 0, 2000], [8, 0, -8]);
+  const filter = useTransform(blur, b => `blur(${b}px)`);
 
   return (
-    <div
-      ref={cardRef}
-      className="sticky top-0 h-screen flex items-center justify-center px-4 md:px-16 lg:px-24 py-6"
-      style={{ zIndex: index + 10 }}
+    <div 
+      ref={containerRef}
+      className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none px-6 md:px-12 pb-16 pt-4"
+      style={{ perspective: 1500 }}
     >
-      <motion.div
-        style={{ scale, opacity }}
-        className="w-full max-w-6xl h-[82vh] max-h-[740px] bg-white rounded-[28px] overflow-hidden shadow-[0_-24px_60px_rgba(0,0,0,0.22)] flex flex-col md:flex-row"
-      >
-        {/* Image panel */}
-        <div className="w-full md:w-[48%] h-52 md:h-full relative overflow-hidden group">
-          <img
-            src={review.image}
-            alt={review.name}
-            className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-[1.04]"
+      {featuredReviews.map((review, i) => (
+        <motion.div
+          key={review.name}
+          style={{ scale, rotateY, filter }}
+          className="snap-center flex-none w-[85vw] md:w-[65vw] max-w-[900px] h-[65vh] min-h-[500px] rounded-3xl overflow-hidden relative shadow-[0_20px_50px_rgba(0,0,0,0.15)] group border border-black/5"
+        >
+          <img 
+            src={review.image} 
+            alt={review.name} 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1b2518]/85 via-[#1b2518]/25 to-transparent" />
-          <div className="absolute bottom-8 left-8 right-8 text-white">
-            <p className="font-sans text-[10px] uppercase tracking-[0.35em] text-[#c9a96e] mb-2">{review.location}</p>
-            <h3 className="font-serif text-3xl md:text-4xl leading-snug">{review.name}</h3>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1b2518]/95 via-[#1b2518]/40 to-transparent" />
+          
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14 text-white">
+            <div className="flex items-center gap-3 mb-6 opacity-90">
+               {review.platform === 'Google' ? <GoogleLogo /> : <FacebookLogo />}
+               <span className="w-1 h-1 rounded-full bg-white/30" />
+               <Stars size={16} />
+               <span className="w-1 h-1 rounded-full bg-white/30" />
+               <span className="font-sans text-[10px] tracking-[0.2em] uppercase">{review.platform} Review</span>
+            </div>
+            
+            <blockquote className="font-serif text-2xl md:text-[34px] leading-snug italic mb-10 max-w-3xl drop-shadow-lg">
+              "{review.text}"
+            </blockquote>
+            
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <p className="font-serif text-2xl text-white mb-2">{review.name}</p>
+                <p className="font-sans text-[11px] tracking-[0.3em] uppercase text-[#c9a96e]">{review.location}</p>
+              </div>
+              <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-white/40">{review.date}</p>
+            </div>
           </div>
-        </div>
-
-        {/* Content panel */}
-        <div className="w-full md:w-[52%] flex flex-col justify-center px-8 md:px-14 py-10 bg-[#FAFAF5]">
-          <div className="flex items-center gap-2 mb-5">
-            {review.platform === 'Google' ? <GoogleLogo /> : <FacebookLogo />}
-            <span className="font-sans text-xs text-gray-400 tracking-wide">{review.platform} Review</span>
-          </div>
-          <Stars size={16} />
-          <blockquote className="font-serif text-xl md:text-2xl lg:text-[26px] text-[#2E362C] leading-relaxed italic mt-7">
-            "{review.text}"
-          </blockquote>
-          <div className="mt-10 flex items-center gap-4">
-            <div className="h-[1px] w-10 bg-[#B48C36]" />
-            <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#B48C36]">{review.date}</p>
-          </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      ))}
+      <div className="flex-none w-[5vw] md:w-[20vw]" />
     </div>
   );
 };
@@ -290,11 +296,8 @@ export default function Testimonials() {
           </motion.div>
         </div>
 
-        <div className="relative bg-[#F3F3ED]">
-          {featuredReviews.map((review, index) => (
-            <ReviewCard key={review.name} review={review} index={index} total={featuredReviews.length} />
-          ))}
-          <div className="h-24" />
+        <div className="relative">
+          <VelocityCarousel />
         </div>
       </section>
 
