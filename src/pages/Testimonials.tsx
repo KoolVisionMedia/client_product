@@ -102,14 +102,13 @@ const clientGallery = [
   { src: '/assets/about-hero.jpg',        name: 'Our Work',      className: 'col-span-2' },
 ];
 
-const tiktokVideos = [
-  '7575161196769266999',
-  '7559654166126152974',
-];
-
-const instagramPosts = [
-  'https://www.instagram.com/reel/DQrd1KjDgly/',
-  'https://www.instagram.com/p/DPNpS6BDWvO/',
+const communityImages = [
+  '/assets/DSC04388-Edit.jpg',
+  '/assets/about-hero.jpg',
+  '/assets/content2.jpg',
+  '/assets/Harmony.jpg',
+  '/assets/Cypress.jpg',
+  '/assets/Magnolia.jpg',
 ];
 
 // ── Sticky Review Card (Webflow-style stacked scroll) ─────────────────
@@ -356,138 +355,59 @@ export default function Testimonials() {
         </div>
       </section>
 
-      {/* ── Social Feed ─────────────────────────────────────────────── */}
-      <section className="py-28 bg-[#FAFAF5]">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+      {/* ── Community & Education ───────────────────────────────────── */}
+      <section className="py-28 bg-[#1b2518] text-white overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          
+          {/* Text Content */}
+          <div className="w-full lg:w-5/12 space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Building Together</p>
+              <h2 className="font-serif text-5xl md:text-6xl text-white leading-tight mb-6">
+                Community & <br /> Education
+              </h2>
+              <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg mb-6">
+                We are deeply rooted in the Middle Tennessee community. By partnering with local artisans, visionary architects, and dear friends, we regularly host educational classes and exclusive events focused on custom home building. 
+              </p>
+              <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg">
+                These gatherings are designed to demystify the construction process, answer your questions, and empower you with the knowledge to build your dream home with absolute confidence.
+              </p>
+            </motion.div>
+          </div>
 
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16"
-          >
-            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#B48C36] mb-4">Follow Along</p>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <h2 className="font-serif text-5xl md:text-6xl text-[#2E362C]">Find Us Online</h2>
-              <div className="flex items-center gap-5">
-                {[
-                  { label: 'Facebook', url: 'https://www.facebook.com/HomeFrontBuilderstn/', color: '#1877F2' },
-                  { label: 'Instagram', url: 'https://www.instagram.com/homefrontbuilderstn/', color: '#E1306C' },
-                  { label: 'TikTok', url: 'https://www.tiktok.com/@homefront.builder', color: '#010101' },
-                ].map(p => (
-                  <a
-                    key={p.label}
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-sans text-[11px] tracking-[0.2em] uppercase text-[#596652] hover:text-[#B48C36] transition-colors duration-300"
-                  >
-                    {p.label}
-                  </a>
-                ))}
-              </div>
+          {/* Animated Image Grid */}
+          <div className="w-full lg:w-7/12">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              {communityImages.map((src, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9, y: 40 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  className={`rounded-2xl overflow-hidden shadow-2xl relative group ${
+                    i === 0 ? 'mt-0 md:mt-12 aspect-[4/5]' :
+                    i === 1 ? 'aspect-square' :
+                    i === 2 ? 'mt-0 md:-mt-8 aspect-[3/4]' :
+                    i === 3 ? 'aspect-[4/5]' :
+                    i === 4 ? 'mt-0 md:mt-16 aspect-square' :
+                    'mt-0 md:-mt-12 aspect-[3/4]'
+                  }`}
+                >
+                  <img 
+                    src={src} 
+                    alt={`Community Event ${i + 1}`} 
+                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-[#c9a96e]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
-
-          {/* Feed Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-
-            {/* ── Facebook Page Plugin ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-3"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                <span className="font-sans text-xs tracking-[0.2em] uppercase text-[#596652]">Facebook</span>
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
-                <iframe
-                  src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FHomeFrontBuilderstn%2F&tabs=timeline&width=500&height=680&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false"
-                  width="100%"
-                  height="680"
-                  style={{ border: 'none', overflow: 'hidden', display: 'block' }}
-                  scrolling="no"
-                  frameBorder={0}
-                  allowFullScreen
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                />
-              </div>
-            </motion.div>
-
-            {/* ── TikTok Videos ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-5"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.3 8.3 0 004.86 1.55V6.78a4.85 4.85 0 01-1.09-.09z"/>
-                </svg>
-                <span className="font-sans text-xs tracking-[0.2em] uppercase text-[#596652]">TikTok</span>
-              </div>
-              {tiktokVideos.map((id, i) => (
-                <div key={id} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
-                  <iframe
-                    src={`https://www.tiktok.com/embed/v2/${id}`}
-                    width="100%"
-                    height="580"
-                    style={{ border: 'none', display: 'block' }}
-                    allowFullScreen
-                    allow="encrypted-media"
-                    title={`TikTok video ${i + 1}`}
-                  />
-                </div>
-              ))}
-            </motion.div>
-
-            {/* ── Instagram Posts ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-5"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#E1306C">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                <span className="font-sans text-xs tracking-[0.2em] uppercase text-[#596652]">Instagram</span>
-              </div>
-              {instagramPosts.map((url, i) => (
-                <div key={i} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
-                  <blockquote
-                    className="instagram-media"
-                    data-instgrm-permalink={url}
-                    data-instgrm-version="14"
-                    style={{ background: '#FFF', border: 0, margin: 0, maxWidth: '100%', minWidth: 0, padding: 0, width: '100%' }}
-                  />
-                </div>
-              ))}
-              <a
-                href="https://www.instagram.com/homefrontbuilderstn/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-4 rounded-2xl border border-gray-200 font-sans text-[11px] uppercase tracking-[0.2em] text-[#596652] hover:text-[#E1306C] hover:border-[#E1306C]/30 transition-all duration-300"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                View All Posts · @homefrontbuilderstn
-              </a>
-            </motion.div>
-
           </div>
         </div>
       </section>
