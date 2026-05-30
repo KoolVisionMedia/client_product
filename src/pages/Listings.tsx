@@ -56,7 +56,7 @@ const listings = [
     images: Array.from({length: 89}, (_, i) => `/assets/active_listings/413-sheas-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`)
       .filter(img => !img.endsWith('Media049.jpg') && !img.endsWith('Media074.jpg')),
     video: 'https://youtube.com/shorts/ik8RLnMr9Y8',
-    status: 'Sold',
+    status: 'Available',
   },
   {
     name: '1215 Hill Ln',
@@ -169,12 +169,63 @@ const listings = [
 export default function Listings() {
   const [selectedListing, setSelectedListing] = useState<typeof listings[0] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeFilter, setActiveFilter] = useState<string>('All');
+  const [sortOption, setSortOption] = useState<string>('default');
 
   const getYouTubeId = (url: string) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
   };
+
+  // Helper to parse price string to number
+  const getPriceNumeric = (item: typeof listings[0]) => {
+    const clean = item.price.replace(/[^0-9]/g, '');
+    return clean ? parseInt(clean, 10) : 0;
+  };
+
+  // Filter listings
+  const filteredListings = listings.filter((item) => {
+    if (activeFilter === 'All') return true;
+    return item.status === activeFilter;
+  });
+
+  // Sort status priority: Available (1) -> Coming Soon (2) -> Under Contract (3) -> Sold (4)
+  const statusOrder: Record<string, number> = {
+    'Available': 1,
+    'Coming Soon': 2,
+    'Under Contract': 3,
+    'Sold': 4,
+  };
+
+  const sortedListings = [...filteredListings].sort((a, b) => {
+    if (sortOption === 'price-asc') {
+      const priceA = getPriceNumeric(a);
+      const priceB = getPriceNumeric(b);
+      // Put non-priced at the end
+      if (priceA === 0 && priceB !== 0) return 1;
+      if (priceB === 0 && priceA !== 0) return -1;
+      return priceA - priceB;
+    }
+    if (sortOption === 'price-desc') {
+      const priceA = getPriceNumeric(a);
+      const priceB = getPriceNumeric(b);
+      // Put non-priced at the end
+      if (priceA === 0 && priceB !== 0) return 1;
+      if (priceB === 0 && priceA !== 0) return -1;
+      return priceB - priceA;
+    }
+    
+    // Default: Sort by Status priority, then stable indexing
+    const orderA = statusOrder[a.status] || 99;
+    const orderB = statusOrder[b.status] || 99;
+    
+    if (orderA !== orderB) {
+      return orderA - orderB;
+    }
+    
+    return listings.indexOf(a) - listings.indexOf(b);
+  });
 
   return (
     <div className="bg-white">
@@ -204,14 +255,54 @@ export default function Listings() {
       {/* Gallery Section */}
       <section className="py-16 md:py-32 px-4 md:px-12">
         <div className="max-w-[1400px] mx-auto">
+          {/* Elegant Filter & Sort Bar */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 pb-8 border-b border-neutral-200">
+            {/* Filter Buttons / Chips */}
+            <div className="flex flex-wrap gap-2 md:gap-3">
+              {['All', 'Available', 'Coming Soon', 'Under Contract', 'Sold'].map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setActiveFilter(status)}
+                  className={`px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold transition-all duration-300 ${
+                    activeFilter === status
+                      ? 'bg-[#1b2518] text-white border border-[#1b2518] shadow-md'
+                      : 'bg-transparent text-primary/70 border border-neutral-200 hover:border-neutral-800 hover:text-primary'
+                  }`}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+            
+            {/* Sorting controls */}
+            <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+              <span className="text-[10px] uppercase tracking-widest text-primary/50 font-sans font-bold">Sort By</span>
+              <div className="relative min-w-[180px]">
+                <select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value)}
+                  className="w-full appearance-none bg-white border border-neutral-200 hover:border-neutral-800 transition-colors pl-4 pr-10 py-2.5 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold focus:outline-none cursor-pointer"
+                >
+                  <option value="default">Status (Default)</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary/60">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
-            {listings.map((listing, i) => (
+            {sortedListings.map((listing, i) => (
               <motion.div
+                layout
                 key={listing.name}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '0px 0px -60px 0px' }}
-                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                 className="group cursor-pointer"
                 onClick={() => {
                   setSelectedListing(listing);
