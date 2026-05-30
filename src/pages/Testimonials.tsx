@@ -380,34 +380,45 @@ export default function Testimonials() {
             </motion.div>
           </div>
 
-          {/* Animated Image Grid */}
-          <div className="w-full lg:w-7/12">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-              {communityImages.map((src, i) => (
+          {/* Free-floating Animated Collage */}
+          <div className="w-full lg:w-7/12 relative h-[600px] md:h-[800px] mt-16 lg:mt-0">
+            {[
+              { w: 'w-[45%] md:w-[38%]', top: 'top-[0%]', left: 'left-[0%]', rotate: -4, z: 10, delay: 0, duration: 6, yOffset: -15 },
+              { w: 'w-[35%] md:w-[30%]', top: 'top-[10%]', left: 'left-[40%]', rotate: 6, z: 20, delay: 1, duration: 7, yOffset: 20 },
+              { w: 'w-[28%] md:w-[24%]', top: 'top-[5%]', left: 'left-[75%]', rotate: -8, z: 5, delay: 0.8, duration: 7.5, yOffset: -10 },
+              { w: 'w-[40%] md:w-[35%]', top: 'top-[35%]', left: 'left-[10%]', rotate: 3, z: 30, delay: 0.5, duration: 5.5, yOffset: 15 },
+              { w: 'w-[48%] md:w-[42%]', top: 'top-[45%]', left: 'left-[45%]', rotate: -5, z: 40, delay: 1.5, duration: 8, yOffset: -20 },
+              { w: 'w-[35%] md:w-[30%]', top: 'top-[65%]', left: 'left-[20%]', rotate: 5, z: 20, delay: 2, duration: 6.5, yOffset: 15 },
+            ].map((config, i) => (
+              <div
+                key={i}
+                className={`absolute ${config.w} ${config.top} ${config.left}`}
+                style={{ zIndex: config.z }}
+              >
                 <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9, y: 40 }}
+                  initial={{ opacity: 0, scale: 0.5, y: 80 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                  className={`rounded-2xl overflow-hidden shadow-2xl relative group ${
-                    i === 0 ? 'mt-0 md:mt-12 aspect-[4/5]' :
-                    i === 1 ? 'aspect-square' :
-                    i === 2 ? 'mt-0 md:-mt-8 aspect-[3/4]' :
-                    i === 3 ? 'aspect-[4/5]' :
-                    i === 4 ? 'mt-0 md:mt-16 aspect-square' :
-                    'mt-0 md:-mt-12 aspect-[3/4]'
-                  }`}
+                  transition={{ duration: 1.2, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <img 
-                    src={src} 
-                    alt={`Community Event ${i + 1}`} 
-                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-[#c9a96e]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
+                  <motion.div
+                    animate={{ 
+                      y: [0, config.yOffset, 0], 
+                      rotate: [config.rotate, config.rotate + (i % 2 === 0 ? 3 : -3), config.rotate] 
+                    }}
+                    transition={{ repeat: Infinity, duration: config.duration, ease: "easeInOut", delay: config.delay }}
+                    className="relative w-full rounded-xl md:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[6px] border-[#FAFAF5] group"
+                  >
+                    <img 
+                      src={communityImages[i]} 
+                      alt={`Community Event ${i + 1}`} 
+                      className="w-full h-full object-cover aspect-[4/5] md:aspect-[3/4] transition-transform duration-[2s] group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-[#c9a96e]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
+                  </motion.div>
                 </motion.div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
