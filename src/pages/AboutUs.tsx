@@ -50,7 +50,7 @@ const partners = [
     image: '/assets/team/Chris Hodges.jpg',
     bio: `As a proud husband and father, my family is my "why," but my path to real estate began long before them. As a child, I experienced the instability of multiple evictions and spent my entire 7th-grade year living in a car. As a first-generation homeowner, I turned those hardships into a mission: ensuring others find the stability and pride of homeownership that my family once lacked.\n\nSince 2022, I’ve helped more than 210 families navigate the market. My approach is rooted in my 8 years of military service and 6 overseas deployments, which instilled in me the discipline, calm under pressure, and ferocious work ethic I bring to every client.\n\nMy Philosophy:\n\nService over Sales: I’ll never "convince" you to act; I’m here to guide your decision-making with total transparency.\n\nHonesty over Commissions: Because of my high volume, I’m never desperate for a deal. This allows me to focus on what is right for you, not just what closes.\n\nClear Communication: My business is built on expectation management and military-grade accountability.\n\nI don’t just sell houses—I help families build the foundation I once dreamed of. I can't wait to meet you.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: '',
+    video: 'https://www.youtube.com/embed/Gjf9GJOBcIo',
   },
   {
     name: 'Karen Grimes',
