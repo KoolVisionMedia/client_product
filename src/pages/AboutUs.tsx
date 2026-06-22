@@ -69,6 +69,14 @@ const partners = [
     video: '',
   },
   {
+    name: 'Carrie Roseberry',
+    title: 'Realtor',
+    image: '/assets/team/Carrie Roseberry.png',
+    bio: `Carrie is a dedicated real estate professional with a passion for helping clients find their dream homes and achieve their real estate goals. Having lived in the Clarksville area since 1979, Carrie brings decades of local knowledge and insight to every transaction. Coming from a military family, Carrie's father was stationed here, giving her firsthand experience with military relocations and the unique challenges that come with PCS moves.\n\nWith years of real estate experience and a deep understanding of the local market, Carrie is committed to providing exceptional service to buyers, sellers, and investors alike. Whether you're purchasing your first home, selling a property, relocating to the area, or building an investment portfolio, Carrie will guide you through every step of the process. Known for being trustworthy, approachable, and attentive to clients' needs, she strives to make every real estate experience as smooth and successful as possible.\n\nWhen you work with Carrie, you're partnering with a knowledgeable local expert who understands both the community and the importance of finding the perfect place to call home.`,
+    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    video: '',
+  },
+  {
     name: 'Colleen Marquez',
     title: 'Realtor',
     image: '/assets/team/Colleen Marquez 2.jpg',
