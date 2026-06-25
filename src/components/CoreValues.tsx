@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { PenTool, Ruler, Home, ShieldCheck, Palette, HeartHandshake } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const values = [
   {
@@ -72,12 +73,12 @@ export default function CoreValues() {
               From the initial site visit to the final walkthrough, our proven process ensures that every stage of your custom home build is executed with precision, transparency, and care.
             </p>
             
-            <button className="flex items-center gap-4 px-6 py-4 bg-accent/10 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-primary hover:bg-accent hover:text-white transition-all duration-300 w-fit group">
+            <Link to="/contact-us" className="flex items-center gap-4 px-6 py-4 bg-accent/10 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-primary hover:bg-accent hover:text-white transition-all duration-300 w-fit group">
               START YOUR BUILD
               <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center group-hover:bg-white group-hover:text-accent transition-all duration-300">
                 &rarr;
               </div>
-            </button>
+            </Link>
           </motion.div>
         </div>
 
