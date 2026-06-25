@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const listings = [
   {
@@ -155,6 +155,10 @@ const listings = [
 ];
 
 export default function Listings() {
+  useEffect(() => {
+    document.title = "Current Builds | Homefront Builders";
+  }, []);
+
   const [selectedListing, setSelectedListing] = useState<typeof listings[0] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState<string>('All');
@@ -239,7 +243,7 @@ export default function Listings() {
           >
             <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Current Availability</p>
             <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-white tracking-wide">
-              View Our Active Listings
+              Current Builds
             </h1>
           </motion.div>
         </div>

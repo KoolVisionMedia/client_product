@@ -93,7 +93,7 @@ const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: nu
                 {/* Overlay Button */}
                 <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px] opacity-0 group-hover/plan:opacity-100 transition-opacity duration-500 flex items-center justify-center p-4">
                   <span className="px-6 py-3 bg-primary text-white font-sans text-xs tracking-widest uppercase rounded-full shadow-xl text-center w-full max-w-[250px]">
-                    View active listings with this floor plan
+                    View current builds with this floor plan
                   </span>
                 </div>
               </Link>

@@ -26,9 +26,9 @@ export default function Navbar() {
     },
     { name: 'OUR PROCESS', href: '/process' },
     { 
-      name: 'LISTINGS', 
+      name: 'CURRENT BUILDS', 
       dropdown: [
-        { name: 'Active Listings', href: '/listings' },
+        { name: 'Current Builds', href: '/listings' },
         { name: 'Floorplans', href: '/floorplans' }
       ]
     },
