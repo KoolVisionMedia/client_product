@@ -157,7 +157,7 @@ const communityImages = [
   '/assets/community/594126554_911561954528870_9202778842408553763_n.webp',
   '/assets/community/491199204_1206729828120502_4021135175915967788_n.webp',
   '/assets/community/518276642_122249563244074441_1457083503727355780_n.webp',
-  '/assets/community/473338662_122097057008731378_6991236073360247651_n.webp',
+  '/assets/community/657357844_1700339800927667_314502283509931868_n.webp',
   '/assets/community/580399179_122270538692074441_3941408381955964056_n.webp',
   '/assets/community/492365756_122234824814074441_1216855867914535668_n.webp',
   '/assets/community/473673644_122216376032074441_6291583575612602141_n.webp',
@@ -430,7 +430,7 @@ export default function Testimonials() {
       <section className="relative py-28 bg-[#FAFAF5] text-primary overflow-hidden">
         {/* Blueprint background accent */}
         <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply"
+          className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-multiply"
           style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
