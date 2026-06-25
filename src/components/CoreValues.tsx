@@ -47,19 +47,8 @@ const values = [
 
 export default function CoreValues() {
   return (
-    <section className="relative py-24 lg:py-32 border-y border-[#c9a96e]/30">
-      {/* Background Wrapper */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Parallax Background Image */}
-        <div 
-          className="absolute inset-0 bg-fixed bg-center bg-cover bg-no-repeat blur-[4px] transform scale-[1.05]"
-          style={{ backgroundImage: 'url(/assets/core-values-bg.jpg)' }}
-        ></div>
-        {/* Color Shade / Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2a3826]/85 to-[#121c10]/95"></div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row items-start justify-between px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
+    <section className="relative bg-surface py-24 md:py-0">
+      <div className="flex flex-col lg:flex-row items-start justify-between px-6 md:px-12 max-w-[1400px] mx-auto relative">
         
         {/* Left Content - Pinned */}
         <div className="w-full lg:w-5/12 lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center py-16 lg:py-0 z-10">
@@ -76,15 +65,15 @@ export default function CoreValues() {
               <span className="font-sans text-sm md:text-base font-semibold text-accent uppercase tracking-widest">Our Methodology</span>
             </div>
             
-            <h2 className="font-serif text-5xl md:text-[72px] text-white leading-[1.1] tracking-tight mb-8">
+            <h2 className="font-serif text-5xl md:text-[72px] text-primary leading-[1.1] tracking-tight mb-8">
               The Homefront <br/> Process
             </h2>
             
-            <p className="font-sans text-lg md:text-xl text-white/80 max-w-lg leading-relaxed mb-10">
+            <p className="font-sans text-lg md:text-xl text-primary-light max-w-lg leading-relaxed mb-10">
               From the initial site visit to the final walkthrough, our proven process ensures that every stage of your custom home build is executed with precision, transparency, and care.
             </p>
             
-            <Link to="/contact-us" className="flex items-center gap-4 px-6 py-4 bg-accent/20 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-accent hover:bg-accent hover:text-white transition-all duration-300 w-fit group">
+            <Link to="/contact-us" className="flex items-center gap-4 px-6 py-4 bg-accent/10 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-primary hover:bg-accent hover:text-white transition-all duration-300 w-fit group">
               START YOUR BUILD
               <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center group-hover:bg-white group-hover:text-accent transition-all duration-300">
                 &rarr;
@@ -108,7 +97,7 @@ export default function CoreValues() {
                    whileInView={{ opacity: 1, y: 0 }}
                    viewport={{ once: true, margin: "-100px" }}
                    transition={{ duration: 0.6, ease: "easeOut" }}
-                   className={`w-full max-w-[500px] p-8 md:p-12 rounded-2xl shadow-2xl ${val.color} ${val.textColor} border border-white/10`}
+                   className={`w-full max-w-[500px] p-8 md:p-12 rounded-2xl shadow-2xl ${val.color} ${val.textColor} ${val.color === 'bg-white' ? 'border border-gray-100' : ''}`}
                  >
                    <div className="flex items-center gap-4 mb-6">
                      <div className={`w-14 h-14 rounded-full flex items-center justify-center border-4 ${val.textColor === 'text-white' ? 'border-white/30 bg-white/10' : 'border-primary/20 bg-primary/5'}`}>
