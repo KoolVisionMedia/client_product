@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import Navbar from './components/Navbar';
@@ -11,7 +11,24 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ChatWidget from './components/ChatWidget';
 
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+
+// Google Analytics Route Tracker for SPAs
+const RouteTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // @ts-ignore
+    if (typeof window !== 'undefined' && window.gtag) {
+      // @ts-ignore
+      window.gtag('config', 'G-CZDZM04DYL', {
+        page_path: location.pathname + location.search,
+      });
+    }
+  }, [location]);
+
+  return null;
+};
 
 // Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -27,6 +44,7 @@ const ProcessPage = lazy(() => import('./pages/ProcessPage'));
 export default function App() {
   return (
     <div className="bg-surface min-h-screen flex flex-col">
+      <RouteTracker />
       <ScrollToTop />
       <Navbar />
       
