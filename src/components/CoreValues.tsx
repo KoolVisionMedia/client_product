@@ -47,14 +47,17 @@ const values = [
 
 export default function CoreValues() {
   return (
-    <section className="relative py-24 lg:py-32 border-y border-[#c9a96e]/30 overflow-hidden">
-      {/* Parallax Background Image */}
-      <div 
-        className="absolute inset-0 bg-fixed bg-center bg-cover bg-no-repeat blur-[4px] transform scale-[1.05]"
-        style={{ backgroundImage: 'url(/assets/core-values-bg.jpg)' }}
-      ></div>
-      {/* Color Shade / Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#2a3826]/85 to-[#121c10]/95 z-0"></div>
+    <section className="relative py-24 lg:py-32 border-y border-[#c9a96e]/30">
+      {/* Background Wrapper */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Parallax Background Image */}
+        <div 
+          className="absolute inset-0 bg-fixed bg-center bg-cover bg-no-repeat blur-[4px] transform scale-[1.05]"
+          style={{ backgroundImage: 'url(/assets/core-values-bg.jpg)' }}
+        ></div>
+        {/* Color Shade / Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2a3826]/85 to-[#121c10]/95"></div>
+      </div>
 
       <div className="flex flex-col lg:flex-row items-start justify-between px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
         
