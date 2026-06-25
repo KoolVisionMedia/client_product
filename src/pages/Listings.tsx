@@ -175,6 +175,12 @@ export default function Listings() {
   // Filter listings
   const filteredListings = listings.filter((item) => {
     if (activeFilter === 'All') return true;
+    if (activeFilter === 'Completed Builds') {
+      return item.status !== 'Coming Soon' && item.status !== 'Under Construction';
+    }
+    if (activeFilter === 'Builds in Progress') {
+      return item.status === 'Coming Soon' || item.status === 'Under Construction';
+    }
     return item.status === activeFilter;
   });
 
@@ -246,7 +252,7 @@ export default function Listings() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 pb-8 border-b border-neutral-200">
             {/* Filter Buttons / Chips */}
             <div className="flex flex-wrap gap-2 md:gap-3">
-              {['All', 'Available', 'Coming Soon', 'Under Contract', 'Sold'].map((status) => (
+              {['All', 'Completed Builds', 'Builds in Progress'].map((status) => (
                 <button
                   key={status}
                   onClick={() => setActiveFilter(status)}
@@ -308,15 +314,15 @@ export default function Listings() {
                   
                   {/* Status Badge */}
                   <div className="absolute top-4 left-4 flex gap-2 z-20">
-                    <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold backdrop-blur-md shadow-sm ${
-                      listing.status === 'Available' ? 'bg-[#c9a96e] text-white' : 
-                      listing.status === 'Pending' ? 'bg-black/80 text-white' : 
-                      listing.status === 'Coming Soon' ? 'bg-black/80 text-white' :
-                      listing.status === 'Sold' ? 'bg-red-600 text-white' :
-                      'bg-white/90 text-primary'
-                    }`}>
-                      {listing.status}
-                    </span>
+                    {listing.status === 'Coming Soon' || listing.status === 'Under Construction' ? (
+                      <span className="px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold bg-[#c9a96e] text-white shadow-sm">
+                        Build in Progress
+                      </span>
+                    ) : (
+                      <span className="px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold bg-white/95 text-[#1b2518] shadow-sm border border-neutral-200/40">
+                        Completed Build
+                      </span>
+                    )}
                   </div>
 
                   {/* Gradient Overlay for Text Readability */}
@@ -453,9 +459,15 @@ export default function Listings() {
               <div className="p-8 md:p-12">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 pb-8 border-b border-gray-200">
                   <div>
-                    <span className="inline-block px-3 py-1 bg-[#F4F3F0] text-[#c9a96e] text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
-                      {selectedListing.status}
-                    </span>
+                    {selectedListing.status === 'Coming Soon' || selectedListing.status === 'Under Construction' ? (
+                      <span className="inline-block px-3 py-1 bg-[#c9a96e] text-white text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
+                        Build in Progress
+                      </span>
+                    ) : (
+                      <span className="inline-block px-3 py-1 bg-[#F4F3F0] text-[#1b2518] text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
+                        Completed Build
+                      </span>
+                    )}
                     <h2 className="text-3xl md:text-5xl font-serif text-primary mb-2">{selectedListing.name}</h2>
                     <p className="text-primary/60 font-sans tracking-wide uppercase text-sm">{selectedListing.location}</p>
                   </div>
