@@ -422,28 +422,33 @@ export default function AboutUs() {
   return (
     <div>
       {/* ─── Hero Banner ─── */}
-      <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <img
+      <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
+        <motion.img
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
           src="/assets/about-hero.jpg"
           alt="Homefront Builders Interior"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#1b2518]/60" />
-        <div className="relative z-10 h-full flex items-center justify-center pt-20">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-3xl md:text-4xl lg:text-5xl text-white text-center tracking-wide"
-          >
+        <div className="absolute inset-0 bg-[#1b2518]/40" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-10 md:p-16 rounded-3xl text-center max-w-3xl mx-4 shadow-2xl"
+        >
+          <p className="text-xs md:text-sm font-sans tracking-[0.4em] uppercase text-[#c9a96e] mb-4 drop-shadow-md">Our People</p>
+          <h1 className="font-serif text-4xl md:text-6xl text-white tracking-wide drop-shadow-lg leading-tight">
             Meet the Homefront Builders Team
-          </motion.h1>
-        </div>
+          </h1>
+        </motion.div>
       </section>
 
       {/* ─── Video Introduction + Company Description ─── */}
-      <section className="bg-white py-20 md:py-28 px-6 md:px-12">
-        <div className="max-w-[1000px] mx-auto">
+      <section className="bg-white pb-20 md:pb-28 px-6 md:px-12 relative z-20">
+        <div className="max-w-[1000px] mx-auto -mt-16 md:-mt-24">
 
           {/* Homefront Planning Stage Video */}
           <motion.div

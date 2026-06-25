@@ -86,7 +86,6 @@ export default function Blog() {
           scale={1.02}
           transitionSpeed={2500}
           className="cursor-pointer"
-          onClick={() => setSelectedPost(featuredPost.slug)}
           glareEnable={true}
           glareMaxOpacity={0.15}
           glarePosition="all"
@@ -95,6 +94,7 @@ export default function Blog() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            onClick={() => setSelectedPost(featuredPost.slug)}
             className="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row group"
           >
             {/* Image Half */}
@@ -152,12 +152,14 @@ export default function Blog() {
                 scale={1.03}
                 transitionSpeed={2000}
                 className="cursor-pointer h-full"
-                onClick={() => setSelectedPost(post.slug)}
                 glareEnable={true}
                 glareMaxOpacity={0.1}
                 glarePosition="all"
               >
-                <article className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full flex flex-col group">
+                <article 
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full flex flex-col group"
+                  onClick={() => setSelectedPost(post.slug)}
+                >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img loading="lazy" decoding="async" src={post.image}
                       alt={post.title}
