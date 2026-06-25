@@ -482,7 +482,7 @@ export default function AboutUs() {
                 if (overlay) overlay.classList.remove('hidden');
               }}
             >
-              <source src="/assets/homefront-planning-stage.mp4" type="video/mp4" />
+              <source src="https://www.dropbox.com/scl/fi/c9p6d770o9yw3npugsmql/Hardwood-Dr.mp4?rlkey=xlvao3qiz0h9vtytlgs0p34py&raw=1" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             
