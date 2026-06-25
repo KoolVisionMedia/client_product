@@ -144,10 +144,10 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
         {showWhyUs && (
           <>
-            {/* Scroll-Driven "Why Us" Header with Green Round Logo to the right */}
+            {/* Scroll-Driven Header with Green Round Logo to the right */}
             <div className="flex items-center justify-center gap-4 md:gap-8 mb-6 relative z-20">
-              <h2 className="font-serif text-[4.5rem] md:text-[8rem] lg:text-[10rem] tracking-tight text-primary leading-none select-none font-bold">
-                Why us?
+              <h2 className="font-serif text-[3.5rem] md:text-[6rem] lg:text-[8rem] tracking-tight text-primary leading-none select-none font-bold">
+                Share your vision.
               </h2>
               <div className="w-14 h-14 md:w-20 md:h-20 lg:w-28 lg:h-28 rounded-full overflow-hidden shrink-0 border border-[#c9a96e]/15 shadow-md bg-white flex items-center justify-center">
                 <img
@@ -167,7 +167,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
               className="max-w-2xl mx-auto text-center mb-16 px-4 relative z-10"
             >
               <p className="font-sans text-lg md:text-xl text-primary/70 leading-relaxed font-medium">
-                We believe in complete transparency, uncompromised quality, and a deeply personalized experience. Reach out below to start the conversation about your dream home.
+                We'd love to hear about the home you've been dreaming of. Reach out below to connect with our team and let's start turning those ideas into a reality.
               </p>
             </motion.div>
 
