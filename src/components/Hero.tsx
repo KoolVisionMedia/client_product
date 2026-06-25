@@ -49,7 +49,7 @@ export default function Hero() {
           >
             <Link
               to="/listings"
-              className="inline-block bg-accent hover:bg-accent-dark text-white px-10 py-5 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 font-bold"
+              className="inline-block bg-accent hover:bg-accent-dark text-primary-dark px-10 py-5 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 font-bold"
             >
               View Our Builds
             </Link>

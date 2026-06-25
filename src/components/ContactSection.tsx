@@ -149,7 +149,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
             <div className="flex flex-col items-center justify-center gap-4 md:gap-6 mb-6 relative z-20 text-center">
               <div className="w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden shrink-0 border border-[#c9a96e]/15 shadow-md bg-white flex items-center justify-center">
                 <img
-                  src="/logo-round.png"
+                  src="/logo-round.webp"
                   alt="Homefront Builders Logo"
                   className="w-full h-full object-cover"
                 />

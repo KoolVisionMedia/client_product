@@ -433,7 +433,7 @@ export default function AboutUs() {
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
-          src="/assets/about-hero-new.jpg"
+          src="/assets/about-hero-new.webp"
           alt="Homefront Builders Interior"
           className="absolute inset-0 w-full h-full object-cover"
         />

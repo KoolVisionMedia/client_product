@@ -190,7 +190,7 @@ export default function ProcessPage() {
       <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.08]">
         <div 
           className="absolute inset-0"
-          style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         ></div>
       </div>
 
@@ -267,7 +267,7 @@ export default function ProcessPage() {
                     className="w-full md:w-[80%] lg:w-[75%] pl-[80px] md:pl-12 lg:pl-16 pt-3 md:pt-0"
                   >
                     <div className="md:hidden mb-4">
-                       <span className="font-sans text-lg font-bold text-primary/40 tracking-tight">{step.date}</span>
+                       <span className="font-sans text-lg font-bold text-primary/70 tracking-tight">{step.date}</span>
                     </div>
                     
                     <div className="mb-8">
@@ -319,7 +319,7 @@ export default function ProcessPage() {
       {/* Floor Plan Booklet Funnel Section */}
       <section className="relative py-28 bg-[#1b2518] text-white overflow-hidden z-30">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
-             style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+             style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

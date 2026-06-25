@@ -83,7 +83,7 @@ export default function ChatWidget() {
             {/* Header */}
             <div className="bg-[#1b2518] p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
-                <img src="/logo-round.png" alt="Homefront Builders Logo" className="w-full h-full object-cover" />
+                <img src="/logo-round.webp" alt="Homefront Builders Logo" className="w-full h-full object-cover" />
               </div>
               <div>
                 <h3 className="text-white font-serif text-lg leading-tight">Homefront Assistant</h3>
@@ -97,7 +97,7 @@ export default function ChatWidget() {
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
                     <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 mr-2 mt-1 shadow-sm">
-                      <img src="/logo-round.png" alt="HFB" className="w-full h-full object-cover" />
+                      <img src="/logo-round.webp" alt="HFB" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div
@@ -120,7 +120,7 @@ export default function ChatWidget() {
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 mr-2 mt-1 shadow-sm">
-                    <img src="/logo-round.png" alt="HFB" className="w-full h-full object-cover" />
+                    <img src="/logo-round.webp" alt="HFB" className="w-full h-full object-cover" />
                   </div>
                   <div className="bg-white rounded-2xl rounded-tl-sm border border-gray-100 p-3 shadow-sm flex items-center gap-1.5 h-[44px]">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]" />

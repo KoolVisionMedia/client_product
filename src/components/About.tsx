@@ -57,7 +57,7 @@ export default function About() {
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.img 
-              src="/assets/DSC04388-Edit.jpg" 
+              src="/assets/DSC04388-Edit.webp"
               alt="Luxury Home Exterior" 
               className="w-full h-full object-cover"
               loading="lazy"
@@ -73,7 +73,7 @@ export default function About() {
           >
              <div className="w-full h-full overflow-hidden">
                 <motion.img 
-                  src="/assets/Harmony.jpg" 
+                  src="/assets/Harmony.webp"
                   alt="Luxury Home Interior" 
                   className="w-full h-full object-cover"
                   loading="lazy"

@@ -59,7 +59,7 @@ const featuredReviews = [
     platform: 'Google' as const,
     date: 'November 2024',
     text: "Building our forever home with Homefront Builders was an absolute dream. From the first sketch to the final walkthrough, the attention to detail was breathtaking. They didn't just build a house; they understood exactly how we wanted to live.",
-    image: '/assets/DSC04388-Edit.jpg',
+    image: '/assets/DSC04388-Edit.webp',
   },
   {
     name: 'David Richardson',
@@ -220,7 +220,7 @@ const ReviewCard = ({ review }: { review: any }) => (
     </div>
     <p className="font-sans text-xs md:text-sm text-white/70 leading-relaxed flex-1 whitespace-pre-line">{review.text}</p>
     <div className="flex items-center justify-between pt-2 border-t border-white/10">
-      <p className="font-sans text-[10px] text-white/30 uppercase tracking-widest">{review.date}</p>
+      <p className="font-sans text-[10px] text-white/60 uppercase tracking-widest">{review.date}</p>
       {review.source === 'Google' ? <GoogleLogo /> : <FacebookLogo />}
     </div>
   </div>
@@ -313,7 +313,7 @@ export default function Testimonials() {
       <section ref={heroRef} className="relative h-[400px] md:h-[450px] overflow-hidden">
         {/* Parallax background */}
         <motion.div className="absolute inset-0 scale-110" style={{ y: heroImageY }}>
-          <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.jpg"
+          <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.webp"
             alt="Luxury Home"
             className="w-full h-full object-cover"
           />
@@ -440,7 +440,7 @@ export default function Testimonials() {
         {/* Blueprint background accent */}
         <div 
           className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-multiply"
-          style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           

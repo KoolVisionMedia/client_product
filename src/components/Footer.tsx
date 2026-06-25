@@ -13,13 +13,13 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3 mb-8">
               <img
-                src="/logo-round.png"
+                src="/logo-round.webp"
                 alt="Homefront Builders"
                 className="w-14 h-14 object-contain filter invert brightness-0"
                 onError={(e) => {
                   if (e.currentTarget.getAttribute('data-fallback') !== 'true') {
                     e.currentTarget.setAttribute('data-fallback', 'true');
-                    e.currentTarget.src = "/logo-round.png.png";
+                    e.currentTarget.src = "/logo-round.png";
                   }
                 }}
               />
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 className="font-sans uppercase tracking-[0.3em] text-[10px] text-white/30 mb-8 border-b border-white/10 pb-4">Navigate</h4>
+            <h4 className="font-sans uppercase tracking-[0.3em] text-[10px] text-white/60 mb-8 border-b border-white/10 pb-4">Navigate</h4>
             <ul className="space-y-4 font-sans text-xs text-white/60 tracking-widest uppercase">
               <li><Link to="/" className="hover:text-[#c9a96e] transition-colors">Home</Link></li>
               <li><Link to="/about-us" className="hover:text-[#c9a96e] transition-colors">About Us</Link></li>
@@ -61,7 +61,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div className="lg:col-span-2">
-            <h4 className="font-sans uppercase tracking-[0.3em] text-[10px] text-white/30 mb-8 border-b border-white/10 pb-4">Resources</h4>
+            <h4 className="font-sans uppercase tracking-[0.3em] text-[10px] text-white/60 mb-8 border-b border-white/10 pb-4">Resources</h4>
             <ul className="space-y-4 font-sans text-xs text-white/60 tracking-widest uppercase">
               <li><Link to="/warranties" className="hover:text-[#c9a96e] transition-colors">Warranties</Link></li>
               <li><Link to="/contact-us" className="hover:text-[#c9a96e] transition-colors">Contact</Link></li>
@@ -72,7 +72,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="lg:col-span-3">
-            <h4 className="font-sans uppercase tracking-[0.3em] text-[10px] text-white/30 mb-8 border-b border-white/10 pb-4">Contact</h4>
+            <h4 className="font-sans uppercase tracking-[0.3em] text-[10px] text-white/60 mb-8 border-b border-white/10 pb-4">Contact</h4>
             <ul className="space-y-5 font-sans text-xs text-white/60 tracking-wide leading-loose">
               <li className="flex items-start gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mt-1 shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -92,12 +92,12 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 gap-6">
-          <p className="font-sans text-[10px] text-white/25 tracking-[0.2em] uppercase">
+          <p className="font-sans text-[10px] text-white/50 tracking-[0.2em] uppercase">
             &copy; {new Date().getFullYear()} Homefront Builders. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link to="/privacy-policy" className="font-sans text-[10px] text-white/25 tracking-[0.15em] uppercase hover:text-white/50 transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="font-sans text-[10px] text-white/25 tracking-[0.15em] uppercase hover:text-white/50 transition-colors">Terms of Service</Link>
+            <Link to="/privacy-policy" className="font-sans text-[10px] text-white/50 tracking-[0.15em] uppercase hover:text-white/50 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="font-sans text-[10px] text-white/50 tracking-[0.15em] uppercase hover:text-white/50 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

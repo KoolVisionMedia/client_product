@@ -12,7 +12,7 @@ const posts = [
     excerpt: 'Exploring the timeless elements that make the modern farmhouse a favorite for Middle Tennessee families. From wrap-around porches to soaring vaulted ceilings, discover how we blend rustic charm with modern luxury.',
     date: 'May 12, 2024',
     category: 'Design Trends',
-    image: '/assets/Harmony.jpg',
+    image: '/assets/Harmony.webp',
     slug: 'modern-farmhouse-design'
   },
   {
@@ -65,7 +65,7 @@ export default function Blog() {
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
-          src="/assets/DSC04388-Edit.jpg"
+          src="/assets/DSC04388-Edit.webp"
           alt="Blog Hero Background"
           className="absolute inset-0 w-full h-full object-cover"
         />

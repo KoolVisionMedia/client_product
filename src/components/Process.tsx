@@ -71,7 +71,7 @@ export default function Process() {
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div 
           className="absolute inset-0 opacity-15"
-          style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+          style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         ></div>
         {/* Subtle dark tint */}
         <div className="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
@@ -175,7 +175,7 @@ export default function Process() {
                 className="absolute -top-12 -right-12 md:-top-16 md:-right-16 w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 md:border-4 border-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] bg-white shrink-0 z-30 pointer-events-none"
               >
                 <img
-                  src="/logo-round.png"
+                  src="/logo-round.webp"
                   alt="Homefront Builders Logo"
                   className="w-full h-full object-cover"
                 />
@@ -220,7 +220,7 @@ export default function Process() {
                 >
                   <span className="text-accent font-serif text-3xl md:text-5xl font-bold leading-none">{processSteps[activeStep].letter}</span>
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-accent/30"></div>
-                  <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-semibold text-primary/40 bg-primary/5 px-3 py-1 rounded-full">Step 0{activeStep + 1}</span>
+                  <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-semibold text-primary/70 bg-primary/5 px-3 py-1 rounded-full">Step 0{activeStep + 1}</span>
                 </motion.div>
                 
                 <motion.h4 
