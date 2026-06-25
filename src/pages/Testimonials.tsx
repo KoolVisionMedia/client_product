@@ -414,7 +414,10 @@ export default function Testimonials() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">From Our Community</p>
-            <h2 className="font-serif text-5xl md:text-6xl text-white">Community Voices</h2>
+            <h2 className="font-serif text-5xl md:text-6xl text-white mb-6">Community Voices</h2>
+            <p className="font-sans text-white/80 max-w-2xl mx-auto md:mx-0 leading-relaxed text-lg">
+              Hear directly from the families and partners who have experienced the Homefront Builders difference. Their stories reflect our unwavering commitment to craftsmanship, transparency, and lasting relationships.
+            </p>
           </motion.div>
         </div>
 
