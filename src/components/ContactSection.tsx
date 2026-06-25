@@ -144,18 +144,18 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
         {showWhyUs && (
           <>
-            {/* Scroll-Driven Header with Green Round Logo to the right */}
-            <div className="flex items-center justify-center gap-4 md:gap-8 mb-6 relative z-20">
-              <h2 className="font-serif text-[3.5rem] md:text-[6rem] lg:text-[8rem] tracking-tight text-primary leading-none select-none font-bold">
-                Share your vision.
-              </h2>
-              <div className="w-14 h-14 md:w-20 md:h-20 lg:w-28 lg:h-28 rounded-full overflow-hidden shrink-0 border border-[#c9a96e]/15 shadow-md bg-white flex items-center justify-center">
+            {/* Scroll-Driven Header with Green Round Logo overtop */}
+            <div className="flex flex-col items-center justify-center gap-4 md:gap-6 mb-6 relative z-20 text-center">
+              <div className="w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden shrink-0 border border-[#c9a96e]/15 shadow-md bg-white flex items-center justify-center">
                 <img
                   src="/logo-round.png"
                   alt="Homefront Builders Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
+              <h2 className="font-serif text-[3.5rem] md:text-[6rem] lg:text-[8rem] tracking-tight text-primary leading-none select-none font-bold">
+                Share your vision.
+              </h2>
             </div>
 
             {/* Elegant Subtitle */}
