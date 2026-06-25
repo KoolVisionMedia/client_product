@@ -65,7 +65,7 @@ export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section id="process" className="py-24 lg:py-32 bg-white px-6 md:px-12 relative z-10 overflow-hidden border-t border-gray-100">
+    <section id="process" className="py-24 lg:py-32 bg-gradient-to-br from-[#2a3826]/95 to-[#121c10]/95 backdrop-blur-xl px-6 md:px-12 relative z-10 overflow-hidden border-y border-[#c9a96e]/30">
       
       {/* Blueprint background accent */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -91,7 +91,7 @@ export default function Process() {
             Our Methodology
           </motion.h2>
           
-          <div className="flex flex-wrap justify-center overflow-hidden font-serif text-5xl md:text-6xl lg:text-7xl text-primary leading-tight">
+          <div className="flex flex-wrap justify-center overflow-hidden font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-tight">
             {headingText.map((char, i) => (
               <motion.span
                 key={i}
@@ -124,20 +124,20 @@ export default function Process() {
                     className={`cursor-pointer rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden group
                       w-[80px] md:w-[100px] lg:w-[120px] h-[110px] md:h-[135px] lg:h-[160px]
                       ${isActive 
-                        ? 'bg-primary text-white border-primary shadow-xl scale-[1.12] z-10' 
-                        : 'bg-surface/90 text-accent border-gray-100 hover:bg-white hover:shadow-md hover:scale-[1.05] hover:-translate-y-1 z-0'
+                        ? 'bg-accent text-white border-accent shadow-xl scale-[1.12] z-10' 
+                        : 'bg-[#1b2518]/60 text-white/70 border-[#c9a96e]/20 hover:bg-[#c9a96e]/20 hover:text-white hover:shadow-md hover:scale-[1.05] hover:-translate-y-1 z-0 backdrop-blur-md'
                       }`}
                   >
                     {isActive && (
-                      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-accent to-accent-dark"></div>
+                      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-white/40 to-transparent"></div>
                     )}
                     <span className={`font-serif leading-none select-none drop-shadow-sm transition-all duration-300
-                      ${isActive ? 'text-[60px] md:text-[80px] lg:text-[100px] text-white' : 'text-[50px] md:text-[60px] lg:text-[80px] text-accent'}
+                      ${isActive ? 'text-[60px] md:text-[80px] lg:text-[100px] text-white' : 'text-[50px] md:text-[60px] lg:text-[80px] text-white/70 group-hover:text-[#c9a96e]'}
                     `}>
                       {step.letter}
                     </span>
                     <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-full transition-colors
-                      ${isActive ? 'bg-white/10 text-white/90' : 'bg-primary/5 text-primary/60 opacity-0 group-hover:opacity-100'}
+                      ${isActive ? 'bg-white/20 text-white/90' : 'bg-white/5 text-white/50 opacity-0 group-hover:opacity-100'}
                     `}>
                       0{index + 1}
                     </span>
