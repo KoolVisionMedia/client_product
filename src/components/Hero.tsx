@@ -1,22 +1,45 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function Hero() {
+  // Only load the hero video on larger screens (and when motion is allowed).
+  // Mobile visitors get the lightweight poster image instead, which avoids a
+  // multi-MB video download — the biggest mobile performance win on this page.
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    const canPlay =
+      window.matchMedia('(min-width: 768px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (canPlay) setShowVideo(true);
+  }, []);
+
   return (
     <section className="relative pt-[100px] bg-white overflow-hidden" id="home">
       {/* Full Width Video Container */}
       <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden shadow-sm">
-        {/* Hero Background Video */}
+        {/* Hero Background */}
         <div className="absolute inset-0 w-full h-full bg-black/50">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
+          {/* Poster image — the LCP element; loads instantly on every device */}
+          <img
+            src="/assets/hero-poster.webp"
+            alt="Luxury custom home built by Homefront Builders"
             className="absolute inset-0 w-full h-full object-cover z-0"
-          >
-            <source src="/background-video.mp4" type="video/mp4" />
-          </video>
+            fetchPriority="high"
+          />
+          {showVideo && (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="/assets/hero-poster.webp"
+              className="absolute inset-0 w-full h-full object-cover z-0"
+            >
+              <source src="/background-video-optimized.mp4" type="video/mp4" />
+            </video>
+          )}
           <div className="absolute inset-0 bg-black/40 z-10"></div> {/* Dark Overlay */}
         </div>
 
