@@ -202,8 +202,7 @@ export default function ProcessPage() {
                     </div>
 
                     <div className="rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 aspect-[16/9] md:aspect-[3/2] max-w-3xl">
-                      <img 
-                        src={step.image} 
+                      <img loading="lazy" decoding="async" src={step.image} 
                         alt={step.title} 
                         className="w-full h-full object-cover transition-transform duration-[1s] ease-out hover:scale-[1.03]"
                       />

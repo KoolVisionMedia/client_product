@@ -30,8 +30,7 @@ function ChatBubble({ sender, name, avatar, message, time, range, scrollYProgres
     >
       {/* Avatar */}
       <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-primary/10 shadow-sm bg-white flex items-center justify-center">
-        <img
-          src={avatar}
+        <img loading="lazy" decoding="async" src={avatar}
           alt={name}
           className="w-full h-full object-cover"
         />
@@ -436,7 +435,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-3"
           >

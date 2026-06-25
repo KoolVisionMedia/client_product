@@ -164,7 +164,7 @@ export default function Floorplans() {
               {/* Cover Page (Booklet Cover Image) */}
               <div className="bookshelf-book-cover shadow-[4px_4px_15px_rgba(0,0,0,0.25)] rounded-r-[4px]">
                 <div className="absolute inset-0 z-10 backface-hidden rounded-r-[4px] overflow-hidden">
-                  <img src="/assets/floorplans/floorplan-booklet-cover.png" alt="Booklet Cover" className="w-full h-full object-cover object-top" />
+                  <img loading="lazy" decoding="async" src="/assets/floorplans/floorplan-booklet-cover.png" alt="Booklet Cover" className="w-full h-full object-cover object-top" />
                   <div className="absolute inset-0 bg-gradient-to-t from-accent/95 via-primary/60 to-primary/20 flex flex-col justify-end p-6 text-white">
                     <span className="font-sans text-[8px] uppercase tracking-[0.2em] mb-1.5 text-white">Master Booklet</span>
                     <h4 className="font-serif text-lg md:text-xl text-white font-medium m-0 leading-tight">Floorplan Booklet</h4>
@@ -202,8 +202,7 @@ export default function Floorplans() {
               onClick={() => setSelectedPlan(plan)}
             >
               <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={plan.exterior} 
+                <img loading="lazy" decoding="async" src={plan.exterior} 
                   alt={plan.title} 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -261,8 +260,7 @@ export default function Floorplans() {
                 {/* Left Column: Info & Specs */}
                 <div className="w-full lg:w-[38%] bg-surface p-5 md:p-7 flex flex-col gap-3 lg:overflow-y-auto shrink-0">
                   <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden shadow-sm border border-gray-200/50 bg-white shrink-0">
-                    <img 
-                      src={selectedPlan.exterior} 
+                    <img loading="lazy" decoding="async" src={selectedPlan.exterior} 
                       alt={selectedPlan.title} 
                       className="w-full h-full object-cover"
                     />
@@ -333,8 +331,7 @@ export default function Floorplans() {
                           {i === 0 && selectedPlan.plans.length > 1 ? 'Main Level' : i === 1 && selectedPlan.plans.length > 1 ? 'Upper Level' : 'Floor Plan'}
                         </div>
                         
-                        <img 
-                          src={planImg} 
+                        <img loading="lazy" decoding="async" src={planImg} 
                           alt={`${selectedPlan.title} Layout ${i + 1}`} 
                           className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover/blueprint:scale-[1.01]"
                         />
@@ -356,8 +353,7 @@ export default function Floorplans() {
             <div className="lg:col-span-6 flex justify-center order-2 lg:order-1">
               <div className="perspective-1200 w-full max-w-lg">
                 <div className="transform-style-3d shadow-2xl rounded-2xl overflow-hidden border border-gray-100 transition-all duration-500 hover:rotate-y-6 hover:rotate-x-3 bg-surface p-4">
-                  <img 
-                    src="/assets/floorplans/steps-to-building-image.png" 
+                  <img loading="lazy" decoding="async" src="/assets/floorplans/steps-to-building-image.png" 
                     alt="Steps to Building Your Custom Home" 
                     className="w-full h-auto object-contain rounded-xl"
                   />

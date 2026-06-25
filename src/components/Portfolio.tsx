@@ -59,8 +59,7 @@ const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: nu
       >
         {/* Left: Exterior Rendering */}
         <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden group">
-          <img 
-            src={plan.exterior} 
+          <img loading="lazy" decoding="async" src={plan.exterior} 
             alt={`${plan.title} Exterior`}
             className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105"
           />
@@ -86,8 +85,7 @@ const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: nu
                 to="/listings"
                 className="flex-1 min-w-0 min-h-0 bg-white rounded-[20px] shadow-sm border border-gray-100 flex items-center justify-center p-4 hover:shadow-lg transition-all duration-500 overflow-hidden group/plan relative cursor-pointer"
               >
-                <img 
-                  src={p} 
+                <img loading="lazy" decoding="async" src={p} 
                   alt={`${plan.title} Floor Plan ${i + 1}`} 
                   className="max-w-full max-h-full w-full h-full object-contain transition-transform duration-500 group-hover/plan:scale-105"
                 />

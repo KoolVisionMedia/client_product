@@ -6,8 +6,7 @@ export default function ContactUs() {
     <div>
       {/* Hero Banner */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <img
-          src="/assets/content2.jpg"
+        <img loading="lazy" decoding="async" src="/assets/content2.jpg"
           alt="Homefront Builders"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />

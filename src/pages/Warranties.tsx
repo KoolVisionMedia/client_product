@@ -52,8 +52,7 @@ export default function Warranties() {
     <div>
       {/* Hero Banner */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <img
-          src="/assets/content2.jpg"
+        <img loading="lazy" decoding="async" src="/assets/content2.jpg"
           alt="Homefront Builders Warranty"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
@@ -82,7 +81,7 @@ export default function Warranties() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             >
               <span className="block w-10 h-[1px] bg-[#c9a96e] mb-6" />
@@ -113,7 +112,7 @@ export default function Warranties() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-col items-center gap-8"
             >
@@ -125,8 +124,7 @@ export default function Warranties() {
                 />
                 <div className="h-[1px] w-full bg-primary/10" />
                 <a href="https://simplebooklet.com/qbw_warrantybook1122singlec#page=1" target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:opacity-90 transition-opacity">
-                  <img
-                    src="/assets/qbw_book.png"
+                  <img loading="lazy" decoding="async" src="/assets/qbw_book.png"
                     alt="QBW Warranty Book"
                     className="w-full max-w-[320px] object-contain rounded-lg shadow-lg hover:shadow-xl transition-shadow"
                   />
@@ -147,7 +145,7 @@ export default function Warranties() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col items-center text-center mb-12"
           >
@@ -161,13 +159,12 @@ export default function Warranties() {
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="w-full bg-[#F4F3F0] rounded-3xl p-4 md:p-8 shadow-sm flex flex-col items-center"
           >
             <a href="https://simplebooklet.com/qbw_warrantybook1122singlec#page=1" target="_blank" rel="noopener noreferrer" className="block w-full cursor-pointer hover:opacity-95 transition-opacity">
-              <img 
-                src="/assets/qbw_info.jpg" 
+              <img loading="lazy" decoding="async" src="/assets/qbw_info.jpg" 
                 alt="QBW Premier Protection Plan Coverage Map" 
                 className="w-full h-auto object-contain rounded-xl shadow-md hover:shadow-xl transition-shadow"
               />
@@ -197,7 +194,7 @@ export default function Warranties() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="text-center mb-16"
           >
@@ -257,7 +254,7 @@ export default function Warranties() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="flex items-center justify-center gap-2 mb-5">

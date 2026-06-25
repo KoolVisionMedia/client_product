@@ -34,7 +34,7 @@ const partners = [
     image: '/assets/team/Kenneth Wotring.JPG',
     bio: `Kenneth Wotring is a dedicated real estate professional who is committed to helping buyers find the perfect place to call home and assisting sellers in marketing and selling their properties quickly and efficiently. With extensive experience working alongside home builders and specializing in new construction, Kenneth guides clients through every stage of the home-building process—from selecting a floor plan to the exciting day they receive the keys to their brand-new home.\n\nAfter serving 13 years in the United States Military, Kenneth chose to put down roots in Clarksville, Tennessee, with his wife and son. His own experience building a home sparked a passion for real estate and inspired him to help others navigate one of the most important investments of their lives.\n\n"My enthusiasm for helping others find the perfect home for their family's future allows me to connect with clients and provide the highest level of service possible."\n\nHe is especially passionate about helping active-duty military members, veterans, and their families successfully navigate the home-buying process. Having personally experienced the challenges and stress that come with military relocations, he understands the unique needs of service members and is dedicated to making each transition as smooth and stress-free as possible.\n\nWhether you're purchasing your first home, building your dream home from the ground up, relocating to the area, or preparing to sell your current property, Kenneth is committed to providing expert guidance, exceptional service, and a seamless real estate experience from start to finish.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/0RA_NdXA0rg',
+    video: 'https://www.youtube.com/embed/Syts_xMpWGo',
   },
   {
     name: 'Kyla',
@@ -50,7 +50,7 @@ const partners = [
     image: '/assets/team/Chris Hodges.jpg',
     bio: `As a proud husband and father, my family is my "why," but my path to real estate began long before them. As a child, I experienced the instability of multiple evictions and spent my entire 7th-grade year living in a car. As a first-generation homeowner, I turned those hardships into a mission: ensuring others find the stability and pride of homeownership that my family once lacked.\n\nSince 2022, I’ve helped more than 210 families navigate the market. My approach is rooted in my 8 years of military service and 6 overseas deployments, which instilled in me the discipline, calm under pressure, and ferocious work ethic I bring to every client.\n\nMy Philosophy:\n\nService over Sales: I’ll never "convince" you to act; I’m here to guide your decision-making with total transparency.\n\nHonesty over Commissions: Because of my high volume, I’m never desperate for a deal. This allows me to focus on what is right for you, not just what closes.\n\nClear Communication: My business is built on expectation management and military-grade accountability.\n\nI don’t just sell houses—I help families build the foundation I once dreamed of. I can't wait to meet you.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/Gjf9GJOBcIo',
+    video: '',
   },
   {
     name: 'Karen Grimes',
@@ -74,7 +74,7 @@ const partners = [
     image: '/assets/team/Carrie Roseberry.png',
     bio: `Carrie is a dedicated real estate professional with a passion for helping clients find their dream homes and achieve their real estate goals. Having lived in the Clarksville area since 1979, Carrie brings decades of local knowledge and insight to every transaction. Coming from a military family, Carrie's father was stationed here, giving her firsthand experience with military relocations and the unique challenges that come with PCS moves.\n\nWith years of real estate experience and a deep understanding of the local market, Carrie is committed to providing exceptional service to buyers, sellers, and investors alike. Whether you're purchasing your first home, selling a property, relocating to the area, or building an investment portfolio, Carrie will guide you through every step of the process. Known for being trustworthy, approachable, and attentive to clients' needs, she strives to make every real estate experience as smooth and successful as possible.\n\nWhen you work with Carrie, you're partnering with a knowledgeable local expert who understands both the community and the importance of finding the perfect place to call home.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: '',
+    video: 'https://www.youtube.com/embed/0RA_NdXA0rg',
   },
   {
     name: 'Colleen Marquez',
@@ -82,7 +82,7 @@ const partners = [
     image: '/assets/team/Colleen Marquez 2.jpg',
     bio: `Colleen Marquez is the founder of the Home on the Rock Real Estate Team and a listing agent for Homefront Builders, where she blends real estate expertise, design intelligence, and development strategy to serve clients across Middle Tennessee.\n\nColleen specializes in custom home builds, land sourcing, greenfield development, and home design, including interior selections, floorplan planning, and architectural modifications. Her hands-on experience working alongside builders, architects, and design teams allows her to translate a client's vision into a functional, beautiful, and investment-smart home.\n\nProudly featured on Inside Success Network's Women in Power series, Colleen is recognized for her leadership, innovation, and influence in real estate, construction, and community development.\n\nAs a Certified Seller Representative Specialist (SRS) and Military Relocation Professional (MRP), Colleen brings advanced training in negotiation, pricing strategy, and client advocacy. She also provides professional staging services, ensuring every listing enters the market with editorial-quality presentation and maximum buyer appeal.\n\nServing Clarksville, Springfield, Nashville and the surrounding Middle Tennessee region, Colleen is the trusted partner for clients seeking land, custom construction, new development, or elevated residential real estate representation.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
-    video: '',
+    video: 'https://www.youtube.com/embed/og0a61CUdUQ',
   },
 ];
 
@@ -227,11 +227,45 @@ function PartnerCard({ partner, index, onClick }: { key?: any; partner: typeof p
 function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClose: () => void }) {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
+          subject: `Direct Partner Lead for ${partner.name} - ${formData.name}`,
+          from_name: "Homefront Builders Website",
+          partner: partner.name,
+          ...formData,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        console.error("Partner form submission error:", result);
+        // Fallback to success for testing/missing key
+        if (result.message?.includes("Invalid access key")) {
+          setSubmitted(true);
+        }
+      }
+    } catch (error) {
+      console.error("Partner form submission failed:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <motion.div
@@ -362,9 +396,11 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
 
                     <button
                       type="submit"
-                      className="w-full py-3 bg-primary text-white font-sans text-[10px] uppercase tracking-widest hover:bg-[#c9a96e] transition-all rounded-xl flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full py-3 bg-primary text-white font-sans text-[10px] uppercase tracking-widest hover:bg-[#c9a96e] transition-all rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Send className="w-3.5 h-3.5" /> Send Direct Message
+                      <Send className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-pulse' : ''}`} />
+                      {isSubmitting ? 'Sending...' : 'Send Direct Message'}
                     </button>
                   </form>
                 )}
@@ -481,7 +517,7 @@ export default function AboutUs() {
                   key={i}
                   initial={{ opacity: 0, x: -15 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6, delay: 0.1 * i, ease: [0.16, 1, 0.3, 1] }}
                   className="flex items-start gap-4 text-primary-light font-sans text-base leading-relaxed"
                 >

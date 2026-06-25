@@ -7,7 +7,7 @@ export default function StayConnected() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1 }}
         >
           <h2 className="text-[10px] font-sans tracking-[0.3em] uppercase text-accent mb-4">Stay Connected</h2>
@@ -18,7 +18,7 @@ export default function StayConnected() {
           className="text-primary-light font-sans max-w-xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, delay: 0.1 }}
         >
           Sign up to receive exclusive construction updates, local market insights, and a first look at our upcoming custom estates.
@@ -28,7 +28,7 @@ export default function StayConnected() {
           className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto pt-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, delay: 0.2 }}
         >
           <input 

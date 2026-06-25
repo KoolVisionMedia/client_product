@@ -14,6 +14,19 @@
   --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
   --animate-spin-slow: spin 20s linear infinite;
+  
+  --animate-marquee-up: marquee-up 40s linear infinite;
+  --animate-marquee-down: marquee-down 40s linear infinite;
+}
+
+@keyframes marquee-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes marquee-down {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
 }
 
 html {

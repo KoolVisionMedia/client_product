@@ -37,6 +37,22 @@ const FacebookLogo = () => (
 
 const featuredReviews = [
   {
+    name: 'Jerry Turner',
+    location: 'Clarksville (Lender Review)',
+    platform: 'Google' as const,
+    date: '2 weeks ago',
+    text: "As a lender who specializes in construction loans, I've seen firsthand how important it is for buyers to choose the right builder... Their team takes the time to listen to what people want, work within their budget, and create a plan that fits their goals rather than trying to force a one-size-fits-all approach.",
+    image: '/assets/about.jpg',
+  },
+  {
+    name: 'bailey graven',
+    location: 'Clarksville Custom Homeowner',
+    platform: 'Google' as const,
+    date: '2 weeks ago',
+    text: "Homefront built us the custom home of our dreams! They kept us informed throughout the whole process, and always stayed ahead of things. the communication between the entire team as well as with us was great... The build quality is beautiful too. Unique and unlike other homes you find in Clarksville.",
+    image: '/assets/content1.jpg',
+  },
+  {
     name: 'Sarah & Michael Thompson',
     location: 'Legacy Court Residence',
     platform: 'Google' as const,
@@ -60,6 +76,51 @@ const featuredReviews = [
     text: "We interviewed four builders, but Homefront was the only one who truly listened to our specific needs for a multi-generational layout. The result is a stunning home that functions perfectly for our entire family.",
     image: '/assets/Magnolia.jpg',
   },
+];
+
+const googleReviews = [
+  {
+    name: 'Jerry Turner',
+    role: 'Local Guide · Lender',
+    image: null,
+    date: '2 weeks ago',
+    text: "As a lender who specializes in construction loans, I've seen firsthand how important it is for buyers to choose the right builder. Building a custom home is a much more involved process than purchasing an existing home, and not all builders are created equal when it comes to communication, organization, and helping clients navigate the many decisions along the way.\n\nI've gotten to know the team at Homefront Builders through several clients who have built with them, and I've been consistently impressed with how they handle the entire process. Their 'Trees to Keys' approach really reflects how involved they are from start to finish.",
+  },
+  {
+    name: 'bailey graven',
+    role: 'Clarksville Homeowner',
+    image: null,
+    date: '2 weeks ago',
+    text: "Homefront built us the custom home of our dreams! They kept us informed throughout the whole process, and always stayed ahead of things. the communication between the entire team as well as with us was great. even after closing and moving in, they still answer our questions and emails promptly.\n\nThe build quality is beautiful too. Unique and unlike other homes you find in Clarksville. I’m very happy to have a Homefront home.",
+  },
+  {
+    name: 'Mia Scimeca',
+    role: 'Repeat Client',
+    image: null,
+    date: '2 weeks ago',
+    text: "I’ve built many houses with homefront builders, their process is just so simplified. They understand that building a house is very scary and it’s not simple. But they are extremely comforting and easy to contact and they walk you through it step-by-step.",
+  },
+  {
+    name: 'Tymberlan De Jesus-Alexander',
+    role: 'Local Guide',
+    image: null,
+    date: '2 weeks ago',
+    text: "So great and easy to work with! Very knowledgeable and communicative too!",
+  },
+  {
+    name: 'Durrk Broham',
+    role: 'Client',
+    image: null,
+    date: '1 week ago',
+    text: "These guys are tubular. Super straightforward and easy communication throughout the build, and the price was great.",
+  },
+  {
+    name: 'Karen Priest',
+    role: 'Client',
+    image: null,
+    date: '1 week ago',
+    text: "Highly professional custom home building experience in Clarksville. The team is very attentive and responsive to questions.",
+  }
 ];
 
 // Facebook reviews — names redacted to initials per client privacy
@@ -111,64 +172,84 @@ const communityImages = [
   '/assets/Magnolia.jpg',
 ];
 
-// ── Interactive Velocity-Based Carousel ───────────────────────────────
-type FeaturedReview = typeof featuredReviews[0];
+// ── Interactive Masonry Marquee ─────────────────────────────────
+const allReviews = [
+  ...featuredReviews.map(r => ({
+    name: r.name,
+    role: r.location || r.role,
+    date: r.date,
+    text: r.text,
+    source: r.platform || 'Google',
+    image: r.image,
+  })),
+  ...googleReviews.map(r => ({
+    name: r.name,
+    role: r.role,
+    date: r.date,
+    text: r.text,
+    source: 'Google',
+    image: r.image,
+  })),
+  ...facebookReviews.map(r => ({
+    name: r.initials,
+    role: 'Facebook Recommendation',
+    date: r.date,
+    text: r.text,
+    source: 'Facebook',
+    image: r.image,
+  }))
+];
 
-const VelocityCarousel = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollX } = useScroll({ container: containerRef });
-  const scrollVelocity = useVelocity(scrollX);
-  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-  
-  const blur = useTransform(smoothVelocity, [-2000, 0, 2000], [12, 0, 12]);
-  const scale = useTransform(smoothVelocity, [-2000, 0, 2000], [0.94, 1, 0.94]);
-  const rotateY = useTransform(smoothVelocity, [-2000, 0, 2000], [8, 0, -8]);
-  const filter = useTransform(blur, b => `blur(${b}px)`);
+const col1 = allReviews.filter((_, i) => i % 3 === 0);
+const col2 = allReviews.filter((_, i) => i % 3 === 1);
+const col3 = allReviews.filter((_, i) => i % 3 === 2);
 
+const ReviewCard = ({ review }: { review: any }) => (
+  <div className="bg-white/[0.05] border border-white/10 rounded-2xl p-7 flex flex-col gap-5 hover:bg-white/[0.08] transition-all duration-300 w-full mb-6">
+    <div className="flex items-center gap-4">
+      {review.image ? (
+        <img loading="lazy" src={review.image} alt={review.name} className="w-12 h-12 rounded-full object-cover flex-none border border-white/10" />
+      ) : (
+        <div className="w-12 h-12 rounded-full overflow-hidden flex-none bg-[#2a3628] border border-white/10 flex items-center justify-center">
+          <span className="font-serif text-[#c9a96e] text-sm select-none">
+            {review.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+          </span>
+        </div>
+      )}
+      <div>
+        <p className="font-serif text-white text-lg leading-tight">{review.name}</p>
+        <p className="font-sans text-[10px] text-[#c9a96e] tracking-wider mt-0.5">{review.role}</p>
+        <div className="mt-1">
+          <Stars size={10} />
+        </div>
+      </div>
+    </div>
+    <p className="font-sans text-xs md:text-sm text-white/70 leading-relaxed flex-1 whitespace-pre-line">{review.text}</p>
+    <div className="flex items-center justify-between pt-2 border-t border-white/10">
+      <p className="font-sans text-[10px] text-white/30 uppercase tracking-widest">{review.date}</p>
+      {review.source === 'Google' ? <GoogleLogo /> : <FacebookLogo />}
+    </div>
+  </div>
+);
+
+const MasonryMarquee = () => {
   return (
-    <div 
-      ref={containerRef}
-      className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-none px-6 md:px-12 pb-16 pt-4"
-      style={{ perspective: 1500 }}
-    >
-      {featuredReviews.map((review, i) => (
-        <motion.div
-          key={review.name}
-          style={{ scale, rotateY, filter }}
-          className="snap-center flex-none w-[85vw] md:w-[65vw] max-w-[900px] h-[65vh] min-h-[500px] rounded-3xl overflow-hidden relative shadow-[0_20px_50px_rgba(0,0,0,0.15)] group border border-black/5"
-        >
-          <img 
-            src={review.image} 
-            alt={review.name} 
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1b2518]/95 via-[#1b2518]/40 to-transparent" />
-          
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14 text-white">
-            <div className="flex items-center gap-3 mb-6 opacity-90">
-               {review.platform === 'Google' ? <GoogleLogo /> : <FacebookLogo />}
-               <span className="w-1 h-1 rounded-full bg-white/30" />
-               <Stars size={16} />
-               <span className="w-1 h-1 rounded-full bg-white/30" />
-               <span className="font-sans text-[10px] tracking-[0.2em] uppercase">{review.platform} Review</span>
-            </div>
-            
-            <blockquote className="font-serif text-2xl md:text-[34px] leading-snug italic mb-10 max-w-3xl drop-shadow-lg">
-              "{review.text}"
-            </blockquote>
-            
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <div>
-                <p className="font-serif text-2xl text-white mb-2">{review.name}</p>
-                <p className="font-sans text-[11px] tracking-[0.3em] uppercase text-[#c9a96e]">{review.location}</p>
-              </div>
-              <p className="font-sans text-[10px] tracking-[0.3em] uppercase text-white/40">{review.date}</p>
-            </div>
-          </div>
-        </motion.div>
-      ))}
-      <div className="flex-none w-[5vw] md:w-[20vw]" />
+    <div className="relative h-[900px] overflow-hidden scroll-mask flex gap-6 px-6 md:px-12 max-w-7xl mx-auto items-start pt-10">
+      <div className="flex-1 flex flex-col animate-marquee-up pt-10">
+        {[...col1, ...col1].map((review, i) => (
+          <ReviewCard key={`col1-${i}`} review={review} />
+        ))}
+      </div>
+      <div className="flex-1 flex flex-col animate-marquee-down hidden md:flex pb-10 mt-[-100px]">
+        {[...col2, ...col2].map((review, i) => (
+          <ReviewCard key={`col2-${i}`} review={review} />
+        ))}
+      </div>
+      <div className="flex-1 flex flex-col animate-marquee-up hidden lg:flex pt-20">
+        {[...col3, ...col3].map((review, i) => (
+          <ReviewCard key={`col3-${i}`} review={review} />
+        ))}
+      </div>
     </div>
   );
 };
@@ -204,8 +285,7 @@ export default function Testimonials() {
       <section ref={heroRef} className="relative h-[72vh] min-h-[520px] overflow-hidden">
         {/* Parallax background */}
         <motion.div className="absolute inset-0 scale-110" style={{ y: heroImageY }}>
-          <img
-            src="/assets/DSC04388-Edit.jpg"
+          <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.jpg"
             alt="Luxury Home"
             className="w-full h-full object-cover"
           />
@@ -263,7 +343,7 @@ export default function Testimonials() {
               key={item.label}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.9, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="flex items-center gap-5 border border-white/10 rounded-xl px-7 py-6 bg-white/[0.03]"
             >
@@ -282,79 +362,25 @@ export default function Testimonials() {
         </div>
       </section>
 
-      {/* ── Featured Reviews — sticky scroll stack ─────────────────── */}
-      <section>
-        <div className="px-6 md:px-12 max-w-7xl mx-auto pt-24 pb-8">
+      {/* ── Community Reviews Masonry ──────────────────────────────────── */}
+      <section className="py-24 bg-[#1b2518] overflow-hidden">
+        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-6 text-center md:text-left">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#B48C36] mb-4">Verified</p>
-            <h2 className="font-serif text-5xl md:text-6xl text-[#2E362C]">Featured Reviews</h2>
+            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">From Our Community</p>
+            <h2 className="font-serif text-5xl md:text-6xl text-white">Community Voices</h2>
           </motion.div>
         </div>
 
         <div className="relative">
-          <VelocityCarousel />
-        </div>
-      </section>
-
-      {/* ── Facebook Reviews Strip ──────────────────────────────────── */}
-      <section className="py-24 bg-[#1b2518]">
-        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Community Voices</p>
-            <h2 className="font-serif text-5xl md:text-6xl text-white">From Our Community</h2>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="flex items-center gap-2 text-white/40 text-[11px] font-sans tracking-widest uppercase"
-          >
-            <FacebookLogo />
-            <span>Facebook Reviews</span>
-          </motion.div>
-        </div>
-
-        {/* Horizontal scroll strip */}
-        <div className="flex gap-5 px-6 md:px-12 overflow-x-auto scrollbar-none pb-2">
-          {facebookReviews.map((r, i) => (
-            <motion.div
-              key={r.initials}
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="flex-none w-[300px] md:w-[340px] bg-white/[0.05] border border-white/10 rounded-2xl p-7 flex flex-col gap-5"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full overflow-hidden flex-none bg-[#2a3628] border border-white/10 flex items-center justify-center">
-                  {r.image
-                    ? <img src={r.image} alt={r.initials} className="w-full h-full object-cover" />
-                    : <span className="font-serif text-[#c9a96e] text-sm select-none">{r.initials}</span>
-                  }
-                </div>
-                <div>
-                  <p className="font-serif text-white text-lg">{r.initials}</p>
-                  <Stars size={11} />
-                </div>
-              </div>
-              <p className="font-sans text-sm text-white/70 leading-relaxed flex-1">{r.text}</p>
-              <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                <p className="font-sans text-[10px] text-white/30 uppercase tracking-widest">{r.date}</p>
-                <FacebookLogo />
-              </div>
-            </motion.div>
-          ))}
+          <MasonryMarquee />
+          {/* Subtle gradients to fade out the top and bottom of the masonry scroll */}
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#1b2518] to-transparent pointer-events-none z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#1b2518] to-transparent pointer-events-none z-10" />
         </div>
       </section>
 
@@ -367,7 +393,7 @@ export default function Testimonials() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
               <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Building Together</p>
@@ -401,7 +427,7 @@ export default function Testimonials() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5, y: 80 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 1.2, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <motion.div
@@ -412,8 +438,7 @@ export default function Testimonials() {
                     transition={{ repeat: Infinity, duration: config.duration, ease: "easeInOut", delay: config.delay }}
                     className="relative w-full rounded-xl md:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[6px] border-[#FAFAF5] group"
                   >
-                    <img 
-                      src={communityImages[i]} 
+                    <img loading="lazy" decoding="async" src={communityImages[i]} 
                       alt={`Community Event ${i + 1}`} 
                       className="w-full h-full object-cover aspect-[4/5] md:aspect-[3/4] transition-transform duration-[2s] group-hover:scale-110"
                     />
@@ -432,7 +457,7 @@ export default function Testimonials() {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="mb-14"
           >
@@ -453,12 +478,11 @@ export default function Testimonials() {
                 key={i}
                 initial={{ opacity: 0, scale: 0.96 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.85, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
                 className={`group relative overflow-hidden rounded-xl ${item.className}`}
               >
-                <img
-                  src={item.src}
+                <img loading="lazy" decoding="async" src={item.src}
                   alt={item.name}
                   className="w-full h-full object-cover transition-transform duration-[1.8s] group-hover:scale-110"
                 />
@@ -478,14 +502,14 @@ export default function Testimonials() {
         <motion.div
           initial={{ opacity: 0, scale: 0.7 }}
           whileInView={{ opacity: 0.06, scale: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute -right-48 -top-48 w-[700px] h-[700px] rounded-full bg-[#B48C36]"
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.7 }}
           whileInView={{ opacity: 0.04, scale: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 2.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute -left-32 -bottom-32 w-[500px] h-[500px] rounded-full bg-[#B48C36]"
         />
@@ -494,7 +518,7 @@ export default function Testimonials() {
           <motion.div
             initial={{ opacity: 0, y: 36 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-[10px] font-sans tracking-[0.45em] uppercase text-[#c9a96e] mb-7">Your Turn</p>

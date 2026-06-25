@@ -231,8 +231,7 @@ export default function Listings() {
     <div className="bg-white">
       {/* Hero Header */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <img
-          src="/assets/DSC04388-Edit.jpg"
+        <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.jpg"
           alt="Luxury Listing"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />

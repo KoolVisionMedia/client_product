@@ -13,7 +13,7 @@ export default function CustomCare() {
                className="w-full h-full overflow-hidden"
                initial={{ opacity: 0, scale: 1.1 }}
                whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
+               viewport={{ once: true, margin: "-100px" }}
                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
              >
                 <img 
@@ -26,7 +26,7 @@ export default function CustomCare() {
                className="absolute -bottom-8 -right-8 bg-primary p-12 text-white hidden md:block"
                initial={{ opacity: 0, x: 50 }}
                whileInView={{ opacity: 1, x: 0 }}
-               viewport={{ once: true }}
+               viewport={{ once: true, margin: "-100px" }}
                transition={{ duration: 1, delay: 0.5 }}
              >
                 <p className="font-serif text-3xl">Turn-Key <br/> Peace of Mind.</p>
@@ -38,7 +38,7 @@ export default function CustomCare() {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
               <h2 className="text-[10px] font-sans tracking-[0.3em] uppercase text-accent mb-6 flex items-center gap-4">
@@ -54,7 +54,7 @@ export default function CustomCare() {
               className="text-primary-light font-sans leading-loose text-lg max-w-xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.2 }}
             >
               Our relationship doesn’t end when we hand over the keys. Homefront Builders offers a comprehensive Custom Care program—a proactive maintenance service designed to protect your investment and keep your home performing at its peak for years to come.
@@ -65,7 +65,7 @@ export default function CustomCare() {
                  className="flex gap-4"
                  initial={{ opacity: 0, y: 20 }}
                  whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
+                 viewport={{ once: true, margin: "-100px" }}
                  transition={{ duration: 1, delay: 0.3 }}
                >
                   <ShieldCheck className="w-6 h-6 text-accent shrink-0" />
@@ -78,7 +78,7 @@ export default function CustomCare() {
                  className="flex gap-4"
                  initial={{ opacity: 0, y: 20 }}
                  whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
+                 viewport={{ once: true, margin: "-100px" }}
                  transition={{ duration: 1, delay: 0.4 }}
                >
                   <Clock className="w-6 h-6 text-accent shrink-0" />
@@ -92,7 +92,7 @@ export default function CustomCare() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.5 }}
               className="pt-8"
             >

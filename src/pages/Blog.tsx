@@ -93,8 +93,7 @@ export default function Blog() {
           >
             {/* Image Half */}
             <div className="lg:w-3/5 relative overflow-hidden aspect-video lg:aspect-auto">
-              <img
-                src={featuredPost.image}
+              <img loading="lazy" decoding="async" src={featuredPost.image}
                 alt={featuredPost.title}
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
@@ -153,8 +152,7 @@ export default function Blog() {
               >
                 <article className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full flex flex-col group">
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={post.image}
+                    <img loading="lazy" decoding="async" src={post.image}
                       alt={post.title}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
