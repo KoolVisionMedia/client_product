@@ -116,7 +116,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
       if (mapRef.current) {
         mapRef.current.configureFromQuickBuilder({
           "locations": [
-            {"title":"HomeFront Builders","address1":"1811 Memorial Cir","address2":"Clarksville, TN 37043, USA","coords":{"lat":36.515362457723924,"lng":-87.3104330932541},"placeId":"ChIJwVyv3y2CFIERnnSRyihCJmo"}
+            {"title":"Homefront Builders","address1":"1811 Memorial Cir","address2":"Clarksville, TN 37043, USA","coords":{"lat":36.515362457723924,"lng":-87.3104330932541},"placeId":"ChIJwVyv3y2CFIERnnSRyihCJmo"}
           ],
           "mapOptions": {"center":{"lat":38.0,"lng":-100.0},"fullscreenControl":true,"mapTypeControl":false,"streetViewControl":false,"zoom":4,"zoomControl":true,"maxZoom":17,"mapId":""},
           "mapsApiKey": (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyBd6VMiMtVB5p88LPPjSbRZR8Eo4lIlLPM",

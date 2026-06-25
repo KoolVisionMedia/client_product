@@ -135,7 +135,7 @@ const facebookReviews = [
     initials: 'K.T.',
     image: null,
     date: 'Jul 16, 2025',
-    text: '"HomeFront Builders and their team are hands down the best in middle Tennessee. They truly care about delivering a quality product to each and every client. Amber is an incredible architect who can take napkin drawings and turn them into the floorplan of your dreams. 10 out of 10 recommend!"',
+    text: '"Homefront Builders and their team are hands down the best in middle Tennessee. They truly care about delivering a quality product to each and every client. Amber is an incredible architect who can take napkin drawings and turn them into the floorplan of your dreams. 10 out of 10 recommend!"',
   },
   {
     initials: 'K.G.',
@@ -315,7 +315,7 @@ export default function Testimonials() {
     <div className="bg-[#FAFAF5] min-h-screen overflow-x-hidden">
 
       {/* ── Hero ───────────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative h-[72vh] min-h-[520px] overflow-hidden">
+      <section ref={heroRef} className="relative h-[400px] md:h-[450px] overflow-hidden">
         {/* Parallax background */}
         <motion.div className="absolute inset-0 scale-110" style={{ y: heroImageY }}>
           <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.jpg"

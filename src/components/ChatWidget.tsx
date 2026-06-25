@@ -10,7 +10,7 @@ interface Message {
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi there! I'm the HomeFront Builders virtual assistant. How can I help you today? Whether you have questions about our custom home process, floor plans, or available lots, I'm here to answer them." }
+    { role: 'assistant', content: "Hi there! I'm the Homefront Builders virtual assistant. How can I help you today? Whether you have questions about our custom home process, floor plans, or available lots, I'm here to answer them." }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);

@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "claude-haiku-4-5",
         max_tokens: 512,
-        system: `You are the virtual assistant for HomeFront Builders, Clarksville, Tennessee's premier custom home builder. Your role is to provide helpful, knowledgeable responses about HomeFront's services, process, listings, and team — and to capture leads for the sales team.
+        system: `You are the virtual assistant for Homefront Builders, Clarksville, Tennessee's premier custom home builder. Your role is to provide helpful, knowledgeable responses about Homefront's services, process, listings, and team — and to capture leads for the sales team.
 
 ABOUT HOMEFRONT BUILDERS:
 - Premium custom home builder based in Clarksville, TN

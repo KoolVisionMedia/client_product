@@ -33,7 +33,7 @@ export default function About() {
             viewport={{ once: true, margin: "0px" }}
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            With over two decades of expertise in Middle Tennessee, Home Front Builders has redefined luxury living through a commitment to quality, transparency, and superior project management. We don't just build houses; we curate lifestyles for families who demand the absolute best in craftsmanship and design.
+            With over two decades of expertise in Middle Tennessee, Homefront Builders has redefined luxury living through a commitment to quality, transparency, and superior project management. We don't just build houses; we curate lifestyles for families who demand the absolute best in craftsmanship and design.
           </motion.p>
           
           <motion.div
