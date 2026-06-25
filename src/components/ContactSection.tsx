@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate } from 'motion/react';
 
 interface ChatBubbleProps {
@@ -107,6 +107,25 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
     target: containerRef,
     offset: ["start end", "end start"]
   });
+
+  const mapRef = useRef<any>(null);
+
+  useEffect(() => {
+    const initMap = async () => {
+      await customElements.whenDefined('gmpx-store-locator');
+      if (mapRef.current) {
+        mapRef.current.configureFromQuickBuilder({
+          "locations": [
+            {"title":"HomeFront Builders","address1":"1811 Memorial Cir","address2":"Clarksville, TN 37043, USA","coords":{"lat":36.515362457723924,"lng":-87.3104330932541},"placeId":"ChIJwVyv3y2CFIERnnSRyihCJmo"}
+          ],
+          "mapOptions": {"center":{"lat":38.0,"lng":-100.0},"fullscreenControl":true,"mapTypeControl":false,"streetViewControl":false,"zoom":4,"zoomControl":true,"maxZoom":17,"mapId":""},
+          "mapsApiKey": (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyBd6VMiMtVB5p88LPPjSbRZR8Eo4lIlLPM",
+          "capabilities": {"input":true,"autocomplete":true,"directions":false,"distanceMatrix":true,"details":false,"actions":false}
+        });
+      }
+    };
+    initMap();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -512,6 +531,24 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
             )}
           </motion.div>
 
+          {/* Google Maps Locator */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 h-[500px] w-full rounded-2xl overflow-hidden shadow-xl border border-primary/10 mt-8"
+          >
+            {React.createElement('gmpx-api-loader', { 
+              key: (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyBd6VMiMtVB5p88LPPjSbRZR8Eo4lIlLPM", 
+              'solution-channel': "GMP_QB_locatorplus_v11_cABD" 
+            })}
+            {React.createElement('gmpx-store-locator', { 
+              'map-id': "DEMO_MAP_ID", 
+              ref: mapRef 
+            })}
+          </motion.div>
+
         </div>
 
       </div>
@@ -533,6 +570,24 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
         .animate-marquee-right {
           display: inline-block;
           animation: marqueeRight 32s linear infinite;
+        }
+        gmpx-store-locator {
+          width: 100%;
+          height: 100%;
+          --gmpx-color-surface: #fff;
+          --gmpx-color-on-surface: #1b2518;
+          --gmpx-color-on-surface-variant: #757575;
+          --gmpx-color-primary: #c9a96e;
+          --gmpx-color-outline: #e0e0e0;
+          --gmpx-fixed-panel-width-row-layout: 28.5em;
+          --gmpx-fixed-panel-height-column-layout: 65%;
+          --gmpx-font-family-base: "Inter", sans-serif;
+          --gmpx-font-family-headings: "Inter", sans-serif;
+          --gmpx-font-size-base: 0.875rem;
+          --gmpx-hours-color-open: #188038;
+          --gmpx-hours-color-closed: #d50000;
+          --gmpx-rating-color: #ffb300;
+          --gmpx-rating-color-empty: #e0e0e0;
         }
       `}} />
     </section>
