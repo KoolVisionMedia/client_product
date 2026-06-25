@@ -1,6 +1,9 @@
-import { motion } from 'motion/react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import Tilt from 'react-parallax-tilt';
-import { ArrowRight, Calendar, Tag } from 'lucide-react';
+import { ArrowRight, Calendar, Tag, X } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import { blogArticles } from '../data/blogArticles';
 
 const posts = [
   {
@@ -30,6 +33,8 @@ const posts = [
 ];
 
 export default function Blog() {
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+
   const featuredPost = posts[0];
   const remainingPosts = posts.slice(1);
 
@@ -81,6 +86,7 @@ export default function Blog() {
           scale={1.02}
           transitionSpeed={2500}
           className="cursor-pointer"
+          onClick={() => setSelectedPost(featuredPost.slug)}
           glareEnable={true}
           glareMaxOpacity={0.15}
           glarePosition="all"
@@ -146,6 +152,7 @@ export default function Blog() {
                 scale={1.03}
                 transitionSpeed={2000}
                 className="cursor-pointer h-full"
+                onClick={() => setSelectedPost(post.slug)}
                 glareEnable={true}
                 glareMaxOpacity={0.1}
                 glarePosition="all"
@@ -184,6 +191,48 @@ export default function Blog() {
           ))}
         </motion.div>
       </section>
+
+      {/* Article Modal Overlay */}
+      <AnimatePresence>
+        {selectedPost && blogArticles[selectedPost] && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedPost(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 bg-[#1A2118]/80 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0, scale: 0.95 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 20, opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl max-h-full bg-[#FAFAF5] rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+            >
+              {/* Header with Close Button */}
+              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
+                <button
+                  onClick={() => setSelectedPost(null)}
+                  className="p-2 sm:p-3 bg-white/90 hover:bg-white backdrop-blur-md rounded-full text-primary hover:text-[#c9a96e] transition-colors shadow-sm"
+                  aria-label="Close article"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              
+              {/* Article Content */}
+              <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
+                <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
+                  <ReactMarkdown>
+                    {blogArticles[selectedPost]}
+                  </ReactMarkdown>
+                </article>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
