@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight } from 'lucide-react';
+import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight, Download, X } from 'lucide-react';
 
 const processSteps = [
   {
@@ -46,7 +46,8 @@ const processSteps = [
     description: "At this stage, you'll make key decisions about your home's design and location. A deposit is required as we begin customizing your floor plan with Homefront and decide on the land for your build.",
     image: '/assets/process/process_lot.png',
     icon: <MapPin className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={1.5} />,
-    link: { url: '/floorplans', text: 'Browse Floor Plans' }
+    link: { url: '/floorplans', text: 'Browse Floor Plans' },
+    secondaryButton: { text: 'Download Free Floor Plan Book', action: 'download' }
   },
   {
     letter: 'R',
@@ -63,6 +64,7 @@ const processSteps = [
     description: "See your floor plan come to life with our 3D program. Walk through your home virtually with our in-house designer. Save inspiration images to guide your selections for finishes, colors, and fixtures.",
     image: '/assets/process/process_selections.png',
     icon: <Palette className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={1.5} />,
+    secondaryButton: { text: 'View Home Models in Booklet', action: 'download' }
   },
   {
     letter: 'N',
@@ -84,7 +86,50 @@ const processSteps = [
 
 export default function ProcessPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formState, setFormState] = useState({ status: 'idle', message: '' });
   
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormState({ status: 'loading', message: '' });
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+    
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
+          subject: `Floor Plan Booklet Download - ${data.name}`,
+          from_name: "Homefront Builders Website",
+          ...data,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setFormState({ status: 'success', message: 'Success! Your download is starting.' });
+        // Trigger download
+        const link = document.createElement('a');
+        link.href = '/assets/floor-plan-book.pdf';
+        link.download = 'Homefront_Builders_Floor_Plan_Book.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setFormState({ status: 'idle', message: '' });
+        }, 3000);
+      } else {
+        setFormState({ status: 'error', message: 'Something went wrong. Please try again.' });
+      }
+    } catch (error) {
+      setFormState({ status: 'error', message: 'An error occurred. Please try again later.' });
+    }
+  };
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end 80%"]
@@ -188,15 +233,23 @@ export default function ProcessPage() {
                         {step.description}
                       </p>
 
-                      {step.link && (
-                        <div className="mt-6">
-                          <Link 
-                            to={step.link.url}
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn"
-                          >
-                            {step.link.text}
-                            <ArrowRight className="w-4 h-4 text-accent group-hover/btn:translate-x-1 transition-transform" />
-                          </Link>
+                      {(step.link || (step as any).secondaryButton) && (
+                        <div className="mt-6 flex flex-wrap gap-4">
+                          {step.link && (
+                            <Link 
+                              to={step.link.url}
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn"
+                            >
+                              {step.link.text}
+                              <ArrowRight className="w-4 h-4 text-accent group-hover/btn:translate-x-1 transition-transform" />
+                            </Link>
+                          )}
+                          {(step as any).secondaryButton && (
+                             <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-full font-medium hover:bg-accent transition-all group/btn2">
+                               {(step as any).secondaryButton.text}
+                               <Download className="w-4 h-4 text-white group-hover/btn2:translate-y-0.5 transition-transform" />
+                             </button>
+                          )}
                         </div>
                       )}
                     </div>
@@ -217,9 +270,91 @@ export default function ProcessPage() {
         </div>
       </section>
 
+      {/* Floor Plan Booklet Funnel Section */}
+      <section className="relative py-28 bg-[#1b2518] text-white overflow-hidden z-30">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
+             style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Plan Your Dream Home</p>
+            <h2 className="font-serif text-5xl md:text-6xl text-white leading-tight mb-6">
+              Download Our Free <br />Floor Plan Booklet
+            </h2>
+            <p className="font-sans text-white/70 leading-relaxed text-lg max-w-2xl mx-auto mb-10">
+              Explore our collection of fully customizable luxury floor plans and home models. Get inspired and discover the perfect layout for your family's lifestyle.
+            </p>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-[#c9a96e] text-white rounded-full font-sans font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-[#1b2518] transition-all duration-300 shadow-xl group"
+            >
+              Get The Free Booklet
+              <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Modal Popup */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl z-10"
+            >
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-colors text-primary"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="p-8 md:p-10">
+                <div className="w-12 h-12 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mb-6">
+                  <Download className="w-6 h-6 text-[#c9a96e]" />
+                </div>
+                <h3 className="font-serif text-3xl text-primary mb-2">Get Your Booklet</h3>
+                <p className="font-sans text-primary-light/80 text-sm mb-8">
+                  Enter your details below to instantly download the Homefront Builders Floor Plan Book PDF.
+                </p>
+                
+                <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
+                  <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                  <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                  <input type="tel" name="phone" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                  
+                  <button disabled={formState.status === 'loading' || formState.status === 'success'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2">
+                    {formState.status === 'loading' ? 'Processing...' : formState.status === 'success' ? 'Downloading...' : 'Download PDF Now'}
+                  </button>
+                  {formState.message && (
+                    <p className={`text-sm text-center mt-2 font-medium ${formState.status === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+                      {formState.message}
+                    </p>
+                  )}
+                </form>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Fades for timeline ends */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white to-transparent pointer-events-none z-20"></div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent pointer-events-none z-20"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#1b2518] to-transparent pointer-events-none z-20"></div>
 
     </div>
   );
