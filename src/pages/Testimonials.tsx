@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from 'motion/react';
 
 declare global {
@@ -260,6 +260,35 @@ const MasonryMarquee = () => {
 
 // ── Page ──────────────────────────────────────────────────────────────
 export default function Testimonials() {
+  const [formState, setFormState] = useState<{ status: 'idle' | 'loading' | 'success' | 'error', message: string }>({ status: 'idle', message: '' });
+
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormState({ status: 'loading', message: '' });
+    const formData = new FormData(e.currentTarget);
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    formData.append("subject", "New Community Update Subscription");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFormState({ status: 'success', message: 'Thank you! You are now subscribed to our updates.' });
+        e.currentTarget.reset();
+      } else {
+        console.error("Web3Forms Error", data);
+        setFormState({ status: 'error', message: data.message || "Something went wrong. Please try again." });
+      }
+    } catch (error) {
+      console.error("Submission error", error);
+      setFormState({ status: 'error', message: "A network error occurred. Please try again." });
+    }
+  };
   // Load Instagram embed script once
   useEffect(() => {
     if (document.getElementById('ig-embed-script')) {
@@ -427,9 +456,45 @@ export default function Testimonials() {
               <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg mb-6">
                 We are deeply rooted in the Middle Tennessee community. By partnering with local artisans, visionary architects, and dear friends, we regularly host educational classes and exclusive events focused on custom home building. 
               </p>
-              <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg">
+              <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg mb-10">
                 These gatherings are designed to demystify the construction process, answer your questions, and empower you with the knowledge to build your dream home with absolute confidence.
               </p>
+
+              {/* Social Media & Updates */}
+              <div className="pt-4 border-t border-white/10">
+                <p className="font-serif text-2xl text-white mb-2">Join the Conversation</p>
+                <p className="font-sans text-white/60 mb-6 text-sm">
+                  Check out our social media for the latest project updates, behind-the-scenes content, and upcoming event announcements.
+                </p>
+                <div className="flex gap-4 mb-10">
+                  <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#c9a96e] transition-colors">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
+                  </a>
+                  <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#c9a96e] transition-colors">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
+                  </a>
+                </div>
+
+                {/* Newsletter Funnel */}
+                <div className="bg-white/[0.03] border border-[#c9a96e]/20 rounded-2xl p-6 md:p-8">
+                  <p className="font-serif text-xl text-[#c9a96e] mb-2">Stay in the Loop</p>
+                  <p className="font-sans text-white/70 text-sm mb-6">
+                    If you would like updates for any of our upcoming educational classes, seminars, or exclusive events, send us your information below.
+                  </p>
+                  <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
+                    <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#c9a96e] text-[#1b2518] font-sans font-bold py-3 rounded-lg hover:bg-[#b5955a] transition-colors disabled:opacity-50">
+                      {formState.status === 'loading' ? 'Submitting...' : 'Sign Up for Updates'}
+                    </button>
+                    {formState.message && (
+                      <p className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                        {formState.message}
+                      </p>
+                    )}
+                  </form>
+                </div>
+              </div>
             </motion.div>
           </div>
 
