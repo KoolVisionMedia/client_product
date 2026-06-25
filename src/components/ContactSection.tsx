@@ -193,12 +193,12 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
               {/* Headline */}
               <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-primary leading-tight font-bold tracking-tight">
-                Transform your build experience.
+                Let's build your story together.
               </h2>
 
               {/* Subtitle */}
               <p className="font-sans text-sm md:text-base text-primary-light leading-relaxed max-w-md">
-                Pick a time that works for you. Connect with one of our custom home builders to discuss your goals, floorplans, or land. Confidential, collaborative, and straightforward.
+                Your dream home starts with a simple, personal conversation. Connect directly with a Homefront specialist to share your vision, explore custom floorplans, or talk about your land. We're here to make your journey exciting, collaborative, and entirely yours.
               </p>
             </div>
 
