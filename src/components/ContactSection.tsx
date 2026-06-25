@@ -540,7 +540,9 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
             className="lg:col-span-5 h-[500px] w-full rounded-2xl overflow-hidden shadow-xl border border-primary/10 mt-8"
           >
             {React.createElement('gmpx-api-loader', { 
-              key: (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyBd6VMiMtVB5p88LPPjSbRZR8Eo4lIlLPM", 
+              ref: (el: HTMLElement | null) => {
+                if (el) el.setAttribute('key', (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyBd6VMiMtVB5p88LPPjSbRZR8Eo4lIlLPM");
+              },
               'solution-channel': "GMP_QB_locatorplus_v11_cABD" 
             })}
             {React.createElement('gmpx-store-locator', { 
