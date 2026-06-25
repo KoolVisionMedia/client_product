@@ -158,28 +158,18 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
               </div>
             </div>
 
-            {/* Crossed Slanted Banner Tickers */}
-            <div className="relative h-[160px] md:h-[220px] w-full my-8 z-10 select-none overflow-hidden">
-              {/* Ribbon 1: Black background, white text */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[3deg] bg-black py-3 md:py-4 w-[160%] shadow-lg border-y border-[#c9a96e]/10 overflow-hidden whitespace-nowrap">
-                <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase">
-                  ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
-                </div>
-                <div className="inline-block animate-marquee-left whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-white uppercase pl-4">
-                  ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • ANSWERS FOR IMPORTANT QUESTIONS • CLEAR ANSWERS FOR YOUR DREAM HOME • EXPERT CUSTOM BUILDERS • 
-                </div>
-              </div>
-
-              {/* Ribbon 2: Gold background, dark text */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[3deg] bg-[#c9a96e] py-3 md:py-4 w-[160%] shadow-lg border-y border-[#1b2518]/10 overflow-hidden whitespace-nowrap">
-                <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase">
-                  EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
-                </div>
-                <div className="inline-block animate-marquee-right whitespace-nowrap font-sans text-xs md:text-sm tracking-[0.25em] font-semibold text-[#1b2518] uppercase pl-4">
-                  EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • EASY ANSWERS FOR IMPORTANT QUESTIONS • CLARKSVILLE’S GOLD STANDARD • WE BUILD TRUST • 
-                </div>
-              </div>
-            </div>
+            {/* Elegant Subtitle */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-2xl mx-auto text-center mb-16 px-4 relative z-10"
+            >
+              <p className="font-sans text-lg md:text-xl text-primary/70 leading-relaxed font-medium">
+                We believe in complete transparency, uncompromised quality, and a deeply personalized experience. Reach out below to start the conversation about your dream home.
+              </p>
+            </motion.div>
 
             {/* Contact Cards */}
             <ContactCards />

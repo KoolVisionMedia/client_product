@@ -97,29 +97,32 @@ export default function ContactCards() {
                       </a>
                     </motion.div>
                   )}
-                  {isHovered && card.isMap && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 10, scale: 1 }}
-                      exit={{ opacity: 0, y: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute top-full left-0 w-full h-[180px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 z-50 bg-white"
-                    >
-                      {/* Simple static map embed for clean UI */}
-                      <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102377.61633535942!2d-87.4206583594326!3d36.53696582522709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8864d0dd882937af%3A0xc665181b5fbcf79b!2sClarksville%2C%20TN!5e0!3m2!1sen!2sus!4v1709664532585!5m2!1sen!2sus" 
-                        width="100%" 
-                        height="100%" 
-                        style={{ border: 0 }} 
-                        allowFullScreen={false} 
-                        loading="lazy" 
-                        referrerPolicy="no-referrer-when-downgrade"
-                        className="w-full h-full object-cover pointer-events-none"
-                      ></iframe>
-                    </motion.div>
-                  )}
                 </AnimatePresence>
               </div>
+
+              {/* Map Expansion in normal flow */}
+              <AnimatePresence>
+                {isHovered && card.isMap && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                    animate={{ opacity: 1, height: 180, marginTop: 16 }}
+                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full rounded-2xl overflow-hidden border border-gray-100 bg-white"
+                  >
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102377.61633535942!2d-87.4206583594326!3d36.53696582522709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8864d0dd882937af%3A0xc665181b5fbcf79b!2sClarksville%2C%20TN!5e0!3m2!1sen!2sus!4v1709664532585!5m2!1sen!2sus" 
+                      width="100%" 
+                      height="100%" 
+                      style={{ border: 0 }} 
+                      allowFullScreen={false} 
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-full object-cover pointer-events-none"
+                    ></iframe>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         );
