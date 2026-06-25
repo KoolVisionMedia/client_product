@@ -164,12 +164,12 @@ const clientGallery = [
 ];
 
 const communityImages = [
-  '/assets/DSC04388-Edit.jpg',
-  '/assets/about-hero.jpg',
-  '/assets/content2.jpg',
-  '/assets/Harmony.jpg',
-  '/assets/Cypress.jpg',
-  '/assets/Magnolia.jpg',
+  '/assets/community/473338662_122097057008731378_6991236073360247651_n.webp',
+  '/assets/community/473673644_122216376032074441_6291583575612602141_n.webp',
+  '/assets/community/481763915_122225517866074441_5132558681301907346_n.webp',
+  '/assets/community/491199204_1206729828120502_4021135175915967788_n.webp',
+  '/assets/community/492365756_122234824814074441_1216855867914535668_n.webp',
+  '/assets/community/518276642_122249563244074441_1457083503727355780_n.webp',
 ];
 
 // ── Interactive Masonry Marquee ─────────────────────────────────
@@ -353,7 +353,7 @@ export default function Testimonials() {
                 Excellence in Every Detail
               </h2>
               <p className="font-sans text-white/80 text-lg mb-12 max-w-lg leading-relaxed">
-                We transform visions into reality, architecting custom homes that elevate the standard of living in Middle Tennessee.
+                We transform visions into reality, but our commitment goes far beyond building homes. We are deeply invested in our Middle Tennessee footprint, actively sponsoring local initiatives and hosting community events. We go above and beyond because we care just as much about the people who live in our homes as the homes themselves.
               </p>
               
               {/* Merged Ratings */}
