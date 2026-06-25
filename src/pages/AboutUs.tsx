@@ -447,8 +447,8 @@ export default function AboutUs() {
       </section>
 
       {/* ─── Video Introduction + Company Description ─── */}
-      <section className="bg-white pb-20 md:pb-28 px-6 md:px-12 relative z-20">
-        <div className="max-w-[1000px] mx-auto -mt-16 md:-mt-24">
+      <section className="pb-20 md:pb-28 px-6 md:px-12 relative z-20 -mt-16 md:-mt-24">
+        <div className="max-w-[1000px] mx-auto">
 
           {/* Homefront Planning Stage Video */}
           <motion.div
