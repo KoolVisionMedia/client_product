@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 const SITE_NAME = 'Homefront Builders';
-const BASE_URL = 'https://www.homefrontbuilders.com'; // UPDATE BEFORE LAUNCH
+const BASE_URL = 'https://www.homefrontbuilderstn.com';
 
 interface SEOProps {
   title: string;

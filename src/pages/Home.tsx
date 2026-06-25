@@ -12,9 +12,9 @@ const localBusinessSchema = {
   "@type": "HomeAndConstructionBusiness",
   "name": "Homefront Builders",
   "description": "Luxury custom home builder in Clarksville, TN and Middle Tennessee. Specializing in high-end custom home construction with transparent budgeting and superior craftsmanship.",
-  "url": "https://www.homefrontbuilders.com",
-  "telephone": "(555) 123-4567",
-  "email": "info@homefrontbuilders.com",
+  "url": "https://www.homefrontbuilderstn.com",
+  "telephone": "(931) 221-2566",
+  "email": "homefrontbuilderstn@gmail.com",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Clarksville",

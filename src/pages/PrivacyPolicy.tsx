@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
         <h2 className="font-serif text-2xl text-primary mt-10 mb-4">Contact Us</h2>
         <p className="text-neutral-600 leading-relaxed mb-6">
           If you have questions about this Privacy Policy, please contact us at{' '}
-          <a href="mailto:info@homefrontbuilders.com" className="text-[#c9a96e] hover:underline">info@homefrontbuilders.com</a>.
+          <a href="mailto:homefrontbuilderstn@gmail.com" className="text-[#c9a96e] hover:underline">homefrontbuilderstn@gmail.com</a>.
         </p>
       </div>
     </div>

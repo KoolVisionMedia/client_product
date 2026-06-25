@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.homefrontbuilders.com/sitemap.xml
+Sitemap: https://www.homefrontbuilderstn.com/sitemap.xml
