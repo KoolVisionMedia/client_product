@@ -151,17 +151,6 @@ const facebookReviews = [
   },
 ];
 
-const clientGallery = [
-  { src: '/assets/Carissa Ockey.jpeg',    name: 'Carissa O.',    className: 'row-span-2' },
-  { src: '/assets/Hannah Myers.jpeg',     name: 'Hannah M.',     className: '' },
-  { src: '/assets/Karen Grimes.jpeg',     name: 'Karen G.',      className: '' },
-  { src: '/assets/DSC04388-Edit.jpg',     name: 'Legacy Court',  className: 'col-span-2' },
-  { src: '/assets/Colleen Marquez 2.jpg', name: 'Colleen M.',    className: '' },
-  { src: '/assets/content2.jpg',          name: 'The Build',     className: 'row-span-2' },
-  { src: '/assets/Kelsey Michaud.jpg',    name: 'Kelsey M.',     className: '' },
-  { src: '/assets/Patricia Shipley.webp', name: 'Patricia S.',   className: '' },
-  { src: '/assets/about-hero.jpg',        name: 'Our Work',      className: 'col-span-2' },
-];
 
 const communityImages = [
   '/assets/community/473338662_122097057008731378_6991236073360247651_n.webp',
@@ -438,8 +427,13 @@ export default function Testimonials() {
       </section>
 
       {/* ── Community & Education ───────────────────────────────────── */}
-      <section className="py-28 bg-[#1b2518] text-white overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+      <section className="relative py-28 bg-[#FAFAF5] text-primary overflow-hidden">
+        {/* Blueprint background accent */}
+        <div 
+          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply"
+          style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           {/* Text Content */}
           <div className="w-full lg:w-5/12 space-y-8">
@@ -450,45 +444,45 @@ export default function Testimonials() {
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
               <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Building Together</p>
-              <h2 className="font-serif text-5xl md:text-6xl text-white leading-tight mb-6">
+              <h2 className="font-serif text-5xl md:text-6xl text-primary leading-tight mb-6">
                 Community & <br /> Education
               </h2>
-              <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg mb-6">
+              <p className="font-sans text-primary-light/80 leading-relaxed text-lg max-w-lg mb-6">
                 We are deeply rooted in the Middle Tennessee community. By partnering with local artisans, visionary architects, and dear friends, we regularly host educational classes and exclusive events focused on custom home building. 
               </p>
-              <p className="font-sans text-white/70 leading-relaxed text-lg max-w-lg mb-10">
+              <p className="font-sans text-primary-light/80 leading-relaxed text-lg max-w-lg mb-10">
                 These gatherings are designed to demystify the construction process, answer your questions, and empower you with the knowledge to build your dream home with absolute confidence.
               </p>
 
               {/* Social Media & Updates */}
-              <div className="pt-4 border-t border-white/10">
-                <p className="font-serif text-2xl text-white mb-2">Join the Conversation</p>
-                <p className="font-sans text-white/60 mb-6 text-sm">
+              <div className="pt-4 border-t border-primary/10">
+                <p className="font-serif text-2xl text-primary mb-2">Join the Conversation</p>
+                <p className="font-sans text-primary-light/70 mb-6 text-sm">
                   Check out our social media for the latest project updates, behind-the-scenes content, and upcoming event announcements.
                 </p>
                 <div className="flex gap-4 mb-10">
-                  <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#c9a96e] transition-colors">
+                  <a href="#" className="w-10 h-10 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-[#c9a96e] hover:text-white transition-colors text-primary">
                     <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
                   </a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#c9a96e] transition-colors">
+                  <a href="#" className="w-10 h-10 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-[#c9a96e] hover:text-white transition-colors text-primary">
                     <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
                   </a>
                 </div>
 
                 {/* Newsletter Funnel */}
-                <div className="bg-white/[0.03] border border-[#c9a96e]/20 rounded-2xl p-6 md:p-8">
-                  <p className="font-serif text-xl text-[#c9a96e] mb-2">Stay in the Loop</p>
-                  <p className="font-sans text-white/70 text-sm mb-6">
+                <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 md:p-8">
+                  <p className="font-serif text-xl text-primary mb-2">Stay in the Loop</p>
+                  <p className="font-sans text-primary-light/80 text-sm mb-6">
                     If you would like updates for any of our upcoming educational classes, seminars, or exclusive events, send us your information below.
                   </p>
                   <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
-                    <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                    <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                    <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#c9a96e] text-[#1b2518] font-sans font-bold py-3 rounded-lg hover:bg-[#b5955a] transition-colors disabled:opacity-50">
+                    <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-3 rounded-lg hover:bg-[#c9a96e] transition-colors disabled:opacity-50">
                       {formState.status === 'loading' ? 'Submitting...' : 'Sign Up for Updates'}
                     </button>
                     {formState.message && (
-                      <p className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                      <p className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-600' : 'text-red-500'}`}>
                         {formState.message}
                       </p>
                     )}
@@ -529,7 +523,7 @@ export default function Testimonials() {
                       rotate: [config.rotate, config.rotate + (i % 2 === 0 ? 3 : -3), config.rotate] 
                     }}
                     transition={{ repeat: Infinity, duration: config.duration, ease: "easeInOut", delay: config.delay }}
-                    className="relative w-full rounded-xl md:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-[6px] border-[#FAFAF5] group"
+                    className="relative w-full rounded-xl md:rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-[6px] border-white group"
                   >
                     <img loading="lazy" decoding="async" src={communityImages[i]} 
                       alt={`Community Event ${i + 1}`} 
@@ -539,51 +533,6 @@ export default function Testimonials() {
                   </motion.div>
                 </motion.div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Client Moments Gallery ──────────────────────────────────── */}
-      <section className="py-28 px-6 md:px-12 bg-[#F3F3ED]">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-14"
-          >
-            <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#B48C36] mb-4">The Real Moments</p>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <h2 className="font-serif text-5xl md:text-6xl text-[#2E362C] leading-tight">
-                Happy Clients &<br />Candid Stories
-              </h2>
-              <p className="font-sans text-[#596652] max-w-xs text-sm leading-relaxed">
-                Real families. Real homes. Every photo is a story of trust, craft, and a dream realized.
-              </p>
-            </div>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 auto-rows-[200px] md:auto-rows-[220px]">
-            {clientGallery.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.96 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.85, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                className={`group relative overflow-hidden rounded-xl ${item.className}`}
-              >
-                <img loading="lazy" decoding="async" src={item.src}
-                  alt={item.name}
-                  className="w-full h-full object-cover transition-transform duration-[1.8s] group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1b2518]/75 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <p className="font-sans text-white text-sm font-medium">{item.name}</p>
-                </div>
-              </motion.div>
             ))}
           </div>
         </div>
