@@ -170,6 +170,10 @@ const communityImages = [
   '/assets/community/491199204_1206729828120502_4021135175915967788_n.webp',
   '/assets/community/492365756_122234824814074441_1216855867914535668_n.webp',
   '/assets/community/518276642_122249563244074441_1457083503727355780_n.webp',
+  '/assets/community/579413024_122270538680074441_5335348799522715425_n.webp',
+  '/assets/community/580399179_122270538692074441_3941408381955964056_n.webp',
+  '/assets/community/593969977_911586774526388_1583205593496869380_n.webp',
+  '/assets/community/594126554_911561954528870_9202778842408553763_n.webp',
 ];
 
 // ── Interactive Masonry Marquee ─────────────────────────────────
@@ -433,11 +437,15 @@ export default function Testimonials() {
           <div className="w-full lg:w-7/12 relative h-[600px] md:h-[800px] mt-16 lg:mt-0">
             {[
               { w: 'w-[45%] md:w-[38%]', top: 'top-[0%]', left: 'left-[0%]', rotate: -4, z: 10, delay: 0, duration: 6, yOffset: -15 },
-              { w: 'w-[35%] md:w-[30%]', top: 'top-[10%]', left: 'left-[40%]', rotate: 6, z: 20, delay: 1, duration: 7, yOffset: 20 },
-              { w: 'w-[28%] md:w-[24%]', top: 'top-[5%]', left: 'left-[75%]', rotate: -8, z: 5, delay: 0.8, duration: 7.5, yOffset: -10 },
-              { w: 'w-[40%] md:w-[35%]', top: 'top-[35%]', left: 'left-[10%]', rotate: 3, z: 30, delay: 0.5, duration: 5.5, yOffset: 15 },
-              { w: 'w-[48%] md:w-[42%]', top: 'top-[45%]', left: 'left-[45%]', rotate: -5, z: 40, delay: 1.5, duration: 8, yOffset: -20 },
-              { w: 'w-[35%] md:w-[30%]', top: 'top-[65%]', left: 'left-[20%]', rotate: 5, z: 20, delay: 2, duration: 6.5, yOffset: 15 },
+              { w: 'w-[35%] md:w-[30%]', top: 'top-[5%]', left: 'left-[35%]', rotate: 6, z: 20, delay: 1, duration: 7, yOffset: 20 },
+              { w: 'w-[28%] md:w-[24%]', top: 'top-[2%]', left: 'left-[70%]', rotate: -8, z: 5, delay: 0.8, duration: 7.5, yOffset: -10 },
+              { w: 'w-[40%] md:w-[35%]', top: 'top-[30%]', left: 'left-[5%]', rotate: 3, z: 30, delay: 0.5, duration: 5.5, yOffset: 15 },
+              { w: 'w-[48%] md:w-[42%]', top: 'top-[40%]', left: 'left-[38%]', rotate: -5, z: 40, delay: 1.5, duration: 8, yOffset: -20 },
+              { w: 'w-[35%] md:w-[30%]', top: 'top-[35%]', left: 'left-[75%]', rotate: 8, z: 25, delay: 1.2, duration: 6, yOffset: 10 },
+              { w: 'w-[30%] md:w-[25%]', top: 'top-[60%]', left: 'left-[10%]', rotate: -6, z: 15, delay: 2.5, duration: 7, yOffset: -12 },
+              { w: 'w-[35%] md:w-[30%]', top: 'top-[75%]', left: 'left-[35%]', rotate: 5, z: 35, delay: 2, duration: 6.5, yOffset: 15 },
+              { w: 'w-[40%] md:w-[35%]', top: 'top-[65%]', left: 'left-[65%]', rotate: -3, z: 30, delay: 1.8, duration: 7.5, yOffset: -18 },
+              { w: 'w-[25%] md:w-[22%]', top: 'top-[85%]', left: 'left-[80%]', rotate: 7, z: 10, delay: 0.9, duration: 5, yOffset: 8 },
             ].map((config, i) => (
               <div
                 key={i}
