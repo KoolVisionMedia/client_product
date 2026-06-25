@@ -96,7 +96,7 @@ export default function ProcessPage() {
     <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-hidden relative">
       
       {/* Background elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.08]">
         <div 
           className="absolute inset-0"
           style={{ backgroundImage: 'url(/assets/blueprint_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
