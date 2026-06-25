@@ -47,18 +47,6 @@ const listings = [
     status: 'Under Contract',
   },
   {
-    name: "413 Shea's Way",
-    location: "413 Shea's Way, Clarksville",
-    price: '$925,000',
-    stats: '4 beds • 3.5 baths • 3,600 sqft',
-    description: "Located at 413 Shea's Way in Clarksville, this exceptional home offers the perfect balance of comfort and sophistication. Featuring a bright, open interior, premium hardwood flooring, custom cabinetry, a beautifully appointed primary bathroom, and ample outdoor living space. Built to the highest standards, this home is ready for you to make lasting memories.",
-    image: '/assets/active_listings/413-sheas-way/KoolVisionMedia001.jpg',
-    images: Array.from({length: 89}, (_, i) => `/assets/active_listings/413-sheas-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`)
-      .filter(img => !img.endsWith('Media049.jpg') && !img.endsWith('Media074.jpg')),
-    video: 'https://youtube.com/shorts/ik8RLnMr9Y8',
-    status: 'Available',
-  },
-  {
     name: '1215 Hill Ln',
     location: '1215 Hill Ln',
     price: 'Under Contract',
