@@ -31,6 +31,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
     phone: '',
     subject: '',
     message: '',
+    date: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -179,114 +180,133 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           </>
         )}
 
-        {/* Left Image & Right Form Panel - Match Layout Image */}
-        <div id="contact-form" className="w-full bg-white overflow-hidden grid grid-cols-1 lg:grid-cols-2 rounded-3xl border border-gray-100 shadow-sm mt-12 mb-8">
+        {/* Left Column (Info & Testimonial) & Right Column (Dark Form) - Match Layout Image */}
+        <div id="contact-form" className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mt-12 mb-8 items-stretch">
           
-          {/* Left: Floorplan Booklet Cover Image */}
-          <div className="relative h-[300px] lg:h-auto w-full">
-            <img 
-              src="/assets/floorplans/floorplan-booklet-cover.png" 
-              alt="Homefront Builders Floorplan Booklet" 
-              className="w-full h-full object-cover object-center absolute inset-0"
-            />
+          {/* Left Column: 5 cols */}
+          <div className="lg:col-span-5 flex flex-col justify-between py-2">
+            <div className="flex flex-col gap-6 md:gap-8">
+              {/* Pill badge */}
+              <div className="border border-primary/25 bg-[#c9a96e]/5 rounded-full px-4 py-1.5 w-fit">
+                <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#c9a96e] font-bold">Book a Call</span>
+              </div>
+
+              {/* Headline */}
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-primary leading-tight font-bold tracking-tight">
+                Transform your build experience.
+              </h2>
+
+              {/* Subtitle */}
+              <p className="font-sans text-sm md:text-base text-primary-light leading-relaxed max-w-md">
+                Pick a time that works for you. Connect with one of our custom home builders to discuss your goals, floorplans, or land. Confidential, collaborative, and straightforward.
+              </p>
+            </div>
+
+            {/* Testimonial Card */}
+            <div className="bg-[#f4f3f0] p-6 rounded-2xl border border-primary/5 shadow-sm max-w-sm mt-8 lg:mt-0 flex flex-col gap-4">
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <svg key={i} width={14} height={14} viewBox="0 0 24 24" fill="#c9a96e" stroke="none">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                ))}
+              </div>
+              <p className="font-sans text-[13px] italic text-primary-light leading-relaxed">
+                "Homefront built us the custom home of our dreams! The build quality is beautiful. Unique and unlike other homes you find in Clarksville."
+              </p>
+              <div className="flex items-center gap-3">
+                <img src="/assets/content1.jpg" alt="Bailey Graven" className="w-9 h-9 rounded-full object-cover" />
+                <div>
+                  <h5 className="font-sans text-xs font-semibold text-primary">Bailey Graven</h5>
+                  <p className="font-sans text-[10px] text-primary-light/70">Clarksville Custom Homeowner</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Right: Form */}
-          <div className="p-8 md:p-16 lg:p-20 flex flex-col justify-center bg-white relative">
+          {/* Right Column: 7 cols (Dark Form Container) */}
+          <div className="lg:col-span-7 bg-[#1b2518] text-white p-8 md:p-12 lg:p-14 rounded-[2.5rem] shadow-xl flex flex-col justify-center">
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             >
               {submitted ? (
                 <div className="h-full flex flex-col items-center justify-center text-center py-20">
-                  <div className="w-16 h-16 rounded-full bg-[#c9a96e]/10 flex items-center justify-center mb-6">
+                  <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
-                  <h3 className="font-serif text-3xl text-primary mb-3">Check Your Downloads</h3>
-                  <p className="font-sans text-sm text-primary-light max-w-sm mb-6">Your floorplan booklet download should begin automatically. We've also received your message and will be in touch shortly.</p>
-                  <a href="/assets/floorplans/Homefront Builders Floorplan Book.pdf" download="Homefront_Builders_Floorplans.pdf" className="text-xs uppercase tracking-widest text-[#c9a96e] border-b border-[#c9a96e] hover:text-primary transition-colors">Click here if download didn't start</a>
+                  <h3 className="font-serif text-3xl text-white mb-3">Booking Requested</h3>
+                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your request and will connect with you shortly to confirm a time for your call. Thank you!</p>
                 </div>
               ) : (
                 <div className="flex flex-col">
-                  {/* Pill Label */}
-                  <div className="border border-gray-200 rounded-full px-4 py-1 w-fit mb-6">
-                    <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-primary-light font-semibold">Free Download</span>
-                  </div>
-
-                  {/* Headline */}
-                  <h2 className="font-sans text-3xl md:text-4xl text-primary mb-12 tracking-tight">
-                    Get our exclusive floorplan booklet
-                  </h2>
-
-                  {/* Contact Info (Matching image layout) */}
-                  <div className="grid grid-cols-2 gap-8 mb-10">
-                    <div>
-                      <h4 className="font-sans text-[10px] uppercase tracking-[0.2em] text-primary font-semibold mb-2">Office</h4>
-                      <p className="font-sans text-sm text-primary-light">Clarksville, TN</p>
-                    </div>
-                    <div>
-                      <h4 className="font-sans text-[10px] uppercase tracking-[0.2em] text-primary font-semibold mb-2">Email</h4>
-                      <p className="font-sans text-sm text-primary-light">homefrontbuilderstn@gmail.com</p>
-                    </div>
-                  </div>
+                  {/* Dark Container Header */}
+                  <h3 className="font-sans text-2xl md:text-3xl text-white font-bold mb-2">Book a call</h3>
+                  <p className="font-sans text-xs text-white/60 mb-8">Choose the best time and tell us more about what you need.</p>
 
                   {/* Form */}
-                  <form onSubmit={async (e) => {
-                    await handleSubmit(e);
-                    // Trigger download after successful submission
-                    const link = document.createElement('a');
-                    link.href = '/assets/floorplans/Homefront Builders Floorplan Book.pdf';
-                    link.download = 'Homefront_Builders_Floorplans.pdf';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  }} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-5">
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="firstName" className="font-sans text-[10px] uppercase tracking-[0.15em] text-primary-light font-semibold">Your Name</label>
-                        <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required
-                           className="w-full bg-[#f4f3f0] rounded-lg py-4 px-5 font-sans text-sm text-primary outline-none focus:ring-1 focus:ring-[#c9a96e] transition-all placeholder:text-primary-light/40 border-none"
-                          placeholder="First Name" />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="email" className="font-sans text-[10px] uppercase tracking-[0.15em] text-primary-light font-semibold">Email Address</label>
-                        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
-                           className="w-full bg-[#f4f3f0] rounded-lg py-4 px-5 font-sans text-sm text-primary outline-none focus:ring-1 focus:ring-[#c9a96e] transition-all placeholder:text-primary-light/40 border-none"
-                          placeholder="Your Email" />
-                      </div>
+                    <div className="flex flex-col">
+                      <label htmlFor="firstName" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Name</label>
+                      <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required
+                         className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
+                        placeholder="John Mercedes" />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="email" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Email</label>
+                      <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
+                         className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
+                        placeholder="Email" />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="phone" className="font-sans text-[10px] uppercase tracking-[0.15em] text-primary-light font-semibold">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange}
-                           className="w-full bg-[#f4f3f0] rounded-lg py-4 px-5 font-sans text-sm text-primary outline-none focus:ring-1 focus:ring-[#c9a96e] transition-all placeholder:text-primary-light/40 border-none"
-                          placeholder="Your Phone" />
+                      <div className="flex flex-col">
+                        <label htmlFor="subject" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Pick a Topic</label>
+                        <div className="relative">
+                          <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required
+                            className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all appearance-none cursor-pointer pr-10">
+                            <option value="" disabled className="bg-[#1b2518]">Topic</option>
+                            <option value="custom-build" className="bg-[#1b2518]">Custom Home Build</option>
+                            <option value="floorplans" className="bg-[#1b2518]">Floorplans & Models</option>
+                            <option value="land-lot" className="bg-[#1b2518]">Land or Lot Inquiry</option>
+                            <option value="general" className="bg-[#1b2518]">General Consultation</option>
+                          </select>
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/40"><path d="m6 9 6 6 6-6"/></svg>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="subject" className="font-sans text-[10px] uppercase tracking-[0.15em] text-primary-light font-semibold">Subject</label>
-                        <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange}
-                           className="w-full bg-[#f4f3f0] rounded-lg py-4 px-5 font-sans text-sm text-primary outline-none focus:ring-1 focus:ring-[#c9a96e] transition-all placeholder:text-primary-light/40 border-none"
-                          placeholder="e.g. New Build Inquiry" />
+                      <div className="flex flex-col">
+                        <label htmlFor="date" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Pick a Date</label>
+                        <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required
+                           className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30 [color-scheme:dark]" />
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="message" className="font-sans text-[10px] uppercase tracking-[0.15em] text-primary-light font-semibold">Your Message</label>
-                      <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={3}
-                         className="w-full bg-[#f4f3f0] rounded-lg py-4 px-5 font-sans text-sm text-primary outline-none focus:ring-1 focus:ring-[#c9a96e] transition-all placeholder:text-primary-light/40 border-none resize-none"
-                        placeholder="Message" />
+                    <div className="flex flex-col">
+                      <label htmlFor="message" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Message</label>
+                      <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={4}
+                         className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30 resize-none"
+                        placeholder="Tell us about your project" />
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-2">
+                      <input type="checkbox" id="agree" required className="w-4 h-4 rounded border-white/10 bg-white/5 text-[#c9a96e] focus:ring-0 focus:ring-offset-0 cursor-pointer" />
+                      <label htmlFor="agree" className="font-sans text-[11px] text-white/60 cursor-pointer">
+                        By sending this form, I agree to be contacted to schedule my consultation.
+                      </label>
                     </div>
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="mt-4 px-8 py-4 bg-[#1b2518] rounded-full font-sans text-xs uppercase tracking-[0.2em] font-semibold text-white hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors disabled:opacity-50 w-fit"
+                      className="mt-6 px-8 py-4 bg-white rounded-xl font-sans text-xs uppercase tracking-widest font-bold text-[#1b2518] hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors disabled:opacity-50 w-full sm:w-auto"
                     >
-                      {isSubmitting ? 'Sending...' : 'Download Booklet'}
+                      {isSubmitting ? 'Confirming...' : 'Confirm booking'}
                     </button>
                   </form>
                 </div>
