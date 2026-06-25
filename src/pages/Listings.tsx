@@ -249,42 +249,21 @@ export default function Listings() {
       <section className="py-16 md:py-32 px-4 md:px-12">
         <div className="max-w-[1400px] mx-auto">
           {/* Elegant Filter & Sort Bar */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 pb-8 border-b border-neutral-200">
-            {/* Filter Buttons / Chips */}
-            <div className="flex flex-wrap gap-2 md:gap-3">
-              {['All', 'Completed Builds', 'Builds in Progress'].map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setActiveFilter(status)}
-                  className={`px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold transition-all duration-300 ${
-                    activeFilter === status
-                      ? 'bg-[#1b2518] text-white border border-[#1b2518] shadow-md'
-                      : 'bg-transparent text-primary/70 border border-neutral-200 hover:border-neutral-800 hover:text-primary'
-                  }`}
-                >
-                  {status}
-                </button>
-              ))}
-            </div>
-            
-            {/* Sorting controls */}
-            <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-              <span className="text-[10px] uppercase tracking-widest text-primary/50 font-sans font-bold">Sort By</span>
-              <div className="relative min-w-[180px]">
-                <select
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value)}
-                  className="w-full appearance-none bg-white border border-neutral-200 hover:border-neutral-800 transition-colors pl-4 pr-10 py-2.5 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold focus:outline-none cursor-pointer"
-                >
-                  <option value="default">Status (Default)</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary/60">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-              </div>
-            </div>
+          {/* Elegant Filter Bar */}
+          <div className="flex flex-wrap gap-2 md:gap-3 mb-12 pb-8 border-b border-neutral-200">
+            {['All', 'Completed Builds', 'Builds in Progress'].map((status) => (
+              <button
+                key={status}
+                onClick={() => setActiveFilter(status)}
+                className={`px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold transition-all duration-300 ${
+                  activeFilter === status
+                    ? 'bg-[#1b2518] text-white border border-[#1b2518] shadow-md'
+                    : 'bg-transparent text-primary/70 border border-neutral-200 hover:border-neutral-800 hover:text-primary'
+                }`}
+              >
+                {status}
+              </button>
+            ))}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
@@ -313,17 +292,13 @@ export default function Listings() {
                   />
                   
                   {/* Status Badge */}
-                  <div className="absolute top-4 left-4 flex gap-2 z-20">
-                    {listing.status === 'Coming Soon' || listing.status === 'Under Construction' ? (
+                  {(listing.status === 'Coming Soon' || listing.status === 'Under Construction') && (
+                    <div className="absolute top-4 left-4 flex gap-2 z-20">
                       <span className="px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold bg-[#c9a96e] text-white shadow-sm">
                         Build in Progress
                       </span>
-                    ) : (
-                      <span className="px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold bg-white/95 text-[#1b2518] shadow-sm border border-neutral-200/40">
-                        Completed Build
-                      </span>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {/* Gradient Overlay for Text Readability */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none z-10" />
@@ -332,7 +307,6 @@ export default function Listings() {
                   <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-1.5 z-20">
                     <div className="flex justify-between items-end gap-2">
                       <h3 className="font-serif text-xl md:text-2xl text-white group-hover:text-[#c9a96e] transition-colors">{listing.name}</h3>
-                      <span className="font-serif text-lg text-[#c9a96e] whitespace-nowrap">{listing.price}</span>
                     </div>
                     <p className="font-sans text-[9px] md:text-[10px] text-white/70 uppercase tracking-widest">{listing.location}</p>
                     <p className="font-sans text-[10px] md:text-xs text-white/90 italic">{listing.stats}</p>
@@ -459,20 +433,15 @@ export default function Listings() {
               <div className="p-8 md:p-12">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 pb-8 border-b border-gray-200">
                   <div>
-                    {selectedListing.status === 'Coming Soon' || selectedListing.status === 'Under Construction' ? (
+                    {(selectedListing.status === 'Coming Soon' || selectedListing.status === 'Under Construction') && (
                       <span className="inline-block px-3 py-1 bg-[#c9a96e] text-white text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
                         Build in Progress
-                      </span>
-                    ) : (
-                      <span className="inline-block px-3 py-1 bg-[#F4F3F0] text-[#1b2518] text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
-                        Completed Build
                       </span>
                     )}
                     <h2 className="text-3xl md:text-5xl font-serif text-primary mb-2">{selectedListing.name}</h2>
                     <p className="text-primary/60 font-sans tracking-wide uppercase text-sm">{selectedListing.location}</p>
                   </div>
                   <div className="text-left md:text-right">
-                    <div className="text-3xl md:text-4xl font-serif text-[#c9a96e] mb-2">{selectedListing.price}</div>
                     <p className="font-sans font-medium text-primary/80">{selectedListing.stats}</p>
                   </div>
                 </div>
