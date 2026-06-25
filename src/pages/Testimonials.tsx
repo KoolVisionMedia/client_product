@@ -331,34 +331,54 @@ export default function Testimonials() {
         </motion.div>
       </section>
 
-      {/* ── Platform Rating Bar ─────────────────────────────────────── */}
-      <section className="bg-[#1b2518] py-14 px-6 md:px-12">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            { label: 'Google',   rating: '5.0', sub: '15+ Verified Reviews',  Logo: GoogleLogo   },
-            { label: 'Facebook', rating: '5.0', sub: '6+ Community Reviews',  Logo: FacebookLogo },
-            { label: 'Houzz',    rating: '5.0', sub: 'Certified Professional', Logo: null         },
-          ].map((item, i) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.9, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex items-center gap-5 border border-white/10 rounded-xl px-7 py-6 bg-white/[0.03]"
-            >
-              <span className="font-serif text-4xl text-[#c9a96e] leading-none tabular-nums">{item.rating}</span>
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Stars size={13} />
-                  {item.Logo && <item.Logo />}
-                </div>
-                <p className="font-sans text-[11px] text-white/50 tracking-wide">
-                  {item.label} · {item.sub}
-                </p>
+      {/* ── Video Card Rating Section ─────────────────────────────────────── */}
+      <section className="bg-[#FAFAF5] py-16 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto relative rounded-[2.5rem] overflow-hidden shadow-2xl">
+          {/* Background Video */}
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/assets/holiday-seminar.mp4" type="video/mp4" />
+          </video>
+          {/* Gradient Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1b2518]/95 via-[#1b2518]/70 to-transparent" />
+          
+          <div className="relative z-10 p-10 md:p-20 flex flex-col justify-end min-h-[500px]">
+            <div className="max-w-2xl">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-5">
+                Excellence in Every Detail
+              </h2>
+              <p className="font-sans text-white/80 text-lg mb-12 max-w-lg leading-relaxed">
+                We transform visions into reality, architecting custom homes that elevate the standard of living in Middle Tennessee.
+              </p>
+              
+              {/* Merged Ratings */}
+              <div className="flex flex-wrap items-center gap-8 md:gap-14">
+                {[
+                  { label: 'Google',   rating: '5.0', sub: '15+ Verified Reviews',  Logo: GoogleLogo   },
+                  { label: 'Facebook', rating: '5.0', sub: '6+ Community Reviews',  Logo: FacebookLogo },
+                  { label: 'Houzz',    rating: '5.0', sub: 'Certified Professional', Logo: null         },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-4">
+                    <span className="font-serif text-4xl text-white">{item.rating}</span>
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <Stars size={12} />
+                        {item.Logo && <div className="ml-1"><item.Logo /></div>}
+                      </div>
+                      <p className="font-sans text-[10px] text-white/60 uppercase tracking-wider">
+                        {item.sub}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </motion.div>
-          ))}
+            </div>
+          </div>
         </div>
       </section>
 
