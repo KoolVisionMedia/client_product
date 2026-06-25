@@ -169,7 +169,7 @@ const communityImages = [
 const allReviews = [
   ...featuredReviews.map(r => ({
     name: r.name,
-    role: r.location || r.role,
+    role: (r as any).location || (r as any).role,
     date: r.date,
     text: r.text,
     source: r.platform || 'Google',
@@ -255,7 +255,7 @@ export default function Testimonials() {
     e.preventDefault();
     setFormState({ status: 'loading', message: '' });
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    formData.append("access_key", (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE");
     formData.append("subject", "New Community Update Subscription");
 
     try {
