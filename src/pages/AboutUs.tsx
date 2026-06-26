@@ -245,6 +245,7 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
           access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
           subject: `Direct Partner Lead for ${partner.name} - ${formData.name}`,
           from_name: "Homefront Builders Website",
+          replyto: formData.email,
           partner: partner.name,
           ...formData,
         }),

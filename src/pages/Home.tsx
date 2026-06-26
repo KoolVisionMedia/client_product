@@ -14,7 +14,7 @@ const localBusinessSchema = {
   "description": "Luxury custom home builder in Clarksville, TN and Middle Tennessee. Specializing in high-end custom home construction with transparent budgeting and superior craftsmanship.",
   "url": "https://www.homefrontbuilderstn.com",
   "telephone": "(931) 221-2566",
-  "email": "homefrontbuilderstn@gmail.com",
+  "email": "homefrontsalesTN@gmail.com",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Clarksville",

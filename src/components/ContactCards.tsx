@@ -14,10 +14,10 @@ const cardsData = [
   {
     id: 'email',
     title: 'Email',
-    value: 'homefrontbuilderstn@gmail.com',
+    value: 'homefrontsalesTN@gmail.com',
     icon: Mail,
     actionText: 'Send a Message',
-    actionHref: 'mailto:homefrontbuilderstn@gmail.com',
+    actionHref: 'mailto:homefrontsalesTN@gmail.com',
   },
   {
     id: 'address',
