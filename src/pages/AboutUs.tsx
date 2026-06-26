@@ -242,7 +242,7 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
+          access_key: "6734d3d0-0e39-4112-b5b6-3247d6699948",
           subject: `Direct Partner Lead for ${partner.name} - ${formData.name}`,
           from_name: "Homefront Builders Website",
           replyto: formData.email,
