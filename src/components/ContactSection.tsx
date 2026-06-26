@@ -237,7 +237,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
                   <h3 className="font-serif text-3xl text-white mb-3">Message Sent!</h3>
-                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your message and will be in touch with you shortly. Thank you!</p>
+                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your message and will be in touch with you soon. Thank you!</p>
                 </div>
               ) : (
                 <div className="flex flex-col">

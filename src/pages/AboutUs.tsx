@@ -350,7 +350,7 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
                     </div>
                     <h4 className="font-serif text-xl text-primary mb-2">Message Sent</h4>
                     <p className="font-sans text-xs text-primary-light max-w-xs mx-auto">
-                      Thank you! Your message has been sent directly to **{partner.name}**. They will get back to you shortly.
+                      Thank you! Your message has been sent directly to **{partner.name}**. They will get back to you soon.
                     </p>
                   </motion.div>
                 ) : (
