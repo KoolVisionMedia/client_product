@@ -25,8 +25,7 @@ function AnimatedLetters({ text, variants }: { text: string; variants: any }) {
 
 export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boolean }) {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     phone: '',
     subject: '',
@@ -78,7 +77,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
         },
         body: JSON.stringify({
           access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
-          subject: `New Contact: ${formData.subject} - ${formData.firstName} ${formData.lastName}`,
+          subject: `New Contact: ${formData.subject} - ${formData.name}`,
           from_name: "Homefront Builders Website",
           replyto: formData.email,
           ...formData,
@@ -251,9 +250,9 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
                     <div className="flex flex-col">
                       <label htmlFor="firstName" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Name</label>
-                      <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required
+                      <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
-                        placeholder="John Mercedes" />
+                        placeholder="Full Name" />
                     </div>
 
                     <div className="flex flex-col">
