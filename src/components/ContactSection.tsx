@@ -31,7 +31,6 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
     phone: '',
     subject: '',
     message: '',
-    date: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,8 +78,9 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
         },
         body: JSON.stringify({
           access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
-          subject: `New Lead: ${formData.subject} - ${formData.firstName} ${formData.lastName}`,
+          subject: `New Contact: ${formData.subject} - ${formData.firstName} ${formData.lastName}`,
           from_name: "Homefront Builders Website",
+          replyto: formData.email,
           ...formData,
         }),
       });
@@ -188,7 +188,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
             <div className="flex flex-col gap-6 md:gap-8">
               {/* Pill badge */}
               <div className="border border-primary/25 bg-[#c9a96e]/5 rounded-full px-4 py-1.5 w-fit">
-                <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#c9a96e] font-bold">Book a Call</span>
+                <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#c9a96e] font-bold">Get in Touch</span>
               </div>
 
               {/* Headline */}
@@ -237,18 +237,18 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                   <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
-                  <h3 className="font-serif text-3xl text-white mb-3">Booking Requested</h3>
-                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your request and will connect with you shortly to confirm a time for your call. Thank you!</p>
+                  <h3 className="font-serif text-3xl text-white mb-3">Message Sent!</h3>
+                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your message and will be in touch with you shortly. Thank you!</p>
                 </div>
               ) : (
                 <div className="flex flex-col">
                   {/* Dark Container Header */}
-                  <h3 className="font-sans text-2xl md:text-3xl text-white font-bold mb-2">Book a call</h3>
-                  <p className="font-sans text-xs text-white/60 mb-8">Choose the best time and tell us more about what you need.</p>
+                  <h3 className="font-sans text-2xl md:text-3xl text-white font-bold mb-2">Send us a message</h3>
+                  <p className="font-sans text-xs text-white/60 mb-8">Fill out the form below and we'll get back to you as soon as possible.</p>
 
                   {/* Form */}
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    
+
                     <div className="flex flex-col">
                       <label htmlFor="firstName" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Name</label>
                       <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required
@@ -260,30 +260,30 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                       <label htmlFor="email" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Email</label>
                       <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
-                        placeholder="Email" />
+                        placeholder="your@email.com" />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex flex-col">
-                        <label htmlFor="subject" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Pick a Topic</label>
-                        <div className="relative">
-                          <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required
-                            className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all appearance-none cursor-pointer pr-10">
-                            <option value="" disabled className="bg-[#1b2518]">Topic</option>
-                            <option value="custom-build" className="bg-[#1b2518]">Custom Home Build</option>
-                            <option value="floorplans" className="bg-[#1b2518]">Floorplans & Models</option>
-                            <option value="land-lot" className="bg-[#1b2518]">Land or Lot Inquiry</option>
-                            <option value="general" className="bg-[#1b2518]">General Consultation</option>
-                          </select>
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/40"><path d="m6 9 6 6 6-6"/></svg>
-                          </div>
+                    <div className="flex flex-col">
+                      <label htmlFor="phone" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Phone Number</label>
+                      <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
+                         className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
+                        placeholder="(555) 000-0000" />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="subject" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Topic</label>
+                      <div className="relative">
+                        <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required
+                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all appearance-none cursor-pointer pr-10">
+                          <option value="" disabled className="bg-[#1b2518]">Select a topic</option>
+                          <option value="custom-build" className="bg-[#1b2518]">Custom Home Build</option>
+                          <option value="floorplans" className="bg-[#1b2518]">Floorplans & Models</option>
+                          <option value="land-lot" className="bg-[#1b2518]">Land or Lot Inquiry</option>
+                          <option value="general" className="bg-[#1b2518]">General Consultation</option>
+                        </select>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/40"><path d="m6 9 6 6 6-6"/></svg>
                         </div>
-                      </div>
-                      <div className="flex flex-col">
-                        <label htmlFor="date" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Pick a Date</label>
-                        <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required
-                           className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30 [color-scheme:dark]" />
                       </div>
                     </div>
 
@@ -297,7 +297,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                     <div className="flex items-center gap-3 pt-2">
                       <input type="checkbox" id="agree" required className="w-4 h-4 rounded border-white/10 bg-white/5 text-[#c9a96e] focus:ring-0 focus:ring-offset-0 cursor-pointer" />
                       <label htmlFor="agree" className="font-sans text-[11px] text-white/60 cursor-pointer">
-                        By sending this form, I agree to be contacted to schedule my consultation.
+                        By sending this form, I agree to be contacted by the Homefront Builders team.
                       </label>
                     </div>
 
@@ -306,7 +306,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                       disabled={isSubmitting}
                       className="mt-6 px-8 py-4 bg-white rounded-xl font-sans text-xs uppercase tracking-widest font-bold text-[#1b2518] hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors disabled:opacity-50 w-full sm:w-auto"
                     >
-                      {isSubmitting ? 'Confirming...' : 'Confirm booking'}
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
                   </form>
                 </div>
