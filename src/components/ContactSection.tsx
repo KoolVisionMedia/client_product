@@ -64,24 +64,19 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      const data = new FormData(e.currentTarget as HTMLFormElement);
+      data.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
+      data.append("subject", `New Contact: ${formData.subject} - ${formData.name}`);
+      data.append("from_name", "Homefront Builders Website");
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "6734d3d0-0e39-4112-b5b6-3247d6699948",
-          subject: `New Contact: ${formData.subject} - ${formData.name}`,
-          from_name: "Homefront Builders Website",
-          replyto: formData.email,
-          ...formData,
-        }),
+        body: data,
       });
 
       const result = await response.json();
@@ -89,10 +84,6 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
         setSubmitted(true);
       } else {
         console.error("Form submission error:", result);
-        // Fallback to showing success anyway for the UI if the key is missing during testing
-        if (result.message.includes("Invalid access key")) {
-           setSubmitted(true);
-        }
       }
     } catch (error) {
       console.error("Form submission failed:", error);

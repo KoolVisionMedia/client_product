@@ -230,25 +230,20 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      const data = new FormData(e.currentTarget);
+      data.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
+      data.append("subject", `Direct Partner Lead for ${partner.name} - ${formData.name}`);
+      data.append("from_name", "Homefront Builders Website");
+      data.append("partner", partner.name);
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "6734d3d0-0e39-4112-b5b6-3247d6699948",
-          subject: `Direct Partner Lead for ${partner.name} - ${formData.name}`,
-          from_name: "Homefront Builders Website",
-          replyto: formData.email,
-          partner: partner.name,
-          ...formData,
-        }),
+        body: data,
       });
 
       const result = await response.json();
@@ -256,10 +251,6 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
         setSubmitted(true);
       } else {
         console.error("Partner form submission error:", result);
-        // Fallback to success for testing/missing key
-        if (result.message?.includes("Invalid access key")) {
-          setSubmitted(true);
-        }
       }
     } catch (error) {
       console.error("Partner form submission failed:", error);
