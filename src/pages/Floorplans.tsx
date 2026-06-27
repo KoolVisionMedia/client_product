@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Bed, Bath, Square, Home as HomeIcon, FileText } from 'lucide-react';
+import { X, Bed, Bath, Square, Home as HomeIcon, FileText, Download } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const floorPlans = [
@@ -58,6 +58,35 @@ const floorPlans = [
 
 export default function Floorplans() {
   const [selectedPlan, setSelectedPlan] = useState<typeof floorPlans[0] | null>(null);
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [leadFormState, setLeadFormState] = useState({ status: 'idle', message: '' });
+
+  const handleLeadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLeadFormState({ status: 'loading', message: '' });
+    const formData = new FormData(e.currentTarget);
+    formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
+    formData.append("subject", `Floor Plan Booklet Download - ${formData.get("name")}`);
+    formData.append("from_name", "Homefront Builders Website");
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
+      const result = await response.json();
+      if (result.success) {
+        setLeadFormState({ status: 'success', message: 'Success! Your download is starting.' });
+        const link = document.createElement('a');
+        link.href = '/assets/floorplans/Homefront Builders Floorplan Book.pdf';
+        link.download = 'Homefront_Builders_Floorplan_Book.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => { setIsLeadModalOpen(false); setLeadFormState({ status: 'idle', message: '' }); }, 3000);
+      } else {
+        setLeadFormState({ status: 'error', message: 'Something went wrong. Please try again.' });
+      }
+    } catch {
+      setLeadFormState({ status: 'error', message: 'An error occurred. Please try again.' });
+    }
+  };
 
   // Prevent scrolling on body when modal is open
   useEffect(() => {
@@ -104,15 +133,13 @@ export default function Floorplans() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 pt-2"
           >
-            <a
-              href="/assets/floorplans/Homefront Builders Floorplan Book.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setIsLeadModalOpen(true)}
               className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg group"
             >
               Download Booklet (PDF)
               <span className="w-4 h-[1px] bg-white ml-2 group-hover:w-8 transition-all duration-300"></span>
-            </a>
+            </button>
             <button
               onClick={() => {
                 const el = document.getElementById('floorplans-grid');
@@ -147,9 +174,7 @@ export default function Floorplans() {
           {/* Master Booklet 3D Book */}
           <div 
             className="bookshelf-book-wrapper bookshelf-book-wrapper--booklet group/book relative flex flex-col items-center select-none w-[210px] h-[340px] sm:w-[250px] sm:h-[400px] md:w-[300px] md:h-[490px] lg:w-[340px] lg:h-[560px] z-30 cursor-pointer"
-            onClick={() => {
-              window.open('/assets/floorplans/Homefront Builders Floorplan Book.pdf', '_blank');
-            }}
+            onClick={() => setIsLeadModalOpen(true)}
           >
             <div 
               className="w-full h-full relative bookshelf-book transition-transform duration-[0.8s] ease-[cubic-bezier(0.25,1,0.5,1)]"
@@ -308,17 +333,15 @@ export default function Floorplans() {
                     </div>
                   </div>
 
-                  <a
-                    href="/assets/floorplans/Homefront Builders Floorplan Book.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => setIsLeadModalOpen(true)}
                     className="inline-flex items-center gap-2.5 font-sans text-sm tracking-wide text-accent hover:text-primary transition-all duration-300 group/pdf w-fit"
                   >
                     <FileText size={18} className="text-accent group-hover/pdf:text-primary transition-colors duration-300" />
                     <span className="border-b-2 border-accent/20 group-hover/pdf:border-primary/50 transition-all duration-300 pb-0.5 font-bold">
                       Homefront Builders Floorplan Book.pdf
                     </span>
-                  </a>
+                  </button>
                 </div>
 
                 {/* Right Column: Blueprint Layouts (fills remaining height) */}
@@ -470,6 +493,60 @@ export default function Floorplans() {
           </div>
         </div>
       </section>
+
+      {/* Lead Capture Modal */}
+      <AnimatePresence>
+        {isLeadModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsLeadModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl z-10"
+            >
+              <button
+                onClick={() => setIsLeadModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-colors text-primary"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="p-8 md:p-10">
+                <div className="w-12 h-12 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mb-6">
+                  <Download className="w-6 h-6 text-[#c9a96e]" />
+                </div>
+                <h3 className="font-serif text-3xl text-primary mb-2">Get Your Booklet</h3>
+                <p className="font-sans text-primary-light/80 text-sm mb-8">
+                  Enter your details below to instantly download the Homefront Builders Floor Plan Book PDF.
+                </p>
+                <form onSubmit={handleLeadSubmit} className="flex flex-col gap-4">
+                  <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                  <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                  <input type="tel" name="phone" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                  <button
+                    disabled={leadFormState.status === 'loading' || leadFormState.status === 'success'}
+                    type="submit"
+                    className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {leadFormState.status === 'loading' ? 'Processing...' : leadFormState.status === 'success' ? 'Downloading...' : 'Download PDF Now'}
+                  </button>
+                  {leadFormState.message && (
+                    <p className={`text-sm text-center mt-2 font-medium ${leadFormState.status === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+                      {leadFormState.message}
+                    </p>
+                  )}
+                </form>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
