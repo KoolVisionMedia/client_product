@@ -509,7 +509,7 @@ export default function Floorplans() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl z-10"
+              className="relative w-full max-w-lg bg-white rounded-3xl overflow-y-auto max-h-[90vh] shadow-2xl z-10"
             >
               <button
                 onClick={() => setIsLeadModalOpen(false)}
