@@ -24,7 +24,7 @@ export default function Terms() {
         <h2 className="font-serif text-2xl text-primary mt-10 mb-4">Contact Us</h2>
         <p className="text-neutral-600 leading-relaxed mb-6">
           If you have questions about these Terms of Service, please contact us at{' '}
-          <a href="mailto:homefrontbuilderstn@gmail.com" className="text-[#c9a96e] hover:underline">homefrontbuilderstn@gmail.com</a>.
+          <a href="mailto:homefrontsalesTN@gmail.com" className="text-[#c9a96e] hover:underline">homefrontsalesTN@gmail.com</a>.
         </p>
       </div>
     </div>

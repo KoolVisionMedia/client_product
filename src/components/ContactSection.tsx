@@ -64,24 +64,19 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      const data = new FormData(e.currentTarget as HTMLFormElement);
+      data.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
+      data.append("subject", `New Contact: ${formData.subject} - ${formData.name}`);
+      data.append("from_name", "Homefront Builders Website");
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
-          subject: `New Contact: ${formData.subject} - ${formData.name}`,
-          from_name: "Homefront Builders Website",
-          replyto: formData.email,
-          ...formData,
-        }),
+        body: data,
       });
 
       const result = await response.json();
@@ -89,10 +84,6 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
         setSubmitted(true);
       } else {
         console.error("Form submission error:", result);
-        // Fallback to showing success anyway for the UI if the key is missing during testing
-        if (result.message.includes("Invalid access key")) {
-           setSubmitted(true);
-        }
       }
     } catch (error) {
       console.error("Form submission failed:", error);
@@ -237,7 +228,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
                   <h3 className="font-serif text-3xl text-white mb-3">Message Sent!</h3>
-                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your message and will be in touch with you shortly. Thank you!</p>
+                  <p className="font-sans text-sm text-white/70 max-w-sm">We've received your message and will be in touch with you soon. Thank you!</p>
                 </div>
               ) : (
                 <div className="flex flex-col">

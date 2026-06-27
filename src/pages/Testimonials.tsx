@@ -256,7 +256,7 @@ export default function Testimonials() {
     e.preventDefault();
     setFormState({ status: 'loading', message: '' });
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE");
+    formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
     formData.append("subject", "New Community Update Subscription");
 
     try {

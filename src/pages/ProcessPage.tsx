@@ -134,18 +134,14 @@ export default function ProcessPage() {
     setFormState({ status: 'loading', message: '' });
 
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    
+    formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
+    formData.append("subject", `Floor Plan Booklet Download - ${formData.get("name")}`);
+    formData.append("from_name", "Homefront Builders Website");
+
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE",
-          subject: `Floor Plan Booklet Download - ${data.name}`,
-          from_name: "Homefront Builders Website",
-          ...data,
-        }),
+        body: formData,
       });
       const result = await response.json();
       if (result.success) {
@@ -360,7 +356,7 @@ export default function ProcessPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl z-10"
+              className="relative w-full max-w-lg bg-white rounded-3xl overflow-y-auto max-h-[90vh] shadow-2xl z-10"
             >
               <button
                 onClick={() => setIsModalOpen(false)}
