@@ -60,4 +60,10 @@ for (const route of routes) {
   }
 }
 
+// Remove the server-only SSR bundle so it isn't deployed/served publicly.
+// (It is only needed at build time, by this script.)
+try {
+  fs.rmSync(path.resolve(__dirname, 'dist/server'), { recursive: true, force: true });
+} catch {}
+
 console.log('Prerendering complete.');
