@@ -1,0 +1,23 @@
+# Homefront Builders
+
+> Homefront Builders is a luxury custom home builder serving Clarksville, TN and Middle Tennessee, with 20+ years of expertise, transparent budgeting, and superior craftsmanship.
+
+Homefront Builders designs and builds custom homes across Middle Tennessee. The site covers the company's building process, available floor plans, active listings, client testimonials, and its new-home warranty program.
+
+## Pages
+
+- [Home](https://www.homefrontbuilderstn.com/): Custom home builder in Clarksville, TN and Middle Tennessee — luxury custom homes with transparent budgeting and 20+ years of expertise.
+- [About Us](https://www.homefrontbuilderstn.com/about-us): The story behind Homefront Builders, Clarksville's premier luxury custom home builder, with over two decades of design and construction expertise.
+- [Our Process](https://www.homefrontbuilderstn.com/process): How Homefront Builders manages every stage of a custom home build, from site analysis to final walkthrough, with precision and full transparency.
+- [Floor Plans](https://www.homefrontbuilderstn.com/floorplans): Custom home floor plans — the Cypress, Dogwood, Harmony, Magnolia, and Myrtle — with stunning exteriors and highly functional layouts.
+- [Listings](https://www.homefrontbuilderstn.com/listings): Active custom home listings and luxury new construction available now in Clarksville, TN and Middle Tennessee.
+- [Warranties](https://www.homefrontbuilderstn.com/warranties): The Custom Care Program — proactive warranty support and scheduled maintenance to protect your new home investment.
+- [Testimonials](https://www.homefrontbuilderstn.com/testimonials): What Homefront Builders clients say about building their luxury custom home in Middle Tennessee.
+- [Blog](https://www.homefrontbuilderstn.com/blog): Home building tips, design inspiration, and local market insights from the Homefront Builders team.
+- [Contact Us](https://www.homefrontbuilderstn.com/contact-us): Get in touch to start your custom home journey in Clarksville, TN.
+
+## Contact
+
+- Phone: (931) 221-2566
+- Email: homefrontsalesTN@gmail.com
+- Service area: Clarksville, TN and Middle Tennessee
