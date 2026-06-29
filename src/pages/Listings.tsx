@@ -219,10 +219,11 @@ export default function Listings() {
     return item.status === activeFilter;
   });
 
-  // Sort status priority: Available (1) -> Coming Soon (2) -> Under Contract (3) -> Sold (4)
+  // Sort status priority: Builds in Progress (Coming Soon/Under Construction) (1) -> Available (2) -> Under Contract (3) -> Sold (4)
   const statusOrder: Record<string, number> = {
-    'Available': 1,
-    'Coming Soon': 2,
+    'Coming Soon': 1,
+    'Under Construction': 1,
+    'Available': 2,
     'Under Contract': 3,
     'Sold': 4,
   };
