@@ -229,17 +229,27 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(false);
 
     try {
-      const data = new FormData(e.currentTarget);
+      // Build the payload explicitly from state. The inputs are controlled
+      // and have no `name` attributes, so `new FormData(form)` would be empty —
+      // that bug is why these submissions were arriving blank.
+      const data = new FormData();
       data.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
-      data.append("subject", `Direct Partner Lead for ${partner.name} - ${formData.name}`);
+      data.append("subject", `New Homefront Builders Website Inquiry — ${formData.name}`);
       data.append("from_name", "Homefront Builders Website");
-      data.append("partner", partner.name);
+      data.append("name", formData.name);
+      data.append("email", formData.email);
+      data.append("phone", formData.phone || "Not provided");
+      data.append("message", formData.message);
+      data.append("replyto", formData.email);
+      data.append("Inquiry via profile", partner.name);
 
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
@@ -251,9 +261,11 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
         setSubmitted(true);
       } else {
         console.error("Partner form submission error:", result);
+        setError(true);
       }
     } catch (error) {
       console.error("Partner form submission failed:", error);
+      setError(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -341,14 +353,14 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
                     </div>
                     <h4 className="font-serif text-xl text-primary mb-2">Message Sent</h4>
                     <p className="font-sans text-xs text-primary-light max-w-xs mx-auto">
-                      Thank you! Your message has been sent directly to **{partner.name}**. They will get back to you soon.
+                      Thank you! Your message has been sent to Homefront Builders. The team will get back to you soon.
                     </p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <h4 className="font-serif text-lg text-primary mb-1">Contact {partner.name.split(' ')[0]} Directly</h4>
+                    <h4 className="font-serif text-lg text-primary mb-1">Contact Homefront Builders</h4>
                     <p className="font-sans text-[11px] text-primary-light/70 leading-relaxed mb-3">
-                      Interested in working together or asking a specific question? Send a direct message below.
+                      Interested in working together or have a question? Send a message below and the Homefront Builders team will get back to you.
                     </p>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -393,8 +405,14 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
                       className="w-full py-3 bg-primary text-white font-sans text-[10px] uppercase tracking-widest hover:bg-[#c9a96e] transition-all rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Send className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-pulse' : ''}`} />
-                      {isSubmitting ? 'Sending...' : 'Send Direct Message'}
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
+
+                    {error && (
+                      <p className="font-sans text-[11px] text-red-600 text-center">
+                        Something went wrong sending your message. Please try again or call us at (931) 221-2566.
+                      </p>
+                    )}
                   </form>
                 )}
               </div>
