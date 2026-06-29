@@ -8,6 +8,7 @@ interface Message {
 }
 
 export default function ChatWidget() {
+  const [shouldRender, setShouldRender] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: "Hi there! I'm the Homefront Builders virtual assistant. How can I help you today? Whether you have questions about our custom home process, floor plans, or available lots, I'm here to answer them." }
@@ -15,6 +16,18 @@ export default function ChatWidget() {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    if (isMobile) {
+      const timer = setTimeout(() => {
+        setShouldRender(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldRender(true);
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -56,6 +69,8 @@ export default function ChatWidget() {
       setIsTyping(false);
     }
   };
+
+  if (!shouldRender) return null;
 
   return (
     <>
