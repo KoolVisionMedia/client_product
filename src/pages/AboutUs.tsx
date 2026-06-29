@@ -7,9 +7,9 @@ import SEO from '../components/SEO';
 const partners = [
   {
     name: 'Amber Wotring',
-    title: 'Builder',
-    image: '',
-    bio: ``,
+    title: 'Custom Home Builder, Architectural Designer & Realtor',
+    image: '/assets/team/Amber Wotring.jpg',
+    bio: `Amber Wotring is one of the top female builders in Middle Tennessee, bringing over 25 years of experience in custom home design and construction. Her journey in the building industry began at an early age. Surrounded by craftsmanship, planning, and design, Amber developed a passion for creating homes that are both beautiful and functional.\n\nWhile pursuing her degree in Architectural Design, Amber began designing homes for multiple builders, gaining hands-on experience and establishing herself early as a talented and trusted designer turning visions into architectural reality.\n\nAmber's professional path has taken her across the country with military relocation. Eventually, she and her family settled in Clarksville, Tennessee, where Amber began building and designing custom homes throughout Middle TN.\n\nToday, Amber is known for her innovative designs, attention to detail, and forward-thinking approach to custom homebuilding. She is constantly creating new plans, refining ideas, and pushing boundaries to deliver homes that reflect each client's lifestyle and vision.\n\nAmber believes the process of building a home should be exciting and enjoyable—not overwhelming. By offering everything in-house, her company provides a seamless, stress-free experience from initial concept to final completion.\n\nAmber continues to shape the future of the construction industry one blueprint at a time, focused on building not just houses, but lasting homes and meaningful experiences for families. Her story stands as a testament to what passion, vision, and determination can build.`,
     social: { facebook: '#', instagram: '#', linkedin: '#' },
     video: '',
   },
