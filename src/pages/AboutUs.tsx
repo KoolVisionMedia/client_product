@@ -242,7 +242,7 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
       // that bug is why these submissions were arriving blank.
       const data = new FormData();
       data.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
-      data.append("subject", `New Homefront Builders Website Inquiry — ${formData.name}`);
+      data.append("subject", `New Inquiry via ${partner.name}'s profile — from ${formData.name}`);
       data.append("from_name", "Homefront Builders Website");
       data.append("name", formData.name);
       data.append("email", formData.email);
