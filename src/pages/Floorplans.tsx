@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Bed, Bath, Square, Home as HomeIcon, FileText, Download } from 'lucide-react';
+import { X, Bed, Bath, Square, Home as HomeIcon, FileText, Send } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const floorPlans = [
@@ -61,25 +61,27 @@ export default function Floorplans() {
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [leadFormState, setLeadFormState] = useState({ status: 'idle', message: '' });
 
+  const closeLeadModal = () => {
+    setIsLeadModalOpen(false);
+    setLeadFormState({ status: 'idle', message: '' });
+  };
+
   const handleLeadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLeadFormState({ status: 'loading', message: '' });
     const formData = new FormData(e.currentTarget);
     formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
-    formData.append("subject", `Floor Plan Booklet Download - ${formData.get("name")}`);
+    formData.append("subject", `Floor Plan Booklet Request - ${formData.get("name")}`);
     formData.append("from_name", "Homefront Builders Website");
+    formData.append("request", "Floor Plan Booklet");
+    const email = formData.get("email");
+    if (email) formData.append("replyto", email as string);
     try {
       const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
       const result = await response.json();
       if (result.success) {
-        setLeadFormState({ status: 'success', message: 'Success! Your download is starting.' });
-        const link = document.createElement('a');
-        link.href = '/assets/floorplans/Homefront Builders Floorplan Book.pdf';
-        link.download = 'Homefront_Builders_Floorplan_Book.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => { setIsLeadModalOpen(false); setLeadFormState({ status: 'idle', message: '' }); }, 3000);
+        // No PDF download — Homefront sends the booklet manually after the request.
+        setLeadFormState({ status: 'success', message: '' });
       } else {
         setLeadFormState({ status: 'error', message: 'Something went wrong. Please try again.' });
       }
@@ -122,8 +124,8 @@ export default function Floorplans() {
             <p className="font-sans text-primary-light text-base md:text-lg leading-relaxed">
               Explore our curated collection of architectural masterpieces. Each custom home floorplan is 
               thoughtfully designed with flow, natural lighting, and timeless luxury in mind. Hover over 
-              any book below to swing the cover open and preview its interior layout. Click any floor plan 
-              to inspect detailed specifications, or select the central Booklet to download the offline-ready catalog.
+              any book below to swing the cover open and preview its interior layout. Click any floor plan
+              to inspect detailed specifications, or select the central Booklet to request the complete catalog.
             </p>
           </motion.div>
 
@@ -137,7 +139,7 @@ export default function Floorplans() {
               onClick={() => setIsLeadModalOpen(true)}
               className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg group"
             >
-              Download Booklet (PDF)
+              Request the Booklet
               <span className="w-4 h-[1px] bg-white ml-2 group-hover:w-8 transition-all duration-300"></span>
             </button>
             <button
@@ -184,11 +186,11 @@ export default function Floorplans() {
               {/* Back Cover Shadow */}
               <div className="absolute inset-0 bg-accent-dark -translate-z-[12px] shadow-[5px_10px_25px_rgba(0,0,0,0.3)] rounded-r-[4px]" />
               
-              {/* Inside Page (Download PDF Button) */}
+              {/* Inside Page (Request Booklet prompt) */}
               <div className="bookshelf-book-pages bg-primary shadow-[2px_2px_8px_rgba(0,0,0,0.15)] book-page-stack">
                 <div className="w-full h-full overflow-hidden p-6 flex flex-col items-center justify-center text-center gap-4 bg-primary text-white rounded-r-[4px]">
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span className="font-sans text-[10px] font-semibold tracking-[0.1em] uppercase text-accent leading-relaxed">Download Complete PDF Catalog</span>
+                  <span className="font-sans text-[10px] font-semibold tracking-[0.1em] uppercase text-accent leading-relaxed">Request the Complete Booklet</span>
                 </div>
               </div>
               
@@ -206,7 +208,7 @@ export default function Floorplans() {
             </div>
             <div className="mt-8 flex flex-col items-center text-center pointer-events-none group-hover/book:translate-y-2 transition-transform duration-500">
               <span className="font-serif text-base md:text-lg text-accent font-bold">Floor Plan Booklet</span>
-              <span className="font-sans text-xs text-primary font-medium">Complete PDF Brochure</span>
+              <span className="font-sans text-xs text-primary font-medium">Request Your Copy</span>
             </div>
           </div>
         </div>
@@ -339,7 +341,7 @@ export default function Floorplans() {
                   >
                     <FileText size={18} className="text-accent group-hover/pdf:text-primary transition-colors duration-300" />
                     <span className="border-b-2 border-accent/20 group-hover/pdf:border-primary/50 transition-all duration-300 pb-0.5 font-bold">
-                      Homefront Builders Floorplan Book.pdf
+                      Request the Floor Plan Booklet
                     </span>
                   </button>
                 </div>
@@ -502,7 +504,7 @@ export default function Floorplans() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsLeadModalOpen(false)}
+              onClick={closeLeadModal}
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             />
             <motion.div
@@ -512,36 +514,56 @@ export default function Floorplans() {
               className="relative w-full max-w-lg bg-white rounded-3xl overflow-y-auto max-h-[90vh] shadow-2xl z-10"
             >
               <button
-                onClick={() => setIsLeadModalOpen(false)}
+                onClick={closeLeadModal}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-colors text-primary"
               >
                 <X className="w-5 h-5" />
               </button>
               <div className="p-8 md:p-10">
-                <div className="w-12 h-12 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mb-6">
-                  <Download className="w-6 h-6 text-[#c9a96e]" />
-                </div>
-                <h3 className="font-serif text-3xl text-primary mb-2">Get Your Booklet</h3>
-                <p className="font-sans text-primary-light/80 text-sm mb-8">
-                  Enter your details below to instantly download the Homefront Builders Floor Plan Book PDF.
-                </p>
-                <form onSubmit={handleLeadSubmit} className="flex flex-col gap-4">
-                  <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                  <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                  <input type="tel" name="phone" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                  <button
-                    disabled={leadFormState.status === 'loading' || leadFormState.status === 'success'}
-                    type="submit"
-                    className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
-                  >
-                    {leadFormState.status === 'loading' ? 'Processing...' : leadFormState.status === 'success' ? 'Downloading...' : 'Download PDF Now'}
-                  </button>
-                  {leadFormState.message && (
-                    <p className={`text-sm text-center mt-2 font-medium ${leadFormState.status === 'success' ? 'text-green-600' : 'text-red-500'}`}>
-                      {leadFormState.message}
+                {leadFormState.status === 'success' ? (
+                  <div className="text-center py-6">
+                    <div className="w-14 h-14 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                      <Send className="w-6 h-6 text-[#c9a96e]" />
+                    </div>
+                    <h3 className="font-serif text-3xl text-primary mb-3">Request Received</h3>
+                    <p className="font-sans text-primary-light/80 text-sm max-w-sm mx-auto">
+                      Thank you for requesting the Homefront Builders floor plan booklet. Our team will send it to you soon.
                     </p>
-                  )}
-                </form>
+                    <button
+                      onClick={closeLeadModal}
+                      className="mt-8 inline-flex items-center justify-center px-8 py-3 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-xl hover:bg-[#c9a96e] transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="w-12 h-12 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mb-6">
+                      <Send className="w-6 h-6 text-[#c9a96e]" />
+                    </div>
+                    <h3 className="font-serif text-3xl text-primary mb-2">Request the Floor Plan Booklet</h3>
+                    <p className="font-sans text-primary-light/80 text-sm mb-8">
+                      Enter your details below and the Homefront Builders team will send you the floor plan booklet.
+                    </p>
+                    <form onSubmit={handleLeadSubmit} className="flex flex-col gap-4">
+                      <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="tel" name="phone" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <button
+                        disabled={leadFormState.status === 'loading'}
+                        type="submit"
+                        className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
+                      >
+                        {leadFormState.status === 'loading' ? 'Sending...' : 'Request Booklet'}
+                      </button>
+                      {leadFormState.status === 'error' && (
+                        <p className="text-sm text-center mt-2 font-medium text-red-500">
+                          {leadFormState.message}
+                        </p>
+                      )}
+                    </form>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>
