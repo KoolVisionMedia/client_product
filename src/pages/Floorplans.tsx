@@ -73,7 +73,8 @@ export default function Floorplans() {
     formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
     formData.append("subject", `Floor Plan Booklet Request - ${formData.get("name")}`);
     formData.append("from_name", "Homefront Builders Website");
-    formData.append("request", "Floor Plan Booklet");
+    formData.append("Request Type", "Floor Plan Booklet Request");
+    formData.append("Requested Via", "Floorplans page");
     const email = formData.get("email");
     if (email) formData.append("replyto", email as string);
     try {
