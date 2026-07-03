@@ -10,7 +10,7 @@ const partners = [
     title: 'Custom Home Builder, Architectural Designer & Realtor',
     image: '/assets/team/Amber Wotring.jpg',
     bio: `Amber Wotring is one of the top female builders in Middle Tennessee, bringing over 25 years of experience in custom home design and construction. Her journey in the building industry began at an early age. Surrounded by craftsmanship, planning, and design, Amber developed a passion for creating homes that are both beautiful and functional.\n\nWhile pursuing her degree in Architectural Design, Amber began designing homes for multiple builders, gaining hands-on experience and establishing herself early as a talented and trusted designer turning visions into architectural reality.\n\nAmber's professional path has taken her across the country with military relocation. Eventually, she and her family settled in Clarksville, Tennessee, where Amber began building and designing custom homes throughout Middle TN.\n\nToday, Amber is known for her innovative designs, attention to detail, and forward-thinking approach to custom homebuilding. She is constantly creating new plans, refining ideas, and pushing boundaries to deliver homes that reflect each client's lifestyle and vision.\n\nAmber believes the process of building a home should be exciting and enjoyable—not overwhelming. By offering everything in-house, her company provides a seamless, stress-free experience from initial concept to final completion.\n\nAmber continues to shape the future of the construction industry one blueprint at a time, focused on building not just houses, but lasting homes and meaningful experiences for families. Her story stands as a testament to what passion, vision, and determination can build.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: '',
   },
   {
@@ -18,7 +18,7 @@ const partners = [
     title: 'Designer',
     image: '/assets/team/Carissa Ockey.jpeg',
     bio: `I grew up around construction, so I've always seen homes a little differently. Over the past 6.5 years, I've built my career around new construction: guiding projects from concept to completion with a strong focus on both design and functionality.\n\nMy background in interior design allows me to look beyond the floorplans and think about how a home will actually feel to live in. As a mom, I appreciate a home that's not just beautiful, but functions day to day. Elevated but practical.\n\nI'm big on relationships and believe the best projects come from collaboration and trust. The end goal is always the same: a home that feels as good as it looks.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: '',
   },
   {
@@ -26,7 +26,7 @@ const partners = [
     title: 'Director of Sales / Realtor',
     image: '/assets/team/Patricia Shipley.webp',
     bio: `Patricia Shipley has been a realtor for 9 years and she has always dedicated her and her team to provide exceptional service. She works with land, new construction and existing homes in Clarksville and all Mid TN. She is the Director of Sales and her role is dedicated to create an exceptional client experience from first contact through project completion. She oversees and develops high-performing sales teams, implements data-driven processes, and cultivates strong relationships with clients, partners, and other Realtors in the Mid TN area. Using local trends and customer needs, she aligns sales strategies with the company's mission to deliver quality craftsmanship and personalize homebuilding solutions. Her role combines leadership, operational insight, and a commitment to excellence to support long-term business growth.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: 'https://www.youtube.com/embed/YUHia0wL22M',
   },
   {
@@ -34,7 +34,7 @@ const partners = [
     title: 'New Construction Specialist/Realtor',
     image: '/assets/team/Kenneth Wotring.JPG',
     bio: `Kenneth Wotring is a dedicated real estate professional who is committed to helping buyers find the perfect place to call home and assisting sellers in marketing and selling their properties quickly and efficiently. With extensive experience working alongside home builders and specializing in new construction, Kenneth guides clients through every stage of the home-building process—from selecting a floor plan to the exciting day they receive the keys to their brand-new home.\n\nAfter serving 13 years in the United States Military, Kenneth chose to put down roots in Clarksville, Tennessee, with his wife and son. His own experience building a home sparked a passion for real estate and inspired him to help others navigate one of the most important investments of their lives.\n\n"My enthusiasm for helping others find the perfect home for their family's future allows me to connect with clients and provide the highest level of service possible."\n\nHe is especially passionate about helping active-duty military members, veterans, and their families successfully navigate the home-buying process. Having personally experienced the challenges and stress that come with military relocations, he understands the unique needs of service members and is dedicated to making each transition as smooth and stress-free as possible.\n\nWhether you're purchasing your first home, building your dream home from the ground up, relocating to the area, or preparing to sell your current property, Kenneth is committed to providing expert guidance, exceptional service, and a seamless real estate experience from start to finish.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: 'https://www.youtube.com/embed/Syts_xMpWGo',
   },
   {
@@ -42,7 +42,7 @@ const partners = [
     title: 'Realtor',
     image: '/assets/team/Kelsey Michaud.jpg',
     bio: `Kyla left the corporate world in 2019 and jumped headfirst into real estate sales and investing. She started as an associate agent in Middle Tennessee and quickly rose to lead agent, closing 49 deals in her first year while earning exceptional client reviews. In August 2021, she joined Heather Eisenmann's team at ClarksvilleHomeowner.com, where she has loved being part of a strong, supportive team. She became licensed in Kentucky in 2022 and now has four years of experience serving clients there as well.\n\nKyla's business has continued to grow year after year. In 2025 alone, she closed 90 transactions with a $31 million sales volume, reflecting her dedication, market knowledge, and commitment to delivering results for her clients.\n\nWith a strong understanding of the local market and a genuine passion for helping others, Kyla is committed to guiding buyers, sellers, and investors through every step of the process. She has built a proven track record through hard work, consistency, and care, and she works tirelessly to help her clients achieve the best possible outcome.\n\nMore than anything, Kyla becomes personally invested in the happiness of each client she serves. She believes there is no better feeling than handing someone the keys to their dream home on closing day.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: '',
   },
   {
@@ -50,7 +50,7 @@ const partners = [
     title: 'Realtor/Investor',
     image: '/assets/team/Chris Hodges.jpg',
     bio: `As a proud husband and father, my family is my "why," but my path to real estate began long before them. As a child, I experienced the instability of multiple evictions and spent my entire 7th-grade year living in a car. As a first-generation homeowner, I turned those hardships into a mission: ensuring others find the stability and pride of homeownership that my family once lacked.\n\nSince 2022, I’ve helped more than 210 families navigate the market. My approach is rooted in my 8 years of military service and 6 overseas deployments, which instilled in me the discipline, calm under pressure, and ferocious work ethic I bring to every client.\n\nMy Philosophy:\n\nService over Sales: I’ll never "convince" you to act; I’m here to guide your decision-making with total transparency.\n\nHonesty over Commissions: Because of my high volume, I’m never desperate for a deal. This allows me to focus on what is right for you, not just what closes.\n\nClear Communication: My business is built on expectation management and military-grade accountability.\n\nI don’t just sell houses—I help families build the foundation I once dreamed of. I can't wait to meet you.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: '',
   },
   {
@@ -58,7 +58,7 @@ const partners = [
     title: 'Broker',
     image: '/assets/team/Karen Grimes.jpeg',
     bio: `Karen Grimes is a licensed real estate Broker who has been actively practicing Real Estate since 2012, bringing over a decade of experience to the industry. With a strong foundation in contract strategy, negotiation, and transaction management, she is known for delivering a high level of professionalism and precision in every deal.\n\nSpecializing in luxury new construction, Karen has developed a niche working with discerning buyers, builders, and investors who expect both elevated service and expert guidance. She understands the complexities of new construction transactions—from builder contracts and customization phases to timelines and final delivery—allowing her clients to move forward with clarity and confidence.\n\nKaren's approach is strategic and client-focused. She prioritizes protecting her clients' interests while creating a seamless, efficient experience from contract to closing. Her ability to anticipate challenges, communicate clearly, and execute at a high level has made her a trusted resource for those navigating competitive and high-value real estate markets.\n\nWhether representing buyers, sellers, or builders, Karen is committed to delivering results while building lasting relationships grounded in trust, discretion, and performance.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: '',
   },
   {
@@ -66,7 +66,7 @@ const partners = [
     title: 'Realtor',
     image: '/assets/team/Hannah Myers.jpeg',
     bio: `Hannah Myers is a trusted Realtor and founder of The Home Alchemist™ Exclusive, known for delivering a highly intentional and client-focused experience. With over a decade in real estate, she brings a thoughtful, strategic approach to every transaction—grounded in patience, transparency, and deep market knowledge.\n\nHannah is highly selective about the builders she partners with, choosing only those whose quality, integrity, and craftsmanship she can stand behind with complete confidence. Her alignment with HomeFront reflects that standard.\n\nWith a natural eye for design, Hannah is drawn to warm, timeless aesthetics—rich browns, layered linens, and elevated finishes that create a luxury feel without unnecessary price inflation. She believes beautiful homes should feel both refined and attainable, and she takes pride in helping clients achieve that balance.\n\nAbove all, Hannah is committed to creating a seamless, informed, and elevated experience for every client she serves.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: '',
   },
   {
@@ -74,7 +74,7 @@ const partners = [
     title: 'Realtor',
     image: '/assets/team/Carrie Roseberry.png',
     bio: `Carrie is a dedicated real estate professional with a passion for helping clients find their dream homes and achieve their real estate goals. Having lived in the Clarksville area since 1979, Carrie brings decades of local knowledge and insight to every transaction. Coming from a military family, Carrie's father was stationed here, giving her firsthand experience with military relocations and the unique challenges that come with PCS moves.\n\nWith years of real estate experience and a deep understanding of the local market, Carrie is committed to providing exceptional service to buyers, sellers, and investors alike. Whether you're purchasing your first home, selling a property, relocating to the area, or building an investment portfolio, Carrie will guide you through every step of the process. Known for being trustworthy, approachable, and attentive to clients' needs, she strives to make every real estate experience as smooth and successful as possible.\n\nWhen you work with Carrie, you're partnering with a knowledgeable local expert who understands both the community and the importance of finding the perfect place to call home.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: 'https://www.youtube.com/embed/0RA_NdXA0rg',
   },
   {
@@ -82,7 +82,7 @@ const partners = [
     title: 'Realtor',
     image: '/assets/team/Colleen Marquez 2.jpg',
     bio: `Colleen Marquez is the founder of the Home on the Rock Real Estate Team and a listing agent for Homefront Builders, where she blends real estate expertise, design intelligence, and development strategy to serve clients across Middle Tennessee.\n\nColleen specializes in custom home builds, land sourcing, greenfield development, and home design, including interior selections, floorplan planning, and architectural modifications. Her hands-on experience working alongside builders, architects, and design teams allows her to translate a client's vision into a functional, beautiful, and investment-smart home.\n\nProudly featured on Inside Success Network's Women in Power series, Colleen is recognized for her leadership, innovation, and influence in real estate, construction, and community development.\n\nAs a Certified Seller Representative Specialist (SRS) and Military Relocation Professional (MRP), Colleen brings advanced training in negotiation, pricing strategy, and client advocacy. She also provides professional staging services, ensuring every listing enters the market with editorial-quality presentation and maximum buyer appeal.\n\nServing Clarksville, Springfield, Nashville and the surrounding Middle Tennessee region, Colleen is the trusted partner for clients seeking land, custom construction, new development, or elevated residential real estate representation.`,
-    social: { facebook: '#', instagram: '#', linkedin: '#' },
+    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: 'https://www.youtube.com/embed/og0a61CUdUQ',
   },
 ];
@@ -205,11 +205,11 @@ function PartnerCard({ partner, index, onClick }: { key?: any; partner: typeof p
 
           <div className="flex items-center justify-between pt-4 mt-3 border-t border-white/10">
             <div className="flex items-center gap-3">
-              <a href={partner.social.facebook} aria-label={`${partner.name} Facebook`} onClick={(e) => e.stopPropagation()}
+              <a href={partner.social.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${partner.name} Facebook`} onClick={(e) => e.stopPropagation()}
                 className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
                 <FacebookIcon />
               </a>
-              <a href={partner.social.instagram} aria-label={`${partner.name} Instagram`} onClick={(e) => e.stopPropagation()}
+              <a href={partner.social.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${partner.name} Instagram`} onClick={(e) => e.stopPropagation()}
                 className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-[#c9a96e] hover:border-[#c9a96e] transition-all duration-300">
                 <InstagramIcon />
               </a>

@@ -45,6 +45,7 @@ import Warranties from './pages/Warranties';
 import ProcessPage from './pages/ProcessPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -66,6 +67,7 @@ export default function App() {
           <Route path="/process" element={<ProcessPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 

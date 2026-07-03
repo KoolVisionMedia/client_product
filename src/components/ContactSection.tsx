@@ -205,7 +205,10 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                 "Homefront built us the custom home of our dreams! The build quality is beautiful. Unique and unlike other homes you find in Clarksville."
               </p>
               <div className="flex items-center gap-3">
-                <img src="/assets/content1.jpg" alt="Bailey Graven" className="w-9 h-9 rounded-full object-cover" />
+                {/* Initials avatar (matches review-card fallback style) — no customer photo on file */}
+                <div className="w-9 h-9 rounded-full flex-none bg-[#1b2518] border border-primary/10 flex items-center justify-center">
+                  <span className="font-serif text-[#c9a96e] text-[11px] select-none">BG</span>
+                </div>
                 <div>
                   <h5 className="font-sans text-xs font-semibold text-primary">Bailey Graven</h5>
                   <p className="font-sans text-[10px] text-primary-light/70">Clarksville Custom Homeowner</p>

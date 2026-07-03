@@ -11,7 +11,7 @@ const warrantyActions = [
     title: 'See Your Coverage',
     description: 'Explore what your 10-Year QBW policy includes and view a digital diagram of your home\'s coverage.',
     cta: 'See Your Coverage',
-    href: 'https://www.homefrontbuilderstn.com/warranty-graphic',
+    href: '/assets/qbw_info.jpg',
   },
   {
     icon: (
