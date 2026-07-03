@@ -49,7 +49,7 @@ export default function About() {
         </div>
 
         {/* Image Collage */}
-        <div ref={ref} className="flex-1 relative w-full h-[600px] lg:h-[800px] mt-12 lg:mt-0">
+        <div ref={ref} className="flex-1 relative w-full min-h-[600px] lg:min-h-[800px] mt-12 lg:mt-0">
           <motion.div 
             className="absolute top-0 right-0 w-[85%] h-[75%] bg-surface-alt z-10 overflow-hidden shadow-xl"
             initial={{ opacity: 0, scale: 0.8, x: 100, rotate: 5 }}
