@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 
 export default function StayConnected() {
   return (
-    <section className="py-24 border-y border-gray-100 px-6 md:px-12">
+    <section className="py-24 bg-[#e6ecd9] border-y border-[#d4dcc0] px-6 md:px-12">
       <div className="max-w-4xl mx-auto text-center space-y-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

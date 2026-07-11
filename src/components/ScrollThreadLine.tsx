@@ -3,7 +3,6 @@ import {
   useScroll,
   useSpring,
   useTransform,
-  useMotionTemplate,
   useReducedMotion,
 } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
@@ -34,9 +33,6 @@ import { useRef, useState, useEffect } from 'react';
  * it is not reliably applied to attribute dash arrays under this SVG's
  * non-uniform (`preserveAspectRatio="none"`) scaling.
  */
-
-// motion-wrapped <linearGradient> so its gradientTransform can be scroll-driven
-const MotionLinearGradient = motion.create('linearGradient');
 
 // Thread path body. Every segment after the first uses the SVG "S" (smooth
 // cubic) command, which mirrors the previous control point — this makes each
@@ -139,11 +135,6 @@ export default function ScrollThreadLine() {
   });
   const dashOffset = useTransform(drawn, (v) => len * (1 - v));
 
-  // Scroll-driven colour flow: slide the gradient down the path as the user
-  // scrolls so the olive/gold bands travel along the line.
-  const gradShift = useTransform(scrollYProgress, [0, 1], [0, 1600]);
-  const gradTransform = useMotionTemplate`translate(0 ${gradShift})`;
-
   return (
     <div
       ref={containerRef}
@@ -157,26 +148,34 @@ export default function ScrollThreadLine() {
         fill="none"
       >
         <defs>
-          <MotionLinearGradient
+          {/* Static gradient spanning the whole path height. It used to be
+              scroll-animated (gradientTransform), but re-transforming the
+              paint server every frame forced a full-stroke repaint and was a
+              major scroll-jank source. A static gradient is painted once and
+              cached — only the dash offset changes per frame. */}
+          <linearGradient
             id="threadGradient"
             gradientUnits="userSpaceOnUse"
             x1="720"
             y1="0"
             x2="720"
-            y2="2000"
-            gradientTransform={reduce ? undefined : gradTransform}
+            y2="5400"
           >
             <stop offset="0%" stopColor="#8fa06a" />
-            <stop offset="30%" stopColor="#c69a3d" />
-            <stop offset="55%" stopColor="#63734a" />
-            <stop offset="80%" stopColor="#c69a3d" />
+            <stop offset="25%" stopColor="#c69a3d" />
+            <stop offset="50%" stopColor="#63734a" />
+            <stop offset="75%" stopColor="#c69a3d" />
             <stop offset="100%" stopColor="#8fa06a" />
-          </MotionLinearGradient>
+          </linearGradient>
+          {/* Hide the thread across the Process section with a geometric
+              clip (two rects: everything above the gap, everything below).
+              A clipPath is far cheaper than the SVG mask it replaced — no
+              per-frame offscreen alpha buffer the size of the page. */}
           {gap && (
-            <mask id="threadMask" maskUnits="userSpaceOnUse">
-              <rect x="0" y="-200" width="1440" height="5800" fill="white" />
-              <rect x="0" y={gap.y0} width="1440" height={Math.max(0, gap.y1 - gap.y0)} fill="black" />
-            </mask>
+            <clipPath id="threadClip" clipPathUnits="userSpaceOnUse">
+              <rect x="0" y="-200" width="1440" height={Math.max(0, gap.y0 + 200)} />
+              <rect x="0" y={gap.y1} width="1440" height={6000} />
+            </clipPath>
           )}
         </defs>
         {/* One clean stroke — no halo/underlays and no CSS filters (filters
@@ -190,7 +189,7 @@ export default function ScrollThreadLine() {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeDasharray={len || undefined}
-          mask={gap ? 'url(#threadMask)' : undefined}
+          clipPath={gap ? 'url(#threadClip)' : undefined}
           style={{ strokeDashoffset: reduce ? 0 : dashOffset }}
           initial={{ opacity: 0 }}
           animate={{ opacity: len ? 0.9 : 0 }}
