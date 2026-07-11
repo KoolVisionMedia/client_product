@@ -5,6 +5,7 @@ import Process from '../components/Process';
 import Portfolio from '../components/Portfolio';
 import CustomCare from '../components/CustomCare';
 import StayConnected from '../components/StayConnected';
+import ScrollThreadLine from '../components/ScrollThreadLine';
 import SEO from '../components/SEO';
 
 const localBusinessSchema = {
@@ -37,13 +38,14 @@ const localBusinessSchema = {
 
 export default function Home() {
   return (
-    <>
+    <div className="relative">
       <SEO
         title="Custom Home Builders in Clarksville, TN"
         description="Homefront Builders — luxury custom home builders in Clarksville, TN with 20+ years of expertise. Transparent budgeting, weekly build updates, and superior craftsmanship. Call (931) 221-2566."
         path="/"
         schema={localBusinessSchema}
       />
+      <ScrollThreadLine />
       <Hero />
       <About />
       <CoreValues />
@@ -51,6 +53,6 @@ export default function Home() {
       <Portfolio />
       <CustomCare />
       <StayConnected />
-    </>
+    </div>
   );
 }
