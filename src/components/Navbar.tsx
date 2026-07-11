@@ -17,16 +17,16 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'HOME', href: '/' },
-    { 
-      name: 'COMPANY', 
+    {
+      name: 'COMPANY',
       dropdown: [
         { name: 'About Us', href: '/about-us' },
         { name: 'Testimonials', href: '/testimonials' }
       ]
     },
     { name: 'OUR PROCESS', href: '/process' },
-    { 
-      name: 'CURRENT BUILDS', 
+    {
+      name: 'CURRENT BUILDS',
       dropdown: [
         { name: 'Current Builds', href: '/listings' },
         { name: 'Floorplans', href: '/floorplans' }
@@ -53,7 +53,7 @@ export default function Navbar() {
             <Link to="/" className="flex flex-col items-center group">
               <img
                 src="/logo-main.webp"
-                alt="Homefront Builders Logo"
+                alt="Homefront Builders"
                 width="1500"
                 height="591"
                 className={`transition-all duration-500 w-auto ${isScrolled ? 'h-10 md:h-12' : 'h-14 md:h-16'}`}
@@ -96,8 +96,8 @@ export default function Navbar() {
                   <div className="absolute top-full left-0 pt-4 opacity-0 pointer-events-none group-hover/nav:opacity-100 group-hover/nav:pointer-events-auto transition-all duration-300 translate-y-2 group-hover/nav:translate-y-0 z-50">
                     <div className="bg-white border border-gray-100 shadow-xl py-4 min-w-[200px] flex flex-col">
                       {item.dropdown.map((dropItem) => (
-                        <Link 
-                          key={dropItem.name} 
+                        <Link
+                          key={dropItem.name}
                           to={dropItem.href}
                           className="px-6 py-3 hover:bg-surface-alt hover:text-accent transition-colors text-[10px] tracking-[0.2em] uppercase font-sans font-medium text-primary"
                         >
@@ -112,7 +112,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             className="lg:hidden relative z-[70] p-2 -mr-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle Menu"
@@ -185,8 +185,8 @@ export default function Navbar() {
                 </motion.div>
               ))}
             </div>
-            
-            <motion.div 
+
+            <motion.div
               className="absolute bottom-12 flex gap-3 text-accent"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
