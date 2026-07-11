@@ -1,20 +1,33 @@
 import { motion } from 'motion/react';
 import { ShieldCheck, Heart, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 export default function CustomCare() {
+  // On desktop the scroll thread line (ScrollThreadLine) ends on this
+  // section's image: the image blooms from the line's landing point —
+  // scaling up from nothing at transform-origin 68%/6%, triggered at the
+  // same viewport position the line's tip arrives (its top crossing 75% of
+  // the viewport). Mobile keeps the original entrance (no thread line there).
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    setDesktop(window.matchMedia('(min-width: 1024px)').matches);
+  }, []);
+
   return (
     <section id="custom-care" className="py-32 px-6 md:px-12 overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           {/* Image side */}
-          <div className="flex-1 relative w-full h-[500px] md:h-[600px]">
-             <motion.div 
+          <div id="custom-care-visual" className="flex-1 relative w-full h-[500px] md:h-[600px]">
+             <motion.div
+               key={desktop ? 'bloom' : 'fade'}
                className="w-full h-full overflow-hidden"
-               initial={{ opacity: 0, scale: 1.1 }}
+               style={desktop ? { transformOrigin: '68% 6%' } : undefined}
+               initial={desktop ? { opacity: 0, scale: 0 } : { opacity: 0, scale: 1.1 }}
                whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true, margin: "-100px" }}
-               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+               viewport={desktop ? { once: true, margin: '0px 0px -25% 0px' } : { once: true, margin: "-100px" }}
+               transition={desktop ? { duration: 1.2, ease: [0.16, 1, 0.3, 1] } : { duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
              >
                 <img 
                   src="/assets/about-hero.jpg" 

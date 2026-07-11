@@ -38,18 +38,20 @@ import { useRef, useState, useEffect } from 'react';
 // motion-wrapped <linearGradient> so its gradientTransform can be scroll-driven
 const MotionLinearGradient = motion.create('linearGradient');
 
-// Thread path. Every segment after the first uses the SVG "S" (smooth
+// Thread path body. Every segment after the first uses the SVG "S" (smooth
 // cubic) command, which mirrors the previous control point — this makes each
-// joint tangent-continuous, so the line is one clean, kink-free curve from
-// top to bottom.
-const THREAD_D = `M 1150 -20
+// joint tangent-continuous, so the line is one clean, kink-free curve.
+// The final segments (added at runtime) sweep left after the Portfolio
+// section and land on the Custom Care image, where the image blooms out of
+// the line's endpoint (see CustomCare.tsx).
+const THREAD_BODY = `M 1150 -20
    C 1300 360, 1000 560, 780 860
    S 700 1440, 960 1700
    S 1360 2200, 1250 2520
    S 810 3000, 725 3345
    S 890 3925, 1170 4180
-   S 1370 4700, 1225 4990
-   S 1060 5290, 1120 5420`;
+   S 1330 4480, 1120 4620`;
+const DEFAULT_END = { x: 560, y: 4820 };
 
 export default function ScrollThreadLine() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,23 +62,50 @@ export default function ScrollThreadLine() {
   // masked out (invisible) while crossing it, then re-emerges below,
   // continuing exactly as if it had run underneath the section.
   const [gap, setGap] = useState<{ y0: number; y1: number } | null>(null);
+  // Where the thread ends: a fixed point on the Custom Care image (measured
+  // from the live layout), and the scroll progress at which the tip should
+  // arrive there (when that point reaches ~75% of the viewport height).
+  const [endPt, setEndPt] = useState<{ x: number; y: number } | null>(null);
+  const [pEnd, setPEnd] = useState(1);
+
+  // Final approach: sweep left off the Portfolio section and land on the
+  // image. "S" keeps the joint tangents smooth; the last control point makes
+  // the tip arrive flowing down-and-left onto the image.
+  const e = endPt ?? DEFAULT_END;
+  const d = `${THREAD_BODY}
+   S ${Math.round(e.x + 190)} ${Math.round(e.y - 150)}, ${Math.round(e.x)} ${Math.round(e.y)}`;
 
   useEffect(() => {
     if (pathRef.current) setLen(pathRef.current.getTotalLength());
-  }, []);
+  }, [d]);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     const measure = () => {
-      const section = document.getElementById('process');
-      if (!section) return setGap(null);
       const c = container.getBoundingClientRect();
-      const s = section.getBoundingClientRect();
       if (c.height <= 0) return;
-      // px -> viewBox units (viewBox height 5400 stretches over the container)
-      const toVb = (px: number) => ((px - c.top) / c.height) * 5400;
-      setGap({ y0: toVb(s.top), y1: toVb(s.bottom) });
+      // px -> viewBox units (viewBox 1440x5400 stretches over the container)
+      const toVbY = (px: number) => ((px - c.top) / c.height) * 5400;
+
+      const section = document.getElementById('process');
+      setGap(section ? { y0: toVbY(section.getBoundingClientRect().top), y1: toVbY(section.getBoundingClientRect().bottom) } : null);
+
+      // Land on the Custom Care visual at 68% of its width, just below its
+      // top edge — the image blooms from this same origin (CustomCare.tsx).
+      const visual = document.getElementById('custom-care-visual');
+      if (visual) {
+        const v = visual.getBoundingClientRect();
+        const exVb = (((v.left - c.left) + v.width * 0.68) / c.width) * 1440;
+        const eyPx = (v.top - c.top) + v.height * 0.06;
+        setEndPt({ x: exVb, y: (eyPx / c.height) * 5400 });
+        // scrollYProgress hits 1 when the container bottom meets the viewport
+        // bottom; solve for the progress at which the endpoint sits at 75% of
+        // the viewport height, so the draw completes right there.
+        const vh = window.innerHeight;
+        const span = c.height - vh / 2;
+        if (span > 0) setPEnd(Math.min(1, Math.max(0.5, (eyPx - vh * 0.25) / span)));
+      }
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -91,7 +120,10 @@ export default function ScrollThreadLine() {
     target: containerRef,
     offset: ['start center', 'end end'],
   });
-  const drawn = useSpring(scrollYProgress, {
+  // Complete the draw at pEnd (tip lands on the Custom Care image) rather
+  // than at the bottom of the region; clamped, so it then holds there.
+  const led = useTransform(scrollYProgress, [0, pEnd], [0, 1]);
+  const drawn = useSpring(led, {
     stiffness: 90,
     damping: 30,
     restDelta: 0.001,
@@ -143,7 +175,7 @@ export default function ScrollThreadLine() {
             animates, causing scroll jank). */}
         <motion.path
           ref={pathRef}
-          d={THREAD_D}
+          d={d}
           stroke="url(#threadGradient)"
           strokeWidth={9}
           strokeLinecap="round"
