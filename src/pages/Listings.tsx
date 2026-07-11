@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 const listings = [
@@ -184,6 +185,94 @@ const listings = [
     status: 'Sold',
   },
 ];
+
+// Inquiry CTA shown at the bottom of each listing's detail modal.
+// - Builds in progress: an inline lead form (name/email/phone) -> Web3Forms, so
+//   leads land in the same inbox as the rest of the site's forms.
+// - Everything else: a prominent button linking to the contact page.
+function ListingInquiry({ listing }: { listing: typeof listings[0] }) {
+  const isBuildInProgress = listing.status === 'Coming Soon' || listing.status === 'Under Construction';
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  if (!isBuildInProgress) {
+    return (
+      <div className="mt-10 pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-5 bg-[#F4F3F0] rounded-2xl p-6 md:p-8">
+        <div className="text-center sm:text-left">
+          <h3 className="font-serif text-xl md:text-2xl text-primary mb-1">Have questions about this home?</h3>
+          <p className="font-sans text-sm text-primary/60">Our team is happy to walk you through the details.</p>
+        </div>
+        <Link
+          to="/contact-us"
+          onClick={() => window.scrollTo(0, 0)}
+          className="shrink-0 inline-flex items-center gap-2 bg-[#1b2518] text-white px-7 py-4 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a96e] transition-colors"
+        >
+          Have Questions About a Build?
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+        </Link>
+      </div>
+    );
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('loading');
+    const data = new FormData(e.currentTarget);
+    data.append('access_key', '6734d3d0-0e39-4112-b5b6-3247d6699948');
+    data.append('subject', `Listing Inquiry: ${listing.name}`);
+    data.append('from_name', 'Homefront Builders Website');
+    data.append('Property', `${listing.name} — ${listing.location}`);
+    const email = data.get('email');
+    if (email) data.append('replyto', email as string);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+      const result = await res.json();
+      if (result.success) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+        setErrorMsg(result.message || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg('A network error occurred. Please try again.');
+    }
+  };
+
+  return (
+    <div className="mt-10 pt-8 border-t border-gray-200">
+      <div className="bg-[#1b2518] rounded-2xl p-8 md:p-10 text-white">
+        {status === 'success' ? (
+          <div className="text-center py-6">
+            <div className="w-14 h-14 bg-[#c9a96e]/15 rounded-full flex items-center justify-center mx-auto mb-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+            </div>
+            <h3 className="font-serif text-2xl md:text-3xl mb-2">Thank you!</h3>
+            <p className="font-sans text-sm text-white/70 max-w-sm mx-auto">We've received your inquiry about {listing.name} and our team will reach out shortly.</p>
+          </div>
+        ) : (
+          <>
+            <p className="text-[10px] font-sans tracking-[0.3em] uppercase text-[#c9a96e] mb-3">Still Being Built</p>
+            <h3 className="font-serif text-2xl md:text-3xl mb-2">Have questions about {listing.name}?</h3>
+            <p className="font-sans text-sm text-white/70 mb-7 max-w-xl">Leave your details and our team will reach out with pricing, timelines, floor plans, and answers to anything you'd like to know about this home.</p>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="tel" name="phone" required placeholder="Phone Number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="text" name="question" placeholder="Your question (optional)" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <button type="submit" disabled={status === 'loading'} className="md:col-span-2 mt-1 bg-[#c9a96e] text-[#1b2518] font-sans font-bold text-xs uppercase tracking-[0.2em] py-4 rounded-xl hover:bg-white transition-colors disabled:opacity-60">
+                {status === 'loading' ? 'Sending...' : 'Ask About This Home'}
+              </button>
+              {status === 'error' && (
+                <p className="md:col-span-2 text-sm text-red-300 text-center">{errorMsg}</p>
+              )}
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function Listings() {
   useEffect(() => {
@@ -490,6 +579,8 @@ export default function Listings() {
                   <h3 className="text-xl font-serif text-primary mb-4">About this Property</h3>
                   <p>{selectedListing.description}</p>
                 </div>
+
+                <ListingInquiry key={selectedListing.name} listing={selectedListing} />
               </div>
             </motion.div>
           </motion.div>
