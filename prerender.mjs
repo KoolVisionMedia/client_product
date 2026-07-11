@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -21,7 +21,10 @@ const routes = [
 const rawTemplate = fs.readFileSync(path.resolve(__dirname, 'dist/index.html'), 'utf-8');
 const serverEntry = path.resolve(__dirname, 'dist/server/entry-server.js');
 
-const { render } = await import(serverEntry);
+// import() requires a file:// URL on Windows (a raw C:\ path throws
+// ERR_UNSUPPORTED_ESM_URL_SCHEME). pathToFileURL is a no-op difference on
+// Linux/Vercel, so this is safe cross-platform.
+const { render } = await import(pathToFileURL(serverEntry).href);
 
 // Map each route to its code-split page module so we can inject
 // <link rel="modulepreload"> into that route's prerendered HTML — the page
