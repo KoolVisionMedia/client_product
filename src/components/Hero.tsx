@@ -1,12 +1,13 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Hero() {
   // Only load the hero video on larger screens (and when motion is allowed).
   // Mobile visitors get the lightweight poster image instead, which avoids a
   // multi-MB video download — the biggest mobile performance win on this page.
   const [showVideo, setShowVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const canPlay =
@@ -14,6 +15,27 @@ export default function Hero() {
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (canPlay) setShowVideo(true);
   }, []);
+
+  // Pause the background video once it scrolls out of view and resume when it
+  // returns. A playing <video> keeps decoding and compositing frames every
+  // tick even when off-screen, which steals main-thread/GPU time from
+  // everything below the hero and makes scrolling feel laggy.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [showVideo]);
 
   return (
     <section className="relative pt-[100px] bg-white overflow-hidden" id="home">
@@ -30,6 +52,7 @@ export default function Hero() {
           />
           {showVideo && (
             <video
+              ref={videoRef}
               autoPlay
               loop
               muted
