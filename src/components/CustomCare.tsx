@@ -19,7 +19,7 @@ export default function CustomCare() {
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           {/* Image side */}
-          <div id="custom-care-visual" className="flex-1 relative w-full h-[500px] md:h-[600px]">
+          <div id="custom-care-visual" className="flex-1 relative w-full aspect-video">
              <motion.div
                key={desktop ? 'bloom' : 'fade'}
                className="w-full h-full overflow-hidden"
@@ -29,9 +29,9 @@ export default function CustomCare() {
                viewport={desktop ? { once: true, margin: '0px 0px -25% 0px' } : { once: true, margin: "-100px" }}
                transition={desktop ? { duration: 1.2, ease: [0.16, 1, 0.3, 1] } : { duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
              >
-                <img 
-                  src="/assets/about-hero.jpg" 
-                  alt="Custom Care Maintenance" 
+                <img
+                  src="/assets/beyond-the-build.webp"
+                  alt="Homefront Builders custom home build progression — from foundation to framing to finished home"
                   className="w-full h-full object-cover"
                 />
              </motion.div>
