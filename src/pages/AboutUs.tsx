@@ -478,7 +478,7 @@ export default function AboutUs() {
               id="about-video"
               controls
               preload="metadata"
-              poster="/assets/about-hero.jpg"
+              poster="/assets/about-video-poster.webp"
               className="w-full rounded-2xl"
               style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
               onClick={(e) => {
