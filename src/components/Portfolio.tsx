@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import React, { useRef, useEffect } from 'react';
+import { motion, useMotionValue } from 'motion/react';
 import { Link } from 'react-router-dom';
 
 const floorPlans = [
@@ -37,15 +37,37 @@ const floorPlans = [
 
 const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: number, total: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  
-  // Track this card's scroll to scale it down slightly when the next card covers it
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start start", "end start"]
-  });
+  const scale = useMotionValue(1);
 
-  // Shrink slightly but only if it's not the last card
-  const scale = useTransform(scrollYProgress, [0, 1], [1, index === total - 1 ? 1 : 0.93]);
+  // Scale this card down slightly as the next card scrolls up to cover it.
+  // Driven from cached geometry + window.scrollY (a layout-free read) rather
+  // than useScroll, which calls getBoundingClientRect every scroll frame — 5
+  // of those (one per card) was a real scroll-jank source through this section.
+  useEffect(() => {
+    const card = cardRef.current;
+    if (index === total - 1 || !card) return;
+    let top = 0;
+    let height = 1;
+    const measure = () => {
+      const r = card.getBoundingClientRect();
+      top = r.top + window.scrollY;
+      height = r.height || 1;
+      update();
+    };
+    const update = () => {
+      // offset ['start start','end start']: 0 when the card top is at the
+      // viewport top, 1 when its bottom reaches the viewport top.
+      const p = Math.min(1, Math.max(0, (window.scrollY - top) / height));
+      scale.set(1 - p * 0.07);
+    };
+    measure();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', measure);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', measure);
+    };
+  }, [index, total, scale]);
 
   return (
     <div 
