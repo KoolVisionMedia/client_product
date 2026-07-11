@@ -24,12 +24,12 @@ const posts = [
     slug: 'choose-custom-home-builder-clarksville-tn'
   },
   {
-    title: 'New Construction Homes in Clarksville, TN: What to Expect in 2025',
-    excerpt: 'Clarksville\'s housing market continues to grow. Here\'s what buyers and families should know about new construction timelines, costs, and the custom build process in 2025.',
+    title: 'New Construction Homes in Clarksville, TN: What to Expect in 2026',
+    excerpt: 'Clarksville\'s housing market continues to grow. Here\'s what buyers and families should know about new construction timelines, costs, and the custom build process in 2026.',
     date: 'June 20, 2026',
     category: 'Market Insights',
     image: '/assets/Cypress.jpg',
-    slug: 'new-construction-homes-clarksville-tn-2025'
+    slug: 'new-construction-homes-clarksville-tn-2026'
   },
   {
     title: 'Luxury Custom Home Features Worth Every Penny in Middle Tennessee',

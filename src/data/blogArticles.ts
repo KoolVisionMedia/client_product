@@ -206,7 +206,7 @@ We build on your land, not ours. We work from your vision, not a catalog. And we
 
 **Ready to talk about building your custom home in Clarksville in 2026?** [Contact our team](/contact-us) to schedule a consultation — no obligation, no pressure, just a conversation about what you want to build and whether we're the right fit to build it.
 `,
-  'new-construction-homes-clarksville-tn-2025': `
+  'new-construction-homes-clarksville-tn-2026': `
 # New Construction Homes in Clarksville, TN: What to Expect in 2026
 
 Clarksville, Tennessee continues to rank among the fastest-growing cities in the Southeast — and the housing market reflects it. Whether you're a military family relocating to Fort Campbell, a Nashville-area buyer looking for more space at a better price point, or a long-time Clarksville resident ready to build rather than buy, understanding the current new construction landscape is essential before you start the process.
