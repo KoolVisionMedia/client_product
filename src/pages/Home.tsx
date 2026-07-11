@@ -45,14 +45,20 @@ export default function Home() {
         path="/"
         schema={localBusinessSchema}
       />
-      <ScrollThreadLine />
       <Hero />
-      <About />
-      <CoreValues />
-      <Process />
-      <Portfolio />
-      <CustomCare />
-      <StayConnected />
+      {/* Below-hero region: the scroll thread line lives here so it starts at
+          the hero/About seam and sits BEHIND the section content (-z-10 within
+          this isolated stacking context; the sections are transparent so the
+          shared page background reveals the thread). */}
+      <div className="relative isolate">
+        <ScrollThreadLine />
+        <About />
+        <CoreValues />
+        <Process />
+        <Portfolio />
+        <CustomCare />
+        <StayConnected />
+      </div>
     </div>
   );
 }

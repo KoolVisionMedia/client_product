@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function CustomCare() {
   return (
-    <section id="custom-care" className="py-32 bg-surface px-6 md:px-12 overflow-hidden">
+    <section id="custom-care" className="py-32 px-6 md:px-12 overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           {/* Image side */}
