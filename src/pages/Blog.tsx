@@ -16,11 +16,35 @@ const posts = [
     slug: 'modern-farmhouse-design'
   },
   {
+    title: 'How to Choose the Right Custom Home Builder in Clarksville, TN',
+    excerpt: 'Not all custom home builders operate the same way. Here\'s what to look for — and what questions to ask — before signing a contract with a builder in the Clarksville, TN area.',
+    date: 'June 3, 2026',
+    category: 'Guides',
+    image: '/assets/DSC04388-Edit.webp',
+    slug: 'choose-custom-home-builder-clarksville-tn'
+  },
+  {
+    title: 'New Construction Homes in Clarksville, TN: What to Expect in 2025',
+    excerpt: 'Clarksville\'s housing market continues to grow. Here\'s what buyers and families should know about new construction timelines, costs, and the custom build process in 2025.',
+    date: 'June 20, 2026',
+    category: 'Market Insights',
+    image: '/assets/Cypress.jpg',
+    slug: 'new-construction-homes-clarksville-tn-2025'
+  },
+  {
+    title: 'Luxury Custom Home Features Worth Every Penny in Middle Tennessee',
+    excerpt: 'When building a luxury custom home in Middle Tennessee, some upgrades deliver outsized returns — in daily enjoyment and resale value. Here are the ones our clients love most.',
+    date: 'July 1, 2026',
+    category: 'Design Trends',
+    image: '/assets/Magnolia.jpg',
+    slug: 'luxury-custom-home-features-middle-tennessee'
+  },
+  {
     title: '5 Things to Know Before Building Custom',
     excerpt: 'A comprehensive guide to preparing for your custom home journey, from land acquisition to final selections.',
     date: 'April 28, 2024',
     category: 'Guides',
-    image: '/assets/Cypress.jpg',
+    image: '/assets/Myrtle.jpg',
     slug: 'before-building-custom'
   },
   {
@@ -28,7 +52,7 @@ const posts = [
     excerpt: 'Why we choose premium materials and craftsmen for every Homefront Builders project.',
     date: 'April 15, 2024',
     category: 'Quality',
-    image: '/assets/Magnolia.jpg',
+    image: '/assets/about-hero.jpg',
     slug: 'why-quality-matters'
   }
 ];
@@ -55,8 +79,8 @@ export default function Blog() {
   return (
     <div className="bg-[#F4F3F0] min-h-screen">
       <SEO
-        title="Home Building Tips & Design Inspiration"
-        description="Home building tips, design inspiration, and local market insights from the team at Homefront Builders in Clarksville, TN."
+        title="Custom Home Building Blog | Tips & Insights"
+        description="Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders — Middle Tennessee's premier luxury custom home builder."
         path="/blog"
       />
       {/* Hero with Parallax & Glassmorphism */}
@@ -70,7 +94,7 @@ export default function Blog() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-[#1b2518]/40" />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -115,7 +139,7 @@ export default function Blog() {
                 </span>
               </div>
             </div>
-            
+
             {/* Content Half */}
             <div className="lg:w-2/5 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
               <div className="flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-4">
@@ -123,15 +147,15 @@ export default function Blog() {
                 <span className="hidden md:block w-1 h-1 rounded-full bg-primary/20" />
                 <span className="flex items-center gap-1.5"><Tag size={14} /> {featuredPost.category}</span>
               </div>
-              
+
               <h2 className="font-serif text-3xl md:text-4xl text-primary mb-6 leading-tight group-hover:text-[#c9a96e] transition-colors duration-500">
                 {featuredPost.title}
               </h2>
-              
+
               <p className="text-primary-light/80 font-sans text-base leading-relaxed mb-8">
                 {featuredPost.excerpt}
               </p>
-              
+
               <div className="mt-auto pt-8 border-t border-gray-100 flex items-center gap-3 text-sm font-sans tracking-[0.2em] uppercase font-bold text-primary">
                 Read Full Story
                 <ArrowRight size={18} className="text-[#c9a96e] transform group-hover:translate-x-2 transition-transform duration-300" />
@@ -162,7 +186,7 @@ export default function Blog() {
                 glareMaxOpacity={0.1}
                 glarePosition="all"
               >
-                <article 
+                <article
                   className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full flex flex-col group"
                   onClick={() => setSelectedPost(post.slug)}
                 >
@@ -177,7 +201,7 @@ export default function Blog() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="p-8 flex flex-col flex-1">
                     <p className="text-[10px] font-sans tracking-widest text-[#c9a96e] uppercase mb-3 flex items-center gap-1.5">
                       <Calendar size={12} /> {post.date}
@@ -228,7 +252,7 @@ export default function Blog() {
                   <X size={24} />
                 </button>
               </div>
-              
+
               {/* Article Content */}
               <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
                 <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
