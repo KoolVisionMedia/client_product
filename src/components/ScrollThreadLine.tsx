@@ -171,6 +171,11 @@ export default function ScrollThreadLine() {
       ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 -z-10 hidden lg:block"
+      // Promote to its own compositor layer. The line's stroke repaints every
+      // frame as the dash animates; on a shared layer that repaint would drag
+      // the page content with it. Isolated, the content just re-composites
+      // (cheap) while only this layer re-rasters.
+      style={{ transform: 'translateZ(0)', willChange: 'transform', backfaceVisibility: 'hidden' }}
     >
       <svg
         className="h-full w-full"
