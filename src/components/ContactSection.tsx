@@ -42,6 +42,18 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
   const mapRef = useRef<any>(null);
 
   useEffect(() => {
+    // Load the Google Maps extended-component-library only where the map is
+    // actually rendered (this component), instead of on every page from
+    // index.html. Injected once; whenDefined() below waits for it.
+    const SCRIPT_ID = 'gmpx-extended-component-library';
+    if (!document.getElementById(SCRIPT_ID)) {
+      const s = document.createElement('script');
+      s.id = SCRIPT_ID;
+      s.type = 'module';
+      s.src =
+        'https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js';
+      document.head.appendChild(s);
+    }
     const initMap = async () => {
       await customElements.whenDefined('gmpx-store-locator');
       if (mapRef.current) {

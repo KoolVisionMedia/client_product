@@ -34,6 +34,9 @@ export default defineConfig(({mode}) => {
     },
     build: {
       emptyOutDir: false,
+      // Emit dist/.vite/manifest.json so prerender.mjs can inject
+      // <link rel="modulepreload"> for each page's code-split chunk.
+      manifest: true,
     },
   };
 });

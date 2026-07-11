@@ -30,22 +30,13 @@ const RouteTracker = () => {
   return null;
 };
 
-// Pages — imported eagerly (not lazy) so the client hydrates the exact
-// markup the build prerendered. Lazy-loading here made hydration swap the
-// prerendered page for a Suspense spinner, collapsing the layout and causing
-// a large Cumulative Layout Shift (the footer jumped) plus a content flash.
-import Home from './pages/Home';
-import AboutUs from './pages/AboutUs';
-import Testimonials from './pages/Testimonials';
-import Listings from './pages/Listings';
-import Floorplans from './pages/Floorplans';
-import Blog from './pages/Blog';
-import ContactUs from './pages/ContactUs';
-import Warranties from './pages/Warranties';
-import ProcessPage from './pages/ProcessPage';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import Terms from './pages/Terms';
-import NotFound from './pages/NotFound';
+// Pages are code-split per route via src/routes.tsx. The registry guarantees
+// the initial route's chunk is loaded BEFORE the first render (see main.tsx),
+// which avoids the historical bug where naive React.lazy swapped the
+// prerendered page for a Suspense spinner and caused a large layout shift.
+// On client-side navigations react-router v7's startTransition keeps the
+// current page visible until the next page's chunk is ready.
+import { pageRoutes } from './routes';
 
 export default function App() {
   return (
@@ -56,18 +47,9 @@ export default function App() {
 
       <main className="flex-grow">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/floorplans" element={<Floorplans />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/warranties" element={<Warranties />} />
-          <Route path="/process" element={<ProcessPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="*" element={<NotFound />} />
+          {pageRoutes.map(({ path, Component }) => (
+            <Route key={path} path={path} element={<Component />} />
+          ))}
         </Routes>
       </main>
 
