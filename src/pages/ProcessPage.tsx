@@ -12,7 +12,8 @@ const processSteps = [
     description: "This meeting lays the foundation for your new build. It's our opportunity to truly get to know you and your family, your wants and needs, the best way to communicate, and to establish clear expectations while building a strong connection.",
     image: '/assets/process/process_meeting.png',
     icon: <Users className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={1.5} />,
-    link: { url: '/about-us', text: 'Learn About Us' }
+    link: { url: '/about-us', text: 'Learn About Us' },
+    secondaryButton: { text: 'Request a Meeting', action: 'meeting' }
   },
   {
     letter: 'O',
@@ -124,11 +125,52 @@ const faqSchema = {
   ]
 };
 
+type ModalType = 'booklet' | 'meeting';
+
+const MODAL_COPY: Record<ModalType, {
+  title: string;
+  intro: string;
+  submit: string;
+  sending: string;
+  successText: string;
+  showMessage: boolean;
+  subject: string;
+  requestType: string;
+}> = {
+  booklet: {
+    title: 'Request the Floor Plan Booklet',
+    intro: 'Enter your details below and the Homefront Builders team will send you the floor plan booklet.',
+    submit: 'Request Booklet',
+    sending: 'Sending...',
+    successText: 'Thank you for requesting the Homefront Builders floor plan booklet. Our team will send it to you soon.',
+    showMessage: false,
+    subject: 'Floor Plan Booklet Request',
+    requestType: 'Floor Plan Booklet Request',
+  },
+  meeting: {
+    title: 'Request a Meeting',
+    intro: "Share your contact details and anything you'd like us to know, and our team will reach out to schedule your meeting.",
+    submit: 'Request Meeting',
+    sending: 'Sending...',
+    successText: 'Thank you for reaching out. The Homefront Builders team will be in touch soon to schedule your meeting.',
+    showMessage: true,
+    subject: 'Meeting Request',
+    requestType: 'Meeting Request',
+  },
+};
+
 export default function ProcessPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>('booklet');
   const [formState, setFormState] = useState({ status: 'idle', message: '' });
-  
+
+  const openModal = (type: ModalType) => {
+    setModalType(type);
+    setFormState({ status: 'idle', message: '' });
+    setIsModalOpen(true);
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setFormState({ status: 'idle', message: '' });
@@ -138,11 +180,12 @@ export default function ProcessPage() {
     e.preventDefault();
     setFormState({ status: 'loading', message: '' });
 
+    const copy = MODAL_COPY[modalType];
     const formData = new FormData(e.currentTarget);
     formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
-    formData.append("subject", `Floor Plan Booklet Request - ${formData.get("name")}`);
+    formData.append("subject", `${copy.subject} - ${formData.get("name")}`);
     formData.append("from_name", "Homefront Builders Website");
-    formData.append("Request Type", "Floor Plan Booklet Request");
+    formData.append("Request Type", copy.requestType);
     formData.append("Requested Via", "Process page");
     const email = formData.get("email");
     if (email) formData.append("replyto", email as string);
@@ -170,6 +213,8 @@ export default function ProcessPage() {
   });
 
   const progressBarHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  const copy = MODAL_COPY[modalType];
 
   return (
     <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-hidden relative">
@@ -285,7 +330,7 @@ export default function ProcessPage() {
                             </Link>
                           )}
                           {(step as any).secondaryButton && (
-                             <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-full font-medium hover:bg-accent transition-all group/btn2">
+                             <button onClick={() => openModal((step as any).secondaryButton.action === 'meeting' ? 'meeting' : 'booklet')} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-full font-medium hover:bg-accent transition-all group/btn2">
                                {(step as any).secondaryButton.text}
                                <Send className="w-4 h-4 text-white group-hover/btn2:translate-x-0.5 transition-transform" />
                              </button>
@@ -329,7 +374,7 @@ export default function ProcessPage() {
               Explore our collection of fully customizable luxury floor plans and home models. Request the booklet below and our team will send it your way.
             </p>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => openModal('booklet')}
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#c9a96e] text-white rounded-full font-sans font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-[#1b2518] transition-all duration-300 shadow-xl group"
             >
               Request the Booklet
@@ -371,7 +416,7 @@ export default function ProcessPage() {
                     </div>
                     <h3 className="font-serif text-3xl text-primary mb-3">Request Received</h3>
                     <p className="font-sans text-primary-light/80 text-sm max-w-sm mx-auto">
-                      Thank you for requesting the Homefront Builders floor plan booklet. Our team will send it to you soon.
+                      {copy.successText}
                     </p>
                     <button
                       onClick={closeModal}
@@ -385,18 +430,21 @@ export default function ProcessPage() {
                     <div className="w-12 h-12 bg-[#c9a96e]/10 rounded-full flex items-center justify-center mb-6">
                       <Send className="w-6 h-6 text-[#c9a96e]" />
                     </div>
-                    <h3 className="font-serif text-3xl text-primary mb-2">Request the Floor Plan Booklet</h3>
+                    <h3 className="font-serif text-3xl text-primary mb-2">{copy.title}</h3>
                     <p className="font-sans text-primary-light/80 text-sm mb-8">
-                      Enter your details below and the Homefront Builders team will send you the floor plan booklet.
+                      {copy.intro}
                     </p>
 
                     <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
                       <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
                       <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                      <input type="tel" name="phone" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="tel" name="phone" placeholder={copy.showMessage ? "Phone Number" : "Phone Number (Optional)"} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      {copy.showMessage && (
+                        <textarea name="message" rows={4} placeholder="Any additional details or questions? (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors resize-none" />
+                      )}
 
                       <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2">
-                        {formState.status === 'loading' ? 'Sending...' : 'Request Booklet'}
+                        {formState.status === 'loading' ? copy.sending : copy.submit}
                       </button>
                       {formState.status === 'error' && (
                         <p className="text-sm text-center mt-2 font-medium text-red-500">
