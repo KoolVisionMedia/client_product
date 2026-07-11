@@ -39,6 +39,7 @@ const processSteps = [
     description: "Create a detailed list of must-haves and nice-to-haves for your home. This step helps clarify your priorities, from layout preferences to specific features like a large kitchen or extra storage.",
     image: '/assets/process/process_checklist.png',
     icon: <ClipboardList className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={1.5} />,
+    primaryLink: { url: '/listings', text: "What We're Building Now" },
     link: { url: '/warranties', text: 'View Our Warranties' }
   },
   {
@@ -318,8 +319,17 @@ export default function ProcessPage() {
                         {step.description}
                       </p>
 
-                      {(step.link || (step as any).secondaryButton) && (
+                      {((step as any).primaryLink || step.link || (step as any).secondaryButton) && (
                         <div className="mt-6 flex flex-wrap gap-4">
+                          {(step as any).primaryLink && (
+                            <Link
+                              to={(step as any).primaryLink.url}
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn0"
+                            >
+                              {(step as any).primaryLink.text}
+                              <ArrowRight className="w-4 h-4 text-accent group-hover/btn0:translate-x-1 transition-transform" />
+                            </Link>
+                          )}
                           {step.link && (
                             <Link 
                               to={step.link.url}
