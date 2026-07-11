@@ -39,21 +39,14 @@ export default function Hero() {
     <section className="relative pt-[100px] bg-white overflow-hidden" id="home">
       {/* Full Width Video Container */}
       <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden shadow-sm">
-        {/* Hero Background.
-            Each visual layer below is promoted to its OWN GPU compositor layer
-            (translateZ(0)). That keeps both page scrolling AND the video's
-            per-frame updates on the compositor instead of triggering
-            main-thread repaints of the hero region — the fix for scroll jank
-            while the 1080p video plays continuously. `isolation: isolate`
-            groups them into their own compositing context. */}
-        <div className="absolute inset-0 w-full h-full bg-black/50" style={{ isolation: 'isolate' }}>
+        {/* Hero Background */}
+        <div className="absolute inset-0 w-full h-full bg-black/50">
           {/* Poster image — the LCP element; loads instantly on every device */}
           <img
             src="/assets/hero-poster.webp"
             alt="Luxury custom home built by Homefront Builders"
             className="absolute inset-0 w-full h-full object-cover z-0"
             fetchPriority="high"
-            style={{ transform: 'translateZ(0)' }}
           />
           {showVideo && (
             <video
@@ -64,13 +57,11 @@ export default function Hero() {
               playsInline
               poster="/assets/hero-poster.webp"
               className="absolute inset-0 w-full h-full object-cover z-0"
-              style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden', willChange: 'transform' }}
             >
-              <source src="/background-video-v2.mp4" type="video/mp4" />
+              <source src="/background-video-v3.mp4" type="video/mp4" />
             </video>
           )}
-          {/* Dark Overlay — its own layer so it doesn't repaint when the video updates */}
-          <div className="absolute inset-0 bg-black/40 z-10" style={{ transform: 'translateZ(0)' }}></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div> {/* Dark Overlay */}
         </div>
 
         {/* Content - Left Aligned to match Patterson */}
