@@ -307,7 +307,7 @@ export default function Listings() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
             {sortedListings.map((listing, i) => (
               <motion.div
                 layout
@@ -323,7 +323,7 @@ export default function Listings() {
                 }}
               >
                 {/* Image Container with Info Overlay */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-lg">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                   <motion.img
                     src={listing.image}
                     alt={listing.name}
