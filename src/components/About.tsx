@@ -56,9 +56,9 @@ export default function About() {
             animate={isInView ? { opacity: 1, scale: 1, x: 0, rotate: 0 } : {}}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            <motion.img 
-              src="/assets/DSC04388-Edit.webp"
-              alt="Luxury Home Exterior" 
+            <motion.img
+              src="/assets/about-feature-kitchen.webp"
+              alt="Luxury custom kitchen by Homefront Builders"
               className="w-full h-full object-cover"
               loading="lazy"
               whileHover={{ scale: 1.05 }}
