@@ -65,7 +65,6 @@ export default function ScrollThreadLine() {
       ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 z-40 hidden lg:block"
-      style={{ mixBlendMode: 'multiply' }}
     >
       <svg
         className="h-full w-full"
@@ -83,34 +82,38 @@ export default function ScrollThreadLine() {
             y2="2000"
             gradientTransform={reduce ? undefined : gradTransform}
           >
-            <stop offset="0%" stopColor="#7f9160" />
-            <stop offset="30%" stopColor="#b48c36" />
-            <stop offset="55%" stopColor="#3e4a32" />
-            <stop offset="80%" stopColor="#b48c36" />
-            <stop offset="100%" stopColor="#7f9160" />
+            <stop offset="0%" stopColor="#8fa06a" />
+            <stop offset="30%" stopColor="#c69a3d" />
+            <stop offset="55%" stopColor="#63734a" />
+            <stop offset="80%" stopColor="#c69a3d" />
+            <stop offset="100%" stopColor="#8fa06a" />
           </MotionLinearGradient>
         </defs>
         <motion.path
           ref={pathRef}
-          d="M 1180 -40
-             C 1290 420, 1010 650, 830 960
-             C 700 1230, 770 1520, 990 1790
-             C 1190 2030, 1310 2270, 1220 2600
-             C 1140 2920, 850 3120, 790 3460
-             C 730 3790, 910 4070, 1130 4330
-             C 1300 4550, 1320 4840, 1190 5150
-             C 1090 5450, 900 5770, 1090 6260"
+          d="M 1200 -40
+             C 1350 420, 980 650, 750 970
+             C 630 1250, 720 1560, 990 1830
+             C 1250 2080, 1390 2330, 1260 2670
+             C 1150 2990, 790 3160, 710 3510
+             C 640 3840, 890 4120, 1170 4380
+             C 1370 4600, 1390 4910, 1220 5210
+             C 1100 5500, 850 5820, 1100 6260"
           stroke="url(#threadGradient)"
-          strokeWidth={6}
+          strokeWidth={9}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeDasharray={len || undefined}
           style={{
             strokeDashoffset: reduce ? 0 : dashOffset,
-            filter: 'drop-shadow(0 0 4px rgba(89, 102, 82, 0.35))',
+            // Soft dark-olive halo: gives the thread depth on light sections
+            // (reads as embedded) while the mid-tone gradient keeps it legible
+            // on the dark footer/photos.
+            filter:
+              'drop-shadow(0 0 5px rgba(45, 54, 44, 0.5)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.25))',
           }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: len ? 0.9 : 0 }}
+          animate={{ opacity: len ? 0.85 : 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         />
       </svg>
