@@ -128,6 +128,10 @@ export default function ScrollThreadLine() {
   }, []);
 
   // Draw loop: arithmetic + ONE transform write per frame (GPU, no repaint).
+  // The loop only runs WHILE it has work to do — it's kicked by scroll/resize
+  // and stops once the eased draw has settled on its target. This means zero
+  // animation frames while the page is idle (previously it ran 60fps forever,
+  // keeping the CPU/GPU pegged even when the user wasn't scrolling).
   useEffect(() => {
     const cover = coverRef.current;
     if (!cover) return;
@@ -136,7 +140,9 @@ export default function ScrollThreadLine() {
       return;
     }
     let raf = 0;
-    const tick = () => {
+    let running = false;
+
+    const frame = () => {
       const { top, height, vh } = geom.current;
       const denom = height - vh / 2;
       const p = clamp01(denom > 0 ? (window.scrollY - top + vh / 2) / denom : 0);
@@ -152,7 +158,8 @@ export default function ScrollThreadLine() {
       else target = hf + ((p - aScroll) / (pe - aScroll)) * (1 - hf);
 
       drawnRef.current += (target - drawnRef.current) * 0.12;
-      if (Math.abs(target - drawnRef.current) < 0.0002) drawnRef.current = target;
+      const settled = Math.abs(target - drawnRef.current) < 0.0002;
+      if (settled) drawnRef.current = target;
 
       // tipY via the LUT (fraction -> px), then position the cover so it hides
       // everything below the tip.
@@ -164,11 +171,30 @@ export default function ScrollThreadLine() {
         tipY = table[i] + (table[i + 1] - table[i]) * (f - i);
       }
       cover.style.transform = `translate3d(0, ${Math.max(0, tipY)}px, 0)`;
-      raf = requestAnimationFrame(tick);
+
+      // Keep going only until the draw catches up; then stop until the next
+      // scroll/resize so we don't burn frames while idle.
+      if (settled) running = false;
+      else raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [reduce]);
+
+    const kick = () => {
+      if (!running) {
+        running = true;
+        raf = requestAnimationFrame(frame);
+      }
+    };
+
+    kick(); // position on mount / when geometry changes
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
+    return () => {
+      cancelAnimationFrame(raf);
+      running = false;
+      window.removeEventListener('scroll', kick);
+      window.removeEventListener('resize', kick);
+    };
+  }, [reduce, len, gap, endPt]);
 
   return (
     <div
