@@ -38,6 +38,16 @@ import { useRef, useState, useEffect } from 'react';
 // motion-wrapped <linearGradient> so its gradientTransform can be scroll-driven
 const MotionLinearGradient = motion.create('linearGradient');
 
+// Shared path geometry for the thread and its halo underlays.
+const THREAD_D = `M 1150 -20
+   C 1300 360, 980 580, 760 880
+   C 620 1150, 700 1450, 970 1710
+   C 1230 1950, 1370 2190, 1250 2520
+   C 1140 2840, 800 3010, 720 3350
+   C 650 3670, 900 3940, 1180 4190
+   C 1370 4410, 1380 4710, 1220 5000
+   C 1150 5160, 1050 5300, 1120 5420`;
+
 export default function ScrollThreadLine() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -96,28 +106,45 @@ export default function ScrollThreadLine() {
             <stop offset="100%" stopColor="#8fa06a" />
           </MotionLinearGradient>
         </defs>
+        {/* Halo: two wider, faint underlay strokes instead of drop-shadow
+            filters. A CSS filter on this path forced the browser to
+            re-rasterize the effect on a page-height SVG every frame while
+            stroke-dashoffset animates — a major scroll-jank source. Layered
+            strokes read the same but cost almost nothing, and they share the
+            same dash motion so the halo draws with the line. */}
+        <motion.path
+          d={THREAD_D}
+          stroke="#2d362c"
+          strokeWidth={26}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray={len || undefined}
+          style={{ strokeDashoffset: reduce ? 0 : dashOffset }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: len ? 0.07 : 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        />
+        <motion.path
+          d={THREAD_D}
+          stroke="#2d362c"
+          strokeWidth={15}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray={len || undefined}
+          style={{ strokeDashoffset: reduce ? 0 : dashOffset }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: len ? 0.14 : 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        />
         <motion.path
           ref={pathRef}
-          d="M 1150 -20
-             C 1300 360, 980 580, 760 880
-             C 620 1150, 700 1450, 970 1710
-             C 1230 1950, 1370 2190, 1250 2520
-             C 1140 2840, 800 3010, 720 3350
-             C 650 3670, 900 3940, 1180 4190
-             C 1370 4410, 1380 4710, 1220 5000
-             C 1150 5160, 1050 5300, 1120 5420"
+          d={THREAD_D}
           stroke="url(#threadGradient)"
           strokeWidth={9}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeDasharray={len || undefined}
-          style={{
-            strokeDashoffset: reduce ? 0 : dashOffset,
-            // Soft dark-olive halo gives the thread a little depth on the
-            // light page background.
-            filter:
-              'drop-shadow(0 0 5px rgba(45, 54, 44, 0.45)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.25))',
-          }}
+          style={{ strokeDashoffset: reduce ? 0 : dashOffset }}
           initial={{ opacity: 0 }}
           animate={{ opacity: len ? 0.9 : 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
