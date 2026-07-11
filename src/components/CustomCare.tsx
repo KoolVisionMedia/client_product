@@ -23,7 +23,7 @@ export default function CustomCare() {
              <motion.div
                key={desktop ? 'bloom' : 'fade'}
                className="w-full h-full overflow-hidden"
-               style={desktop ? { transformOrigin: '68% 6%' } : undefined}
+               style={desktop ? { transformOrigin: '48% 6%' } : undefined}
                initial={desktop ? { opacity: 0, scale: 0 } : { opacity: 0, scale: 1.1 }}
                whileInView={{ opacity: 1, scale: 1 }}
                viewport={desktop ? { once: true, margin: '0px 0px -25% 0px' } : { once: true, margin: "-100px" }}

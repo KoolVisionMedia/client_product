@@ -49,9 +49,8 @@ const THREAD_BODY = `M 1150 -20
    S 700 1440, 960 1700
    S 1360 2200, 1250 2520
    S 810 3000, 725 3345
-   S 890 3925, 1170 4180
-   S 1330 4480, 1120 4620`;
-const DEFAULT_END = { x: 560, y: 4820 };
+   S 890 3925, 1170 4180`;
+const DEFAULT_END = { x: 470, y: 4820 };
 
 export default function ScrollThreadLine() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,12 +67,22 @@ export default function ScrollThreadLine() {
   const [endPt, setEndPt] = useState<{ x: number; y: number } | null>(null);
   const [pEnd, setPEnd] = useState(1);
 
-  // Final approach: sweep left off the Portfolio section and land on the
-  // image. "S" keeps the joint tangents smooth; the last control point makes
-  // the tip arrive flowing down-and-left onto the image.
+  // Final approach — a drastic squared-off hook: straight down the page's
+  // right side, a tight rounded turn, a level run leftward, then a sharp
+  // rounded turn into a vertical drop that lands on the image. Quarter-turn
+  // corners (Q) keep every joint tangent-continuous, so it stays one clean
+  // stroke.
   const e = endPt ?? DEFAULT_END;
+  const ex = Math.round(e.x);
+  const ey = Math.round(e.y);
+  const r = 90; // corner radius (viewBox units)
+  const runY = Math.round(Math.max(e.y - 170, 4330)); // height of the level run
   const d = `${THREAD_BODY}
-   S ${Math.round(e.x + 190)} ${Math.round(e.y - 150)}, ${Math.round(e.x)} ${Math.round(e.y)}`;
+   C 1450 4435, 1220 ${runY - 300}, 1220 ${runY - r}
+   Q 1220 ${runY}, ${1220 - r} ${runY}
+   L ${ex + r} ${runY}
+   Q ${ex} ${runY}, ${ex} ${runY + r}
+   L ${ex} ${ey}`;
 
   useEffect(() => {
     if (pathRef.current) setLen(pathRef.current.getTotalLength());
@@ -91,12 +100,12 @@ export default function ScrollThreadLine() {
       const section = document.getElementById('process');
       setGap(section ? { y0: toVbY(section.getBoundingClientRect().top), y1: toVbY(section.getBoundingClientRect().bottom) } : null);
 
-      // Land on the Custom Care visual at 68% of its width, just below its
+      // Land on the Custom Care visual at 48% of its width, just below its
       // top edge — the image blooms from this same origin (CustomCare.tsx).
       const visual = document.getElementById('custom-care-visual');
       if (visual) {
         const v = visual.getBoundingClientRect();
-        const exVb = (((v.left - c.left) + v.width * 0.68) / c.width) * 1440;
+        const exVb = (((v.left - c.left) + v.width * 0.48) / c.width) * 1440;
         const eyPx = (v.top - c.top) + v.height * 0.06;
         setEndPt({ x: exVb, y: (eyPx / c.height) * 5400 });
         // scrollYProgress hits 1 when the container bottom meets the viewport
