@@ -49,7 +49,7 @@ const listings = [
     name: '0 Keystone Drive, Lot 2',
     location: 'Pleasant View, TN 37146',
     price: '$1,179,000',
-    stats: '5 beds • 3.5 baths • 3,050 sqft',
+    stats: '5 Bed • 3.5 Bath • 3,050 SqFt • The Spruce',
     description: "Luxury new construction in the Laurel Grove neighborhood featuring 'The Spruce' design. Built in 2025, this property offers premium finishes and a spacious 5-bedroom layout.",
     image: '/assets/to-be-built-bg.jpg',
     images: ['/assets/to-be-built-bg.jpg'],
@@ -59,7 +59,7 @@ const listings = [
     name: '24 Solitude Way',
     location: '24 Solitude Way',
     price: '$1,150,000',
-    stats: '5 beds • 4.5 baths • 4,200 sqft',
+    stats: '5 Bed • 4.5 Bath • 4,200 SqFt',
     description: "A stunning architectural masterpiece situated on a prime lot at 24 Solitude Way. This custom home features a grand open-concept layout, soaring ceilings, high-end designer finishes, a chef's kitchen with top-of-the-line appliances, and a luxurious primary suite. Experience true elegance and unparalleled craftsmanship in every detail.",
     image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 81}, (_, i) => `/assets/active_listings/24-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
@@ -70,7 +70,7 @@ const listings = [
     name: '193 Solitude Way',
     location: '193 Solitude Way',
     price: '$1,250,000',
-    stats: '5 beds • 5 baths • 4,800 sqft',
+    stats: '5 Bed • 5 Bath • 4,800 SqFt',
     description: "Welcome to 193 Solitude Way, an exquisite custom-built estate that blends modern luxury with timeless design. This spectacular property boasts an expansive floor plan with custom millwork, an oversized gourmet kitchen, multiple living areas perfect for entertaining, and a private backyard oasis. A rare opportunity in a highly sought-after neighborhood.",
     image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
     images: Array.from({length: 85}, (_, i) => `/assets/active_listings/193-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
@@ -81,7 +81,7 @@ const listings = [
     name: '1215 Hill Ln',
     location: '1215 Hill Ln',
     price: 'Under Contract',
-    stats: 'The Cypress',
+    stats: '3 Bed • 2.5 Bath • 2,100 SqFt • The Cypress',
     description: "A beautifully crafted Cypress model home at 1215 Hill Lane. This stunning property features an open-concept living space with premium finishes, a spacious chef's kitchen, elegant primary suite, and thoughtfully designed outdoor areas. Every detail reflects the hallmark quality and craftsmanship that Homefront Builders is known for.",
     image: '/assets/active_listings/1215-hill-ln/1-web-or-mls-1215-hill-ln.jpg',
     images: Array.from({length: 51}, (_, i) => `/assets/active_listings/1215-hill-ln/${i + 1}-web-or-mls-1215-hill-ln.jpg`),
@@ -91,7 +91,7 @@ const listings = [
     name: '1177 Gholson Rd',
     location: '1177 Gholson Rd',
     price: 'Available',
-    stats: 'The Dogwood',
+    stats: '4 Bed • 3 Bath • 2,850 SqFt • The Dogwood',
     description: "This exceptional Dogwood model at 1177 Gholson Road showcases the finest in custom home building. With a spacious layout featuring high ceilings, premium hardwood floors, designer lighting, and a gourmet kitchen with top-of-the-line finishes. The sprawling outdoor areas and meticulous landscaping complete this remarkable property.",
     image: '/assets/active_listings/16-gholson-rd/1-web-or-mls-1177-gholson-rd.jpg',
     images: Array.from({length: 74}, (_, i) => `/assets/active_listings/16-gholson-rd/${i + 1}-web-or-mls-1177-gholson-rd.jpg`)
@@ -112,7 +112,7 @@ const listings = [
     name: '411 Blue Ridge Ct',
     location: '411 Blue Ridge Ct',
     price: 'Available',
-    stats: 'The Harmony',
+    stats: '4 Bed • 3.5 Bath • 3,100 SqFt • The Harmony',
     description: "Situated at 411 Blue Ridge Court, this stunning Harmony model home showcases an exceptional blend of style and functionality. From the moment you step inside, you're greeted by a grand foyer, open-concept living areas, and a chef's kitchen with premium appliances. The spacious primary suite and beautifully finished lower level make this an ideal family home.",
     image: '/assets/active_listings/41-longview-harmony/1-web-or-mls-411-blue-rdg-ct.jpg',
     images: Array.from({length: 52}, (_, i) => `/assets/active_listings/41-longview-harmony/${i + 1}-web-or-mls-411-blue-rdg-ct.jpg`),
@@ -123,7 +123,7 @@ const listings = [
     name: '418 Blue Ridge Ct',
     location: '418 Blue Ridge Ct',
     price: 'Under Contract',
-    stats: 'The Magnolia',
+    stats: '5 Bed • 4 Bath • 3,500 SqFt • The Magnolia',
     description: "This remarkable Magnolia model at 418 Blue Ridge Court is a true showpiece. Featuring an elegant open floor plan, designer finishes, custom lighting, and a gourmet kitchen with oversized island. The thoughtfully designed living spaces flow seamlessly, creating an atmosphere of refined luxury throughout. An impeccably built home with attention to every detail.",
     image: '/assets/active_listings/44-longview-magnolia/1-web-or-mls-418-blue-rdg-ct.jpg',
     images: Array.from({length: 50}, (_, i) => `/assets/active_listings/44-longview-magnolia/${i + 1}-web-or-mls-418-blue-rdg-ct.jpg`),
@@ -133,7 +133,7 @@ const listings = [
     name: '830 Willowicke Dr',
     location: '830 Willowicke Dr, Lot 52',
     price: 'Available',
-    stats: 'The Myrtle',
+    stats: '3 Bed • 2 Bath • 1,950 SqFt • The Myrtle',
     description: "Located at 830 Willowicke Drive, this beautiful Myrtle model home offers the perfect combination of elegance and everyday livability. Featuring a well-designed open floor plan, premium finishes, a stunning kitchen with custom cabinetry, and a generous primary suite. The outdoor entertaining spaces and professional landscaping complete this exceptional property.",
     image: '/assets/active_listings/52-longview-myrtle/1-web-or-mls-830-willowicke-dr-lot-52.jpg',
     images: Array.from({length: 39}, (_, i) => `/assets/active_listings/52-longview-myrtle/${i + 1}-web-or-mls-830-willowicke-dr-lot-52.jpg`),
@@ -143,7 +143,7 @@ const listings = [
     name: '822 Willowicke Dr',
     location: '822 Willowicke Dr',
     price: 'Under Contract',
-    stats: 'The Cypress',
+    stats: '3 Bed • 2.5 Bath • 2,100 SqFt • The Cypress',
     description: "This gorgeous Cypress model at 822 Willowicke Drive features an expansive open-concept design with soaring ceilings, a beautifully appointed kitchen, and premium finishes throughout. The spacious primary suite, covered outdoor living areas, and professionally landscaped yard create the perfect backdrop for comfortable, luxury living.",
     image: '/assets/active_listings/54-longview-cypress/1.jpg',
     images: [
@@ -157,7 +157,7 @@ const listings = [
     name: '513 Foxglove Ln',
     location: '513 Foxglove Ln',
     price: 'Available',
-    stats: 'The Dogwood',
+    stats: '4 Bed • 3 Bath • 2,850 SqFt • The Dogwood',
     description: "Welcome to 513 Foxglove Lane, a meticulously crafted Dogwood model home that exemplifies Homefront Builders' commitment to quality. This beautiful property features a grand open layout, hardwood flooring, a designer kitchen with premium appliances, and a luxurious primary retreat. Every room has been thoughtfully designed for both beauty and functionality.",
     image: '/assets/active_listings/62-longview-dogwood/1-web-or-mls-513-foxglove-ln.jpg',
     images: Array.from({length: 45}, (_, i) => `/assets/active_listings/62-longview-dogwood/${i + 1}-web-or-mls-513-foxglove-ln.jpg`),
@@ -349,7 +349,6 @@ export default function Listings() {
                     <div className="flex justify-between items-end gap-2">
                       <h3 className="font-serif text-xl md:text-2xl text-white group-hover:text-[#c9a96e] transition-colors">{listing.name}</h3>
                     </div>
-                    <p className="font-sans text-[9px] md:text-[10px] text-white/70 uppercase tracking-widest">{listing.location}</p>
                     <p className="font-sans text-[10px] md:text-xs text-white/90 italic">{listing.stats}</p>
                     
                     <div className="mt-3 pt-3 border-t border-white/20 flex justify-between items-center opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500">
