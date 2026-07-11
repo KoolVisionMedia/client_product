@@ -16,45 +16,23 @@ export default function Hero() {
     if (canPlay) setShowVideo(true);
   }, []);
 
-  // Keep the background video from stealing frames while the user scrolls.
-  // A playing <video> decodes and composites a new frame every tick; doing
-  // that at the same time as scrolling makes the scroll feel heavy. So:
-  //  - pause it whenever it's off-screen (IntersectionObserver), and
-  //  - pause it during active scrolling even while the hero is on-screen,
-  //    resuming a moment after scrolling stops.
-  // At rest at the top it plays normally; while scrolling it's frozen, so the
-  // scroll stays smooth.
+  // The hero video plays continuously while it's on screen. We only pause it
+  // once it's fully scrolled out of view (nothing visible, no reason to keep
+  // decoding) and resume when it scrolls back — so it never freezes mid-view.
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    let inView = true;
-    let scrollTimer: ReturnType<typeof setTimeout> | undefined;
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        inView = entry.isIntersecting;
-        if (inView) v.play().catch(() => {});
+        if (entry.isIntersecting) v.play().catch(() => {});
         else v.pause();
       },
       { threshold: 0.05 }
     );
     io.observe(v);
 
-    const onScroll = () => {
-      if (!inView) return;
-      if (!v.paused) v.pause();
-      if (scrollTimer) clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => {
-        if (inView) v.play().catch(() => {});
-      }, 200);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    return () => {
-      io.disconnect();
-      window.removeEventListener('scroll', onScroll);
-      if (scrollTimer) clearTimeout(scrollTimer);
-    };
+    return () => io.disconnect();
   }, [showVideo]);
 
   return (
