@@ -69,12 +69,15 @@ export default function Process() {
       
       {/* Blueprint background accent */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div 
+        <div
           className="absolute inset-0 opacity-15"
           style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         ></div>
-        {/* Subtle dark tint */}
-        <div className="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+        {/* Subtle dark tint. A plain translucent fill, NOT mix-blend-multiply —
+            the blend mode forced the whole section (including the blurred
+            shapes below) to re-composite against its backdrop on every scroll
+            frame, which tanked scroll performance through this section. */}
+        <div className="absolute inset-0 bg-[rgba(46,54,44,0.06)]"></div>
       </div>
 
       <div className="max-w-[1400px] mx-auto relative z-10">
@@ -157,12 +160,16 @@ export default function Process() {
               animate="visible"
               exit="exit"
               variants={{
-                hidden: { opacity: 0, scale: 0.96, filter: "blur(8px)" },
-                visible: { 
-                  opacity: 1, scale: 1, filter: "blur(0px)",
+                // No blur() filter here: a residual CSS filter on this large,
+                // shadowed card kept it from caching, forcing a re-raster on
+                // every scroll frame through this section. Opacity + scale give
+                // an equivalent "focus in" without the per-frame filter cost.
+                hidden: { opacity: 0, scale: 0.96 },
+                visible: {
+                  opacity: 1, scale: 1,
                   transition: { duration: 0.5, ease: [0.25, 1, 0.5, 1], staggerChildren: 0.08 }
                 },
-                exit: { opacity: 0, scale: 0.98, filter: "blur(4px)", transition: { duration: 0.2, ease: "easeIn" } }
+                exit: { opacity: 0, scale: 0.98, transition: { duration: 0.2, ease: "easeIn" } }
               }}
               className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start min-h-[380px] sm:min-h-[340px] md:min-h-[280px] lg:min-h-[250px] w-full"
             >
@@ -181,25 +188,19 @@ export default function Process() {
                 />
               </motion.div>
 
-              {/* Background clipping wrapper for shapes */}
-              <div className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none z-0">
-                {/* Animated background abstract shapes */}
-                <motion.div 
-                  variants={{
-                    hidden: { scale: 0.5, opacity: 0, rotate: -45 },
-                    visible: { scale: 1, opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut" } }
-                  }}
-                  className="absolute -top-32 -right-32 w-80 h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none"
-                ></motion.div>
-                <motion.div 
-                  variants={{
-                    hidden: { scale: 0.5, opacity: 0, rotate: 45 },
-                    visible: { scale: 1, opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut", delay: 0.2 } }
-                  }}
-                  className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-2xl pointer-events-none"
-                ></motion.div>
-              </div>
-              
+              {/* Background clipping wrapper for shapes. Uses radial-gradient
+                  tints instead of blur-3xl/blur-2xl elements: large CSS blur
+                  filters are expensive to raster and kept this card from
+                  caching during scroll. The soft radial gradients read the
+                  same at these 5% opacities with no filter cost. */}
+              <div
+                className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none z-0"
+                style={{
+                  backgroundImage:
+                    'radial-gradient(240px circle at top right, rgba(180,140,54,0.05), transparent 70%), radial-gradient(200px circle at bottom left, rgba(46,54,44,0.05), transparent 70%)',
+                }}
+              ></div>
+
               <motion.div 
                 variants={{
                   hidden: { opacity: 0, scale: 0.5, rotate: -15 },

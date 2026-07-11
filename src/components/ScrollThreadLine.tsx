@@ -1,45 +1,29 @@
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useReducedMotion,
-} from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
+import { useReducedMotion } from 'motion/react';
 
 /**
  * A decorative gradient "thread" that draws itself down the homepage as the
- * user scrolls (Framer Motion `useScroll` -> the path's stroke-dashoffset).
+ * user scrolls.
  *
  * Placement / layering:
  *  - Rendered inside the below-hero wrapper in Home.tsx, so it spans the
- *    About -> StayConnected region and *starts at the hero/About seam* (it
- *    never touches the hero).
+ *    About -> StayConnected region and *starts at the hero/About seam*.
  *  - `-z-10` inside that wrapper's isolated stacking context puts it BEHIND
- *    all section content. The below-hero sections are made transparent so the
- *    shared page background shows the thread on open background and tucks it
- *    behind every photo, card, and text block.
- *  - pointer-events: none (never blocks clicks/hovers/forms); desktop only;
- *    static (fully drawn, no motion) for reduced-motion users.
+ *    all section content. The below-hero sections are transparent so the
+ *    shared page background shows the thread on open background.
+ *  - pointer-events: none; desktop only; static for reduced-motion users.
  *
- * The draw begins when the seam (wrapper top) reaches the middle of the
- * viewport (`offset: ['start center', ...]`) and completes as the region's
- * bottom reaches the bottom of the viewport.
- *
- * The draw uses the classic stroke-dash technique in REAL path units: we
- * measure the path length once with getTotalLength() and set both the dash
- * and the gap to that length, then animate stroke-dashoffset from L (hidden)
- * to 0 (fully drawn). We deliberately avoid `pathLength` normalization here —
- * it is not reliably applied to attribute dash arrays under this SVG's
- * non-uniform (`preserveAspectRatio="none"`) scaling.
+ * PERFORMANCE — how the "draw" is done without per-frame repaint:
+ *  Animating stroke-dashoffset repaints the whole (page-height) SVG every
+ *  scroll frame, which was the dominant scroll-jank source (a fully static
+ *  line scrolls at 60fps; the stroke detail is irrelevant — it's the repaint).
+ *  So the gradient line is painted ONCE, fully drawn and static, and the draw
+ *  is faked by an opaque page-coloured COVER that hides the not-yet-drawn
+ *  part. The cover is moved with a CSS `transform: translateY()` — a GPU
+ *  compositor operation with NO repaint — following the tip's Y via a small
+ *  precomputed lookup table. Result: buttery scrolling, identical look.
  */
 
-// Thread path body. Every segment after the first uses the SVG "S" (smooth
-// cubic) command, which mirrors the previous control point — this makes each
-// joint tangent-continuous, so the line is one clean, kink-free curve.
-// The final segments (added at runtime) sweep left after the Portfolio
-// section and land on the Custom Care image, where the image blooms out of
-// the line's endpoint (see CustomCare.tsx).
 const THREAD_BODY = `M 1150 -20
    C 1300 360, 1000 560, 780 860
    S 700 1440, 960 1700
@@ -47,34 +31,33 @@ const THREAD_BODY = `M 1150 -20
    S 810 3000, 725 3345
    S 890 3925, 1170 4180`;
 const DEFAULT_END = { x: 470, y: 4820 };
+const PAGE_BG = '#FAFAF5'; // matches --color-surface (the page background)
+const LUT_N = 64;
+const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 
 export default function ScrollThreadLine() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
+  const coverRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const [len, setLen] = useState(0);
-  // Path-length fraction at which the final hook begins (body vs. hook).
-  const [hookFrac, setHookFrac] = useState(0.75);
-  // The Process section's vertical bounds in viewBox units — the thread is
-  // masked out (invisible) while crossing it, then re-emerges below,
-  // continuing exactly as if it had run underneath the section.
-  const [gap, setGap] = useState<{ y0: number; y1: number } | null>(null);
-  // Where the thread ends: a fixed point on the Custom Care image (measured
-  // from the live layout), and the scroll progress at which the tip should
-  // arrive there (when that point reaches ~75% of the viewport height).
-  const [endPt, setEndPt] = useState<{ x: number; y: number } | null>(null);
-  const [pEnd, setPEnd] = useState(1);
 
-  // Final approach — a drastic squared-off hook: straight down the page's
-  // right side, a tight rounded turn, a level run leftward, then a sharp
-  // rounded turn into a vertical drop that lands on the image. Quarter-turn
-  // corners (Q) keep every joint tangent-continuous, so it stays one clean
-  // stroke.
+  const [len, setLen] = useState(0);
+  const [gap, setGap] = useState<{ y0: number; y1: number } | null>(null);
+  const [endPt, setEndPt] = useState<{ x: number; y: number } | null>(null);
+
+  // Values the rAF loop reads (refs, so it never needs to restart).
+  const geom = useRef({ top: 0, height: 1, vh: 1 });
+  const hookFracRef = useRef(0.75);
+  const pEndRef = useRef(1);
+  const drawnRef = useRef(0);
+  // tipY lookup table: fraction-of-length -> tip Y in container px.
+  const lut = useRef<number[]>([]);
+
   const e = endPt ?? DEFAULT_END;
   const ex = Math.round(e.x);
   const ey = Math.round(e.y);
-  const r = 90; // corner radius (viewBox units)
-  const runY = Math.round(Math.max(e.y - 170, 4330)); // height of the level run
+  const r = 90;
+  const runY = Math.round(Math.max(e.y - 170, 4330));
   const d = `${THREAD_BODY}
    C 1450 4435, 1220 ${runY - 300}, 1220 ${runY - r}
    Q 1220 ${runY}, ${1220 - r} ${runY}
@@ -82,100 +65,116 @@ export default function ScrollThreadLine() {
    Q ${ex} ${runY}, ${ex} ${runY + r}
    L ${ex} ${ey}`;
 
+  // Measure length + build the fraction->tipY lookup table.
   useEffect(() => {
-    if (!pathRef.current) return;
-    const total = pathRef.current.getTotalLength();
+    const el = pathRef.current;
+    const c = containerRef.current;
+    if (!el || !c) return;
+    const total = el.getTotalLength();
     setLen(total);
-    // Measure the body length (geometry before the hook) on a detached path,
-    // so we know what fraction of the stroke is the hook and can draw it more
-    // slowly (see `led` below).
+    const h = c.getBoundingClientRect().height || 1;
+    const table: number[] = [];
+    for (let i = 0; i <= LUT_N; i++) {
+      const pt = el.getPointAtLength((i / LUT_N) * total);
+      table.push((pt.y / 5400) * h); // viewBox Y -> container px
+    }
+    lut.current = table;
     try {
       const tmp = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       tmp.setAttribute('d', THREAD_BODY);
       const bodyLen = tmp.getTotalLength();
-      if (total > 0 && bodyLen > 0) {
-        setHookFrac(Math.min(0.9, Math.max(0.4, bodyLen / total)));
-      }
+      if (total > 0 && bodyLen > 0) hookFracRef.current = Math.min(0.9, Math.max(0.4, bodyLen / total));
     } catch {
       /* keep default */
     }
   }, [d]);
 
+  // Cache geometry (container position/size, viewport, Process gap, endpoint).
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     const measure = () => {
       const c = container.getBoundingClientRect();
       if (c.height <= 0) return;
-      // px -> viewBox units (viewBox 1440x5400 stretches over the container)
+      geom.current = { top: c.top + window.scrollY, height: c.height, vh: window.innerHeight };
       const toVbY = (px: number) => ((px - c.top) / c.height) * 5400;
-
       const section = document.getElementById('process');
-      setGap(section ? { y0: toVbY(section.getBoundingClientRect().top), y1: toVbY(section.getBoundingClientRect().bottom) } : null);
-
-      // Land on the Custom Care visual at 48% of its width, just below its
-      // top edge — the image blooms from this same origin (CustomCare.tsx).
+      setGap(
+        section
+          ? {
+              y0: toVbY(section.getBoundingClientRect().top),
+              y1: toVbY(section.getBoundingClientRect().bottom),
+            }
+          : null
+      );
       const visual = document.getElementById('custom-care-visual');
       if (visual) {
         const v = visual.getBoundingClientRect();
         const exVb = (((v.left - c.left) + v.width * 0.48) / c.width) * 1440;
         const eyPx = (v.top - c.top) + v.height * 0.06;
         setEndPt({ x: exVb, y: (eyPx / c.height) * 5400 });
-        // scrollYProgress hits 1 when the container bottom meets the viewport
-        // bottom; solve for the progress at which the endpoint sits at 75% of
-        // the viewport height, so the draw completes right there.
-        const vh = window.innerHeight;
-        const span = c.height - vh / 2;
-        if (span > 0) setPEnd(Math.min(1, Math.max(0.5, (eyPx - vh * 0.25) / span)));
+        const span = c.height - window.innerHeight / 2;
+        if (span > 0) pEndRef.current = Math.min(1, Math.max(0.5, (eyPx - window.innerHeight * 0.25) / span));
       }
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(container);
-    return () => ro.disconnect();
+    window.addEventListener('resize', measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+    };
   }, []);
 
-  // Progress runs 0 -> 1 from "seam at viewport center" to "region bottom at
-  // viewport bottom", so the line starts drawing right as the hero/About seam
-  // passes the middle of the screen.
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start center', 'end end'],
-  });
-  // Complete the draw at pEnd (tip lands on the Custom Care image) rather
-  // than at the bottom of the region; clamped, so it then holds there.
-  //
-  // The mapping is piecewise so the final hook draws SLOWER than the body:
-  // the hook packs a lot of path length (the wide horizontal sweep) into a
-  // small vertical span, so at a linear rate each mouse-wheel step would jump
-  // the tip a long way across open background. We give the hook ~1.9x its
-  // proportional share of the scroll range, halving the per-step tip travel.
-  const hookScrollFrac = Math.min(0.5, (1 - hookFrac) * 1.9);
-  const aScroll = pEnd * (1 - hookScrollFrac);
-  const led = useTransform(scrollYProgress, [0, aScroll, pEnd], [0, hookFrac, 1]);
-  // A soft, overdamped spring. Mouse-wheel scrolling arrives in large
-  // discrete steps; a stiff spring passes those straight through, making the
-  // tip lurch (very visible where the line sweeps across open background).
-  // This softer spring spreads each step across more frames so the tip
-  // glides. Overdamped (no overshoot) so it never wobbles.
-  const drawn = useSpring(led, {
-    stiffness: 38,
-    damping: 22,
-    mass: 1,
-    restDelta: 0.0005,
-  });
-  const dashOffset = useTransform(drawn, (v) => len * (1 - v));
+  // Draw loop: arithmetic + ONE transform write per frame (GPU, no repaint).
+  useEffect(() => {
+    const cover = coverRef.current;
+    if (!cover) return;
+    if (reduce) {
+      cover.style.transform = 'translate3d(0, 200%, 0)'; // fully revealed
+      return;
+    }
+    let raf = 0;
+    const tick = () => {
+      const { top, height, vh } = geom.current;
+      const denom = height - vh / 2;
+      const p = clamp01(denom > 0 ? (window.scrollY - top + vh / 2) / denom : 0);
+
+      const hf = hookFracRef.current;
+      const pe = pEndRef.current;
+      const hookScrollFrac = Math.min(0.5, (1 - hf) * 1.9);
+      const aScroll = pe * (1 - hookScrollFrac);
+      let target: number;
+      if (p >= pe) target = 1;
+      else if (p <= 0) target = 0;
+      else if (p < aScroll) target = (p / aScroll) * hf;
+      else target = hf + ((p - aScroll) / (pe - aScroll)) * (1 - hf);
+
+      drawnRef.current += (target - drawnRef.current) * 0.12;
+      if (Math.abs(target - drawnRef.current) < 0.0002) drawnRef.current = target;
+
+      // tipY via the LUT (fraction -> px), then position the cover so it hides
+      // everything below the tip.
+      const table = lut.current;
+      let tipY = height;
+      if (table.length) {
+        const f = clamp01(drawnRef.current) * LUT_N;
+        const i = Math.min(LUT_N - 1, Math.floor(f));
+        tipY = table[i] + (table[i + 1] - table[i]) * (f - i);
+      }
+      cover.style.transform = `translate3d(0, ${Math.max(0, tipY)}px, 0)`;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [reduce]);
 
   return (
     <div
       ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 -z-10 hidden lg:block"
-      // Promote to its own compositor layer. The line's stroke repaints every
-      // frame as the dash animates; on a shared layer that repaint would drag
-      // the page content with it. Isolated, the content just re-composites
-      // (cheap) while only this layer re-rasters.
-      style={{ transform: 'translateZ(0)', willChange: 'transform', backfaceVisibility: 'hidden' }}
     >
       <svg
         className="h-full w-full"
@@ -184,11 +183,6 @@ export default function ScrollThreadLine() {
         fill="none"
       >
         <defs>
-          {/* Static gradient spanning the whole path height. It used to be
-              scroll-animated (gradientTransform), but re-transforming the
-              paint server every frame forced a full-stroke repaint and was a
-              major scroll-jank source. A static gradient is painted once and
-              cached — only the dash offset changes per frame. */}
           <linearGradient
             id="threadGradient"
             gradientUnits="userSpaceOnUse"
@@ -203,10 +197,6 @@ export default function ScrollThreadLine() {
             <stop offset="75%" stopColor="#c69a3d" />
             <stop offset="100%" stopColor="#8fa06a" />
           </linearGradient>
-          {/* Hide the thread across the Process section with a geometric
-              clip (two rects: everything above the gap, everything below).
-              A clipPath is far cheaper than the SVG mask it replaced — no
-              per-frame offscreen alpha buffer the size of the page. */}
           {gap && (
             <clipPath id="threadClip" clipPathUnits="userSpaceOnUse">
               <rect x="0" y="-200" width="1440" height={Math.max(0, gap.y0 + 200)} />
@@ -214,24 +204,28 @@ export default function ScrollThreadLine() {
             </clipPath>
           )}
         </defs>
-        {/* One clean stroke — no halo/underlays and no CSS filters (filters
-            forced a page-height re-rasterization every frame while the dash
-            animates, causing scroll jank). */}
-        <motion.path
-          ref={pathRef}
+        {/* Fully drawn, STATIC line — painted once, never repainted on scroll. */}
+        <path
           d={d}
           stroke="url(#threadGradient)"
           strokeWidth={9}
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeDasharray={len || undefined}
           clipPath={gap ? 'url(#threadClip)' : undefined}
-          style={{ strokeDashoffset: reduce ? 0 : dashOffset }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: len ? 0.9 : 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{ opacity: len ? 0.9 : 0, transition: 'opacity 0.8s ease-out' }}
         />
+        {/* pathRef used only for measurement (length + tipY LUT); not drawn. */}
+        <path ref={pathRef} d={d} fill="none" stroke="none" />
       </svg>
+      {/* Cover that hides the not-yet-"drawn" part. Page-coloured, sits above
+          the line but below content, and is moved purely by transform. */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          ref={coverRef}
+          className="absolute inset-0 will-change-transform"
+          style={{ backgroundColor: PAGE_BG }}
+        />
+      </div>
     </div>
   );
 }
