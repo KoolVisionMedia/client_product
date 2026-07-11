@@ -107,7 +107,7 @@ const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: nu
 
 export default function Portfolio() {
   return (
-    <section id="portfolio" className="bg-surface relative">
+    <section id="portfolio" className="relative">
       <div className="px-6 md:px-12 max-w-[1600px] mx-auto pt-32 pb-16">
         <div className="flex flex-col md:flex-row justify-between items-end gap-8">
           <motion.div

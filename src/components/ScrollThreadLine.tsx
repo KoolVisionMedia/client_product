@@ -12,16 +12,20 @@ import { useRef, useState, useEffect } from 'react';
  * A decorative gradient "thread" that draws itself down the homepage as the
  * user scrolls (Framer Motion `useScroll` -> the path's stroke-dashoffset).
  *
- * Purely additive and non-interactive:
- *  - pointer-events: none  (never blocks clicks/hovers/forms)
- *  - absolute overlay, no `overflow` set  (keeps the sticky homepage
- *    sections in CoreValues/Portfolio working)
- *  - z-40: over section imagery, under the navbar/chat/modals (z-50+)
- *  - mix-blend-mode so the line composites *into* the content it crosses
- *    (reads as woven behind the page rather than pasted flatly on top).
- *    A true z-behind isn't possible for one continuous line because every
- *    homepage section has an opaque background that would hide it.
- *  - desktop only, and static (no draw) for reduced-motion users
+ * Placement / layering:
+ *  - Rendered inside the below-hero wrapper in Home.tsx, so it spans the
+ *    About -> StayConnected region and *starts at the hero/About seam* (it
+ *    never touches the hero).
+ *  - `-z-10` inside that wrapper's isolated stacking context puts it BEHIND
+ *    all section content. The below-hero sections are made transparent so the
+ *    shared page background shows the thread on open background and tucks it
+ *    behind every photo, card, and text block.
+ *  - pointer-events: none (never blocks clicks/hovers/forms); desktop only;
+ *    static (fully drawn, no motion) for reduced-motion users.
+ *
+ * The draw begins when the seam (wrapper top) reaches the middle of the
+ * viewport (`offset: ['start center', ...]`) and completes as the region's
+ * bottom reaches the bottom of the viewport.
  *
  * The draw uses the classic stroke-dash technique in REAL path units: we
  * measure the path length once with getTotalLength() and set both the dash
@@ -44,15 +48,18 @@ export default function ScrollThreadLine() {
     if (pathRef.current) setLen(pathRef.current.getTotalLength());
   }, []);
 
+  // Progress runs 0 -> 1 from "seam at viewport center" to "region bottom at
+  // viewport bottom", so the line starts drawing right as the hero/About seam
+  // passes the middle of the screen.
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ['start center', 'end end'],
   });
-  // Lead the draw ~one viewport ahead of the scroll position so the line is
-  // always visible flowing down through the current viewport, finishing at the
-  // bottom of the page.
-  const led = useTransform(scrollYProgress, [0, 1], [0.12, 1]);
-  const drawn = useSpring(led, { stiffness: 90, damping: 30, restDelta: 0.001 });
+  const drawn = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 30,
+    restDelta: 0.001,
+  });
   const dashOffset = useTransform(drawn, (v) => len * (1 - v));
 
   // Scroll-driven colour flow: slide the gradient down the path as the user
@@ -64,11 +71,11 @@ export default function ScrollThreadLine() {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-40 hidden lg:block"
+      className="pointer-events-none absolute inset-0 -z-10 hidden lg:block"
     >
       <svg
         className="h-full w-full"
-        viewBox="0 0 1440 6000"
+        viewBox="0 0 1440 5400"
         preserveAspectRatio="none"
         fill="none"
       >
@@ -91,14 +98,14 @@ export default function ScrollThreadLine() {
         </defs>
         <motion.path
           ref={pathRef}
-          d="M 1200 -40
-             C 1350 420, 980 650, 750 970
-             C 630 1250, 720 1560, 990 1830
-             C 1250 2080, 1390 2330, 1260 2670
-             C 1150 2990, 790 3160, 710 3510
-             C 640 3840, 890 4120, 1170 4380
-             C 1370 4600, 1390 4910, 1220 5210
-             C 1100 5500, 850 5820, 1100 6260"
+          d="M 1150 -20
+             C 1300 360, 980 580, 760 880
+             C 620 1150, 700 1450, 970 1710
+             C 1230 1950, 1370 2190, 1250 2520
+             C 1140 2840, 800 3010, 720 3350
+             C 650 3670, 900 3940, 1180 4190
+             C 1370 4410, 1380 4710, 1220 5000
+             C 1150 5160, 1050 5300, 1120 5420"
           stroke="url(#threadGradient)"
           strokeWidth={9}
           strokeLinecap="round"
@@ -106,14 +113,13 @@ export default function ScrollThreadLine() {
           strokeDasharray={len || undefined}
           style={{
             strokeDashoffset: reduce ? 0 : dashOffset,
-            // Soft dark-olive halo: gives the thread depth on light sections
-            // (reads as embedded) while the mid-tone gradient keeps it legible
-            // on the dark footer/photos.
+            // Soft dark-olive halo gives the thread a little depth on the
+            // light page background.
             filter:
-              'drop-shadow(0 0 5px rgba(45, 54, 44, 0.5)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.25))',
+              'drop-shadow(0 0 5px rgba(45, 54, 44, 0.45)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.25))',
           }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: len ? 0.85 : 0 }}
+          animate={{ opacity: len ? 0.9 : 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         />
       </svg>

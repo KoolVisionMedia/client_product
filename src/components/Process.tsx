@@ -65,7 +65,7 @@ export default function Process() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section id="process" className="py-24 lg:py-32 bg-white px-6 md:px-12 relative z-10 overflow-hidden border-t border-gray-100">
+    <section id="process" className="py-24 lg:py-32 px-6 md:px-12 relative z-10 overflow-hidden border-t border-gray-100">
       
       {/* Blueprint background accent */}
       <div className="absolute inset-0 z-0 pointer-events-none">
