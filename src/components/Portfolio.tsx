@@ -131,7 +131,7 @@ export default function Portfolio() {
   return (
     <section id="portfolio" className="relative">
       <div className="px-6 md:px-12 max-w-[1600px] mx-auto pt-32 pb-16">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -139,17 +139,17 @@ export default function Portfolio() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <h2 className="text-[10px] font-sans tracking-[0.3em] uppercase text-accent mb-4">Our Work</h2>
-            <h3 className="font-serif text-5xl lg:text-7xl text-primary">Featured Floor Plans</h3>
+            <h3 className="font-serif text-5xl md:text-6xl text-primary leading-[1.1]">Featured Floor Plans</h3>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "0px 0px -100px 0px" }}
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-2"
+            className="md:pb-2"
           >
-            <p className="text-primary-light font-sans max-w-sm text-sm leading-relaxed mb-6">Explore our curated collection of architectural masterpieces, featuring stunning exteriors and highly functional layouts.</p>
+            <p className="text-primary-light font-sans max-w-xl text-lg leading-relaxed">Explore our curated collection of architectural masterpieces, featuring stunning exteriors and highly functional layouts.</p>
           </motion.div>
         </div>
       </div>
