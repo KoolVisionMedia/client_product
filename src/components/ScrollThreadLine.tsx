@@ -56,9 +56,32 @@ export default function ScrollThreadLine() {
   const pathRef = useRef<SVGPathElement>(null);
   const reduce = useReducedMotion();
   const [len, setLen] = useState(0);
+  // The Process section's vertical bounds in viewBox units — the thread is
+  // masked out (invisible) while crossing it, then re-emerges below,
+  // continuing exactly as if it had run underneath the section.
+  const [gap, setGap] = useState<{ y0: number; y1: number } | null>(null);
 
   useEffect(() => {
     if (pathRef.current) setLen(pathRef.current.getTotalLength());
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const measure = () => {
+      const section = document.getElementById('process');
+      if (!section) return setGap(null);
+      const c = container.getBoundingClientRect();
+      const s = section.getBoundingClientRect();
+      if (c.height <= 0) return;
+      // px -> viewBox units (viewBox height 5400 stretches over the container)
+      const toVb = (px: number) => ((px - c.top) / c.height) * 5400;
+      setGap({ y0: toVb(s.top), y1: toVb(s.bottom) });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    return () => ro.disconnect();
   }, []);
 
   // Progress runs 0 -> 1 from "seam at viewport center" to "region bottom at
@@ -108,6 +131,12 @@ export default function ScrollThreadLine() {
             <stop offset="80%" stopColor="#c69a3d" />
             <stop offset="100%" stopColor="#8fa06a" />
           </MotionLinearGradient>
+          {gap && (
+            <mask id="threadMask" maskUnits="userSpaceOnUse">
+              <rect x="0" y="-200" width="1440" height="5800" fill="white" />
+              <rect x="0" y={gap.y0} width="1440" height={Math.max(0, gap.y1 - gap.y0)} fill="black" />
+            </mask>
+          )}
         </defs>
         {/* One clean stroke — no halo/underlays and no CSS filters (filters
             forced a page-height re-rasterization every frame while the dash
@@ -120,6 +149,7 @@ export default function ScrollThreadLine() {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeDasharray={len || undefined}
+          mask={gap ? 'url(#threadMask)' : undefined}
           style={{ strokeDashoffset: reduce ? 0 : dashOffset }}
           initial={{ opacity: 0 }}
           animate={{ opacity: len ? 0.9 : 0 }}
