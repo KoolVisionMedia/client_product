@@ -58,7 +58,7 @@ export default function Hero() {
               poster="/assets/hero-poster.webp"
               className="absolute inset-0 w-full h-full object-cover z-0"
             >
-              <source src="/background-video-v3.mp4" type="video/mp4" />
+              <source src="/background-video-v4.mp4" type="video/mp4" />
             </video>
           )}
           <div className="absolute inset-0 bg-black/40 z-10"></div> {/* Dark Overlay */}
