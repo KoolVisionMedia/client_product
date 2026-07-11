@@ -53,6 +53,8 @@ export default function ScrollThreadLine() {
   const pathRef = useRef<SVGPathElement>(null);
   const reduce = useReducedMotion();
   const [len, setLen] = useState(0);
+  // Path-length fraction at which the final hook begins (body vs. hook).
+  const [hookFrac, setHookFrac] = useState(0.75);
   // The Process section's vertical bounds in viewBox units — the thread is
   // masked out (invisible) while crossing it, then re-emerges below,
   // continuing exactly as if it had run underneath the section.
@@ -81,7 +83,22 @@ export default function ScrollThreadLine() {
    L ${ex} ${ey}`;
 
   useEffect(() => {
-    if (pathRef.current) setLen(pathRef.current.getTotalLength());
+    if (!pathRef.current) return;
+    const total = pathRef.current.getTotalLength();
+    setLen(total);
+    // Measure the body length (geometry before the hook) on a detached path,
+    // so we know what fraction of the stroke is the hook and can draw it more
+    // slowly (see `led` below).
+    try {
+      const tmp = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      tmp.setAttribute('d', THREAD_BODY);
+      const bodyLen = tmp.getTotalLength();
+      if (total > 0 && bodyLen > 0) {
+        setHookFrac(Math.min(0.9, Math.max(0.4, bodyLen / total)));
+      }
+    } catch {
+      /* keep default */
+    }
   }, [d]);
 
   useEffect(() => {
@@ -127,11 +144,25 @@ export default function ScrollThreadLine() {
   });
   // Complete the draw at pEnd (tip lands on the Custom Care image) rather
   // than at the bottom of the region; clamped, so it then holds there.
-  const led = useTransform(scrollYProgress, [0, pEnd], [0, 1]);
+  //
+  // The mapping is piecewise so the final hook draws SLOWER than the body:
+  // the hook packs a lot of path length (the wide horizontal sweep) into a
+  // small vertical span, so at a linear rate each mouse-wheel step would jump
+  // the tip a long way across open background. We give the hook ~1.9x its
+  // proportional share of the scroll range, halving the per-step tip travel.
+  const hookScrollFrac = Math.min(0.5, (1 - hookFrac) * 1.9);
+  const aScroll = pEnd * (1 - hookScrollFrac);
+  const led = useTransform(scrollYProgress, [0, aScroll, pEnd], [0, hookFrac, 1]);
+  // A soft, overdamped spring. Mouse-wheel scrolling arrives in large
+  // discrete steps; a stiff spring passes those straight through, making the
+  // tip lurch (very visible where the line sweeps across open background).
+  // This softer spring spreads each step across more frames so the tip
+  // glides. Overdamped (no overshoot) so it never wobbles.
   const drawn = useSpring(led, {
-    stiffness: 90,
-    damping: 30,
-    restDelta: 0.001,
+    stiffness: 38,
+    damping: 22,
+    mass: 1,
+    restDelta: 0.0005,
   });
   const dashOffset = useTransform(drawn, (v) => len * (1 - v));
 
