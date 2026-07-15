@@ -15,7 +15,7 @@ const values = [
   },
   {
     title: 'Strategic Budgeting',
-    description: 'Transparency is our foundation. We provide detailed line-item budgets before construction, eliminating surprises and ensuring value.',
+    description: 'Transparency is our foundation. We work to keep your project within budget, providing clear estimates and guidance on custom selections so you can plan with confidence.',
     color: 'bg-white', 
     textColor: 'text-primary',
     icon: Ruler,
@@ -25,7 +25,7 @@ const values = [
   },
   {
     title: 'Construction Management',
-    description: 'Our proprietary management system provides you with weekly photo updates, schedule tracking, and rigorous quality control.',
+    description: 'We oversee every stage of your build, keeping you informed on progress and giving you a clear sense of what to expect along the way, with a focus on quality at each step.',
     color: 'bg-[#4A5D4E]', 
     textColor: 'text-white',
     icon: Home,
