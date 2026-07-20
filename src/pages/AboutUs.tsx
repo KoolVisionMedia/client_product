@@ -474,42 +474,13 @@ export default function AboutUs() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative w-full rounded-2xl overflow-hidden shadow-xl mb-16 group"
           >
-            <video
-              id="about-video"
-              controls
-              preload="metadata"
-              poster="/assets/about-video-poster.webp"
+            {/* Video temporarily removed — showing the thumbnail as a still image until the new video is added. */}
+            <img
+              src="/assets/about-video-poster.webp"
+              alt="Homefront Builders Team"
               className="w-full rounded-2xl"
               style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
-              onClick={(e) => {
-                const video = e.currentTarget;
-                if (video.paused) {
-                  video.play();
-                } else {
-                  video.pause();
-                }
-              }}
-              onPlay={(e) => {
-                const overlay = e.currentTarget.parentElement?.querySelector('.play-overlay');
-                if (overlay) overlay.classList.add('hidden');
-              }}
-              onPause={(e) => {
-                const overlay = e.currentTarget.parentElement?.querySelector('.play-overlay');
-                if (overlay) overlay.classList.remove('hidden');
-              }}
-            >
-              <source src="https://www.dropbox.com/scl/fi/c9p6d770o9yw3npugsmql/Hardwood-Dr.mp4?rlkey=xlvao3qiz0h9vtytlgs0p34py&raw=1" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            
-            {/* Custom Play Overlay */}
-            <div 
-              className="play-overlay absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors pointer-events-none"
-            >
-              <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center translate-y-0 group-hover:scale-110 transition-transform duration-500">
-                <PlayIcon />
-              </div>
-            </div>
+            />
           </motion.div>
 
           {/* Company Description */}
