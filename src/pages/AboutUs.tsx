@@ -429,6 +429,9 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
 /* ── Page ── */
 export default function AboutUs() {
   const [selectedPartner, setSelectedPartner] = useState<typeof partners[0] | null>(null);
+  // Tracks whether the intro video has started playing yet, so we can show a
+  // still frame from partway through the clip and then reset to the start on play.
+  const videoStartedRef = React.useRef(false);
 
   return (
     <div>
@@ -478,9 +481,16 @@ export default function AboutUs() {
               id="about-video"
               controls
               preload="metadata"
-              poster="/assets/about-video-poster.webp"
-              className="w-full rounded-2xl"
+              className="w-full rounded-2xl bg-black"
               style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
+              onLoadedMetadata={(e) => {
+                // No fixed poster image — show a frame from partway through the
+                // clip as the still. Seeking while paused renders that frame.
+                const video = e.currentTarget;
+                if (!videoStartedRef.current && video.duration) {
+                  video.currentTime = Math.min(video.duration / 2, 4);
+                }
+              }}
               onClick={(e) => {
                 const video = e.currentTarget;
                 if (video.paused) {
@@ -490,7 +500,14 @@ export default function AboutUs() {
                 }
               }}
               onPlay={(e) => {
-                const overlay = e.currentTarget.parentElement?.querySelector('.play-overlay');
+                const video = e.currentTarget;
+                // On the first play, rewind to the beginning so the whole video
+                // plays even though the still frame was taken from the middle.
+                if (!videoStartedRef.current) {
+                  videoStartedRef.current = true;
+                  video.currentTime = 0;
+                }
+                const overlay = video.parentElement?.querySelector('.play-overlay');
                 if (overlay) overlay.classList.add('hidden');
               }}
               onPause={(e) => {
