@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from 'motion/react';
 import SEO from '../components/SEO';
+import EventsShowcase from '../components/EventsShowcase';
 
 declare global {
   interface Window {
@@ -489,6 +490,9 @@ export default function Testimonials() {
           <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#1b2518] to-transparent pointer-events-none z-10" />
         </div>
       </section>
+
+      {/* ── Events & Sponsorships ───────────────────────────────────── */}
+      <EventsShowcase />
 
       {/* ── Community & Education ───────────────────────────────────── */}
       <section className="relative py-28 bg-[#FAFAF5] text-primary overflow-hidden">
