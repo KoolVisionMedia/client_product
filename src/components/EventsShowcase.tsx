@@ -94,11 +94,12 @@ type CardProps = {
   revealed: boolean;
   active: boolean;
   anyActive: boolean;
+  canHover: boolean;
   onEnter: (index: number) => void;
   onLeave: (index: number) => void;
 };
 
-function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave }: CardProps) {
+function EventCard({ event, index, revealed, active, anyActive, canHover, onEnter, onLeave }: CardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -168,10 +169,12 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           </video>
         </motion.div>
 
-        {/* Dark filter — clears on hover, deepens while a sibling is hovered */}
+        {/* Dark filter — clears on hover, deepens while a sibling is hovered.
+            On touch there is no hover to clear it, so it would sit dimmed
+            forever; drop it to a light tint that just seats the role tag. */}
         <div
           className="pointer-events-none absolute inset-0 bg-[#1b2518] transition-opacity duration-500"
-          style={{ opacity: active ? 0 : anyActive ? 0.62 : 0.45 }}
+          style={{ opacity: !canHover ? 0.12 : active ? 0 : anyActive ? 0.62 : 0.45 }}
         />
 
         {/* Role tag */}
@@ -179,10 +182,11 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           {event.role}
         </span>
 
-        {/* Preview affordance — fades out as the clip takes over */}
+        {/* Preview affordance — fades out as the clip takes over. Hidden on
+            touch, where it would promise a preview that can't be triggered. */}
         <div
           className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-[400ms]"
-          style={{ opacity: active ? 0 : 1 }}
+          style={{ opacity: !canHover || active ? 0 : 1 }}
         >
           <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-[#1b2518]/40">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="#FAFAF5" aria-hidden="true">
@@ -226,7 +230,8 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           aria-label={`Follow for updates on local events on Facebook — ${event.title}`}
           className="group/fb mt-5 inline-flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c9a96e]"
         >
-          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-full border border-primary/15 bg-primary/5 text-primary transition-colors group-hover/fb:border-[#c9a96e] group-hover/fb:bg-[#c9a96e] group-hover/fb:text-white">
+          {/* 44px so it clears the minimum touch target on mobile */}
+          <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-primary/15 bg-primary/5 text-primary transition-colors group-hover/fb:border-[#c9a96e] group-hover/fb:bg-[#c9a96e] group-hover/fb:text-white">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
@@ -247,6 +252,18 @@ export default function EventsShowcase() {
   const gridRef = useRef<HTMLDivElement>(null);
   const revealed = useInView(gridRef, { once: true, margin: '-80px' });
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  // Touch devices get no hover, so the scrim would never clear and the play
+  // glyph would promise a preview that can't fire. Defaults true so the
+  // prerendered HTML matches desktop; corrects on hydration.
+  const [canHover, setCanHover] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover)');
+    const update = () => setCanHover(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
 
   const handleEnter = useCallback((index: number) => setActiveIndex(index), []);
   // Guarded so moving the pointer straight from one card to the next doesn't
@@ -284,6 +301,7 @@ export default function EventsShowcase() {
             revealed={revealed}
             active={activeIndex === i}
             anyActive={activeIndex !== null}
+            canHover={canHover}
             onEnter={handleEnter}
             onLeave={handleLeave}
           />
