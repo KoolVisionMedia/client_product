@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight, Send, X } from 'lucide-react';
 import SEO from '../components/SEO';
+import ProcessScrubVideo from '../components/ProcessScrubVideo';
 
 const processSteps = [
   {
@@ -162,6 +163,9 @@ const MODAL_COPY: Record<ModalType, {
 
 export default function ProcessPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  // The steps column only — the scrub video measures each step block inside it
+  // to decide which scene of the build animation to show.
+  const stepsRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('booklet');
   const [formState, setFormState] = useState({ status: 'idle', message: '' });
@@ -255,12 +259,27 @@ export default function ProcessPage() {
 
       {/* Timeline Section */}
       <section className="px-4 md:px-12 relative z-10" ref={containerRef}>
-        <div className="max-w-6xl mx-auto relative">
-          
+        {/* Two columns on desktop: the timeline scrolls past a sticky build
+            animation. `order` puts the video visually right on desktop while
+            keeping it first in the DOM, so on mobile it pins to the top of the
+            viewport above the steps instead. */}
+        <div className="max-w-7xl mx-auto relative flex flex-col lg:flex-row lg:items-start lg:gap-14">
+
+          {/* Sticky build animation — scrubbed by scroll position */}
+          <div className="lg:order-2 lg:flex-1 sticky top-20 lg:top-28 z-30 mb-12 lg:mb-0 self-start w-full">
+            <ProcessScrubVideo stepsRef={stepsRef} className="aspect-video w-full" />
+            <p className="mt-3 hidden lg:block font-sans text-[10px] uppercase tracking-[0.3em] text-primary/35">
+              Your home, built step by step as you scroll
+            </p>
+          </div>
+
+          {/* Timeline */}
+          <div ref={stepsRef} className="lg:order-1 relative w-full lg:w-[52%] lg:flex-none">
+
           {/* Vertical Progress Line Background */}
-          <div className="absolute left-[34px] md:left-[20%] lg:left-[25%] top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2">
+          <div className="absolute left-[34px] md:left-[20%] lg:left-[22%] top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2">
             {/* Active Progress Line */}
-            <motion.div 
+            <motion.div
               className="absolute top-0 left-0 right-0 bg-accent w-full"
               style={{ height: progressBarHeight, transformOrigin: 'top' }}
             />
@@ -270,10 +289,14 @@ export default function ProcessPage() {
             {processSteps.map((step, index) => {
               
               return (
-                <div key={index} className="flex flex-col md:flex-row w-full mb-16 md:mb-32 relative group">
+                <div
+                  key={index}
+                  data-step-index={index}
+                  className="flex flex-col md:flex-row w-full mb-16 md:mb-32 relative group"
+                >
                   
                   {/* Left: Date */}
-                  <div className="hidden md:block md:w-[20%] lg:w-[25%] text-right pr-12 lg:pr-16 py-4">
+                  <div className="hidden md:block md:w-[20%] lg:w-[22%] text-right pr-12 lg:pr-8 py-4">
                     <motion.span 
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -286,7 +309,7 @@ export default function ProcessPage() {
                   </div>
 
                   {/* Center: Node */}
-                  <div className="absolute left-[34px] md:left-[20%] lg:left-[25%] transform -translate-x-1/2 w-16 h-16 bg-white border-4 border-gray-50 rounded-full flex items-center justify-center shadow-[0_4px_10px_rgb(0,0,0,0.05)] z-20 group-hover:border-accent/10 transition-colors duration-300">
+                  <div className="absolute left-[34px] md:left-[20%] lg:left-[22%] transform -translate-x-1/2 w-16 h-16 bg-white border-4 border-gray-50 rounded-full flex items-center justify-center shadow-[0_4px_10px_rgb(0,0,0,0.05)] z-20 group-hover:border-accent/10 transition-colors duration-300">
                     <motion.div 
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
@@ -304,7 +327,7 @@ export default function ProcessPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6 }}
-                    className="w-full md:w-[80%] lg:w-[75%] pl-[80px] md:pl-12 lg:pl-16 pt-3 md:pt-0"
+                    className="w-full md:w-[80%] lg:w-[78%] pl-[80px] md:pl-12 lg:pl-10 pt-3 md:pt-0"
                   >
                     <div className="md:hidden mb-4">
                        <span className="font-sans text-lg font-bold text-primary/70 tracking-tight">{step.date}</span>
@@ -348,18 +371,12 @@ export default function ProcessPage() {
                         </div>
                       )}
                     </div>
-
-                    <div className="rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 aspect-[16/9] md:aspect-[3/2] max-w-3xl">
-                      <img loading="lazy" decoding="async" src={step.image} 
-                        alt={step.title} 
-                        className="w-full h-full object-cover transition-transform duration-[1s] ease-out hover:scale-[1.03]"
-                      />
-                    </div>
                   </motion.div>
 
                 </div>
               );
             })}
+          </div>
           </div>
 
         </div>
