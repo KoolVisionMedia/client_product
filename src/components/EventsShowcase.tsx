@@ -47,7 +47,13 @@ type EventItem = {
   meta: string;      // venue · city
   date: string;
   blurb: string;
+  // Facebook link for the icon under the caption. Currently Homefront's own
+  // page on every card — swap in the individual event/organiser post or page
+  // as those are confirmed.
+  facebookUrl: string;
 };
+
+const HOMEFRONT_FACEBOOK = 'https://www.facebook.com/HomeFrontBuilderstn/';
 
 // Education leads — put seminars and classes first as they're added.
 const events: EventItem[] = [
@@ -58,6 +64,7 @@ const events: EventItem[] = [
     meta: 'Homefront Design Studio',
     date: 'December 2025',
     blurb: 'An evening of design education — seasonal styling, material selections, and an open floor for questions about building custom.',
+    facebookUrl: HOMEFRONT_FACEBOOK,
   },
   {
     slug: 'golf-tournament',
@@ -66,6 +73,7 @@ const events: EventItem[] = [
     meta: 'Clarksville, TN',
     date: 'Summer 2026',
     blurb: 'The annual tournament benefiting local veterans and their families — one of the causes we show up for every year.',
+    facebookUrl: HOMEFRONT_FACEBOOK,
   },
   {
     slug: 'shoot-competition',
@@ -74,6 +82,7 @@ const events: EventItem[] = [
     meta: 'Cross Creek Clays · Clarksville, TN',
     date: 'June 2026',
     blurb: 'A three-day memorial shoot honoring the 160th SOAR and the families they leave behind.',
+    facebookUrl: HOMEFRONT_FACEBOOK,
   },
 ];
 
@@ -207,6 +216,18 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           {event.meta}
         </p>
         <p className="mt-3 font-sans text-sm leading-relaxed text-primary-light/80">{event.blurb}</p>
+
+        <a
+          href={event.facebookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${event.title} on Facebook`}
+          className="mt-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-primary/15 bg-primary/5 text-primary transition-colors hover:border-[#c9a96e] hover:bg-[#c9a96e] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c9a96e]"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+          </svg>
+        </a>
       </div>
     </motion.article>
   );
