@@ -113,8 +113,14 @@ const LIFT = '-32.6%';
 
 // Contents are counter-scaled, so chrome anchored to the base box's edges would
 // sit outside the visible crop. These nudge it back onto the visible edge.
-const REST_CHROME_X = '25.15%';   // (1 - REST_SX) / 2
-const HOVER_CHROME_Y = '12.95%';  // (1 - HOVER_SY), for top-anchored chrome
+//
+// Careful with the units. A translate on the chrome happens in the chrome's own
+// space, which the BOX's scale then shrinks by sx — so to shift the chrome N
+// screen px you must ask for N / sx. Hence the /(2*SX), not just /2.
+const REST_CHROME_X = '50.6%';   // (1 - REST_SX) / (2 * REST_SX)
+// Vertical is applied to a full-height wrapper so the % resolves against BASE_H,
+// and nets out at scale 1, so it maps 1:1 to screen px.
+const HOVER_CHROME_Y = '13%';    // (1 - HOVER_SY)
 
 const PARKED_Y = '115%';   // fully below the baseline, before the reveal
 const SUNK_Y = '50%';      // a sibling is hovered — drop under the line
@@ -177,8 +183,12 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
         onMouseLeave={() => onLeave(index)}
         onFocus={() => onEnter(index)}
         onBlur={() => onLeave(index)}
-        initial={{ scaleX: REST_SX, scaleY: REST_SY, y: 0 }}
+        // x:-50% centres the box on its slot. It must be part of the transform,
+        // NOT a negative margin — a % margin resolves against the SLOT's width
+        // (276), while the box is BASE_W (555) and needs half of its own width.
+        initial={{ x: '-50%', scaleX: REST_SX, scaleY: REST_SY, y: 0 }}
         animate={{
+          x: '-50%',
           scaleX: active ? HOVER_SX : REST_SX,
           scaleY: active ? HOVER_SY : REST_SY,
           y: active ? LIFT : 0,
@@ -188,7 +198,7 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
         // baseline as it grows, and centred on its slot so it expands over its
         // neighbours without shifting the row.
         style={{ transformOrigin: 'bottom center' }}
-        className={`absolute bottom-0 left-1/2 -ml-[50%] ${BASE_W} ${BASE_H} overflow-hidden rounded-xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default`}
+        className={`absolute bottom-0 left-1/2 ${BASE_W} ${BASE_H} overflow-hidden rounded-xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default`}
       >
         {/* Counter-scale layer — inverse of the box, about the same origin, so
             the net transform is identity and nothing inside distorts. The media
@@ -250,14 +260,16 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           className="pointer-events-none absolute inset-0"
         >
           {/* Role tag — anchored to the top, which the landscape crop eats into,
-              so it shifts down by exactly what gets cropped. */}
+              so it shifts down by exactly what gets cropped. The wrapper is
+              full-height on purpose: y is a %, and it has to resolve against
+              BASE_H, not against the tag's own ~24px. */}
           <motion.div
             initial={{ y: 0 }}
             animate={{ y: active ? HOVER_CHROME_Y : 0 }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="absolute left-4 top-4"
+            className="absolute inset-0"
           >
-            <span className="inline-block rounded-full border border-white/25 bg-[#1b2518]/60 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.25em] text-white/85">
+            <span className="absolute left-4 top-4 inline-block rounded-full border border-white/25 bg-[#1b2518]/60 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.25em] text-white/85">
               {event.role}
             </span>
           </motion.div>
@@ -275,9 +287,10 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           </div>
 
           {/* Caption — bottom-anchored, and the crop is bottom-anchored too, so
-              this needs no vertical nudge. Capped so it doesn't run the full
-              width once the card turns landscape. */}
-          <div className="absolute inset-x-0 bottom-0 max-w-md p-5">
+              this needs no vertical nudge. Fixed at the RESTING crop width so it
+              can never overflow the narrow portrait state; in landscape it just
+              occupies the left of the frame. */}
+          <div className={`absolute bottom-0 left-0 ${SLOT_W} p-5`}>
             <p className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#c9a96e]">{event.date}</p>
             {/* h4: the host section owns the h2, the rail label owns the h3 */}
             <h4 className="mt-2 font-serif text-lg leading-snug text-white lg:text-xl">{event.title}</h4>
