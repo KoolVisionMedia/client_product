@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, useInView } from 'motion/react';
 
 /**
  * Seminars & Events showcase.
@@ -87,13 +87,15 @@ const STAGE_H = 'h-[420px] sm:h-[500px] lg:h-[600px]';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-function EventCard({ event, index }: { event: EventItem; index: number }) {
+function EventCard({ event, index, revealed }: { event: EventItem; index: number; revealed: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(false);
   const [playing, setPlaying] = useState(false);
 
   const { anchor, h } = LAYOUT[index % LAYOUT.length];
   const fromBottom = anchor === 'bottom';
+  // Parked fully outside the clipped stage, so it's hidden behind the border.
+  const parked = fromBottom ? '115%' : '-115%';
 
   const start = () => {
     setActive(true);
@@ -114,11 +116,15 @@ function EventCard({ event, index }: { event: EventItem; index: number }) {
 
   return (
     <motion.article
-      // Slides in from behind whichever border it's anchored to. 115% of its
-      // own height parks it fully outside the clipped stage to start.
-      initial={{ y: fromBottom ? '115%' : '-115%' }}
-      whileInView={{ y: '0%' }}
-      viewport={{ once: true, margin: '-80px' }}
+      // Slides in from behind whichever border it's anchored to.
+      //
+      // NB: this deliberately does NOT use whileInView. The card starts parked
+      // outside an overflow-hidden ancestor, and IntersectionObserver clips a
+      // target against its ancestors' clip rects — so the observer would never
+      // see this element and the reveal could never fire. The parent watches
+      // the (always visible) stage instead and hands us `revealed`.
+      initial={{ y: parked }}
+      animate={{ y: revealed ? '0%' : parked }}
       transition={{ duration: 1.1, delay: index * 0.14, ease: EASE }}
       className={`relative flex-none w-[220px] sm:w-[264px] lg:w-[310px] snap-center ${h} ${
         fromBottom ? 'self-end' : 'self-start'
@@ -210,6 +216,10 @@ function EventCard({ event, index }: { event: EventItem; index: number }) {
 }
 
 export default function EventsShowcase() {
+  // Watched instead of the cards themselves — see the note in EventCard.
+  const stageRef = useRef<HTMLDivElement>(null);
+  const revealed = useInView(stageRef, { once: true, margin: '-80px' });
+
   return (
     <section className="relative overflow-hidden bg-[#FAFAF5] py-24 md:py-28">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
@@ -243,10 +253,11 @@ export default function EventsShowcase() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-primary/15" />
 
           <div
+            ref={stageRef}
             className={`flex ${STAGE_H} snap-x snap-mandatory items-stretch justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center`}
           >
             {events.map((event, i) => (
-              <EventCard key={event.slug} event={event} index={i} />
+              <EventCard key={event.slug} event={event} index={i} revealed={revealed} />
             ))}
           </div>
         </div>
