@@ -76,7 +76,8 @@ const events: EventItem[] = [
 // are percentages of CARD_H, so STAGE_H just needs to exceed the taller of the
 // two states — the difference is the air the card grows up into.
 const CARD_H = 'h-[300px] sm:h-[360px] lg:h-[420px]';
-const STAGE_H = 'h-[350px] sm:h-[420px] lg:h-[480px]';
+const CARD_W = 'w-[220px] sm:w-[264px] lg:w-[300px]';
+const STAGE_H = 'h-[350px] sm:h-[420px] lg:h-[500px]';
 
 // The card morphs orientation on hover: a portrait tile at rest, a wider
 // landscape panel when raised. Sized as a percentage of the article's layout
@@ -84,9 +85,15 @@ const STAGE_H = 'h-[350px] sm:h-[420px] lg:h-[480px]';
 // and object-cover crops it to portrait at rest, so the hover state reveals the
 // full frame rather than upscaling a slice of an already-cropped file.
 const REST_W = '92%';
-const REST_H = '92%';    // 285 x 386 at lg — portrait
-const HOVER_W = '155%';
-const HOVER_H = '78%';   // 480 x 328 at lg — landscape
+const REST_H = '92%';    // 276 x 386 at lg — portrait, sitting on the baseline
+const HOVER_W = '185%';
+const HOVER_H = '80%';   // 555 x 336 at lg — landscape, 1.65:1
+
+// The raised card also lifts clear of the baseline rather than standing on it.
+// Percentage of the slot height, so 30% ≈ 126px at lg. STAGE_H must clear
+// HOVER_BOTTOM + HOVER_H (462 at lg) or the raised card clips at the top.
+const REST_BOTTOM = '0%';
+const HOVER_BOTTOM = '30%';
 
 const PARKED_Y = '115%';   // fully below the baseline, before the reveal
 const SUNK_Y = '50%';      // a sibling is hovered — drop under the line
@@ -138,7 +145,7 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
         delay: revealed && !anyActive ? index * 0.14 : 0,
         ease: EASE,
       }}
-      className={`relative flex-none self-end w-[220px] sm:w-[264px] lg:w-[310px] ${CARD_H} snap-center`}
+      className={`relative flex-none self-end ${CARD_W} ${CARD_H} snap-center`}
       style={{ zIndex: active ? 20 : 10 }}
     >
       <motion.div
@@ -149,15 +156,17 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
         onMouseLeave={() => onLeave(index)}
         onFocus={() => onEnter(index)}
         onBlur={() => onLeave(index)}
-        initial={{ width: REST_W, height: REST_H }}
+        initial={{ width: REST_W, height: REST_H, bottom: REST_BOTTOM }}
         animate={{
           width: active ? HOVER_W : REST_W,
           height: active ? HOVER_H : REST_H,
+          bottom: active ? HOVER_BOTTOM : REST_BOTTOM,
         }}
         transition={{ duration: 0.6, ease: EASE }}
-        // Pinned to the baseline and centred on its slot, so the card grows
-        // upward and outward from the line without shifting its neighbours.
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-2xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default"
+        // Centred on its slot, so the card grows outward over its neighbours
+        // without shifting the row. `bottom` is animated rather than a
+        // transform so it doesn't fight the -translate-x-1/2 centring.
+        className="absolute left-1/2 -translate-x-1/2 overflow-hidden rounded-2xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default"
       >
         {/* Poster — always mounted, sits under the video */}
         <img
@@ -275,10 +284,10 @@ export default function EventsShowcase() {
         <div className="relative w-max min-w-full">
           <div
             ref={stageRef}
-            // lg:px-28 is the room the widened landscape card expands into —
-            // it must be at least (HOVER_W - REST_W) / 2 of a card, or the
-            // outermost cards get clipped when hovered.
-            className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center lg:px-28`}
+            // lg:px-36 is the room the widened landscape card expands into — it
+            // must be at least (HOVER_W - REST_W) / 2 of a slot (140px at lg),
+            // or the outermost cards get clipped when raised.
+            className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-16 lg:justify-center lg:px-36`}
           >
             {events.map((event, i) => (
               <EventCard
