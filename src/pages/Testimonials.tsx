@@ -491,7 +491,7 @@ export default function Testimonials() {
         </div>
       </section>
 
-      {/* ── Events & Sponsorships ───────────────────────────────────── */}
+      {/* ── Seminars & Events ───────────────────────────────────────── */}
       <EventsShowcase />
 
       {/* ── Community & Education ───────────────────────────────────── */}
