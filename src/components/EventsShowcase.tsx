@@ -202,7 +202,8 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
         {/* Caption */}
         <div className="absolute inset-x-0 bottom-0 p-5">
           <p className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#c9a96e]">{event.date}</p>
-          <h3 className="mt-2 font-serif text-lg leading-snug text-white lg:text-xl">{event.title}</h3>
+          {/* h4: the host section owns the h2, the rail label below owns the h3 */}
+          <h4 className="mt-2 font-serif text-lg leading-snug text-white lg:text-xl">{event.title}</h4>
           <p className="mt-1.5 font-sans text-[11px] text-white/60">{event.meta}</p>
           <motion.p
             animate={{ opacity: active ? 1 : 0, height: active ? 'auto' : 0 }}
@@ -234,6 +235,27 @@ export default function EventsShowcase() {
   return (
     // z-10 keeps the rail above the host section's blueprint background wash.
     <div className="relative z-10">
+      {/* Label — h3 under the host section's h2. Padding matches the section's
+          two-column block above so it lines up with "Community & Education". */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.9, ease: EASE }}
+        className="mx-auto mb-12 max-w-[1400px] px-6 md:px-12"
+      >
+        <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.35em] text-[#c9a96e]">
+          Where You&rsquo;ll Find Us
+        </p>
+        <h3 className="mb-4 font-serif text-3xl leading-tight text-primary md:text-4xl">
+          Recent Seminars &amp; Events
+        </h3>
+        <p className="max-w-xl font-sans leading-relaxed text-primary-light/80">
+          A closer look at the evenings we host and the Middle Tennessee causes we show up
+          for year after year. Hover any card for a preview.
+        </p>
+      </motion.div>
+
       {/* Stage — cards are clipped to this band and bottom-aligned on the
           baseline, so they rise out of it and sink back under it. The rail
           scrolls horizontally once the cards outgrow the viewport. */}
@@ -260,16 +282,6 @@ export default function EventsShowcase() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-primary/20" />
         </div>
       </div>
-
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.4 }}
-        className="mx-auto mt-6 max-w-[1400px] px-6 font-sans text-[10px] uppercase tracking-[0.3em] text-primary-light/40 md:px-12"
-      >
-        Hover a card for a preview
-      </motion.p>
     </div>
   );
 }
