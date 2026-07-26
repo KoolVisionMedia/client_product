@@ -64,10 +64,16 @@ type Props = {
 
 export default function ProcessScrubVideo({ stepsRef, className = '', onStepChange }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const runningRef = useRef(false);
   const targetRef = useRef(0);
   const currentRef = useRef(0);
+  // Vertical position of the panel, so it travels down the column and parks
+  // beside whichever step is being read rather than pinning to the viewport.
+  const targetYRef = useRef(0);
+  const currentYRef = useRef(0);
+  const yInitialisedRef = useRef(false);
   const readyRef = useRef(false);
   const lastStepRef = useRef(-1);
   const [ready, setReady] = useState(false);
@@ -77,6 +83,10 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
     if (!video) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Panel travel is a two-column behaviour. Below lg the panel is sticky and
+    // CSS owns its position, so the transform must stay off.
+    const lgUp = window.matchMedia('(min-width: 1024px)');
+    const tracks = () => lgUp.matches;
 
     const computeTarget = () => {
       const container = stepsRef.current;
@@ -101,6 +111,7 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
           const scene = SCENES[Math.min(i, SCENES.length - 1)];
           const start = STARTS[Math.min(i, STARTS.length - 1)];
           targetRef.current = start + Math.min(Math.max(local, 0), 1) * scene.dur;
+          setPanelTarget(steps[i]);
           reportStep(i);
           return;
         }
@@ -111,9 +122,37 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
         const b = steps[i + 1].getBoundingClientRect();
         if (line > a.bottom && line < b.top) {
           targetRef.current = STARTS[i] + SCENES[i].dur;
+          setPanelTarget(steps[i]);
           reportStep(i);
           return;
         }
+      }
+    };
+
+    /**
+     * Park the panel alongside the given step block.
+     *
+     * Measured as a delta between two viewport rects rather than from
+     * offsetTop, so it stays correct regardless of which ancestor happens to be
+     * the offsetParent. The value is a document-space offset within the panel's
+     * column, so while a step is active the panel scrolls WITH the page (staying
+     * beside its step) and only travels when a new step takes over.
+     */
+    const setPanelTarget = (stepEl: HTMLElement) => {
+      const panel = panelRef.current;
+      const column = panel?.offsetParent as HTMLElement | null;
+      if (!panel || !column) return;
+      const columnRect = column.getBoundingClientRect();
+      const stepRect = stepEl.getBoundingClientRect();
+      const panelH = panel.offsetHeight;
+      // Centre the panel on the step block so it reads as "beside this step".
+      let y = stepRect.top - columnRect.top + (stepRect.height - panelH) / 2;
+      // Never let it run past the ends of its column.
+      y = Math.max(0, Math.min(y, column.offsetHeight - panelH));
+      targetYRef.current = y;
+      if (!yInitialisedRef.current) {
+        yInitialisedRef.current = true;
+        currentYRef.current = y;
       }
     };
 
@@ -131,14 +170,32 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
       const next = prefersReducedMotion
         ? target
         : currentRef.current + (target - currentRef.current) * 0.18;
-      const settled = Math.abs(target - next) < 0.004;
-      currentRef.current = settled ? target : next;
+      const timeSettled = Math.abs(target - next) < 0.004;
+      currentRef.current = timeSettled ? target : next;
 
       if (readyRef.current && Math.abs(video.currentTime - currentRef.current) > MIN_SEEK_DELTA) {
         try { video.currentTime = currentRef.current; } catch { /* not seekable yet */ }
       }
 
-      if (settled) {
+      // Panel travel. Only on the two-column layout — below lg the panel is
+      // pinned by CSS sticky instead and must not be transformed.
+      let ySettled = true;
+      const panel = panelRef.current;
+      if (panel) {
+        if (tracks()) {
+          const ty = targetYRef.current;
+          const ny = prefersReducedMotion
+            ? ty
+            : currentYRef.current + (ty - currentYRef.current) * 0.12;
+          ySettled = Math.abs(ty - ny) < 0.5;
+          currentYRef.current = ySettled ? ty : ny;
+          panel.style.transform = `translate3d(0, ${currentYRef.current.toFixed(1)}px, 0)`;
+        } else if (panel.style.transform) {
+          panel.style.transform = '';
+        }
+      }
+
+      if (timeSettled && ySettled) {
         runningRef.current = false;
         rafRef.current = null;
         return;
@@ -182,27 +239,33 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
   }, [stepsRef, onStepChange]);
 
   return (
-    <div
-      className={`relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] ${className}`}
-    >
-      <video
-        ref={videoRef}
-        muted
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-        poster="/assets/process/house-build-poster.webp"
-        className="block h-full w-full object-cover"
-      >
-        <source src="/assets/process/house-build-scrub.mp4" type="video/mp4" />
-      </video>
+    // The panel is what travels. willChange keeps it on its own layer so the
+    // move is composited rather than repainting the column each frame.
+    <div ref={panelRef} className={className} style={{ willChange: 'transform' }}>
+      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          poster="/assets/process/house-build-poster.webp"
+          className="block h-full w-full object-cover"
+        >
+          <source src="/assets/process/house-build-scrub.mp4" type="video/mp4" />
+        </video>
 
-      {/* Holds the poster steady until the file can actually be seeked, so the
-          first paint isn't a black frame. */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-white transition-opacity duration-500"
-        style={{ opacity: ready ? 0 : 1 }}
-      />
+        {/* Holds the poster steady until the file can actually be seeked, so the
+            first paint isn't a black frame. */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-white transition-opacity duration-500"
+          style={{ opacity: ready ? 0 : 1 }}
+        />
+      </div>
+
+      <p className="mt-3 hidden lg:block font-sans text-[10px] uppercase tracking-[0.3em] text-primary/35">
+        Your home, built step by step as you scroll
+      </p>
     </div>
   );
 }

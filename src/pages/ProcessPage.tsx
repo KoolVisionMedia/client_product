@@ -265,12 +265,20 @@ export default function ProcessPage() {
             viewport above the steps instead. */}
         <div className="max-w-7xl mx-auto relative flex flex-col lg:flex-row lg:items-start lg:gap-14">
 
-          {/* Sticky build animation — scrubbed by scroll position */}
-          <div className="lg:order-2 lg:flex-1 sticky top-20 lg:top-28 z-30 mb-12 lg:mb-0 self-start w-full">
-            <ProcessScrubVideo stepsRef={stepsRef} className="aspect-video w-full" />
-            <p className="mt-3 hidden lg:block font-sans text-[10px] uppercase tracking-[0.3em] text-primary/35">
-              Your home, built step by step as you scroll
-            </p>
+          {/* Build animation, scrubbed by scroll position.
+              At lg the column stretches the full height of the timeline and the
+              panel is absolutely positioned inside it, travelling down to sit
+              beside whichever step is being read. Below lg there's no room for a
+              second column, so it falls back to pinning at the top. */}
+          {/* lg:relative (not lg:static) — the panel is absolutely positioned
+              against this column, so it has to stay a positioning context at lg
+              or it anchors to the full-width flex row instead. lg:top-auto
+              cancels the sticky offset once it's relative. */}
+          <div className="lg:order-2 lg:flex-1 sticky top-20 lg:relative lg:top-auto lg:self-stretch z-30 mb-12 lg:mb-0 self-start w-full">
+            <ProcessScrubVideo
+              stepsRef={stepsRef}
+              className="w-full lg:absolute lg:left-0 lg:right-0 lg:top-0"
+            />
           </div>
 
           {/* Timeline */}
