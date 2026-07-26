@@ -72,14 +72,22 @@ const events: EventItem[] = [
   },
 ];
 
-// Resting card height, and the stage that contains it. STAGE_H must exceed
-// CARD_H * HOVER_SCALE or the hovered card clips against the top of the stage;
-// the difference is the empty air the card grows up into.
+// The article's layout slot, and the stage that contains it. Card sizes below
+// are percentages of CARD_H, so STAGE_H just needs to exceed the taller of the
+// two states — the difference is the air the card grows up into.
 const CARD_H = 'h-[300px] sm:h-[360px] lg:h-[420px]';
 const STAGE_H = 'h-[350px] sm:h-[420px] lg:h-[480px]';
 
-const REST_SCALE = 0.92;
-const HOVER_SCALE = 1.08;
+// The card morphs orientation on hover: a portrait tile at rest, a wider
+// landscape panel when raised. Sized as a percentage of the article's layout
+// slot so both states stay responsive. The media is stored landscape (1280x720)
+// and object-cover crops it to portrait at rest, so the hover state reveals the
+// full frame rather than upscaling a slice of an already-cropped file.
+const REST_W = '92%';
+const REST_H = '92%';    // 285 x 386 at lg — portrait
+const HOVER_W = '155%';
+const HOVER_H = '78%';   // 480 x 328 at lg — landscape
+
 const PARKED_Y = '115%';   // fully below the baseline, before the reveal
 const SUNK_Y = '50%';      // a sibling is hovered — drop under the line
 
@@ -141,12 +149,15 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
         onMouseLeave={() => onLeave(index)}
         onFocus={() => onEnter(index)}
         onBlur={() => onLeave(index)}
-        initial={{ scale: REST_SCALE }}
-        animate={{ scale: active ? HOVER_SCALE : REST_SCALE }}
+        initial={{ width: REST_W, height: REST_H }}
+        animate={{
+          width: active ? HOVER_W : REST_W,
+          height: active ? HOVER_H : REST_H,
+        }}
         transition={{ duration: 0.6, ease: EASE }}
-        // Pinned to the baseline: the card only ever grows upward off the line.
-        style={{ transformOrigin: 'bottom center' }}
-        className="relative h-full w-full overflow-hidden rounded-2xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default"
+        // Pinned to the baseline and centred on its slot, so the card grows
+        // upward and outward from the line without shifting its neighbours.
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-2xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default"
       >
         {/* Poster — always mounted, sits under the video */}
         <img
@@ -199,8 +210,9 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           </span>
         </div>
 
-        {/* Caption */}
-        <div className="absolute inset-x-0 bottom-0 p-5">
+        {/* Caption — capped so it doesn't run the full width once the card
+            turns landscape */}
+        <div className="absolute inset-x-0 bottom-0 max-w-md p-5">
           <p className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#c9a96e]">{event.date}</p>
           {/* h4: the host section owns the h2, the rail label below owns the h3 */}
           <h4 className="mt-2 font-serif text-lg leading-snug text-white lg:text-xl">{event.title}</h4>
@@ -263,7 +275,10 @@ export default function EventsShowcase() {
         <div className="relative w-max min-w-full">
           <div
             ref={stageRef}
-            className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center`}
+            // lg:px-28 is the room the widened landscape card expands into —
+            // it must be at least (HOVER_W - REST_W) / 2 of a card, or the
+            // outermost cards get clipped when hovered.
+            className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center lg:px-28`}
           >
             {events.map((event, i) => (
               <EventCard
