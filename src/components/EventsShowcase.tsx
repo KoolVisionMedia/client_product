@@ -7,32 +7,37 @@ import { motion, useInView } from 'motion/react';
  * rail: no section wrapper and no heading of its own, so it sits under that
  * section's existing copy rather than competing with it.
  *
- * All cards sit on a single baseline (the foot of the stage) at a matching
- * resting size, and rise from behind it on scroll-in. Hovering one card does
- * two things at once: the hovered card grows upward off the line, and every
- * other card sinks below it, so roughly half of each gets clipped away by the
- * stage. Only the hovered card is fully above the baseline.
+ * Three clips side by side at their native 16:9, captions below the video
+ * rather than over it. On scroll-in each frame is uncovered by a panel that
+ * wipes upward off it, staggered across the row. On hover the footage pushes in
+ * slightly, its scrim clears, a silent 3-second preview loops, and a rule draws
+ * under the caption.
  *
- * The hovered index lives here in the parent rather than in each card, because
- * a card has to react to a sibling being hovered, not just itself.
+ * Everything animated here is transform or opacity only — no width, height, or
+ * position properties — so none of it triggers layout mid-animation. An earlier
+ * version animated size directly and stuttered badly on lower-powered machines.
+ * Don't reintroduce that.
+ *
+ * The hovered index lives in the parent rather than each card so a card can
+ * react to a sibling being hovered.
  *
  * Touch devices (no hover) get poster + caption only — deliberate, so we never
  * composite several videos at once on a phone.
  *
  * ── Adding an event ────────────────────────────────────────────────────
- * 1. Cut a 3s poster+preview pair from the master file:
+ * 1. Cut a 3s poster+preview pair from the master file. Keep it 16:9 — these
+ *    are shown at their native ratio, uncropped:
  *
  *    ffmpeg -ss <SECONDS> -i "master.mp4" -t 3 \
- *      -vf "crop=ih*3/4:ih,scale=720:960:flags=lanczos" \
- *      -c:v libx264 -profile:v main -preset slow -crf 26 -pix_fmt yuv420p \
+ *      -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720" \
+ *      -c:v libx264 -profile:v main -preset slow -crf 27 -pix_fmt yuv420p \
  *      -g 45 -an -movflags +faststart public/assets/events/<slug>.mp4
  *
  *    ffmpeg -ss <SECONDS> -i "master.mp4" -frames:v 1 \
- *      -vf "crop=ih*3/4:ih,scale=720:960:flags=lanczos" -quality 74 \
- *      public/assets/events/<slug>.webp
+ *      -vf "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720" \
+ *      -quality 72 public/assets/events/<slug>.webp
  *
- * 2. Add an entry to `events` below. The rail scrolls horizontally once there
- *    are more cards than fit.
+ * 2. Add an entry to `events` below.
  */
 
 type EventItem = {
@@ -72,59 +77,6 @@ const events: EventItem[] = [
   },
 ];
 
-// GEOMETRY — read this before touching any number here.
-//
-// The card box is laid out ONCE at its largest extent in each axis (landscape
-// width x portrait height) and its size never changes. Both states are reached
-// with transforms alone, so the browser never re-runs layout mid-animation.
-// Animating width/height instead forces a re-layout every frame, which visibly
-// stutters on lower-powered machines — that was a real regression, don't
-// reintroduce it.
-//
-// The contents are counter-scaled by the inverse, about the same origin, so the
-// net transform on them is identity: they always render at base size, undistorted,
-// and the box simply clips more or less of them. That crop change IS the
-// portrait -> landscape morph.
-const BASE_W = 'w-[407px] sm:w-[488px] lg:w-[555px]';
-const BASE_H = 'h-[300px] sm:h-[360px] lg:h-[386px]';
-
-// The layout slot only reserves the RESTING footprint (BASE_W * REST_SX).
-const SLOT_W = 'w-[202px] sm:w-[243px] lg:w-[276px]';
-const SLOT_H = BASE_H;
-
-// Stage must clear (BASE_H * HOVER_SY) + LIFT.
-const STAGE_H = 'h-[380px] sm:h-[460px] lg:h-[500px]';
-
-// The media is stored landscape (1280x720); the portrait rest state is a crop
-// OF that frame, so the hover reveals the full frame rather than upscaling a
-// slice of an already-cropped file.
-//
-// Visible fraction of the base box per state. Pure ratios, so they hold at
-// every breakpoint. Everything scales about 'bottom center', which is why the
-// card stays welded to the baseline while it grows.
-const REST_SX = 0.497;   // 276 of 555 at lg — portrait
-const REST_SY = 1;
-const HOVER_SX = 1;      // full width — landscape
-const HOVER_SY = 0.87;   // 336 of 386 at lg, cropped off the top
-
-// The raised card lifts clear of the baseline. Percentage of BASE_H, so
-// 32.6% ≈ 126px at lg.
-const LIFT = '-32.6%';
-
-// Contents are counter-scaled, so chrome anchored to the base box's edges would
-// sit outside the visible crop. These nudge it back onto the visible edge.
-//
-// Careful with the units. A translate on the chrome happens in the chrome's own
-// space, which the BOX's scale then shrinks by sx — so to shift the chrome N
-// screen px you must ask for N / sx. Hence the /(2*SX), not just /2.
-const REST_CHROME_X = '50.6%';   // (1 - REST_SX) / (2 * REST_SX)
-// Vertical is applied to a full-height wrapper so the % resolves against BASE_H,
-// and nets out at scale 1, so it maps 1:1 to screen px.
-const HOVER_CHROME_Y = '13%';    // (1 - HOVER_SY)
-
-const PARKED_Y = '115%';   // fully below the baseline, before the reveal
-const SUNK_Y = '50%';      // a sibling is hovered — drop under the line
-
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 type CardProps = {
@@ -155,65 +107,34 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
     }
   }, [active]);
 
-  // Hovered card rides up off the baseline; its siblings drop under it.
-  const y = !revealed ? PARKED_Y : active || !anyActive ? '0%' : SUNK_Y;
-
   return (
     <motion.article
-      // NB: this deliberately does NOT use whileInView. The card starts parked
-      // outside an overflow-hidden ancestor, and IntersectionObserver clips a
-      // target against its ancestors' clip rects — so the observer would never
-      // see this element and the reveal could never fire. The parent watches
-      // the (always visible) stage instead and hands us `revealed`.
-      initial={{ y: PARKED_Y }}
-      animate={{ y }}
-      transition={{
-        duration: revealed ? 0.6 : 1.1,
-        delay: revealed && !anyActive ? index * 0.14 : 0,
-        ease: EASE,
-      }}
-      className={`relative flex-none self-end ${SLOT_W} ${SLOT_H} snap-center`}
-      style={{ zIndex: active ? 20 : 10 }}
+      initial={{ opacity: 0, y: 28 }}
+      animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+      transition={{ duration: 0.9, delay: index * 0.12, ease: EASE }}
+      onMouseEnter={() => onEnter(index)}
+      onMouseLeave={() => onLeave(index)}
+      className="group"
     >
+      {/* Media frame — fixed 16:9, never resizes. Everything inside moves by
+          transform only. */}
       <motion.div
         tabIndex={0}
         role="group"
         aria-label={`${event.title} — ${event.role}`}
-        onMouseEnter={() => onEnter(index)}
-        onMouseLeave={() => onLeave(index)}
         onFocus={() => onEnter(index)}
         onBlur={() => onLeave(index)}
-        // x:-50% centres the box on its slot. It must be part of the transform,
-        // NOT a negative margin — a % margin resolves against the SLOT's width
-        // (276), while the box is BASE_W (555) and needs half of its own width.
-        initial={{ x: '-50%', scaleX: REST_SX, scaleY: REST_SY, y: 0 }}
-        animate={{
-          x: '-50%',
-          scaleX: active ? HOVER_SX : REST_SX,
-          scaleY: active ? HOVER_SY : REST_SY,
-          y: active ? LIFT : 0,
-        }}
-        transition={{ duration: 0.6, ease: EASE }}
-        // Transform-only. Origin 'bottom center' keeps the card welded to the
-        // baseline as it grows, and centred on its slot so it expands over its
-        // neighbours without shifting the row.
-        style={{ transformOrigin: 'bottom center' }}
-        className={`absolute bottom-0 left-1/2 ${BASE_W} ${BASE_H} overflow-hidden rounded-xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default`}
+        animate={{ y: active ? -6 : 0 }}
+        transition={{ duration: 0.5, ease: EASE }}
+        className="relative aspect-video w-full overflow-hidden rounded-xl bg-[#1b2518] shadow-[0_14px_34px_rgba(27,37,24,0.16)] outline-none ring-1 ring-transparent focus-visible:ring-2 focus-visible:ring-[#c9a96e]"
       >
-        {/* Counter-scale layer — inverse of the box, about the same origin, so
-            the net transform is identity and nothing inside distorts. The media
-            always renders at base size; the box just clips more or less of it. */}
+        {/* Footage pushes in slightly on hover — uniform scale, so nothing
+            distorts and no layout is touched. */}
         <motion.div
-          initial={{ scaleX: 1 / REST_SX, scaleY: 1 / REST_SY }}
-          animate={{
-            scaleX: active ? 1 / HOVER_SX : 1 / REST_SX,
-            scaleY: active ? 1 / HOVER_SY : 1 / REST_SY,
-          }}
-          transition={{ duration: 0.6, ease: EASE }}
-          style={{ transformOrigin: 'bottom center' }}
+          animate={{ scale: active ? 1.06 : 1 }}
+          transition={{ duration: 0.7, ease: EASE }}
           className="absolute inset-0"
         >
-          {/* Poster — always mounted, sits under the video */}
           <img
             src={`/assets/events/${event.slug}.webp`}
             alt={event.title}
@@ -236,86 +157,64 @@ function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave
           >
             <source src={`/assets/events/${event.slug}.mp4`} type="video/mp4" />
           </video>
-
-          {/* Dark filter — clears on hover, deepens while a sibling is hovered */}
-          <div
-            className="absolute inset-0 bg-[#1b2518] transition-opacity duration-500"
-            style={{ opacity: active ? 0 : anyActive ? 0.72 : 0.55 }}
-          />
-          {/* Caption scrim — always on, keeps the type legible over the footage */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#1b2518]/90 via-[#1b2518]/35 to-transparent" />
         </motion.div>
 
-        {/* Chrome layer — counter-scaled like the media, then nudged inward so
-            the tag and caption hug the VISIBLE crop rather than the base box. */}
-        <motion.div
-          initial={{ scaleX: 1 / REST_SX, scaleY: 1 / REST_SY, x: REST_CHROME_X }}
-          animate={{
-            scaleX: active ? 1 / HOVER_SX : 1 / REST_SX,
-            scaleY: active ? 1 / HOVER_SY : 1 / REST_SY,
-            x: active ? '0%' : REST_CHROME_X,
-          }}
-          transition={{ duration: 0.6, ease: EASE }}
-          style={{ transformOrigin: 'bottom center' }}
-          className="pointer-events-none absolute inset-0"
+        {/* Dark filter — clears on hover, deepens while a sibling is hovered */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-[#1b2518] transition-opacity duration-500"
+          style={{ opacity: active ? 0 : anyActive ? 0.62 : 0.45 }}
+        />
+
+        {/* Role tag */}
+        <span className="absolute left-4 top-4 inline-block rounded-full border border-white/25 bg-[#1b2518]/60 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.25em] text-white/85">
+          {event.role}
+        </span>
+
+        {/* Preview affordance — fades out as the clip takes over */}
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-[400ms]"
+          style={{ opacity: active ? 0 : 1 }}
         >
-          {/* Role tag — anchored to the top, which the landscape crop eats into,
-              so it shifts down by exactly what gets cropped. The wrapper is
-              full-height on purpose: y is a %, and it has to resolve against
-              BASE_H, not against the tag's own ~24px. */}
-          <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: active ? HOVER_CHROME_Y : 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="absolute inset-0"
-          >
-            <span className="absolute left-4 top-4 inline-block rounded-full border border-white/25 bg-[#1b2518]/60 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.25em] text-white/85">
-              {event.role}
-            </span>
-          </motion.div>
+          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-[#1b2518]/40">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FAFAF5" aria-hidden="true">
+              <polygon points="7 4 20 12 7 20" />
+            </svg>
+          </span>
+        </div>
 
-          {/* Preview affordance — fades out as the clip takes over */}
-          <div
-            className="absolute inset-0 flex items-center justify-center transition-opacity duration-[400ms]"
-            style={{ opacity: active ? 0 : 1 }}
-          >
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-[#1b2518]/40">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="#FAFAF5" aria-hidden="true">
-                <polygon points="7 4 20 12 7 20" />
-              </svg>
-            </span>
-          </div>
-
-          {/* Caption — bottom-anchored, and the crop is bottom-anchored too, so
-              this needs no vertical nudge. Fixed at the RESTING crop width so it
-              can never overflow the narrow portrait state; in landscape it just
-              occupies the left of the frame. */}
-          <div className={`absolute bottom-0 left-0 ${SLOT_W} p-5`}>
-            <p className="font-sans text-[9px] uppercase tracking-[0.3em] text-[#c9a96e]">{event.date}</p>
-            {/* h4: the host section owns the h2, the rail label owns the h3 */}
-            <h4 className="mt-2 font-serif text-lg leading-snug text-white lg:text-xl">{event.title}</h4>
-            <p className="mt-1.5 font-sans text-[11px] text-white/60">{event.meta}</p>
-            {/* Height animation is confined to this one text block — it must
-                not reserve space at rest or it pushes the title up. Cheap
-                enough here; the card itself stays transform-only. */}
-            <motion.p
-              animate={{ opacity: active ? 1 : 0, height: active ? 'auto' : 0 }}
-              transition={{ duration: 0.45, ease: EASE }}
-              className="overflow-hidden font-sans text-[12px] leading-relaxed text-white/80"
-            >
-              <span className="mt-3 block">{event.blurb}</span>
-            </motion.p>
-          </div>
-        </motion.div>
+        {/* Reveal shutter — a page-coloured panel that wipes up off the frame as
+            the row scrolls in. Transform only, so it costs nothing. */}
+        <motion.div
+          initial={{ y: '0%' }}
+          animate={{ y: revealed ? '-101%' : '0%' }}
+          transition={{ duration: 1, delay: 0.15 + index * 0.12, ease: EASE }}
+          className="pointer-events-none absolute inset-0 bg-[#FAFAF5]"
+        />
       </motion.div>
+
+      {/* Caption — below the video, not over it */}
+      <div className="pt-5">
+        {/* Rule draws left to right on hover */}
+        <motion.div
+          animate={{ scaleX: active ? 1 : 0 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          className="mb-4 h-px origin-left bg-[#c9a96e]"
+        />
+        <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a96e]">{event.date}</p>
+        {/* h4: the host section owns the h2, the rail label owns the h3 */}
+        <h4 className="mt-2 font-serif text-xl leading-snug text-primary">{event.title}</h4>
+        <p className="mt-1.5 font-sans text-[11px] uppercase tracking-[0.15em] text-primary-light/50">
+          {event.meta}
+        </p>
+        <p className="mt-3 font-sans text-sm leading-relaxed text-primary-light/80">{event.blurb}</p>
+      </div>
     </motion.article>
   );
 }
 
 export default function EventsShowcase() {
-  // Watched instead of the cards themselves — see the note in EventCard.
-  const stageRef = useRef<HTMLDivElement>(null);
-  const revealed = useInView(stageRef, { once: true, margin: '-80px' });
+  const gridRef = useRef<HTMLDivElement>(null);
+  const revealed = useInView(gridRef, { once: true, margin: '-80px' });
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const handleEnter = useCallback((index: number) => setActiveIndex(index), []);
@@ -328,15 +227,14 @@ export default function EventsShowcase() {
 
   return (
     // z-10 keeps the rail above the host section's blueprint background wash.
-    <div className="relative z-10">
-      {/* Label — h3 under the host section's h2. Padding matches the section's
-          two-column block above so it lines up with "Community & Education". */}
+    <div className="relative z-10 mx-auto max-w-[1400px] px-6 md:px-12">
+      {/* Label — h3 under the host section's h2 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.9, ease: EASE }}
-        className="mx-auto mb-12 max-w-[1400px] px-6 md:px-12"
+        className="mb-12"
       >
         <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.35em] text-[#c9a96e]">
           Where You&rsquo;ll Find Us
@@ -350,34 +248,19 @@ export default function EventsShowcase() {
         </p>
       </motion.div>
 
-      {/* Stage — cards are clipped to this band and bottom-aligned on the
-          baseline, so they rise out of it and sink back under it. The rail
-          scrolls horizontally once the cards outgrow the viewport. */}
-      <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="relative w-max min-w-full">
-          <div
-            ref={stageRef}
-            // lg:px-36 is the room the widened landscape card expands into —
-            // it must be at least (BASE_W - slot width) / 2 (140px at lg), or
-            // the outermost cards get clipped when raised.
-            className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-16 lg:justify-center lg:px-36`}
-          >
-            {events.map((event, i) => (
-              <EventCard
-                key={event.slug}
-                event={event}
-                index={i}
-                revealed={revealed}
-                active={activeIndex === i}
-                anyActive={activeIndex !== null}
-                onEnter={handleEnter}
-                onLeave={handleLeave}
-              />
-            ))}
-          </div>
-          {/* The baseline every card stands on */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-primary/20" />
-        </div>
+      <div ref={gridRef} className="grid gap-x-8 gap-y-14 md:grid-cols-3">
+        {events.map((event, i) => (
+          <EventCard
+            key={event.slug}
+            event={event}
+            index={i}
+            revealed={revealed}
+            active={activeIndex === i}
+            anyActive={activeIndex !== null}
+            onEnter={handleEnter}
+            onLeave={handleLeave}
+          />
+        ))}
       </div>
     </div>
   );
