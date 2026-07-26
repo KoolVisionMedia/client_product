@@ -270,13 +270,9 @@ export default function EventsShowcase() {
         <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.35em] text-[#c9a96e]">
           Where You&rsquo;ll Find Us
         </p>
-        <h3 className="mb-4 font-serif text-3xl leading-tight text-primary md:text-4xl">
+        <h3 className="font-serif text-3xl leading-tight text-primary md:text-4xl">
           Recent Seminars &amp; Events
         </h3>
-        <p className="max-w-xl font-sans leading-relaxed text-primary-light/80">
-          A closer look at the evenings we host and the Middle Tennessee causes we show up
-          for year after year. Hover any card for a preview.
-        </p>
       </motion.div>
 
       <div ref={gridRef} className="grid gap-x-8 gap-y-14 md:grid-cols-3">
