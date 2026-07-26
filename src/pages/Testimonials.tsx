@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from 'motion/react';
 import SEO from '../components/SEO';
+import EventsShowcase from '../components/EventsShowcase';
 
 declare global {
   interface Window {
@@ -599,6 +600,33 @@ export default function Testimonials() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Separator between the newsletter block and the events rail. Gold
+            diamond picks up the mark in the logo lockup; the rules fade out at
+            both ends so it doesn't read as a hard section break. */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 mx-auto mt-20 flex max-w-[1400px] items-center gap-6 px-6 md:mt-24 md:px-12"
+        >
+          {/* Explicit stops rather than Tailwind's from/via/to — via sits at 50%,
+              which faded the rule out over its whole length and left only the
+              middle visible. These hold colour to ~25% from the outer end. */}
+          <span className="h-[2px] flex-1 rounded-full bg-[linear-gradient(to_right,transparent_0%,rgba(201,169,110,0.55)_25%,rgba(201,169,110,0.95)_100%)]" />
+          <span aria-hidden="true" className="flex items-center gap-2.5">
+            <span className="h-2 w-2 rotate-45 bg-[#c9a96e]/60" />
+            <span className="h-3.5 w-3.5 rotate-45 bg-[#c9a96e]" />
+            <span className="h-2 w-2 rotate-45 bg-[#c9a96e]/60" />
+          </span>
+          <span className="h-[2px] flex-1 rounded-full bg-[linear-gradient(to_left,transparent_0%,rgba(201,169,110,0.55)_25%,rgba(201,169,110,0.95)_100%)]" />
+        </motion.div>
+
+        {/* Events rail — the actual seminars and events behind the copy above. */}
+        <div className="mt-16 md:mt-20">
+          <EventsShowcase />
         </div>
       </section>
 
