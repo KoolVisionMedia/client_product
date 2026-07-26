@@ -7,15 +7,13 @@ import { motion, useInView } from 'motion/react';
  * Framed around education first — the classes and seminars Homefront teaches —
  * with the community events they host and support alongside them.
  *
- * The cards live inside a clipped "stage" bounded by a hairline at the top and
- * bottom. On scroll-in they slide in from alternating borders — odd cards rise
- * up from behind the bottom line, even cards drop down from behind the top one.
- * Heights are staggered so the tops/bottoms don't line up.
- *
- * On hover/focus a card grows from the border it entered from and its dark
- * scrim clears while a silent 3-second preview loops. Touch devices (no hover)
- * get poster + caption only — deliberate, so we never composite several videos
- * at once on a phone.
+ * All cards sit on a single baseline (the hairline at the bottom of the stage)
+ * at a matching resting size. On scroll-in they rise from behind that line. On
+ * hover/focus the hovered card grows upward off the line — bottom edge pinned,
+ * so it's the only one standing proud — its dark scrim clears, and a silent
+ * 3-second preview loops. The stage clips, so nothing ever pokes out below the
+ * baseline. Touch devices (no hover) get poster + caption only — deliberate, so
+ * we never composite several videos at once on a phone.
  *
  * ── Adding an event ────────────────────────────────────────────────────
  * 1. Cut a 3s poster+preview pair from the master file:
@@ -29,8 +27,8 @@ import { motion, useInView } from 'motion/react';
  *      -vf "crop=ih*3/4:ih,scale=720:960:flags=lanczos" -quality 74 \
  *      public/assets/events/<slug>.webp
  *
- * 2. Add an entry to `events` below. Anchor + height cycle automatically, and
- *    the rail scrolls horizontally once there are more cards than fit.
+ * 2. Add an entry to `events` below. The rail scrolls horizontally once there
+ *    are more cards than fit.
  */
 
 type EventItem = {
@@ -70,20 +68,14 @@ const events: EventItem[] = [
   },
 ];
 
-/**
- * Per-card stage placement. Cycles, so any number of events keeps the
- * alternating rhythm. `h` is the card's resting height — staggered on purpose
- * so the row reads as a gallery rather than a grid. Every height must leave
- * ~6% headroom inside STAGE_H for the hover growth.
- */
-const LAYOUT = [
-  { anchor: 'bottom', h: 'h-[300px] sm:h-[360px] lg:h-[420px]' },
-  { anchor: 'top',    h: 'h-[340px] sm:h-[410px] lg:h-[500px]' },
-  { anchor: 'bottom', h: 'h-[320px] sm:h-[385px] lg:h-[455px]' },
-  { anchor: 'top',    h: 'h-[290px] sm:h-[350px] lg:h-[415px]' },
-] as const;
+// Resting card height, and the stage that contains it. STAGE_H must exceed
+// CARD_H * HOVER_SCALE or the hovered card clips against the top of the stage;
+// the difference is the empty air the card grows up into.
+const CARD_H = 'h-[300px] sm:h-[360px] lg:h-[420px]';
+const STAGE_H = 'h-[350px] sm:h-[420px] lg:h-[480px]';
 
-const STAGE_H = 'h-[420px] sm:h-[500px] lg:h-[600px]';
+const REST_SCALE = 0.92;
+const HOVER_SCALE = 1.08;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -91,11 +83,6 @@ function EventCard({ event, index, revealed }: { event: EventItem; index: number
   const videoRef = useRef<HTMLVideoElement>(null);
   const [active, setActive] = useState(false);
   const [playing, setPlaying] = useState(false);
-
-  const { anchor, h } = LAYOUT[index % LAYOUT.length];
-  const fromBottom = anchor === 'bottom';
-  // Parked fully outside the clipped stage, so it's hidden behind the border.
-  const parked = fromBottom ? '115%' : '-115%';
 
   const start = () => {
     setActive(true);
@@ -116,19 +103,18 @@ function EventCard({ event, index, revealed }: { event: EventItem; index: number
 
   return (
     <motion.article
-      // Slides in from behind whichever border it's anchored to.
+      // Rises from behind the baseline. 115% of its own height parks it fully
+      // below the clipped stage to start.
       //
       // NB: this deliberately does NOT use whileInView. The card starts parked
       // outside an overflow-hidden ancestor, and IntersectionObserver clips a
       // target against its ancestors' clip rects — so the observer would never
       // see this element and the reveal could never fire. The parent watches
       // the (always visible) stage instead and hands us `revealed`.
-      initial={{ y: parked }}
-      animate={{ y: revealed ? '0%' : parked }}
+      initial={{ y: '115%' }}
+      animate={{ y: revealed ? '0%' : '115%' }}
       transition={{ duration: 1.1, delay: index * 0.14, ease: EASE }}
-      className={`relative flex-none w-[220px] sm:w-[264px] lg:w-[310px] snap-center ${h} ${
-        fromBottom ? 'self-end' : 'self-start'
-      }`}
+      className={`relative flex-none self-end w-[220px] sm:w-[264px] lg:w-[310px] ${CARD_H} snap-center`}
       style={{ zIndex: active ? 20 : 10 }}
     >
       <motion.div
@@ -139,11 +125,11 @@ function EventCard({ event, index, revealed }: { event: EventItem; index: number
         onMouseLeave={stop}
         onFocus={start}
         onBlur={stop}
-        initial={{ scale: 0.94 }}
-        animate={{ scale: active ? 1.06 : 0.94 }}
+        initial={{ scale: REST_SCALE }}
+        animate={{ scale: active ? HOVER_SCALE : REST_SCALE }}
         transition={{ duration: 0.7, ease: EASE }}
-        // Grows out of the border it arrived from, not from the centre.
-        style={{ transformOrigin: fromBottom ? 'bottom center' : 'top center' }}
+        // Pinned to the baseline: the card only ever grows upward off the line.
+        style={{ transformOrigin: 'bottom center' }}
         className="relative h-full w-full overflow-hidden rounded-2xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default"
       >
         {/* Poster — always mounted, sits under the video */}
@@ -244,22 +230,21 @@ export default function EventsShowcase() {
         </motion.div>
       </div>
 
-      {/* Stage — cards are clipped to this band so they emerge from its borders.
-          The rail scrolls horizontally once the cards outgrow the viewport. */}
+      {/* Stage — cards are clipped to this band and bottom-aligned on the
+          baseline, so they rise out of it and never hang below it. The rail
+          scrolls horizontally once the cards outgrow the viewport. */}
       <div className="mt-16 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="relative w-max min-w-full">
-          {/* Top / bottom borders the cards slide out of */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-primary/15" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-primary/15" />
-
           <div
             ref={stageRef}
-            className={`flex ${STAGE_H} snap-x snap-mandatory items-stretch justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center`}
+            className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center`}
           >
             {events.map((event, i) => (
               <EventCard key={event.slug} event={event} index={i} revealed={revealed} />
             ))}
           </div>
+          {/* The baseline every card stands on */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-primary/20" />
         </div>
       </div>
 
