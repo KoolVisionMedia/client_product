@@ -266,18 +266,15 @@ export default function ProcessPage() {
         <div className="max-w-7xl mx-auto relative flex flex-col lg:flex-row lg:items-start lg:gap-14">
 
           {/* Build animation, scrubbed by scroll position.
-              At lg the column stretches the full height of the timeline and the
-              panel is absolutely positioned inside it, travelling down to sit
-              beside whichever step is being read. Below lg there's no room for a
-              second column, so it falls back to pinning at the top. */}
-          {/* lg:relative (not lg:static) — the panel is absolutely positioned
-              against this column, so it has to stay a positioning context at lg
-              or it anchors to the full-width flex row instead. lg:top-auto
-              cancels the sticky offset once it's relative. */}
-          <div className="lg:order-2 lg:flex-1 sticky top-20 lg:relative lg:top-auto lg:self-stretch z-30 mb-12 lg:mb-0 self-start w-full">
+              At lg the column stretches the full height of the timeline so the
+              panel has somewhere to stick over; the panel itself is sticky, held
+              at the same height as the reference line that picks the active
+              step. Below lg there's no room for a second column, so it pins near
+              the top of the viewport instead. */}
+          <div className="lg:order-2 lg:flex-1 lg:self-stretch z-30 mb-12 lg:mb-0 w-full">
             <ProcessScrubVideo
               stepsRef={stepsRef}
-              className="w-full lg:absolute lg:left-0 lg:right-0 lg:top-0"
+              className="w-full sticky top-20"
             />
           </div>
 

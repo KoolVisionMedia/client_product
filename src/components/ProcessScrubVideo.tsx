@@ -69,11 +69,6 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
   const runningRef = useRef(false);
   const targetRef = useRef(0);
   const currentRef = useRef(0);
-  // Vertical position of the panel, so it travels down the column and parks
-  // beside whichever step is being read rather than pinning to the viewport.
-  const targetYRef = useRef(0);
-  const currentYRef = useRef(0);
-  const yInitialisedRef = useRef(false);
   const readyRef = useRef(false);
   const lastStepRef = useRef(-1);
   const [ready, setReady] = useState(false);
@@ -83,10 +78,25 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
     if (!video) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Panel travel is a two-column behaviour. Below lg the panel is sticky and
-    // CSS owns its position, so the transform must stay off.
     const lgUp = window.matchMedia('(min-width: 1024px)');
-    const tracks = () => lgUp.matches;
+
+    /**
+     * Park the panel at the same height as the reference line that decides
+     * which step is active, so the animation sits beside the heading currently
+     * being read.
+     *
+     * This is CSS sticky, not a JS-driven transform. Sticky is resolved by the
+     * compositor on every scroll tick, so the panel holds an exactly constant
+     * screen position — it can never lag behind or snap between anchor points
+     * the way an eased per-step transform does.
+     */
+    const positionPanel = () => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      if (!lgUp.matches) { panel.style.top = ''; return; }
+      const top = window.innerHeight * REFERENCE_LINE - panel.offsetHeight / 2;
+      panel.style.top = `${Math.max(96, Math.round(top))}px`;
+    };
 
     const computeTarget = () => {
       const container = stepsRef.current;
@@ -111,7 +121,6 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
           const scene = SCENES[Math.min(i, SCENES.length - 1)];
           const start = STARTS[Math.min(i, STARTS.length - 1)];
           targetRef.current = start + Math.min(Math.max(local, 0), 1) * scene.dur;
-          setPanelTarget(steps[i]);
           reportStep(i);
           return;
         }
@@ -122,37 +131,9 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
         const b = steps[i + 1].getBoundingClientRect();
         if (line > a.bottom && line < b.top) {
           targetRef.current = STARTS[i] + SCENES[i].dur;
-          setPanelTarget(steps[i]);
           reportStep(i);
           return;
         }
-      }
-    };
-
-    /**
-     * Park the panel alongside the given step block.
-     *
-     * Measured as a delta between two viewport rects rather than from
-     * offsetTop, so it stays correct regardless of which ancestor happens to be
-     * the offsetParent. The value is a document-space offset within the panel's
-     * column, so while a step is active the panel scrolls WITH the page (staying
-     * beside its step) and only travels when a new step takes over.
-     */
-    const setPanelTarget = (stepEl: HTMLElement) => {
-      const panel = panelRef.current;
-      const column = panel?.offsetParent as HTMLElement | null;
-      if (!panel || !column) return;
-      const columnRect = column.getBoundingClientRect();
-      const stepRect = stepEl.getBoundingClientRect();
-      const panelH = panel.offsetHeight;
-      // Centre the panel on the step block so it reads as "beside this step".
-      let y = stepRect.top - columnRect.top + (stepRect.height - panelH) / 2;
-      // Never let it run past the ends of its column.
-      y = Math.max(0, Math.min(y, column.offsetHeight - panelH));
-      targetYRef.current = y;
-      if (!yInitialisedRef.current) {
-        yInitialisedRef.current = true;
-        currentYRef.current = y;
       }
     };
 
@@ -177,25 +158,7 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
         try { video.currentTime = currentRef.current; } catch { /* not seekable yet */ }
       }
 
-      // Panel travel. Only on the two-column layout — below lg the panel is
-      // pinned by CSS sticky instead and must not be transformed.
-      let ySettled = true;
-      const panel = panelRef.current;
-      if (panel) {
-        if (tracks()) {
-          const ty = targetYRef.current;
-          const ny = prefersReducedMotion
-            ? ty
-            : currentYRef.current + (ty - currentYRef.current) * 0.12;
-          ySettled = Math.abs(ty - ny) < 0.5;
-          currentYRef.current = ySettled ? ty : ny;
-          panel.style.transform = `translate3d(0, ${currentYRef.current.toFixed(1)}px, 0)`;
-        } else if (panel.style.transform) {
-          panel.style.transform = '';
-        }
-      }
-
-      if (timeSettled && ySettled) {
+      if (timeSettled) {
         runningRef.current = false;
         rafRef.current = null;
         return;
@@ -223,15 +186,18 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
       kick();
     };
 
+    positionPanel();
+
     if (video.readyState >= 1) onMeta();
     else video.addEventListener('loadedmetadata', onMeta, { once: true });
 
+    const onResize = () => { positionPanel(); kick(); };
     window.addEventListener('scroll', kick, { passive: true });
-    window.addEventListener('resize', kick);
+    window.addEventListener('resize', onResize);
 
     return () => {
       window.removeEventListener('scroll', kick);
-      window.removeEventListener('resize', kick);
+      window.removeEventListener('resize', onResize);
       video.removeEventListener('loadedmetadata', onMeta);
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       runningRef.current = false;
@@ -239,9 +205,7 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
   }, [stepsRef, onStepChange]);
 
   return (
-    // The panel is what travels. willChange keeps it on its own layer so the
-    // move is composited rather than repainting the column each frame.
-    <div ref={panelRef} className={className} style={{ willChange: 'transform' }}>
+    <div ref={panelRef} className={className}>
       <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
         <video
           ref={videoRef}
