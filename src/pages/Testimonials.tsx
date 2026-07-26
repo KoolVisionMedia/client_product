@@ -491,9 +491,6 @@ export default function Testimonials() {
         </div>
       </section>
 
-      {/* ── Seminars & Events ───────────────────────────────────────── */}
-      <EventsShowcase />
-
       {/* ── Community & Education ───────────────────────────────────── */}
       <section className="relative py-28 bg-[#FAFAF5] text-primary overflow-hidden">
         {/* Blueprint background accent */}
@@ -603,6 +600,12 @@ export default function Testimonials() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Events rail — the actual seminars and events behind the copy above.
+            Sits full-bleed under the two-column block, inside this section. */}
+        <div className="mt-20 md:mt-24">
+          <EventsShowcase />
         </div>
       </section>
 

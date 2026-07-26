@@ -1,19 +1,23 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'motion/react';
 
 /**
- * Seminars & Events showcase.
+ * Events card rail — the visual proof for the Community & Education section on
+ * the testimonials page, which it renders inside. It is deliberately just the
+ * rail: no section wrapper and no heading of its own, so it sits under that
+ * section's existing copy rather than competing with it.
  *
- * Framed around education first — the classes and seminars Homefront teaches —
- * with the community events they host and support alongside them.
+ * All cards sit on a single baseline (the foot of the stage) at a matching
+ * resting size, and rise from behind it on scroll-in. Hovering one card does
+ * two things at once: the hovered card grows upward off the line, and every
+ * other card sinks below it, so roughly half of each gets clipped away by the
+ * stage. Only the hovered card is fully above the baseline.
  *
- * All cards sit on a single baseline (the hairline at the bottom of the stage)
- * at a matching resting size. On scroll-in they rise from behind that line. On
- * hover/focus the hovered card grows upward off the line — bottom edge pinned,
- * so it's the only one standing proud — its dark scrim clears, and a silent
- * 3-second preview loops. The stage clips, so nothing ever pokes out below the
- * baseline. Touch devices (no hover) get poster + caption only — deliberate, so
- * we never composite several videos at once on a phone.
+ * The hovered index lives here in the parent rather than in each card, because
+ * a card has to react to a sibling being hovered, not just itself.
+ *
+ * Touch devices (no hover) get poster + caption only — deliberate, so we never
+ * composite several videos at once on a phone.
  *
  * ── Adding an event ────────────────────────────────────────────────────
  * 1. Cut a 3s poster+preview pair from the master file:
@@ -76,44 +80,56 @@ const STAGE_H = 'h-[350px] sm:h-[420px] lg:h-[480px]';
 
 const REST_SCALE = 0.92;
 const HOVER_SCALE = 1.08;
+const PARKED_Y = '115%';   // fully below the baseline, before the reveal
+const SUNK_Y = '50%';      // a sibling is hovered — drop under the line
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-function EventCard({ event, index, revealed }: { event: EventItem; index: number; revealed: boolean }) {
+type CardProps = {
+  event: EventItem;
+  index: number;
+  revealed: boolean;
+  active: boolean;
+  anyActive: boolean;
+  onEnter: (index: number) => void;
+  onLeave: (index: number) => void;
+};
+
+function EventCard({ event, index, revealed, active, anyActive, onEnter, onLeave }: CardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [active, setActive] = useState(false);
   const [playing, setPlaying] = useState(false);
 
-  const start = () => {
-    setActive(true);
+  // Playback follows `active`, which the parent owns.
+  useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    try { v.currentTime = 0; } catch { /* not seekable yet — fine */ }
-    v.play().catch(() => { /* autoplay blocked or aborted; poster stays */ });
-  };
+    if (active) {
+      try { v.currentTime = 0; } catch { /* not seekable yet — fine */ }
+      v.play().catch(() => { /* autoplay blocked or aborted; poster stays */ });
+    } else {
+      v.pause();
+      try { v.currentTime = 0; } catch { /* ignore */ }
+      setPlaying(false);
+    }
+  }, [active]);
 
-  const stop = () => {
-    setActive(false);
-    setPlaying(false);
-    const v = videoRef.current;
-    if (!v) return;
-    v.pause();
-    try { v.currentTime = 0; } catch { /* ignore */ }
-  };
+  // Hovered card rides up off the baseline; its siblings drop under it.
+  const y = !revealed ? PARKED_Y : active || !anyActive ? '0%' : SUNK_Y;
 
   return (
     <motion.article
-      // Rises from behind the baseline. 115% of its own height parks it fully
-      // below the clipped stage to start.
-      //
       // NB: this deliberately does NOT use whileInView. The card starts parked
       // outside an overflow-hidden ancestor, and IntersectionObserver clips a
       // target against its ancestors' clip rects — so the observer would never
       // see this element and the reveal could never fire. The parent watches
       // the (always visible) stage instead and hands us `revealed`.
-      initial={{ y: '115%' }}
-      animate={{ y: revealed ? '0%' : '115%' }}
-      transition={{ duration: 1.1, delay: index * 0.14, ease: EASE }}
+      initial={{ y: PARKED_Y }}
+      animate={{ y }}
+      transition={{
+        duration: revealed ? 0.6 : 1.1,
+        delay: revealed && !anyActive ? index * 0.14 : 0,
+        ease: EASE,
+      }}
       className={`relative flex-none self-end w-[220px] sm:w-[264px] lg:w-[310px] ${CARD_H} snap-center`}
       style={{ zIndex: active ? 20 : 10 }}
     >
@@ -121,13 +137,13 @@ function EventCard({ event, index, revealed }: { event: EventItem; index: number
         tabIndex={0}
         role="group"
         aria-label={`${event.title} — ${event.role}`}
-        onMouseEnter={start}
-        onMouseLeave={stop}
-        onFocus={start}
-        onBlur={stop}
+        onMouseEnter={() => onEnter(index)}
+        onMouseLeave={() => onLeave(index)}
+        onFocus={() => onEnter(index)}
+        onBlur={() => onLeave(index)}
         initial={{ scale: REST_SCALE }}
         animate={{ scale: active ? HOVER_SCALE : REST_SCALE }}
-        transition={{ duration: 0.7, ease: EASE }}
+        transition={{ duration: 0.6, ease: EASE }}
         // Pinned to the baseline: the card only ever grows upward off the line.
         style={{ transformOrigin: 'bottom center' }}
         className="relative h-full w-full overflow-hidden rounded-2xl bg-[#1b2518] shadow-[0_18px_45px_rgba(27,37,24,0.22)] outline-none ring-1 ring-transparent focus-visible:ring-[#c9a96e] cursor-default"
@@ -156,10 +172,10 @@ function EventCard({ event, index, revealed }: { event: EventItem; index: number
           <source src={`/assets/events/${event.slug}.mp4`} type="video/mp4" />
         </video>
 
-        {/* Dark filter — clears on hover */}
+        {/* Dark filter — clears on hover, deepens while a sibling is hovered */}
         <div
-          className="absolute inset-0 bg-[#1b2518]/55 transition-opacity duration-500"
-          style={{ opacity: active ? 0 : 1 }}
+          className="absolute inset-0 bg-[#1b2518] transition-opacity duration-500"
+          style={{ opacity: active ? 0 : anyActive ? 0.72 : 0.55 }}
         />
         {/* Caption scrim — always on, keeps the type legible over the footage */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#1b2518]/90 via-[#1b2518]/35 to-transparent" />
@@ -205,42 +221,39 @@ export default function EventsShowcase() {
   // Watched instead of the cards themselves — see the note in EventCard.
   const stageRef = useRef<HTMLDivElement>(null);
   const revealed = useInView(stageRef, { once: true, margin: '-80px' });
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleEnter = useCallback((index: number) => setActiveIndex(index), []);
+  // Guarded so moving the pointer straight from one card to the next doesn't
+  // clear the incoming card's hover with the outgoing card's leave event.
+  const handleLeave = useCallback(
+    (index: number) => setActiveIndex(prev => (prev === index ? null : prev)),
+    [],
+  );
 
   return (
-    <section className="relative overflow-hidden bg-[#FAFAF5] py-24 md:py-28">
-      <div className="mx-auto max-w-7xl px-6 md:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 1, ease: EASE }}
-          className="max-w-2xl text-center md:text-left"
-        >
-          <p className="mb-4 font-sans text-[10px] uppercase tracking-[0.35em] text-[#c9a96e]">
-            Learn With Us
-          </p>
-          <h2 className="mb-6 font-serif text-5xl leading-tight text-primary md:text-6xl">
-            Seminars &amp; Events
-          </h2>
-          <p className="mx-auto font-sans text-lg leading-relaxed text-primary-light/80 md:mx-0">
-            Design seminars, hands-on classes, and open evenings built to demystify custom home
-            building long before you break ground — alongside the Middle Tennessee causes we
-            show up for year after year.
-          </p>
-        </motion.div>
-      </div>
-
+    // z-10 keeps the rail above the host section's blueprint background wash.
+    <div className="relative z-10">
       {/* Stage — cards are clipped to this band and bottom-aligned on the
-          baseline, so they rise out of it and never hang below it. The rail
+          baseline, so they rise out of it and sink back under it. The rail
           scrolls horizontally once the cards outgrow the viewport. */}
-      <div className="mt-16 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="relative w-max min-w-full">
           <div
             ref={stageRef}
             className={`flex ${STAGE_H} snap-x snap-mandatory items-end justify-start gap-5 overflow-hidden px-6 md:gap-7 md:px-12 lg:justify-center`}
           >
             {events.map((event, i) => (
-              <EventCard key={event.slug} event={event} index={i} revealed={revealed} />
+              <EventCard
+                key={event.slug}
+                event={event}
+                index={i}
+                revealed={revealed}
+                active={activeIndex === i}
+                anyActive={activeIndex !== null}
+                onEnter={handleEnter}
+                onLeave={handleLeave}
+              />
             ))}
           </div>
           {/* The baseline every card stands on */}
@@ -253,10 +266,10 @@ export default function EventsShowcase() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.4 }}
-        className="mx-auto mt-6 max-w-7xl px-6 font-sans text-[10px] uppercase tracking-[0.3em] text-primary-light/40 md:px-12"
+        className="mx-auto mt-6 max-w-[1400px] px-6 font-sans text-[10px] uppercase tracking-[0.3em] text-primary-light/40 md:px-12"
       >
         Hover a card for a preview
       </motion.p>
-    </section>
+    </div>
   );
 }
