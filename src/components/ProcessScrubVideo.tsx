@@ -49,6 +49,13 @@ const STARTS = SCENES.reduce<number[]>((acc, s, i) => {
 }, []);
 const TOTAL = STARTS[STARTS.length - 1] + SCENES[SCENES.length - 1].dur;
 
+// Two encodes of the same 30s animation. Phones render the panel around 343px
+// wide, so the 960px file is ~2.8x oversampled there — wasted bytes on cellular
+// and wasted decode work per seek on the weakest hardware. The source is chosen
+// once at mount and is the ONLY file fetched (see the load() in the effect).
+const SRC_DESKTOP = '/assets/process/house-build-scrub.mp4';   // 960x540, 2.6MB
+const SRC_MOBILE = '/assets/process/house-build-scrub-sm.mp4'; // 560x316, 1.3MB
+
 // Where in the viewport a step counts as "current". 0.45 keeps the active step
 // just above centre, which reads naturally while scrolling down.
 const REFERENCE_LINE = 0.45;
@@ -188,6 +195,13 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
 
     positionPanel();
 
+    // Source is assigned here rather than in markup so exactly one file is
+    // fetched: the element ships with preload="none" and no <source>, so nothing
+    // downloads until this picks the right encode for the viewport.
+    video.src = lgUp.matches ? SRC_DESKTOP : SRC_MOBILE;
+    video.preload = 'auto';
+    video.load();
+
     if (video.readyState >= 1) onMeta();
     else video.addEventListener('loadedmetadata', onMeta, { once: true });
 
@@ -207,17 +221,18 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
   return (
     <div ref={panelRef} className={className}>
       <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+        {/* No src / no <source> here on purpose — the effect assigns the encode
+            that matches the viewport, so a phone never downloads the desktop
+            file. preload="none" keeps it inert until then. */}
         <video
           ref={videoRef}
           muted
           playsInline
-          preload="auto"
+          preload="none"
           aria-hidden="true"
           poster="/assets/process/house-build-poster.webp"
           className="block h-full w-full object-cover"
-        >
-          <source src="/assets/process/house-build-scrub.mp4" type="video/mp4" />
-        </video>
+        />
 
         {/* Holds the poster steady until the file can actually be seeked, so the
             first paint isn't a black frame. */}

@@ -281,13 +281,19 @@ export default function ProcessPage() {
               lines of the EXPLICIT grid, and these rows are all implicitly
               placed — so `-1` resolves to line 1 and the cell collapses to a
               single row, leaving sticky nowhere to travel. */}
+          {/* `contents` below lg is load-bearing, not cosmetic. A sticky element
+              can only travel within its parent's box; as a plain block this cell
+              is exactly as tall as the panel, so on mobile the animation stuck
+              with 0px of travel and scrolled straight off. Dissolving the cell
+              makes the panel a direct child of the full-height timeline
+              container. At lg it becomes a normal grid item again. */}
           <div
-            className="lg:col-start-2 lg:self-stretch z-30 mb-12 lg:mb-0 w-full"
+            className="contents lg:block lg:col-start-2 lg:self-stretch lg:w-full"
             style={{ gridRow: `1 / span ${processSteps.length}` }}
           >
             <ProcessScrubVideo
               stepsRef={stepsRef}
-              className="w-full sticky top-20"
+              className="w-full sticky top-20 z-30 mb-12 lg:mb-0"
             />
           </div>
 
