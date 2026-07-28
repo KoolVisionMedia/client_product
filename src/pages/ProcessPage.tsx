@@ -291,9 +291,15 @@ export default function ProcessPage() {
             className="contents lg:block lg:col-start-2 lg:self-stretch lg:w-full"
             style={{ gridRow: `1 / span ${processSteps.length}` }}
           >
+            {/* Mobile: h-0 takes the panel out of the flow's height so it stops
+                pushing the steps down, while a sticky element with no height
+                still sticks — the frame simply overflows it visibly. Dropped to
+                z-0 and faded so it reads as a backdrop behind the text (the
+                steps carry relative z-10). Desktop is unchanged: full height,
+                full opacity, its own column. */}
             <ProcessScrubVideo
               stepsRef={stepsRef}
-              className="w-full sticky top-20 z-30 mb-12 lg:mb-0"
+              className="w-full sticky top-20 h-0 opacity-[0.32] z-0 lg:h-auto lg:opacity-100 lg:z-30 lg:mb-0"
             />
           </div>
 

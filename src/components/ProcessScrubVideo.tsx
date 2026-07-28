@@ -205,13 +205,32 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
     if (video.readyState >= 1) onMeta();
     else video.addEventListener('loadedmetadata', onMeta, { once: true });
 
+    // A tablet rotating across the lg breakpoint would otherwise keep whichever
+    // encode it happened to load at mount — the low-res one stretched across a
+    // desktop column, or the heavy one on a narrow screen. Swap and restore the
+    // playhead. Only fires on an actual crossing, so it costs nothing normally.
+    const onBreakpointChange = () => {
+      const wanted = lgUp.matches ? SRC_DESKTOP : SRC_MOBILE;
+      if (video.src.endsWith(wanted)) return;
+      const at = video.currentTime;
+      readyRef.current = false;
+      video.src = wanted;
+      video.load();
+      video.addEventListener('loadedmetadata', () => {
+        readyRef.current = true;
+        try { video.currentTime = at; } catch { /* ignore */ }
+      }, { once: true });
+    };
+
     const onResize = () => { positionPanel(); kick(); };
     window.addEventListener('scroll', kick, { passive: true });
     window.addEventListener('resize', onResize);
+    lgUp.addEventListener('change', onBreakpointChange);
 
     return () => {
       window.removeEventListener('scroll', kick);
       window.removeEventListener('resize', onResize);
+      lgUp.removeEventListener('change', onBreakpointChange);
       video.removeEventListener('loadedmetadata', onMeta);
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       runningRef.current = false;
