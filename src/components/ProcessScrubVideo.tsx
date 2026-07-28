@@ -72,6 +72,9 @@ type Props = {
 export default function ProcessScrubVideo({ stepsRef, className = '', onStepChange }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  // The visible 16:9 box. Measured for centring because the panel itself is
+  // h-0 on mobile and would report zero.
+  const frameRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
   const runningRef = useRef(false);
   const targetRef = useRef(0);
@@ -88,21 +91,30 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
     const lgUp = window.matchMedia('(min-width: 1024px)');
 
     /**
-     * Park the panel at the same height as the reference line that decides
-     * which step is active, so the animation sits beside the heading currently
-     * being read.
+     * Hold the animation at a fixed height on screen while the page scrolls
+     * past it.
+     *
+     * Desktop parks it on REFERENCE_LINE — the same line that decides which step
+     * is active — so it sits level with the heading being read. Mobile centres it
+     * in the viewport, where it's a full-width backdrop behind the text and has
+     * no heading to align to.
+     *
+     * Measured off the frame, not the panel: on mobile the panel is h-0 (so it
+     * contributes no layout height) and would centre as a zero-height box.
      *
      * This is CSS sticky, not a JS-driven transform. Sticky is resolved by the
-     * compositor on every scroll tick, so the panel holds an exactly constant
-     * screen position — it can never lag behind or snap between anchor points
-     * the way an eased per-step transform does.
+     * compositor on every scroll tick, so it holds an exactly constant screen
+     * position — it can never lag or snap the way an eased transform does.
      */
     const positionPanel = () => {
       const panel = panelRef.current;
-      if (!panel) return;
-      if (!lgUp.matches) { panel.style.top = ''; return; }
-      const top = window.innerHeight * REFERENCE_LINE - panel.offsetHeight / 2;
-      panel.style.top = `${Math.max(96, Math.round(top))}px`;
+      const frame = frameRef.current;
+      if (!panel || !frame) return;
+      const height = frame.offsetHeight || panel.offsetHeight;
+      const line = lgUp.matches ? REFERENCE_LINE : 0.5;
+      const top = window.innerHeight * line - height / 2;
+      // Never let it ride up under the fixed header.
+      panel.style.top = `${Math.max(88, Math.round(top))}px`;
     };
 
     const computeTarget = () => {
@@ -239,7 +251,10 @@ export default function ProcessScrubVideo({ stepsRef, className = '', onStepChan
 
   return (
     <div ref={panelRef} className={className}>
-      <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+      <div
+        ref={frameRef}
+        className="relative aspect-video w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
+      >
         {/* No src / no <source> here on purpose — the effect assigns the encode
             that matches the viewport, so a phone never downloads the desktop
             file. preload="none" keeps it inert until then. */}
