@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight, Send, X } from 'lucide-react';
 import SEO from '../components/SEO';
+import ProcessScrubVideo from '../components/ProcessScrubVideo';
 
 const processSteps = [
   {
@@ -162,6 +163,9 @@ const MODAL_COPY: Record<ModalType, {
 
 export default function ProcessPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  // The steps column only — the scrub video measures each step block inside it
+  // to decide which scene of the build animation to show.
+  const stepsRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('booklet');
   const [formState, setFormState] = useState({ status: 'idle', message: '' });
@@ -218,7 +222,12 @@ export default function ProcessPage() {
   const copy = MODAL_COPY[modalType];
 
   return (
-    <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-hidden relative">
+    // overflow-x-clip, NOT overflow-hidden. `hidden` makes this a scroll
+    // container, which scopes the sticky build animation to this box instead of
+    // the viewport — sticky then never engages and the animation scrolls away
+    // after step 1. `clip` contains horizontal overflow the same way without
+    // establishing a scrollport.
+    <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-x-clip relative">
       <SEO
         title="Our Custom Home Building Process"
         description="From site analysis to final walkthrough, see how Homefront Builders manages every stage of your custom home build with precision and full transparency."
@@ -255,25 +264,57 @@ export default function ProcessPage() {
 
       {/* Timeline Section */}
       <section className="px-4 md:px-12 relative z-10" ref={containerRef}>
-        <div className="max-w-6xl mx-auto relative">
-          
-          {/* Vertical Progress Line Background */}
-          <div className="absolute left-[34px] md:left-[20%] lg:left-[25%] top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2">
+        {/* At lg this is a three-column grid: step label | build animation | text.
+            Label and text are placed into the SAME explicit grid row so they stay
+            aligned across the animation between them — flex columns can't do that,
+            because each step's two halves would size independently.
+            Below lg it's a plain block: the animation stacks on top (it's first in
+            the DOM) and each step falls back to its own flex row. */}
+        <div
+          ref={stepsRef}
+          className="max-w-7xl mx-auto relative lg:grid lg:grid-cols-[150px_minmax(0,38%)_minmax(0,1fr)] lg:gap-x-10 lg:items-start"
+        >
+
+          {/* Build animation, scrubbed by scroll position. Spans every row of
+              column 2 so the sticky panel has the full timeline to travel over.
+              NB: `1 / span N`, not `1 / -1`. Negative line numbers only count
+              lines of the EXPLICIT grid, and these rows are all implicitly
+              placed — so `-1` resolves to line 1 and the cell collapses to a
+              single row, leaving sticky nowhere to travel. */}
+          <div
+            className="lg:col-start-2 lg:self-stretch z-30 mb-12 lg:mb-0 w-full"
+            style={{ gridRow: `1 / span ${processSteps.length}` }}
+          >
+            <ProcessScrubVideo
+              stepsRef={stepsRef}
+              className="w-full sticky top-20"
+            />
+          </div>
+
+          {/* Vertical Progress Line Background — sits on the right edge of the
+              label column at lg (96px = that column's width). */}
+          <div className="absolute left-[34px] md:left-[20%] lg:left-[150px] top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2">
             {/* Active Progress Line */}
-            <motion.div 
+            <motion.div
               className="absolute top-0 left-0 right-0 bg-accent w-full"
               style={{ height: progressBarHeight, transformOrigin: 'top' }}
             />
           </div>
 
-          <div className="flex flex-col gap-0 md:gap-0 relative z-10">
+          <div className="flex flex-col gap-0 md:gap-0 relative z-10 lg:contents">
             {processSteps.map((step, index) => {
               
               return (
-                <div key={index} className="flex flex-col md:flex-row w-full mb-16 md:mb-32 relative group">
+                <div
+                  key={index}
+                  className="flex flex-col md:flex-row w-full mb-16 md:mb-32 relative group lg:contents"
+                >
                   
                   {/* Left: Date */}
-                  <div className="hidden md:block md:w-[20%] lg:w-[25%] text-right pr-12 lg:pr-16 py-4">
+                  <div
+                    className="hidden md:block md:w-[20%] lg:w-auto text-right pr-12 lg:pr-14 py-4"
+                    style={{ gridColumn: 1, gridRow: index + 1 }}
+                  >
                     <motion.span 
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -286,7 +327,13 @@ export default function ProcessPage() {
                   </div>
 
                   {/* Center: Node */}
-                  <div className="absolute left-[34px] md:left-[20%] lg:left-[25%] transform -translate-x-1/2 w-16 h-16 bg-white border-4 border-gray-50 rounded-full flex items-center justify-center shadow-[0_4px_10px_rgb(0,0,0,0.05)] z-20 group-hover:border-accent/10 transition-colors duration-300">
+                  {/* Absolute against the step row below lg; at lg the row has no
+                      box (contents), so it becomes a grid item pinned to the right
+                      edge of the label column and nudged onto the line. */}
+                  <div
+                    className="absolute left-[34px] md:left-[20%] transform -translate-x-1/2 w-16 h-16 bg-white border-4 border-gray-50 rounded-full flex items-center justify-center shadow-[0_4px_10px_rgb(0,0,0,0.05)] z-20 group-hover:border-accent/10 transition-colors duration-300 lg:static lg:translate-x-1/2 lg:justify-self-end lg:self-start lg:mt-1"
+                    style={{ gridColumn: 1, gridRow: index + 1 }}
+                  >
                     <motion.div 
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
@@ -299,12 +346,14 @@ export default function ProcessPage() {
                   </div>
 
                   {/* Right: Content */}
-                  <motion.div 
+                  <motion.div
+                    data-step-index={index}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6 }}
-                    className="w-full md:w-[80%] lg:w-[75%] pl-[80px] md:pl-12 lg:pl-16 pt-3 md:pt-0"
+                    className="w-full md:w-[80%] lg:w-full pl-[80px] md:pl-12 lg:pl-0 pt-3 md:pt-0 lg:pb-28"
+                    style={{ gridColumn: 3, gridRow: index + 1 }}
                   >
                     <div className="md:hidden mb-4">
                        <span className="font-sans text-lg font-bold text-primary/70 tracking-tight">{step.date}</span>
@@ -347,13 +396,6 @@ export default function ProcessPage() {
                           )}
                         </div>
                       )}
-                    </div>
-
-                    <div className="rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 aspect-[16/9] md:aspect-[3/2] max-w-3xl">
-                      <img loading="lazy" decoding="async" src={step.image} 
-                        alt={step.title} 
-                        className="w-full h-full object-cover transition-transform duration-[1s] ease-out hover:scale-[1.03]"
-                      />
                     </div>
                   </motion.div>
 
