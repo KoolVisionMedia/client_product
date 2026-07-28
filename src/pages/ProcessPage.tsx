@@ -264,30 +264,29 @@ export default function ProcessPage() {
 
       {/* Timeline Section */}
       <section className="px-4 md:px-12 relative z-10" ref={containerRef}>
-        {/* Two columns on desktop: the timeline scrolls past a sticky build
-            animation. `order` puts the video visually right on desktop while
-            keeping it first in the DOM, so on mobile it pins to the top of the
-            viewport above the steps instead. */}
-        <div className="max-w-7xl mx-auto relative flex flex-col lg:flex-row lg:items-start lg:gap-14">
+        {/* At lg this is a three-column grid: step label | build animation | text.
+            Label and text are placed into the SAME explicit grid row so they stay
+            aligned across the animation between them — flex columns can't do that,
+            because each step's two halves would size independently.
+            Below lg it's a plain block: the animation stacks on top (it's first in
+            the DOM) and each step falls back to its own flex row. */}
+        <div
+          ref={stepsRef}
+          className="max-w-7xl mx-auto relative lg:grid lg:grid-cols-[150px_minmax(0,38%)_minmax(0,1fr)] lg:gap-x-10 lg:items-start"
+        >
 
-          {/* Build animation, scrubbed by scroll position.
-              At lg the column stretches the full height of the timeline so the
-              panel has somewhere to stick over; the panel itself is sticky, held
-              at the same height as the reference line that picks the active
-              step. Below lg there's no room for a second column, so it pins near
-              the top of the viewport instead. */}
-          <div className="lg:order-2 lg:flex-1 lg:self-stretch z-30 mb-12 lg:mb-0 w-full">
+          {/* Build animation, scrubbed by scroll position. Spans every row of
+              column 2 so the sticky panel has the full timeline to travel over. */}
+          <div className="lg:col-start-2 lg:row-[1/-1] lg:self-stretch z-30 mb-12 lg:mb-0 w-full">
             <ProcessScrubVideo
               stepsRef={stepsRef}
               className="w-full sticky top-20"
             />
           </div>
 
-          {/* Timeline */}
-          <div ref={stepsRef} className="lg:order-1 relative w-full lg:w-[52%] lg:flex-none">
-
-          {/* Vertical Progress Line Background */}
-          <div className="absolute left-[34px] md:left-[20%] lg:left-[22%] top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2">
+          {/* Vertical Progress Line Background — sits on the right edge of the
+              label column at lg (96px = that column's width). */}
+          <div className="absolute left-[34px] md:left-[20%] lg:left-[150px] top-0 bottom-0 w-[2px] bg-gray-100 transform -translate-x-1/2">
             {/* Active Progress Line */}
             <motion.div
               className="absolute top-0 left-0 right-0 bg-accent w-full"
@@ -295,18 +294,20 @@ export default function ProcessPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-0 md:gap-0 relative z-10">
+          <div className="flex flex-col gap-0 md:gap-0 relative z-10 lg:contents">
             {processSteps.map((step, index) => {
               
               return (
                 <div
                   key={index}
-                  data-step-index={index}
-                  className="flex flex-col md:flex-row w-full mb-16 md:mb-32 relative group"
+                  className="flex flex-col md:flex-row w-full mb-16 md:mb-32 relative group lg:contents"
                 >
                   
                   {/* Left: Date */}
-                  <div className="hidden md:block md:w-[20%] lg:w-[22%] text-right pr-12 lg:pr-8 py-4">
+                  <div
+                    className="hidden md:block md:w-[20%] lg:w-auto text-right pr-12 lg:pr-14 py-4"
+                    style={{ gridColumn: 1, gridRow: index + 1 }}
+                  >
                     <motion.span 
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -319,7 +320,13 @@ export default function ProcessPage() {
                   </div>
 
                   {/* Center: Node */}
-                  <div className="absolute left-[34px] md:left-[20%] lg:left-[22%] transform -translate-x-1/2 w-16 h-16 bg-white border-4 border-gray-50 rounded-full flex items-center justify-center shadow-[0_4px_10px_rgb(0,0,0,0.05)] z-20 group-hover:border-accent/10 transition-colors duration-300">
+                  {/* Absolute against the step row below lg; at lg the row has no
+                      box (contents), so it becomes a grid item pinned to the right
+                      edge of the label column and nudged onto the line. */}
+                  <div
+                    className="absolute left-[34px] md:left-[20%] transform -translate-x-1/2 w-16 h-16 bg-white border-4 border-gray-50 rounded-full flex items-center justify-center shadow-[0_4px_10px_rgb(0,0,0,0.05)] z-20 group-hover:border-accent/10 transition-colors duration-300 lg:static lg:translate-x-1/2 lg:justify-self-end lg:self-start lg:mt-1"
+                    style={{ gridColumn: 1, gridRow: index + 1 }}
+                  >
                     <motion.div 
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
@@ -332,12 +339,14 @@ export default function ProcessPage() {
                   </div>
 
                   {/* Right: Content */}
-                  <motion.div 
+                  <motion.div
+                    data-step-index={index}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6 }}
-                    className="w-full md:w-[80%] lg:w-[78%] pl-[80px] md:pl-12 lg:pl-10 pt-3 md:pt-0"
+                    className="w-full md:w-[80%] lg:w-full pl-[80px] md:pl-12 lg:pl-0 pt-3 md:pt-0 lg:pb-28"
+                    style={{ gridColumn: 3, gridRow: index + 1 }}
                   >
                     <div className="md:hidden mb-4">
                        <span className="font-sans text-lg font-bold text-primary/70 tracking-tight">{step.date}</span>
@@ -386,7 +395,6 @@ export default function ProcessPage() {
                 </div>
               );
             })}
-          </div>
           </div>
 
         </div>
