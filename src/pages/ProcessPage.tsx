@@ -276,8 +276,15 @@ export default function ProcessPage() {
         >
 
           {/* Build animation, scrubbed by scroll position. Spans every row of
-              column 2 so the sticky panel has the full timeline to travel over. */}
-          <div className="lg:col-start-2 lg:row-[1/-1] lg:self-stretch z-30 mb-12 lg:mb-0 w-full">
+              column 2 so the sticky panel has the full timeline to travel over.
+              NB: `1 / span N`, not `1 / -1`. Negative line numbers only count
+              lines of the EXPLICIT grid, and these rows are all implicitly
+              placed — so `-1` resolves to line 1 and the cell collapses to a
+              single row, leaving sticky nowhere to travel. */}
+          <div
+            className="lg:col-start-2 lg:self-stretch z-30 mb-12 lg:mb-0 w-full"
+            style={{ gridRow: `1 / span ${processSteps.length}` }}
+          >
             <ProcessScrubVideo
               stepsRef={stepsRef}
               className="w-full sticky top-20"
