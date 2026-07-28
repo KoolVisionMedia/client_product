@@ -222,7 +222,12 @@ export default function ProcessPage() {
   const copy = MODAL_COPY[modalType];
 
   return (
-    <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-hidden relative">
+    // overflow-x-clip, NOT overflow-hidden. `hidden` makes this a scroll
+    // container, which scopes the sticky build animation to this box instead of
+    // the viewport — sticky then never engages and the animation scrolls away
+    // after step 1. `clip` contains horizontal overflow the same way without
+    // establishing a scrollport.
+    <div className="pt-32 md:pt-40 bg-white pb-24 md:pb-32 overflow-x-clip relative">
       <SEO
         title="Our Custom Home Building Process"
         description="From site analysis to final walkthrough, see how Homefront Builders manages every stage of your custom home build with precision and full transparency."
