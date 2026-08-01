@@ -8,6 +8,14 @@ import SEO from '../components/SEO';
 
 const posts = [
   {
+    title: 'How to Choose a Custom Home Builder in Clarksville, TN: Questions to Ask and Red Flags to Watch',
+    excerpt: 'Comparing home builders in Clarksville? Here\'s how to verify a Tennessee contractor license in thirty seconds, the six questions that actually reveal something, and the red flags that predict a difficult build.',
+    date: 'August 1, 2026',
+    category: 'Guides',
+    image: '/assets/beyond-the-build.webp',
+    slug: 'how-to-choose-a-custom-home-builder-clarksville-tn'
+  },
+  {
     title: 'The Art of Modern Farmhouse Design',
     excerpt: 'Exploring the timeless elements that make the modern farmhouse a favorite for Middle Tennessee families. From wrap-around porches to soaring vaulted ceilings, discover how we blend rustic charm with modern luxury.',
     date: 'May 12, 2024',

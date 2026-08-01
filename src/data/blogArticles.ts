@@ -1,4 +1,52 @@
 export const blogArticles: Record<string, string> = {
+  'how-to-choose-a-custom-home-builder-clarksville-tn': `
+# How to Choose a Custom Home Builder in Clarksville, TN: Questions to Ask and Red Flags to Watch
+
+There's no shortage of people building houses in Clarksville right now. The city issued roughly 2,900 residential building permits in 2025 alone — an average of about 240 a month — and growth around Fort Campbell, the new manufacturing employers, and I-24 shows no sign of slowing. That's good news if you're building. It also means the hardest decision you'll make isn't your floor plan or your countertops. It's who you hand the keys of the project to. Here's how to tell the difference between builders when everyone's website says roughly the same thing.
+
+## Start With the License — and Actually Look It Up
+
+In Tennessee, anyone bidding or contracting a residential project of $25,000 or more must hold a contractor's license issued by the Tennessee Board for Licensing Contractors. That's not a formality. It's the single fastest filter you have, and almost nobody uses it.
+
+Ask any builder you're considering for their **legal business name and license number**, then verify it yourself at [verify.tn.gov](https://verify.tn.gov). Thirty seconds of looking will tell you three things:
+
+- **Is the license active and current?** Expired licenses happen more often than you'd think.
+- **What's the classification?** Residential classifications (the BC-A family) are what you want for a custom home.
+- **What's the monetary limit?** This is the one most homeowners have never heard of. Tennessee licenses carry a dollar cap based on the contractor's financial statement. A builder whose limit is $400,000 should not be signing your $750,000 build. Check that the limit comfortably covers your project.
+
+If a builder hesitates, gets cagey, or tells you the number "isn't something we hand out," that's your answer. Licensed builders give it up instantly — it's printed on their bids.
+
+While you're at it, ask for certificates of **general liability and workers' compensation insurance** sent directly from their agent, not a PDF forwarded from the builder's inbox. If an uninsured framer gets hurt on your lot, you do not want to be the one finding out how that works.
+
+## The Questions That Actually Reveal Something
+
+Most builders will answer "how long have you been in business?" the same way. These get you further:
+
+1. **"Who runs my job day to day, and how many other jobs do they have right now?"** You're not really hiring a company — you're hiring a superintendent. Get a name. A super carrying four homes is present. One carrying fifteen is a voicemail.
+2. **"Can I walk an active jobsite this week?"** This is the highest-signal question on the list. Sites that are swept, staged, and protected from weather tend to produce homes finished the same way. You'll learn more in ten minutes on a slab than in an hour in a design center.
+3. **"Are your key trades long-term partners or whoever's cheapest this month?"** Framers, plumbers, and electricians who've worked with a builder for a decade know their standards without being told. Rotating subs is where quality goes to die.
+4. **"Is this a fixed-price contract or cost-plus, and what happens when an allowance runs over?"** Both structures are legitimate. Fixed price puts more risk on the builder; cost-plus puts it on you. What matters is that your builder can explain, clearly and without hedging, which one you're signing and exactly how overages get handled.
+5. **"What's your warranty, in writing?"** The industry norm is the 1-2-10 structure: one year on workmanship and materials, two years on major systems like plumbing and electrical distribution, ten years on structural defects. It's a convention, not a law — so read the actual document rather than assuming.
+6. **"Can I talk to a client from three years ago?"** Anyone can produce a happy client from a home that closed last month. The three-year reference tells you how a builder handles a warranty call after the excitement wears off.
+
+## Red Flags Worth Walking Away From
+
+Industry veterans tend to name the same warning signs, and they hold up locally:
+
+- **A bid that's dramatically lower than the others.** In a market where material and labor costs are what they are, a number well below the field usually means something got left out — or will come back as a change order.
+- **Vague pricing and thin scope documents.** A real proposal specifies what's included. "Allowance: flooring" with no dollar figure is a future argument in writing.
+- **Pressure to sign quickly.** Good builders in Clarksville have a backlog. Urgency is a sales tactic, not a scheduling reality.
+- **Reluctance to put commitments in writing.** If it was promised verbally and isn't in the contract, it doesn't exist.
+- **Defensiveness when you ask hard questions.** You're about to spend a year in a working relationship with this person. Watch how they handle being challenged politely, because you will need to challenge them at some point.
+
+## The Part No Checklist Covers
+
+Everything above is verifiable. The last piece isn't. Building a custom home is nine to fourteen months of decisions, weather delays, and phone calls — and the builder who is technically qualified but doesn't communicate will make you miserable anyway. Pay attention to how quickly they return calls *before* you've signed anything. That's the best available preview of what year one looks like.
+
+At Homefront Builders, we're comfortable being asked all of it — the license number, the monetary limit, the insurance certificates, the subs, the warranty language, and the client from three years ago. We'd rather earn a project from someone who did their homework than win one from someone who didn't ask.
+
+**Comparing builders in Clarksville or Montgomery County?** [Contact Homefront Builders](/contact-us) and bring your list of questions — we'll answer all of them and walk you through an active jobsite. You can also review [our building process](/process) or browse our [current builds](/listings) to see the standard we hold every home to.
+`,
   'modern-farmhouse-design': `
 If you've driven through the rolling hills of Montgomery County lately, you've probably noticed it: wrap-around porches, board-and-batten siding, black-framed windows, and that unmistakable blend of rustic warmth and clean, modern lines. Modern farmhouse design has become the defining architectural style for new custom homes in Clarksville and across Middle Tennessee — and for good reason. It captures everything homeowners want today: timeless curb appeal, a connection to the land, and interiors built for the way families actually live.
 
