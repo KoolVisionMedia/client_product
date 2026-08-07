@@ -9,9 +9,9 @@ const floorPlans = [
     title: 'The Cypress',
     exterior: '/assets/floorplans/Cypress.jpg',
     plans: ['/assets/floorplans/cypress_main_fp.jpg'],
-    beds: 3,
-    baths: 2.5,
-    sqft: '2,600',
+    beds: 4,
+    baths: 2,
+    sqft: '2,650',
     description: 'The Cypress features a thoughtful open-concept main living area, perfect for entertaining. With natural light flooding the primary spaces and a beautifully appointed kitchen, this home balances elegance and everyday practicality.'
   },
   {
@@ -20,8 +20,8 @@ const floorPlans = [
     exterior: '/assets/floorplans/Dogwood.jpg',
     plans: ['/assets/floorplans/dogwood_main_fp2.jpg', '/assets/floorplans/dogwood_upper_fp2.jpg'],
     beds: 4,
-    baths: 3,
-    sqft: '2,850',
+    baths: 2.5,
+    sqft: '2,600',
     description: 'The Dogwood offers generous living space spread across two levels. The main floor boasts a grand entry and open living area, while the upper floor provides private retreats with spacious bedrooms and luxurious bathrooms.'
   },
   {
@@ -31,7 +31,7 @@ const floorPlans = [
     plans: ['/assets/floorplans/harmony_main_fp2.jpg', '/assets/floorplans/harmony_fp2.jpg'],
     beds: 4,
     baths: 3.5,
-    sqft: '3,100',
+    sqft: '2,860',
     description: 'Experience balanced living in The Harmony. This plan is designed for modern families who desire both collaborative spaces and quiet corners. Featuring a gourmet kitchen and a stunning primary suite.'
   },
   {
@@ -40,8 +40,8 @@ const floorPlans = [
     exterior: '/assets/floorplans/Magnolia.jpg',
     plans: ['/assets/floorplans/magnolia_main_fp2.jpg', '/assets/floorplans/magnolia_upper_fp2.jpg'],
     beds: 5,
-    baths: 4,
-    sqft: '3,500',
+    baths: 3,
+    sqft: '2,650',
     description: 'The Magnolia is a testament to Southern charm and luxury. A sprawling two-story layout with soaring ceilings, a chef\'s dream kitchen, and ample outdoor living space makes it perfect for hosting.'
   },
   {
@@ -49,10 +49,10 @@ const floorPlans = [
     title: 'The Myrtle',
     exterior: '/assets/floorplans/Myrtle.jpg',
     plans: ['/assets/floorplans/myrtle_main_fp2.jpg', '/assets/floorplans/myrtle_upper_fp2.jpg'],
-    beds: 3,
+    beds: 4,
     baths: 2,
-    sqft: '1,950',
-    description: 'The Myrtle is a streamlined, highly functional single-level living space with an optional upper loft. It maximizes every square foot, offering a cozy yet open environment with premium finishes throughout.'
+    sqft: '1,900',
+    description: 'The Myrtle is a streamlined, highly functional single-level living space, also available with a bonus room starting at 2,350 sq ft (4 bed, 2.5 bath). It maximizes every square foot, offering a cozy yet open environment with premium finishes throughout.'
   }
 ];
 
