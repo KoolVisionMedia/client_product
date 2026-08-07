@@ -82,7 +82,7 @@ const listings = [
     name: '1215 Hill Ln',
     location: '1215 Hill Ln',
     price: 'Under Contract',
-    stats: '3 Bed • 2.5 Bath • 2,100 SqFt • The Cypress',
+    stats: '3 Bed • 2.5 Bath • 2,600 SqFt • The Cypress',
     description: "A beautifully crafted Cypress model home at 1215 Hill Lane. This stunning property features an open-concept living space with premium finishes, a spacious chef's kitchen, elegant primary suite, and thoughtfully designed outdoor areas. Every detail reflects the hallmark quality and craftsmanship that Homefront Builders is known for.",
     image: '/assets/active_listings/1215-hill-ln/1-web-or-mls-1215-hill-ln.jpg',
     images: Array.from({length: 51}, (_, i) => `/assets/active_listings/1215-hill-ln/${i + 1}-web-or-mls-1215-hill-ln.jpg`),
@@ -144,7 +144,7 @@ const listings = [
     name: '822 Willowicke Dr',
     location: '822 Willowicke Dr',
     price: 'Under Contract',
-    stats: '3 Bed • 2.5 Bath • 2,100 SqFt • The Cypress',
+    stats: '3 Bed • 2.5 Bath • 2,600 SqFt • The Cypress',
     description: "This gorgeous Cypress model at 822 Willowicke Drive features an expansive open-concept design with soaring ceilings, a beautifully appointed kitchen, and premium finishes throughout. The spacious primary suite, covered outdoor living areas, and professionally landscaped yard create the perfect backdrop for comfortable, luxury living.",
     image: '/assets/active_listings/54-longview-cypress/1.jpg',
     images: [

@@ -11,7 +11,7 @@ const floorPlans = [
     plans: ['/assets/floorplans/cypress_main_fp.jpg'],
     beds: 3,
     baths: 2.5,
-    sqft: '2,100',
+    sqft: '2,600',
     description: 'The Cypress features a thoughtful open-concept main living area, perfect for entertaining. With natural light flooding the primary spaces and a beautifully appointed kitchen, this home balances elegance and everyday practicality.'
   },
   {
