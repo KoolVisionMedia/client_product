@@ -11,7 +11,8 @@ const listings = [
     stats: 'Under Construction',
     description: "Welcome to 5 Pace Road. This upcoming luxury property is currently under construction and will feature the highest standards of architectural design and premium craftsmanship. Stay tuned for full details, video tours, and a complete gallery as we progress toward completion.",
     // Progress photos, newest first. New drops go at the top of this list.
-    image: '/assets/active_listings/5-pace-rd/progress-1.jpg',
+    // `image` is the card thumbnail (-card.jpg); `images` stays full resolution.
+    image: '/assets/active_listings/5-pace-rd/progress-1-card.jpg',
     images: [
       '/assets/active_listings/5-pace-rd/progress-1.jpg',
       '/assets/active_listings/5-pace-rd/progress-2.jpg',
@@ -29,7 +30,7 @@ const listings = [
     // Gallery = most current shot first, then the build story in order (foundation -> framing),
     // each stage led by its top-down aerial. When new progress photos arrive, the newest
     // becomes the hero at position 1 and the previous stages follow behind it.
-    image: '/assets/active_listings/1-pace-rd/stage2-framing-5.jpg',
+    image: '/assets/active_listings/1-pace-rd/stage2-framing-5-card.jpg',
     images: [
       '/assets/active_listings/1-pace-rd/stage2-framing-5.jpg',
       '/assets/active_listings/1-pace-rd/stage1-foundation-1.jpg',
@@ -51,7 +52,7 @@ const listings = [
     stats: 'Under Construction',
     description: "23 Pace Road is currently under construction, with the exterior nearly complete. Follow the build from foundation to today — built to the same standards of architectural design and premium craftsmanship as every Homefront Builders home. Full details, specifications, and a complete gallery will follow as the build progresses.",
     // Gallery = most current shot first, then the build story led by its top-down aerial.
-    image: '/assets/active_listings/23-pace-rd/stage2-exterior-1.jpg',
+    image: '/assets/active_listings/23-pace-rd/stage2-exterior-1-card.jpg',
     images: [
       '/assets/active_listings/23-pace-rd/stage2-exterior-1.jpg',
       '/assets/active_listings/23-pace-rd/stage1-foundation-1.jpg',
@@ -460,6 +461,10 @@ export default function Listings() {
                   <motion.img
                     src={listing.image}
                     alt={listing.name}
+                    // Cards render ~350px wide; only the first row is above the fold, so
+                    // everything after it defers. Keeps the grid off the critical path.
+                    loading={i < 3 ? 'eager' : 'lazy'}
+                    decoding="async"
                     className="w-full h-full object-cover"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
