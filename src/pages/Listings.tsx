@@ -147,7 +147,7 @@ const listings = [
     name: '183 Solitude Dr',
     location: '183 Solitude Dr',
     price: 'Under Contract',
-    stats: '4 Bed • 2.5 Bath • 2,700 SqFt • The Birchwood',
+    stats: 'The Birchwood',
     description: "Welcome to 183 Solitude Drive, a gorgeous Birchwood model home that perfectly balances modern luxury with warm, inviting design. Featuring an expansive open floor plan, designer finishes throughout, a stunning primary suite, and beautifully appointed living spaces ideal for both everyday comfort and elegant entertaining.",
     image: '/assets/active_listings/17-fawn-birchwood/1-web-or-mls-183-solitude-dr.jpg',
     images: Array.from({length: 54}, (_, i) => `/assets/active_listings/17-fawn-birchwood/${i + 1}-web-or-mls-183-solitude-dr.jpg`),

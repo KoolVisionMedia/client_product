@@ -52,7 +52,7 @@ const floorPlans = [
     beds: 4,
     baths: 2,
     sqft: '1,900',
-    description: 'The Myrtle is a streamlined, highly functional single-level living space, also available with a bonus room starting at 2,350 sq ft (4 bed, 2.5 bath). It maximizes every square foot, offering a cozy yet open environment with premium finishes throughout.'
+    description: 'The Myrtle is a streamlined, highly functional single-level living space with an optional upper loft. It maximizes every square foot, offering a cozy yet open environment with premium finishes throughout.'
   }
 ];
 
