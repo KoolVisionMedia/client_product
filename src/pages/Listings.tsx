@@ -235,6 +235,68 @@ const listings = [
   },
 ];
 
+const SITE = 'https://www.homefrontbuilderstn.com';
+
+// Pull bed / bath / sqft back out of the `stats` string so structured data can
+// only ever describe what the page actually shows. Lots with no plan chosen yet
+// have no numbers in `stats`, so they correctly emit none.
+function parseStats(stats: string) {
+  const beds = stats.match(/([\d.]+)\s*Bed/i);
+  const baths = stats.match(/([\d.]+)\s*Bath/i);
+  const sqft = stats.match(/([\d,]+)\s*SqFt/i);
+  return {
+    ...(beds ? { numberOfBedrooms: Number(beds[1]) } : {}),
+    ...(baths ? { numberOfBathroomsTotal: Number(baths[1]) } : {}),
+    ...(sqft ? { floorSize: { '@type': 'QuantitativeValue', value: Number(sqft[1].replace(/,/g, '')), unitCode: 'FTK' } } : {}),
+  };
+}
+
+// Alt text is what image search reads. Build one that names the property, the
+// build stage and the builder rather than repeating the address on every frame.
+function galleryAlt(listing: typeof listings[0], index: number) {
+  const file = listing.images[index] ?? '';
+  const stage = /foundation/.test(file) ? 'foundation stage'
+    : /framing/.test(file) ? 'framing and roofing stage'
+    : /exterior/.test(file) ? 'exterior nearing completion'
+    : /progress/.test(file) ? 'construction progress'
+    : 'completed home';
+  return `${listing.name} — ${stage}, a custom home by Homefront Builders in Clarksville, TN (photo ${index + 1} of ${listing.images.length})`;
+}
+
+const listingsSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Custom Home Listings by Homefront Builders',
+    description: 'Active and completed luxury custom homes built by Homefront Builders in Clarksville and Middle Tennessee.',
+    numberOfItems: listings.length,
+    itemListElement: listings.map((l, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'SingleFamilyResidence',
+        name: l.name,
+        description: l.description,
+        image: `${SITE}${l.image}`,
+        url: `${SITE}/listings`,
+        address: {
+          '@type': 'PostalAddress',
+          // `name` is the street address; `location` is the community, which
+          // is where the town and ZIP live when they're known.
+          streetAddress: l.name,
+          addressLocality: /pleasant view/i.test(l.location) ? 'Pleasant View'
+            : /woodlawn/i.test(l.location) ? 'Woodlawn'
+            : 'Clarksville',
+          addressRegion: 'TN',
+          ...(l.location.match(/\b(\d{5})\b/) ? { postalCode: l.location.match(/\b(\d{5})\b/)![1] } : {}),
+          addressCountry: 'US',
+        },
+        ...parseStats(l.stats),
+      },
+    })),
+  },
+];
+
 // Inquiry CTA shown at the bottom of each listing's detail modal.
 // - Builds in progress: an inline lead form (name/email/phone) -> Web3Forms, so
 //   leads land in the same inbox as the rest of the site's forms.
@@ -401,11 +463,12 @@ export default function Listings() {
         title="Custom Home Listings in Clarksville, TN"
         description="Browse active custom home listings in Clarksville, TN from Homefront Builders. Luxury new construction available now in Middle Tennessee."
         path="/listings"
+        schema={listingsSchema}
       />
       {/* Hero Header */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.webp"
-          alt="Luxury Listing"
+        <img fetchPriority="high" decoding="async" src="/assets/DSC04388-Edit.webp"
+          alt="Luxury custom home built by Homefront Builders in Clarksville, Tennessee"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#1b2518]/60" />
@@ -464,7 +527,7 @@ export default function Listings() {
                 <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
                   <motion.img
                     src={listing.image}
-                    alt={listing.name}
+                    alt={`${listing.name} — ${listing.stats === 'Under Construction' || listing.stats === 'To Be Built' ? listing.stats.toLowerCase() : listing.stats.replace(/ • /g, ', ')} custom home by Homefront Builders in ${/pleasant view/i.test(listing.location) ? 'Pleasant View' : 'Clarksville'}, TN`}
                     // Cards render ~350px wide; only the first row is above the fold, so
                     // everything after it defers. Keeps the grid off the critical path.
                     loading={i < 3 ? 'eager' : 'lazy'}
@@ -557,7 +620,7 @@ export default function Listings() {
                       <motion.img
                         key={currentImageIndex}
                         src={selectedListing.images[currentImageIndex]}
-                        alt={`${selectedListing.name} - View ${currentImageIndex + 1}`}
+                        alt={galleryAlt(selectedListing, currentImageIndex)}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -576,7 +639,13 @@ export default function Listings() {
                           onClick={() => setCurrentImageIndex(idx)}
                           className={`relative flex-none w-[calc(25%-0.375rem)] aspect-[4/3] cursor-pointer rounded overflow-hidden snap-center ${idx === currentImageIndex ? 'ring-2 ring-[#c9a96e]' : 'opacity-40 hover:opacity-100 transition-opacity'}`}
                         >
-                          <img src={imgSrc} loading="lazy" className="w-full h-full object-cover" />
+                          <img
+                            src={imgSrc}
+                            alt={galleryAlt(selectedListing, idx)}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       ))}
                     </div>

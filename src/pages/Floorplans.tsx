@@ -56,6 +56,37 @@ const floorPlans = [
   }
 ];
 
+const SITE = 'https://www.homefrontbuilderstn.com';
+
+// Only the plans published on this page are described here — the full booklet
+// stays gated behind the request form.
+const floorPlansSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Homefront Builders Custom Home Floor Plans',
+    description: 'Custom home floor plans available from Homefront Builders in Clarksville and Middle Tennessee.',
+    numberOfItems: floorPlans.length,
+    itemListElement: floorPlans.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Product',
+        name: p.title,
+        description: p.description,
+        image: `${SITE}${p.exterior}`,
+        category: 'Custom Home Floor Plan',
+        brand: { '@type': 'Brand', name: 'Homefront Builders' },
+        additionalProperty: [
+          { '@type': 'PropertyValue', name: 'Bedrooms', value: p.beds },
+          { '@type': 'PropertyValue', name: 'Bathrooms', value: p.baths },
+          { '@type': 'PropertyValue', name: 'Square Feet', value: p.sqft, description: 'Starting at' },
+        ],
+      },
+    })),
+  },
+];
+
 export default function Floorplans() {
   const [selectedPlan, setSelectedPlan] = useState<typeof floorPlans[0] | null>(null);
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
@@ -109,6 +140,7 @@ export default function Floorplans() {
         title="Custom Home Floor Plans"
         description="Explore Homefront Builders' custom floor plans — the Cypress, Dogwood, Harmony, Magnolia, and Myrtle. Stunning exteriors, highly functional layouts."
         path="/floorplans"
+        schema={floorPlansSchema}
       />
       {/* Booklet Hero Section */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-16 mt-4">
@@ -198,7 +230,7 @@ export default function Floorplans() {
               {/* Cover Page (Booklet Cover Image) */}
               <div className="bookshelf-book-cover shadow-[4px_4px_15px_rgba(0,0,0,0.25)] rounded-r-[4px]">
                 <div className="absolute inset-0 z-10 backface-hidden rounded-r-[4px] overflow-hidden">
-                  <img loading="lazy" decoding="async" src="/assets/floorplans/floorplan-booklet-cover.png" alt="Booklet Cover" className="w-full h-full object-cover object-top" />
+                  <img loading="lazy" decoding="async" src="/assets/floorplans/floorplan-booklet-cover.png" alt="Homefront Builders custom home floor plan booklet cover"className="w-full h-full object-cover object-top" />
                   <div className="absolute inset-0 bg-gradient-to-t from-accent/95 via-primary/60 to-primary/20 flex flex-col justify-end p-6 text-white">
                     <span className="font-sans text-[8px] uppercase tracking-[0.2em] mb-1.5 text-white">Master Booklet</span>
                     <h4 className="font-serif text-lg md:text-xl text-white font-medium m-0 leading-tight">Floorplan Booklet</h4>
@@ -236,8 +268,8 @@ export default function Floorplans() {
               onClick={() => setSelectedPlan(plan)}
             >
               <div className="relative h-64 overflow-hidden">
-                <img loading="lazy" decoding="async" src={plan.exterior} 
-                  alt={plan.title} 
+                <img loading="lazy" decoding="async" src={plan.exterior}
+                  alt={`${plan.title} floor plan exterior — ${plan.beds} bedroom, ${plan.baths} bathroom custom home starting at ${plan.sqft} sq ft by Homefront Builders`}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
@@ -294,8 +326,8 @@ export default function Floorplans() {
                 {/* Left Column: Info & Specs */}
                 <div className="w-full lg:w-[38%] bg-surface p-5 md:p-7 flex flex-col gap-3 lg:overflow-y-auto shrink-0">
                   <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden shadow-sm border border-gray-200/50 bg-white shrink-0">
-                    <img loading="lazy" decoding="async" src={selectedPlan.exterior} 
-                      alt={selectedPlan.title} 
+                    <img loading="lazy" decoding="async" src={selectedPlan.exterior}
+                      alt={`${selectedPlan.title} custom home exterior — ${selectedPlan.beds} bedroom, ${selectedPlan.baths} bathroom plan by Homefront Builders in Clarksville, TN`}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -363,8 +395,8 @@ export default function Floorplans() {
                           {i === 0 && selectedPlan.plans.length > 1 ? 'Main Level' : i === 1 && selectedPlan.plans.length > 1 ? 'Upper Level' : 'Floor Plan'}
                         </div>
                         
-                        <img loading="lazy" decoding="async" src={planImg} 
-                          alt={`${selectedPlan.title} Layout ${i + 1}`} 
+                        <img loading="lazy" decoding="async" src={planImg}
+                          alt={`${selectedPlan.title} ${i === 0 ? 'main floor' : 'upper floor'} layout — ${selectedPlan.beds} bedroom custom home floor plan by Homefront Builders`}
                           className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover/blueprint:scale-[1.01]"
                         />
                       </div>

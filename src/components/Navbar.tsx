@@ -53,7 +53,7 @@ export default function Navbar() {
             <Link to="/" className="flex flex-col items-center group">
               <img
                 src="/logo-main.webp"
-                alt="Homefront Builders"
+                alt="Homefront Builders — custom home builder in Clarksville, TN"
                 width="1500"
                 height="591"
                 className={`transition-all duration-500 w-auto ${isScrolled ? 'h-10 md:h-12' : 'h-14 md:h-16'}`}

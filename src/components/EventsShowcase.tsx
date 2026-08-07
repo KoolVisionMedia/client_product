@@ -147,7 +147,7 @@ function EventCard({ event, index, revealed, active, anyActive, canHover, onEnte
         >
           <img
             src={`/assets/events/${event.slug}.webp`}
-            alt={event.title}
+            alt={`${event.title} — Homefront Builders community event in Clarksville, TN`}
             loading="lazy"
             decoding="async"
             className="absolute inset-0 h-full w-full object-cover"

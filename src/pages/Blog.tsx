@@ -65,6 +65,43 @@ const posts = [
   }
 ];
 
+const SITE = 'https://www.homefrontbuilderstn.com';
+
+// Articles open in a modal rather than at their own URL, so the Blog entity
+// carries each post as a BlogPosting. Anchored to /blog#<slug> so every post
+// still has a stable, referenceable identity for crawlers.
+const blogSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${SITE}/blog`,
+    name: 'Homefront Builders Custom Home Building Blog',
+    description: "Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders.",
+    url: `${SITE}/blog`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Homefront Builders',
+      logo: { '@type': 'ImageObject', url: `${SITE}/logo-main.png` },
+    },
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      '@id': `${SITE}/blog#${p.slug}`,
+      headline: p.title,
+      description: p.excerpt,
+      datePublished: new Date(p.date).toISOString().split('T')[0],
+      image: `${SITE}${p.image}`,
+      articleSection: p.category,
+      url: `${SITE}/blog#${p.slug}`,
+      author: { '@type': 'Organization', name: 'Homefront Builders' },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Homefront Builders',
+        logo: { '@type': 'ImageObject', url: `${SITE}/logo-main.png` },
+      },
+    })),
+  },
+];
+
 export default function Blog() {
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
 
@@ -90,6 +127,7 @@ export default function Blog() {
         title="Custom Home Building Blog | Tips & Insights"
         description="Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders — Middle Tennessee's premier luxury custom home builder."
         path="/blog"
+        schema={blogSchema}
       />
       {/* Hero with Parallax & Glassmorphism */}
       <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
@@ -98,7 +136,7 @@ export default function Blog() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
           src="/assets/DSC04388-Edit.webp"
-          alt="Blog Hero Background"
+          alt="Custom home building insights and tips from Homefront Builders in Clarksville, TN"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-[#1b2518]/40" />
@@ -138,7 +176,7 @@ export default function Blog() {
             {/* Image Half */}
             <div className="lg:w-3/5 relative overflow-hidden aspect-video lg:aspect-auto">
               <img loading="lazy" decoding="async" src={featuredPost.image}
-                alt={featuredPost.title}
+                alt={`${featuredPost.title} — custom home building advice from Homefront Builders`}
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
               <div className="absolute top-6 left-6">
@@ -200,7 +238,7 @@ export default function Blog() {
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img loading="lazy" decoding="async" src={post.image}
-                      alt={post.title}
+                      alt={`${post.title} — custom home building advice from Homefront Builders`}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
                     <div className="absolute top-4 left-4">

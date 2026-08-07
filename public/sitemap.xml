@@ -1,48 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.homefrontbuilderstn.com/</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/og-image.jpg</image:loc>
+      <image:title>Luxury custom home by Homefront Builders in Clarksville, TN</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/about-us</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/process</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/listings</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/active_listings/23-pace-rd/stage2-exterior-1.jpg</image:loc>
+      <image:title>23 Pace Rd custom home under construction, Clarksville TN</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/active_listings/1-pace-rd/stage2-framing-5.jpg</image:loc>
+      <image:title>1 Pace Rd custom home framing stage, Clarksville TN</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/active_listings/5-pace-rd/progress-1.jpg</image:loc>
+      <image:title>5 Pace Road custom home by Homefront Builders, Clarksville TN</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/floorplans</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/floorplans/Cypress.jpg</image:loc>
+      <image:title>The Cypress custom home floor plan by Homefront Builders</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/floorplans/Magnolia.jpg</image:loc>
+      <image:title>The Magnolia custom home floor plan by Homefront Builders</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/warranties</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/testimonials</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/blog</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/contact-us</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.homefrontbuilderstn.com/privacy-policy</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://www.homefrontbuilderstn.com/terms</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
   </url>
 </urlset>

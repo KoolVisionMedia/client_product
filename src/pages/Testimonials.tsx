@@ -257,7 +257,7 @@ const ReviewCard = ({ review }: { review: any }) => (
   <div className="bg-white/[0.05] border border-white/10 rounded-2xl p-7 flex flex-col gap-5 hover:bg-white/[0.08] transition-all duration-300 w-full mb-6">
     <div className="flex items-center gap-4">
       {review.image ? (
-        <img loading="lazy" src={review.image} alt={review.name} className="w-12 h-12 rounded-full object-cover flex-none border border-white/10" />
+        <img loading="lazy" src={review.image} alt={`${review.name}, Homefront Builders custom home client in Clarksville, TN`} className="w-12 h-12 rounded-full object-cover flex-none border border-white/10" />
       ) : (
         <div className="w-12 h-12 rounded-full overflow-hidden flex-none bg-[#2a3628] border border-white/10 flex items-center justify-center">
           <span className="font-serif text-[#c9a96e] text-sm select-none">
@@ -370,7 +370,7 @@ export default function Testimonials() {
         {/* Parallax background */}
         <motion.div className="absolute inset-0 scale-110" style={{ y: heroImageY }}>
           <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.webp"
-            alt="Luxury Home"
+            alt="Completed luxury custom home by Homefront Builders in Clarksville, Tennessee"
             className="w-full h-full object-cover"
           />
         </motion.div>

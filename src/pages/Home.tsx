@@ -11,7 +11,12 @@ import SEO from '../components/SEO';
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
+  // Stable @id so every other page can point at this one business entity
+  // instead of declaring competing copies of it.
+  "@id": "https://www.homefrontbuilderstn.com/#business",
   "name": "Homefront Builders",
+  "logo": "https://www.homefrontbuilderstn.com/logo-main.png",
+  "image": "https://www.homefrontbuilderstn.com/og-image.jpg",
   "description": "Luxury custom home builders in Clarksville, TN and Middle Tennessee. Specializing in high-end custom home construction with transparent budgeting and superior craftsmanship.",
   "url": "https://www.homefrontbuilderstn.com",
   "telephone": "(931) 221-2566",

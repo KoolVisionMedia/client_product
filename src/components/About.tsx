@@ -74,7 +74,7 @@ export default function About() {
              <div className="w-full h-full overflow-hidden">
                 <motion.img 
                   src="/assets/Harmony.webp"
-                  alt="Luxury Home Interior" 
+                  alt="Custom home interior with premium finishes by Homefront Builders, Clarksville TN" 
                   className="w-full h-full object-cover"
                   loading="lazy"
                   whileHover={{ scale: 1.05 }}

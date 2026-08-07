@@ -141,7 +141,7 @@ function PartnerCard({ partner, index, onClick }: { key?: any; partner: typeof p
       {partner.image ? (
         <motion.img
           src={partner.image}
-          alt={partner.name}
+          alt={`${partner.name} — Homefront Builders trusted building partner`}
           className="absolute inset-0 w-full h-full object-cover object-top"
           animate={{ scale: expanded ? 1.05 : 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -447,7 +447,7 @@ export default function AboutUs() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
           src="/assets/about-hero-new.webp"
-          alt="Homefront Builders Interior"
+          alt="Interior of a luxury custom home built by Homefront Builders in Middle Tennessee"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-[#1b2518]/40" />
