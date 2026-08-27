@@ -8,7 +8,8 @@ const floorPlans = [
     id: 'cypress',
     title: 'The Cypress',
     exterior: '/assets/floorplans/Cypress.jpg',
-    plans: ['/assets/floorplans/cypress_main_fp.jpg'],
+    plans: ['/assets/floorplans/cypress_render.jpg'],
+    blueprints: ['/assets/floorplans/cypress_main_fp.jpg'],
     beds: 4,
     baths: 2,
     sqft: '2,650',
@@ -18,7 +19,8 @@ const floorPlans = [
     id: 'dogwood',
     title: 'The Dogwood',
     exterior: '/assets/floorplans/Dogwood.jpg',
-    plans: ['/assets/floorplans/dogwood_main_fp2.jpg', '/assets/floorplans/dogwood_upper_fp2.jpg'],
+    plans: ['/assets/floorplans/dogwood_render_f1.jpg', '/assets/floorplans/dogwood_render_f2.jpg'],
+    blueprints: ['/assets/floorplans/dogwood_main_fp2.jpg', '/assets/floorplans/dogwood_upper_fp2.jpg'],
     beds: 4,
     baths: 2.5,
     sqft: '2,600',
@@ -28,7 +30,8 @@ const floorPlans = [
     id: 'harmony',
     title: 'The Harmony',
     exterior: '/assets/floorplans/Harmony.jpg',
-    plans: ['/assets/floorplans/harmony_main_fp2.jpg', '/assets/floorplans/harmony_fp2.jpg'],
+    plans: ['/assets/floorplans/harmony_render_f1.jpg', '/assets/floorplans/harmony_render_f2.jpg'],
+    blueprints: ['/assets/floorplans/harmony_main_fp2.jpg', '/assets/floorplans/harmony_fp2.jpg'],
     beds: 4,
     baths: 3.5,
     sqft: '2,860',
@@ -38,7 +41,8 @@ const floorPlans = [
     id: 'magnolia',
     title: 'The Magnolia',
     exterior: '/assets/floorplans/Magnolia.jpg',
-    plans: ['/assets/floorplans/magnolia_main_fp2.jpg', '/assets/floorplans/magnolia_upper_fp2.jpg'],
+    plans: ['/assets/floorplans/magnolia_render_f1.jpg', '/assets/floorplans/magnolia_render_f2.jpg'],
+    blueprints: ['/assets/floorplans/magnolia_main_fp2.jpg', '/assets/floorplans/magnolia_upper_fp2.jpg'],
     beds: 5,
     baths: 3,
     sqft: '2,650',
@@ -48,13 +52,19 @@ const floorPlans = [
     id: 'myrtle',
     title: 'The Myrtle',
     exterior: '/assets/floorplans/Myrtle.jpg',
-    plans: ['/assets/floorplans/myrtle_main_fp2.jpg', '/assets/floorplans/myrtle_upper_fp2.jpg'],
+    plans: ['/assets/floorplans/myrtle_render_f1.jpg', '/assets/floorplans/myrtle_render_f2.jpg'],
+    blueprints: ['/assets/floorplans/myrtle_main_fp2.jpg', '/assets/floorplans/myrtle_upper_fp2.jpg'],
     beds: 4,
     baths: 2,
     sqft: '1,900',
     description: 'The Myrtle is a streamlined, highly functional single-level living space with an optional upper loft. It maximizes every square foot, offering a cozy yet open environment with premium finishes throughout.'
   }
 ];
+
+// The renders ship as a full-size file plus an 800w copy beside it (foo.jpg /
+// foo-800.jpg). Phones only ever paint ~400 CSS px of these, so letting them pull
+// the 800w version saves ~65% of the bytes on the slowest connections.
+const renderSrcSet = (src: string) => `${src.replace(/\.jpg$/, '-800.jpg')} 800w, ${src} 1500w`;
 
 const SITE = 'https://www.homefrontbuilderstn.com';
 
@@ -89,8 +99,22 @@ const floorPlansSchema = [
 
 export default function Floorplans() {
   const [selectedPlan, setSelectedPlan] = useState<typeof floorPlans[0] | null>(null);
+  // Tailwind wraps group-hover in @media (hover: hover), so on touch the blueprint
+  // layer is unreachable. There we swap the hover for an explicit per-sheet toggle.
+  const [canHover, setCanHover] = useState(true);
+  const [flippedSheets, setFlippedSheets] = useState<Record<number, boolean>>({});
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [leadFormState, setLeadFormState] = useState({ status: 'idle', message: '' });
+
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const sync = () => setCanHover(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  useEffect(() => { setFlippedSheets({}); }, [selectedPlan]);
 
   const closeLeadModal = () => {
     setIsLeadModalOpen(false);
@@ -389,18 +413,46 @@ export default function Floorplans() {
                   </div>
                   
                   <div className={`w-full flex-grow grid gap-3 ${selectedPlan.plans.length > 1 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} min-h-0`}>
-                    {selectedPlan.plans.map((planImg, i) => (
+                    {selectedPlan.plans.map((planImg, i) => {
+                      const levelLabel = selectedPlan.plans.length > 1 ? (i === 0 ? 'Main Level' : 'Upper Level') : 'Floor Plan';
+                      const blueprint = selectedPlan.blueprints?.[i];
+                      // Desktop reveals the drawing on hover; touch reveals it on tap.
+                      const showBlueprint = !canHover && !!flippedSheets[i];
+
+                      return (
                       <div key={i} className="w-full bg-surface rounded-xl p-2 border border-gray-100 shadow-sm flex items-center justify-center relative group/blueprint overflow-hidden min-h-0">
                         <div className="absolute top-3 right-3 bg-primary/95 text-white text-[8px] uppercase tracking-widest font-semibold py-1 px-2.5 rounded-full shadow-md opacity-0 group-hover/blueprint:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                          {i === 0 && selectedPlan.plans.length > 1 ? 'Main Level' : i === 1 && selectedPlan.plans.length > 1 ? 'Upper Level' : 'Floor Plan'}
+                          {levelLabel}
                         </div>
-                        
-                        <img loading="lazy" decoding="async" src={planImg}
+
+                        <img loading="eager" decoding="async" src={planImg} srcSet={renderSrcSet(planImg)}
+                          sizes="(min-width: 1024px) 32vw, 90vw"
                           alt={`${selectedPlan.title} ${i === 0 ? 'main floor' : 'upper floor'} layout — ${selectedPlan.beds} bedroom custom home floor plan by Homefront Builders`}
-                          className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover/blueprint:scale-[1.01]"
+                          className={`max-w-full max-h-full object-contain transition-[transform,opacity] duration-500 will-change-[opacity] ${canHover ? 'group-hover/blueprint:scale-[1.01] group-hover/blueprint:opacity-0' : ''} ${showBlueprint ? 'opacity-0' : 'opacity-100'}`}
                         />
+
+                        {/* Second layer: the measured line drawing of the same floor. */}
+                        {blueprint && (
+                          <img loading="eager" decoding="async" src={blueprint}
+                            alt={`${selectedPlan.title} ${i === 0 ? 'main floor' : 'upper floor'} blueprint — dimensioned floor plan drawing by Homefront Builders`}
+                            className={`absolute inset-0 w-full h-full object-contain p-2 transition-opacity duration-500 will-change-[opacity] pointer-events-none ${canHover ? 'opacity-0 group-hover/blueprint:opacity-100' : (showBlueprint ? 'opacity-100' : 'opacity-0')}`}
+                          />
+                        )}
+
+                        {/* Touch has no hover, so give it a real control. */}
+                        {blueprint && !canHover && (
+                          <button
+                            type="button"
+                            onClick={() => setFlippedSheets(prev => ({ ...prev, [i]: !prev[i] }))}
+                            aria-pressed={showBlueprint}
+                            className="absolute bottom-2 right-2 z-10 inline-flex items-center justify-center min-h-[44px] bg-primary/95 text-white text-[9px] uppercase tracking-widest font-semibold py-2 px-4 rounded-full shadow-md active:scale-95 transition-transform"
+                          >
+                            {showBlueprint ? `${levelLabel} · Render` : `${levelLabel} · Blueprint`}
+                          </button>
+                        )}
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
