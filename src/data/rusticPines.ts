@@ -10,6 +10,9 @@
 //
 // To mark a lot sold/pending, change its status. Nothing else needs touching.
 
+// Whether the page is live or hidden is set in ./rusticPinesLaunch.ts (kept separate so the nav
+// can read it without pulling this lot data into every page).
+
 export type LotStatus = 'available' | 'pending' | 'sold';
 
 export interface Lot {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +31,8 @@ export default function Navbar() {
       dropdown: [
         { name: 'Current Builds', href: '/listings' },
         { name: 'Floorplans', href: '/floorplans' },
-        { name: 'Rustic Pines', href: '/rustic-pines' }
+        // Hidden until the launch switch is on (RUSTIC_PINES_LIVE in src/data/rusticPinesLaunch.ts).
+        ...(RUSTIC_PINES_LIVE ? [{ name: 'Rustic Pines', href: '/rustic-pines' }] : [])
       ]
     },
     { name: 'WARRANTIES', href: '/warranties' },

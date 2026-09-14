@@ -10,7 +10,6 @@ const routes = [
   '/process',
   '/listings',
   '/floorplans',
-  '/rustic-pines',
   '/warranties',
   '/testimonials',
   '/blog',
@@ -18,6 +17,12 @@ const routes = [
   '/privacy-policy',
   '/terms',
 ];
+
+// Rustic Pines is only built while its launch switch is on (RUSTIC_PINES_LIVE in src/data/rusticPinesLaunch.ts).
+const rusticPinesLive = /RUSTIC_PINES_LIVE\s*=\s*true/.test(
+  fs.readFileSync(path.resolve(__dirname, 'src/data/rusticPinesLaunch.ts'), 'utf-8')
+);
+if (rusticPinesLive) routes.splice(routes.indexOf('/floorplans') + 1, 0, '/rustic-pines');
 
 const rawTemplate = fs.readFileSync(path.resolve(__dirname, 'dist/index.html'), 'utf-8');
 const serverEntry = path.resolve(__dirname, 'dist/server/entry-server.js');

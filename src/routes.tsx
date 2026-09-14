@@ -1,5 +1,6 @@
 import { ComponentType, lazy, Suspense } from 'react';
 import Home from './pages/Home';
+import { RUSTIC_PINES_LIVE } from './data/rusticPinesLaunch';
 
 /**
  * Route registry with code-split pages.
@@ -72,7 +73,8 @@ export const pageRoutes = [
   { path: '/testimonials', Component: Testimonials, preload: Testimonials.preload },
   { path: '/listings', Component: Listings, preload: Listings.preload },
   { path: '/floorplans', Component: Floorplans, preload: Floorplans.preload },
-  { path: '/rustic-pines', Component: RusticPines, preload: RusticPines.preload },
+  // Hidden until the launch switch is on (RUSTIC_PINES_LIVE in src/data/rusticPinesLaunch.ts).
+  ...(RUSTIC_PINES_LIVE ? [{ path: '/rustic-pines', Component: RusticPines, preload: RusticPines.preload }] : []),
   { path: '/blog', Component: Blog, preload: Blog.preload },
   { path: '/contact-us', Component: ContactUs, preload: ContactUs.preload },
   { path: '/warranties', Component: Warranties, preload: Warranties.preload },
