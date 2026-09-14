@@ -18,6 +18,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.homefrontbuilderstn.com/rustic-pines</loc>
+    <lastmod>2026-09-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/rustic-pines/aerial-1400.webp</image:loc>
+      <image:title>Aerial site plan of Rustic Pines at Paris Landing, Stewart County TN</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://www.homefrontbuilderstn.com/process</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>

@@ -29,7 +29,8 @@ export default function Navbar() {
       name: 'CURRENT BUILDS',
       dropdown: [
         { name: 'Current Builds', href: '/listings' },
-        { name: 'Floorplans', href: '/floorplans' }
+        { name: 'Floorplans', href: '/floorplans' },
+        { name: 'Rustic Pines', href: '/rustic-pines' }
       ]
     },
     { name: 'WARRANTIES', href: '/warranties' },

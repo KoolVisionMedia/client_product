@@ -63,6 +63,7 @@ const Warranties = lazyPage(() => import('./pages/Warranties'));
 const ProcessPage = lazyPage(() => import('./pages/ProcessPage'));
 const PrivacyPolicy = lazyPage(() => import('./pages/PrivacyPolicy'));
 const Terms = lazyPage(() => import('./pages/Terms'));
+const RusticPines = lazyPage(() => import('./pages/RusticPines'));
 const NotFound = lazyPage(() => import('./pages/NotFound'));
 
 export const pageRoutes = [
@@ -71,6 +72,7 @@ export const pageRoutes = [
   { path: '/testimonials', Component: Testimonials, preload: Testimonials.preload },
   { path: '/listings', Component: Listings, preload: Listings.preload },
   { path: '/floorplans', Component: Floorplans, preload: Floorplans.preload },
+  { path: '/rustic-pines', Component: RusticPines, preload: RusticPines.preload },
   { path: '/blog', Component: Blog, preload: Blog.preload },
   { path: '/contact-us', Component: ContactUs, preload: ContactUs.preload },
   { path: '/warranties', Component: Warranties, preload: Warranties.preload },
