@@ -77,14 +77,6 @@ const partners = [
     social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: 'https://www.youtube.com/embed/0RA_NdXA0rg',
   },
-  {
-    name: 'Colleen Marquez',
-    title: 'Realtor',
-    image: '/assets/team/Colleen Marquez 2.jpg',
-    bio: `Colleen Marquez is the founder of the Home on the Rock Real Estate Team and a listing agent for Homefront Builders, where she blends real estate expertise, design intelligence, and development strategy to serve clients across Middle Tennessee.\n\nColleen specializes in custom home builds, land sourcing, greenfield development, and home design, including interior selections, floorplan planning, and architectural modifications. Her hands-on experience working alongside builders, architects, and design teams allows her to translate a client's vision into a functional, beautiful, and investment-smart home.\n\nProudly featured on Inside Success Network's Women in Power series, Colleen is recognized for her leadership, innovation, and influence in real estate, construction, and community development.\n\nAs a Certified Seller Representative Specialist (SRS) and Military Relocation Professional (MRP), Colleen brings advanced training in negotiation, pricing strategy, and client advocacy. She also provides professional staging services, ensuring every listing enters the market with editorial-quality presentation and maximum buyer appeal.\n\nServing Clarksville, Springfield, Nashville and the surrounding Middle Tennessee region, Colleen is the trusted partner for clients seeking land, custom construction, new development, or elevated residential real estate representation.`,
-    social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
-    video: 'https://www.youtube.com/embed/og0a61CUdUQ',
-  },
 ];
 
 /* ── Inline SVG Icons ── */
