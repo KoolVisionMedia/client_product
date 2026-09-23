@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import ContactCards from './ContactCards';
+import FloatingLogo3D from './FloatingLogo3D';
 
 // Letter animation helper for Webflow style text animation
 function AnimatedLetters({ text, variants }: { text: string; variants: any }) {
@@ -143,13 +144,11 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           <>
             {/* Scroll-Driven Header with Green Round Logo overtop */}
             <div className="flex flex-col items-center justify-center gap-4 md:gap-6 mb-6 relative z-20 text-center">
-              <div className="w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden shrink-0 border border-[#c9a96e]/15 shadow-md bg-white flex items-center justify-center">
-                <img
-                  src="/logo-round.webp"
-                  alt="Homefront Builders Logo"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              {/* Negative margins absorb the canvas's float room so the heading stays close */}
+              <FloatingLogo3D
+                motion="scrollTilt"
+                className="w-56 h-56 md:w-72 md:h-72 lg:w-[336px] lg:h-[336px] shrink-0 -my-6 md:-my-8 lg:-my-10"
+              />
               <h2 className="font-serif text-[3.5rem] md:text-[6rem] lg:text-[8rem] tracking-tight text-primary leading-none select-none font-bold">
                 Share your vision.
               </h2>

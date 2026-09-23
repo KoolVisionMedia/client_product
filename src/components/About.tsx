@@ -1,6 +1,7 @@
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import FloatingLogo3D from './FloatingLogo3D';
 
 export default function About() {
   const ref = useRef(null);
@@ -82,6 +83,18 @@ export default function About() {
                 />
              </div>
           </motion.div>
+          {/* 3D badge tucked into the stack: overlaps the kitchen's left edge, just above Harmony */}
+          {/* Outer div centers the badge on its anchor point; the inner motion.div owns the transform for the entrance animation */}
+          <div className="absolute z-30 -translate-x-1/2 -translate-y-1/2 left-1/2 top-[calc(24%+64px)] md:top-[calc(24%+88px)] lg:left-[calc(-4%+112px)] lg:top-[calc(24%+112px)]">
+            <motion.div
+              className="w-[min(192px,45vw)] h-[min(192px,45vw)] md:w-[264px] md:h-[264px] lg:w-[336px] lg:h-[336px]"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <FloatingLogo3D className="w-full h-full" motion="scrollTilt" />
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
