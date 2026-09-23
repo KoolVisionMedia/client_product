@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useMotionTemplate } from 'motion/react';
+import { motion } from 'motion/react';
 import ContactCards from './ContactCards';
 
 // Letter animation helper for Webflow style text animation
@@ -32,12 +32,6 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
 
   const mapRef = useRef<any>(null);
 
