@@ -1,6 +1,7 @@
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import FloatingLogo3D from './FloatingLogo3D';
 
 export default function About() {
   const ref = useRef(null);
@@ -11,6 +12,15 @@ export default function About() {
       <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-20 items-center">
         {/* Text Content */}
         <div className="flex-1 space-y-10 z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px" }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <FloatingLogo3D className="w-56 h-56 md:w-72 md:h-72 lg:w-52 lg:h-52 xl:w-72 xl:h-72 -ml-6 md:-ml-8 -mt-6 md:-mt-8 -mb-10" />
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
