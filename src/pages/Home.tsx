@@ -58,24 +58,22 @@ export default function Home() {
           shared page background reveals the thread). */}
       <div className="relative isolate">
         <ScrollThreadLine />
-        {/* Topographic background behind the opening About section, up to "The Homefront
-            Process". -z-20 keeps it under the thread line (-z-10); the mask fades it into the
-            plain page background at both ends. */}
+        {/* Topographic background behind About and "The Homefront Process" (CoreValues).
+            The canvas is one viewport tall and sticky, so it stays put like a fixed backdrop
+            while this stretch scrolls (a canvas spanning several screens would be far too
+            costly to shade). -z-20 keeps it under the thread line (-z-10); the gradients
+            fade it into the plain page background where the stretch starts and ends. */}
         <div className="relative">
-          <TopoField
-            mode="light"
-            paperColor="#FAFAF5"
-            inkColor="#2E362C"
-            opacity={0.35}
-            className="absolute inset-0 -z-20"
-            style={{
-              maskImage: 'linear-gradient(to bottom, transparent 0%, #000 14%, #000 82%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 14%, #000 82%, transparent 100%)',
-            }}
-          />
+          <div className="absolute inset-0 -z-20 pointer-events-none">
+            <div className="sticky top-0 h-screen">
+              <TopoField mode="light" paperColor="#FAFAF5" inkColor="#2E362C" opacity={0.35} />
+            </div>
+            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-surface to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-surface to-transparent" />
+          </div>
           <About />
+          <CoreValues />
         </div>
-        <CoreValues />
         <Process />
         <Portfolio />
         <CustomCare />
