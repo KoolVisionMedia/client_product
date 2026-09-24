@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { AnimatedGrid } from '../components/ui/animated-grid';
 
 const listings = [
   {
@@ -488,8 +489,10 @@ export default function Listings() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 md:py-32 px-4 md:px-12">
-        <div className="max-w-[1400px] mx-auto">
+      <section className="relative py-16 md:py-32 px-4 md:px-12">
+        {/* Animated grid backdrop in the brand palette: warm lines, gold major grid and glow. */}
+        <AnimatedGrid color="#e2ded3" accent="#B48C36" />
+        <div className="relative max-w-[1400px] mx-auto">
           {/* Elegant Filter & Sort Bar */}
           {/* Elegant Filter Bar */}
           <div className="flex flex-wrap gap-2 md:gap-3 mb-12 pb-8 border-b border-neutral-200">
