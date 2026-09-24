@@ -7,6 +7,7 @@ import CustomCare from '../components/CustomCare';
 import StayConnected from '../components/StayConnected';
 import ScrollThreadLine from '../components/ScrollThreadLine';
 import SEO from '../components/SEO';
+import TopoField from '../components/ui/topo-field';
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
@@ -57,7 +58,23 @@ export default function Home() {
           shared page background reveals the thread). */}
       <div className="relative isolate">
         <ScrollThreadLine />
-        <About />
+        {/* Topographic background behind the opening About section, up to "The Homefront
+            Process". -z-20 keeps it under the thread line (-z-10); the mask fades it into the
+            plain page background at both ends. */}
+        <div className="relative">
+          <TopoField
+            mode="light"
+            paperColor="#FAFAF5"
+            inkColor="#2E362C"
+            opacity={0.35}
+            className="absolute inset-0 -z-20"
+            style={{
+              maskImage: 'linear-gradient(to bottom, transparent 0%, #000 14%, #000 82%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 14%, #000 82%, transparent 100%)',
+            }}
+          />
+          <About />
+        </div>
         <CoreValues />
         <Process />
         <Portfolio />
