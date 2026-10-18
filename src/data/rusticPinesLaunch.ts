@@ -12,4 +12,4 @@
  * Kept in its own tiny file so the nav can read it without pulling the lot data into every page.
  * prerender.mjs reads this line with a regex, so keep it a literal `true` / `false`.
  */
-export const RUSTIC_PINES_LIVE = false;
+export const RUSTIC_PINES_LIVE = true;
