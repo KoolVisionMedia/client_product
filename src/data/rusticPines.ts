@@ -25,6 +25,13 @@ export interface Lot {
   label: [number, number];
   /** SVG polygon points, MAP_VIEWBOX units */
   points: string;
+  /**
+   * Live MLS home-and-land package for this lot, when one is on the market (RealTracs, Oct 2026).
+   * `price` is the listed total for the completed home on the lot; it excludes lot preparation and
+   * utilities (the buyer positions the home on the lot). Lots with no `home` do not have a home
+   * listed yet. `beds`/`baths` are omitted where the MLS listing is still incomplete.
+   */
+  home?: { mls: string; price: number; sqft: number; beds?: number; baths?: number };
 }
 
 export const MAP_VIEWBOX = { width: 1454, height: 1256 };
@@ -72,3 +79,44 @@ export const lots: Lot[] = [
   { number: 40, acres: 18.33, price: 199000, phase: 3, status: 'available', label: [1284.7, 722], points: '1291,428 1306.5,428.5 1308,430 1305,507.5 1302.5,510.5 1299,509 1304,514.5 1300.5,562 1304.5,599.5 1323.5,694 1321.5,791 1319.5,793.5 1310,791.5 1307.5,794 1237,795.5 1209,796 1206,793 1229.5,660.5 1232.5,654 1230,642.5 1210,437 1211.5,435.5 1243,435.5' },
   { number: 41, acres: 24.43, price: 199000, phase: 3, status: 'available', label: [1316.8, 894.7], points: '1371.5,792.5 1390.5,792.5 1394,797 1404,1060.5 1401,1067 1325.5,1149 1323,1147 1300.5,1079.5 1254.5,942.5 1255,938 1251.5,934 1206.5,799 1208.5,796.5 1220,796 1312,795.5 1320,793.5 1333.5,795 1335,793.5' },
 ];
+
+// ─── Home-and-land MLS listings (RealTracs, Oct 2026) ────────────────────────────────────────────
+// List price for a completed Homefront home on the lot. Excludes lot preparation and utilities, so
+// the buyer can position the home where they like. Lots not listed here have no home on the market
+// yet. Transcribed from the RealTracs listing export; acreage cross-checks against each lot's survey.
+const HOME_LISTINGS: Record<number, { mls: string; price: number; sqft: number; beds?: number; baths?: number }> = {
+  1:  { mls: '3621204', price: 449000, sqft: 1600, beds: 4, baths: 2 },
+  5:  { mls: '3620911', price: 980000, sqft: 3100, beds: 5, baths: 4 },
+  6:  { mls: '3620989', price: 870000, sqft: 2800, beds: 4, baths: 2 },
+  7:  { mls: '3621102', price: 664000, sqft: 2967, beds: 5, baths: 3 },
+  8:  { mls: '3620917', price: 765000, sqft: 2550, beds: 4, baths: 2 },
+  9:  { mls: '3621107', price: 735000, sqft: 2550, beds: 4, baths: 2 },
+  11: { mls: '3620991', price: 840000, sqft: 2800, beds: 4, baths: 2 },
+  12: { mls: '3620993', price: 930000, sqft: 3018, beds: 3, baths: 2 },
+  13: { mls: '3620916', price: 685000, sqft: 2740, beds: 5, baths: 3 },
+  14: { mls: '3620995', price: 795000, sqft: 2550, beds: 4, baths: 2 },
+  15: { mls: '3621017', price: 715000, sqft: 2967, beds: 5, baths: 3 },
+  16: { mls: '3621115', price: 840000, sqft: 2800, beds: 4, baths: 2 },
+  17: { mls: '3621207', price: 879000, sqft: 3100, beds: 5, baths: 4 },
+  20: { mls: '3620994', price: 999000, sqft: 3018, beds: 3, baths: 2 },
+  21: { mls: '3620914', price: 940000, sqft: 3100, beds: 5, baths: 4 },
+  22: { mls: '3621109', price: 765000, sqft: 2550, beds: 4, baths: 2 },
+  26: { mls: '3621208', price: 690000, sqft: 2430, beds: 4, baths: 2 },
+  // MLS 3621105 currently lists 1 bd / 1 ba for a 2,690 sq ft home — looks like a placeholder, so
+  // beds/baths are omitted here pending confirmation from Patricia / the updated MLS entry.
+  27: { mls: '3621105', price: 700000, sqft: 2690 },
+  29: { mls: '3621113', price: 785000, sqft: 2550, beds: 4, baths: 2 },
+  30: { mls: '3621998', price: 664000, sqft: 2967, beds: 5, baths: 3 },
+  33: { mls: '3620912', price: 525000, sqft: 1800, beds: 3, baths: 2 },
+  36: { mls: '3621007', price: 970000, sqft: 2950, beds: 5, baths: 4 },
+  37: { mls: '3620996', price: 834000, sqft: 2550, beds: 4, baths: 2 },
+  38: { mls: '3620992', price: 909000, sqft: 2800, beds: 4, baths: 2 },
+  39: { mls: '3621205', price: 840000, sqft: 2800, beds: 4, baths: 2 },
+  40: { mls: '3621103', price: 999000, sqft: 3100, beds: 5, baths: 4 },
+  41: { mls: '3621999', price: 999000, sqft: 3018, beds: 3, baths: 2 },
+};
+
+for (const lot of lots) {
+  const home = HOME_LISTINGS[lot.number];
+  if (home) lot.home = home;
+}

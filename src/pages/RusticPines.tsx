@@ -3,7 +3,7 @@ import type { CSSProperties, FormEvent, PointerEvent as ReactPointerEvent } from
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from 'motion/react';
 import type { MotionValue } from 'motion/react';
-import { ArrowRight, Layers, MapPin, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowRight, BedDouble, Home, Layers, MapPin, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { lots, MAP_VIEWBOX } from '../data/rusticPines';
@@ -137,6 +137,11 @@ const schema = {
 };
 
 const MAX_PRICE = Math.max(...lots.map((l) => l.price));
+// Home-and-land package prices (lots that currently have a live MLS listing).
+const HOME_PRICES = lots.filter((l) => l.home).map((l) => l.home!.price);
+const LISTED_HOMES = HOME_PRICES.length;
+const HOME_FROM = LISTED_HOMES ? Math.min(...HOME_PRICES) : 0;
+const HOME_TO = LISTED_HOMES ? Math.max(...HOME_PRICES) : 0;
 const TITLE = 'Rustic Pines Lots for Sale in Stewart County, TN | Homefront Builders';
 const DESCRIPTION = `${lots.length} wooded lots for sale at Rustic Pines at Paris Landing, Stewart County, TN (Dover area): ${MIN_ACRES}–${MAX_ACRES} acres from ${usd(FROM_PRICE)}. See the interactive lot map.`;
 
@@ -152,7 +157,7 @@ const FAQS: [string, string][] = [
   ],
   [
     'How much do lots at Rustic Pines cost?',
-    `Lots are listed from ${usd(FROM_PRICE)} to ${usd(MAX_PRICE)}, depending on size and location. Every lot's list price is shown on the interactive map and in the lot schedule.`,
+    `Lots are listed from ${usd(FROM_PRICE)} to ${usd(MAX_PRICE)} for the land, depending on size and location. ${LISTED_HOMES} lots also have a completed Homefront home-and-lot package listed, from ${usd(HOME_FROM)} to ${usd(HOME_TO)}; package pricing excludes lot preparation and utilities, so you can place the home where you like on the lot. Every lot's land price, home-package price, and MLS number are shown on the interactive map and in the lot schedule.`,
   ],
   [
     'Is Rustic Pines being developed in phases?',
@@ -389,6 +394,7 @@ function Stat({ icon: Icon, label, value }: { icon: LucideIcon; label: string; v
 
 function LotDetails({ lot, onInquire }: { lot: Lot; onInquire: (n: number) => void }) {
   const perAcre = Math.round(lot.price / lot.acres);
+  const home = lot.home;
   return (
     <motion.div {...panelIn}>
       <div className="flex items-center gap-2.5 text-[10px] uppercase tracking-[0.3em] text-[#c9a96e]">
@@ -400,12 +406,41 @@ function LotDetails({ lot, onInquire }: { lot: Lot; onInquire: (n: number) => vo
         </span>
       </div>
       <h3 className="font-serif text-5xl md:text-6xl text-white mt-3 leading-none">Lot {lot.number}</h3>
-      <p className="font-serif text-3xl text-[#c9a96e] mt-3">{usd(lot.price)}</p>
+
+      {home ? (
+        <div className="mt-4">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-white/45">Home + Lot Package</p>
+          <p className="font-serif text-3xl text-[#c9a96e] mt-1 leading-none">{usd(home.price)}</p>
+          <p className="mt-2 text-sm text-white/55">
+            Lot only (land): <span className="text-white/75">{usd(lot.price)}</span>
+          </p>
+          <p className="mt-2 text-xs text-white/45 leading-relaxed">
+            Package price does not include lot preparation or utilities, so you can place your home
+            where you like on the lot.
+          </p>
+          <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-white/40">MLS #{home.mls}</p>
+        </div>
+      ) : (
+        <div className="mt-4">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-white/45">Lot (Land Only)</p>
+          <p className="font-serif text-3xl text-[#c9a96e] mt-1 leading-none">{usd(lot.price)}</p>
+          <p className="mt-2 text-sm text-white/55">Home package pricing coming soon.</p>
+        </div>
+      )}
+
       <dl className="grid grid-cols-2 gap-3 mt-7">
         <Stat icon={Ruler} label="Acreage" value={`${lot.acres.toFixed(2)} ac`} />
-        <Stat icon={Tag} label="Per Acre" value={usd(perAcre)} />
+        {home ? (
+          <Stat icon={Home} label="Home Size" value={`${home.sqft.toLocaleString()} sq ft`} />
+        ) : (
+          <Stat icon={Tag} label="Per Acre" value={usd(perAcre)} />
+        )}
         <Stat icon={Layers} label="Phase" value={`Phase ${lot.phase}`} />
-        <Stat icon={Trees} label="Setting" value="Wooded" />
+        {home && home.beds != null && home.baths != null ? (
+          <Stat icon={BedDouble} label="Beds / Baths" value={`${home.beds} bd / ${home.baths} ba`} />
+        ) : (
+          <Stat icon={Trees} label="Setting" value="Wooded" />
+        )}
       </dl>
       <ul className="mt-6 space-y-2 text-sm text-white/65 leading-relaxed">
         <li className="flex gap-2">
@@ -438,7 +473,7 @@ function Overview({ canHover }: { canHover: boolean }) {
       <p className="text-[10px] uppercase tracking-[0.3em] text-[#c9a96e]">Interactive Site Plan</p>
       <h3 className="font-serif text-4xl text-white mt-3 leading-tight">Find your piece of the woods.</h3>
       <p className="mt-4 text-sm text-white/65 leading-relaxed">
-        {canHover ? 'Hover over' : 'Tap'} any lot to lift it off the map and see its acreage, price, and phase.
+        {canHover ? 'Hover over' : 'Tap'} any lot to lift it off the map and see its acreage, home and lot pricing, MLS number, and phase.
         {canHover && ' Click a lot to keep it selected.'}
       </p>
       <dl className="grid grid-cols-2 gap-3 mt-8">
@@ -474,6 +509,12 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
     fd.append('from_name', 'Homefront Builders Website');
     fd.append('Request Type', 'Rustic Pines Lot Inquiry');
     fd.append('Lot', `Lot ${lot.number} — ${lot.acres} ac — ${usd(lot.price)} (Phase ${lot.phase})`);
+    if (lot.home) {
+      fd.append(
+        'Home Package',
+        `${usd(lot.home.price)} — MLS #${lot.home.mls} — ${lot.home.sqft.toLocaleString()} sq ft (excludes lot prep & utilities)`,
+      );
+    }
     fd.append('Requested Via', 'Rustic Pines page');
     const email = fd.get('email');
     if (email) fd.append('replyto', String(email));
@@ -865,7 +906,10 @@ export default function RusticPines() {
                   </span>
                 </span>
                 <span className="text-right">
-                  <span className="block font-medium text-primary">{usd(l.price)}</span>
+                  <span className="block font-medium text-primary">{l.home ? usd(l.home.price) : usd(l.price)}</span>
+                  <span className="block text-[10px] uppercase tracking-wide text-primary/40">
+                    {l.home ? 'Home + Lot' : 'Lot Only'}
+                  </span>
                   <span className="inline-flex items-center gap-1.5 text-xs text-primary/60 mt-0.5">
                     <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[l.status]}`} />
                     {STATUS_LABEL[l.status]}
@@ -878,13 +922,15 @@ export default function RusticPines() {
 
         {/* tablet + desktop: full table */}
         <div className="hidden md:block overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
-          <table className="w-full min-w-[720px] text-sm whitespace-nowrap">
+          <table className="w-full min-w-[920px] text-sm whitespace-nowrap">
             <thead className="text-[10px] text-primary/50 bg-surface-alt">
               <tr className="text-left">
                 <th className="px-5 py-4 font-semibold">{sortHeader('number', 'Lot')}</th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Phase</th>
                 <th className="px-5 py-4 font-semibold">{sortHeader('acres', 'Acres')}</th>
-                <th className="px-5 py-4 font-semibold">{sortHeader('price', 'List Price')}</th>
+                <th className="px-5 py-4 font-semibold">{sortHeader('price', 'Lot Price')}</th>
+                <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Home + Lot</th>
+                <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">MLS</th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Per Acre</th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Status</th>
                 <th className="px-5 py-4" />
@@ -897,6 +943,10 @@ export default function RusticPines() {
                   <td className="px-5 py-4 text-primary/70">Phase {l.phase}</td>
                   <td className="px-5 py-4 text-primary">{l.acres.toFixed(2)}</td>
                   <td className="px-5 py-4 font-medium text-primary">{usd(l.price)}</td>
+                  <td className="px-5 py-4 font-medium text-primary">
+                    {l.home ? usd(l.home.price) : <span className="text-primary/40">Coming soon</span>}
+                  </td>
+                  <td className="px-5 py-4 text-primary/60">{l.home ? l.home.mls : '—'}</td>
                   <td className="px-5 py-4 text-primary/60">{usd(Math.round(l.price / l.acres))}</td>
                   <td className="px-5 py-4">
                     <span className="inline-flex items-center gap-2 text-primary/80">
@@ -986,7 +1036,8 @@ export default function RusticPines() {
             </h1>
             <p className="mt-6 text-white/75 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
               {lots.length} wooded homesites for sale, from {MIN_ACRES} to {MAX_ACRES} acres, east of State Highway 232
-              in Stewart County near Paris Landing. Choose your lot on the map below.
+              in Stewart County near Paris Landing. Buy the land, or a completed Homefront home-and-lot
+              package from {usd(HOME_FROM)}. Choose your lot on the map below.
             </p>
             <button
               type="button"
