@@ -30,8 +30,9 @@ export interface Lot {
    * `price` is the listed total for the completed home on the lot; it excludes lot preparation and
    * utilities (the buyer positions the home on the lot). Lots with no `home` do not have a home
    * listed yet. `beds`/`baths` are omitted where the MLS listing is still incomplete.
+   * `realtracsId` is the RealTracs listing ID (not the MLS #) used for the public listing URL.
    */
-  home?: { mls: string; price: number; sqft: number; beds?: number; baths?: number };
+  home?: { mls: string; realtracsId: string; price: number; sqft: number; beds?: number; baths?: number };
 }
 
 export const MAP_VIEWBOX = { width: 1454, height: 1256 };
@@ -84,37 +85,42 @@ export const lots: Lot[] = [
 // List price for a completed Homefront home on the lot. Excludes lot preparation and utilities, so
 // the buyer can position the home where they like. Lots not listed here have no home on the market
 // yet. Transcribed from the RealTracs listing export; acreage cross-checks against each lot's survey.
-const HOME_LISTINGS: Record<number, { mls: string; price: number; sqft: number; beds?: number; baths?: number }> = {
-  1:  { mls: '3621204', price: 449000, sqft: 1600, beds: 4, baths: 2 },
-  5:  { mls: '3620911', price: 980000, sqft: 3100, beds: 5, baths: 4 },
-  6:  { mls: '3620989', price: 870000, sqft: 2800, beds: 4, baths: 2 },
-  7:  { mls: '3621102', price: 664000, sqft: 2967, beds: 5, baths: 3 },
-  8:  { mls: '3620917', price: 765000, sqft: 2550, beds: 4, baths: 2 },
-  9:  { mls: '3621107', price: 735000, sqft: 2550, beds: 4, baths: 2 },
-  11: { mls: '3620991', price: 840000, sqft: 2800, beds: 4, baths: 2 },
-  12: { mls: '3620993', price: 930000, sqft: 3018, beds: 3, baths: 2 },
-  13: { mls: '3620916', price: 685000, sqft: 2740, beds: 5, baths: 3 },
-  14: { mls: '3620995', price: 795000, sqft: 2550, beds: 4, baths: 2 },
-  15: { mls: '3621017', price: 715000, sqft: 2967, beds: 5, baths: 3 },
-  16: { mls: '3621115', price: 840000, sqft: 2800, beds: 4, baths: 2 },
-  17: { mls: '3621207', price: 879000, sqft: 3100, beds: 5, baths: 4 },
-  20: { mls: '3620994', price: 999000, sqft: 3018, beds: 3, baths: 2 },
-  21: { mls: '3620914', price: 940000, sqft: 3100, beds: 5, baths: 4 },
-  22: { mls: '3621109', price: 765000, sqft: 2550, beds: 4, baths: 2 },
-  26: { mls: '3621208', price: 690000, sqft: 2430, beds: 4, baths: 2 },
+// realtracsId -> https://www.realtracs.com/listings/<id>. Each one was checked against the listing's
+// own lot number, MLS #, price, and acreage (Oct 22 2026). Lot 30's listing address is "30 Rustic
+// Pines" with no lot field; its MLS # and 7.2 ac confirm it. Don't infer IDs from MLS # order.
+const HOME_LISTINGS: Record<number, { mls: string; realtracsId: string; price: number; sqft: number; beds?: number; baths?: number }> = {
+  1:  { mls: '3621204', realtracsId: '7634079', price: 449000, sqft: 1600, beds: 4, baths: 2 },
+  5:  { mls: '3620911', realtracsId: '7551031', price: 980000, sqft: 3100, beds: 5, baths: 4 },
+  6:  { mls: '3620989', realtracsId: '7639023', price: 870000, sqft: 2800, beds: 4, baths: 2 },
+  7:  { mls: '3621102', realtracsId: '7628336', price: 664000, sqft: 2967, beds: 5, baths: 3 },
+  8:  { mls: '3620917', realtracsId: '7604462', price: 765000, sqft: 2550, beds: 4, baths: 2 },
+  9:  { mls: '3621107', realtracsId: '7628453', price: 735000, sqft: 2550, beds: 4, baths: 2 },
+  11: { mls: '3620991', realtracsId: '7639184', price: 840000, sqft: 2800, beds: 4, baths: 2 },
+  12: { mls: '3620993', realtracsId: '7639142', price: 930000, sqft: 3018, beds: 3, baths: 2 },
+  13: { mls: '3620916', realtracsId: '7610122', price: 685000, sqft: 2740, beds: 5, baths: 3 },
+  14: { mls: '3620995', realtracsId: '7639190', price: 795000, sqft: 2550, beds: 4, baths: 2 },
+  15: { mls: '3621017', realtracsId: '7639204', price: 715000, sqft: 2967, beds: 5, baths: 3 },
+  16: { mls: '3621115', realtracsId: '7628528', price: 840000, sqft: 2800, beds: 4, baths: 2 },
+  17: { mls: '3621207', realtracsId: '7634227', price: 879000, sqft: 3100, beds: 5, baths: 4 },
+  20: { mls: '3620994', realtracsId: '7639175', price: 999000, sqft: 3018, beds: 3, baths: 2 },
+  21: { mls: '3620914', realtracsId: '7650529', price: 940000, sqft: 3100, beds: 5, baths: 4 },
+  22: { mls: '3621109', realtracsId: '7628503', price: 765000, sqft: 2550, beds: 4, baths: 2 },
+  26: { mls: '3621208', realtracsId: '7629581', price: 690000, sqft: 2430, beds: 4, baths: 2 },
   // MLS 3621105 currently lists 1 bd / 1 ba for a 2,690 sq ft home — looks like a placeholder, so
   // beds/baths are omitted here pending confirmation from Patricia / the updated MLS entry.
-  27: { mls: '3621105', price: 700000, sqft: 2690 },
-  29: { mls: '3621113', price: 785000, sqft: 2550, beds: 4, baths: 2 },
-  30: { mls: '3621998', price: 664000, sqft: 2967, beds: 5, baths: 3 },
-  33: { mls: '3620912', price: 525000, sqft: 1800, beds: 3, baths: 2 },
-  36: { mls: '3621007', price: 970000, sqft: 2950, beds: 5, baths: 4 },
-  37: { mls: '3620996', price: 834000, sqft: 2550, beds: 4, baths: 2 },
-  38: { mls: '3620992', price: 909000, sqft: 2800, beds: 4, baths: 2 },
-  39: { mls: '3621205', price: 840000, sqft: 2800, beds: 4, baths: 2 },
-  40: { mls: '3621103', price: 999000, sqft: 3100, beds: 5, baths: 4 },
-  41: { mls: '3621999', price: 999000, sqft: 3018, beds: 3, baths: 2 },
+  27: { mls: '3621105', realtracsId: '7628999', price: 700000, sqft: 2690 },
+  29: { mls: '3621113', realtracsId: '7627852', price: 785000, sqft: 2550, beds: 4, baths: 2 },
+  30: { mls: '3621998', realtracsId: '7662735', price: 664000, sqft: 2967, beds: 5, baths: 3 },
+  33: { mls: '3620912', realtracsId: '7610273', price: 525000, sqft: 1800, beds: 3, baths: 2 },
+  36: { mls: '3621007', realtracsId: '7639230', price: 970000, sqft: 2950, beds: 5, baths: 4 },
+  37: { mls: '3620996', realtracsId: '7639199', price: 834000, sqft: 2550, beds: 4, baths: 2 },
+  38: { mls: '3620992', realtracsId: '7639124', price: 909000, sqft: 2800, beds: 4, baths: 2 },
+  39: { mls: '3621205', realtracsId: '7639225', price: 840000, sqft: 2800, beds: 4, baths: 2 },
+  40: { mls: '3621103', realtracsId: '7627798', price: 999000, sqft: 3100, beds: 5, baths: 4 },
+  41: { mls: '3621999', realtracsId: '7663204', price: 999000, sqft: 3018, beds: 3, baths: 2 },
 };
+
+export const realtracsUrl = (id: string) => `https://www.realtracs.com/listings/${id}`;
 
 for (const lot of lots) {
   const home = HOME_LISTINGS[lot.number];

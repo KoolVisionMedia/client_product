@@ -3,10 +3,10 @@ import type { CSSProperties, FormEvent, PointerEvent as ReactPointerEvent } from
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from 'motion/react';
 import type { MotionValue } from 'motion/react';
-import { ArrowRight, BedDouble, Home, Layers, MapPin, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowRight, BedDouble, ExternalLink, Home, Layers, MapPin, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { lots, MAP_VIEWBOX } from '../data/rusticPines';
+import { lots, MAP_VIEWBOX, realtracsUrl } from '../data/rusticPines';
 import type { Lot, LotStatus } from '../data/rusticPines';
 
 const PATH = '/rustic-pines';
@@ -419,6 +419,14 @@ function LotDetails({ lot, onInquire }: { lot: Lot; onInquire: (n: number) => vo
             where you like on the lot.
           </p>
           <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-white/40">MLS #{home.mls}</p>
+          <a
+            href={realtracsUrl(home.realtracsId)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#c9a96e] hover:text-white transition-colors"
+          >
+            View listing on RealTracs <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </div>
       ) : (
         <div className="mt-4">
@@ -946,7 +954,21 @@ export default function RusticPines() {
                   <td className="px-5 py-4 font-medium text-primary">
                     {l.home ? usd(l.home.price) : <span className="text-primary/40">Coming soon</span>}
                   </td>
-                  <td className="px-5 py-4 text-primary/60">{l.home ? l.home.mls : '—'}</td>
+                  <td className="px-5 py-4 text-primary/60">
+                    {l.home ? (
+                      <a
+                        href={realtracsUrl(l.home.realtracsId)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View Lot ${l.number} listing (MLS ${l.home.mls}) on RealTracs`}
+                        className="inline-flex items-center gap-1.5 text-accent hover:text-accent-dark underline-offset-2 hover:underline"
+                      >
+                        {l.home.mls} <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
                   <td className="px-5 py-4 text-primary/60">{usd(Math.round(l.price / l.acres))}</td>
                   <td className="px-5 py-4">
                     <span className="inline-flex items-center gap-2 text-primary/80">
