@@ -35,6 +35,13 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  // Shown under the button when sending fails, so a lost lead never looks like nothing happened.
+  const [sendError, setSendError] = useState('');
+  const sentHeadingRef = useRef<HTMLHeadingElement>(null);
+  // Once sent, move focus to the confirmation so it's announced (and not lost on the removed form).
+  useEffect(() => {
+    if (submitted) sentHeadingRef.current?.focus();
+  }, [submitted]);
 
   const mapRef = useRef<any>(null);
 
@@ -42,14 +49,33 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
     // Load the Google Maps extended-component-library only where the map is
     // actually rendered (this component), instead of on every page from
     // index.html. Injected once; whenDefined() below waits for it.
+    // And only once the map is about to scroll into view (it sits at the bottom
+    // of the contact section), so its ~1MB of scripts stay off the initial load.
     const SCRIPT_ID = 'gmpx-extended-component-library';
-    if (!document.getElementById(SCRIPT_ID)) {
+    const loadScript = () => {
+      if (document.getElementById(SCRIPT_ID)) return;
       const s = document.createElement('script');
       s.id = SCRIPT_ID;
       s.type = 'module';
       s.src =
         'https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js';
       document.head.appendChild(s);
+    };
+    const el = mapRef.current as Element | null;
+    let io: IntersectionObserver | undefined;
+    if (el && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries[entries.length - 1].isIntersecting) {
+            loadScript();
+            io?.disconnect();
+          }
+        },
+        { rootMargin: '600px 0px' }
+      );
+      io.observe(el);
+    } else {
+      loadScript();
     }
     const initMap = async () => {
       await customElements.whenDefined('gmpx-store-locator');
@@ -65,6 +91,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
       }
     };
     initMap();
+    return () => io?.disconnect();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -76,6 +103,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSendError('');
 
     try {
       const data = new FormData(e.currentTarget as HTMLFormElement);
@@ -93,9 +121,11 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
         setSubmitted(true);
       } else {
         console.error("Form submission error:", result);
+        setSendError("Your message didn't go through. Please try again, or call us at (931) 221-2566.");
       }
     } catch (error) {
       console.error("Form submission failed:", error);
+      setSendError("Your message didn't go through (network error). Please try again, or call us at (931) 221-2566.");
     } finally {
       setIsSubmitting(false);
     }
@@ -140,7 +170,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
 
   return (
     <section className="bg-white py-16 md:py-28 px-4 md:px-12 overflow-hidden">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-site-1200 mx-auto">
 
         {showWhyUs && (
           <>
@@ -217,7 +247,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                   <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </div>
-                  <h3 className="font-serif text-3xl text-white mb-3">Message Sent!</h3>
+                  <h3 ref={sentHeadingRef} tabIndex={-1} role="status" className="font-serif text-3xl text-white mb-3 outline-none">Message Sent!</h3>
                   <p className="font-sans text-sm text-white/70 max-w-sm">We've received your message and will be in touch with you soon. Thank you!</p>
                 </div>
               ) : (
@@ -230,28 +260,28 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                   <form onSubmit={handleSubmit} className="space-y-5">
 
                     <div className="flex flex-col">
-                      <label htmlFor="firstName" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Name</label>
-                      <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
+                      <label htmlFor="name" className="font-sans text-[10px] uppercase tracking-widest text-white/70 font-semibold mb-2">Name</label>
+                      <input type="text" id="name" name="name" autoComplete="name" value={formData.name} onChange={handleChange} required
                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
                         placeholder="Full Name" />
                     </div>
 
                     <div className="flex flex-col">
-                      <label htmlFor="email" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Email</label>
-                      <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
+                      <label htmlFor="email" className="font-sans text-[10px] uppercase tracking-widest text-white/70 font-semibold mb-2">Email</label>
+                      <input type="email" id="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} required
                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
                         placeholder="your@email.com" />
                     </div>
 
                     <div className="flex flex-col">
-                      <label htmlFor="phone" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Phone Number</label>
-                      <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required
+                      <label htmlFor="phone" className="font-sans text-[10px] uppercase tracking-widest text-white/70 font-semibold mb-2">Phone Number</label>
+                      <input type="tel" id="phone" name="phone" autoComplete="tel" inputMode="tel" value={formData.phone} onChange={handleChange} required
                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30"
                         placeholder="(555) 000-0000" />
                     </div>
 
                     <div className="flex flex-col">
-                      <label htmlFor="subject" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Topic</label>
+                      <label htmlFor="subject" className="font-sans text-[10px] uppercase tracking-widest text-white/70 font-semibold mb-2">Topic</label>
                       <div className="relative">
                         <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required
                           className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all appearance-none cursor-pointer pr-10">
@@ -268,14 +298,14 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                     </div>
 
                     <div className="flex flex-col">
-                      <label htmlFor="message" className="font-sans text-[9px] uppercase tracking-widest text-white/40 font-semibold mb-2">Message</label>
+                      <label htmlFor="message" className="font-sans text-[10px] uppercase tracking-widest text-white/70 font-semibold mb-2">Message</label>
                       <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={4}
                          className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 font-sans text-sm text-white outline-none focus:ring-1 focus:ring-[#c9a96e] focus:border-[#c9a96e] transition-all placeholder:text-white/30 resize-none"
                         placeholder="Tell us about your project" />
                     </div>
 
                     <div className="flex items-center gap-3 pt-2">
-                      <input type="checkbox" id="agree" required className="w-4 h-4 rounded border-white/10 bg-white/5 text-[#c9a96e] focus:ring-0 focus:ring-offset-0 cursor-pointer" />
+                      <input type="checkbox" id="agree" required className="w-5 h-5 flex-none rounded border-white/10 bg-white/5 text-[#c9a96e] focus:ring-0 focus:ring-offset-0 cursor-pointer" />
                       <label htmlFor="agree" className="font-sans text-[11px] text-white/60 cursor-pointer">
                         By sending this form, I agree to be contacted by the Homefront Builders team.
                       </label>
@@ -289,6 +319,9 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                       <ButtonGlow />
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
+                    {sendError && (
+                      <p role="alert" className="font-sans text-sm text-red-300">{sendError}</p>
+                    )}
                   </form>
                 </div>
               )}

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight, Send, X } from 'lucide-react';
 import SEO from '../components/SEO';
 import ProcessScrubVideo from '../components/ProcessScrubVideo';
+import { useDialog } from '../hooks/useDialog';
 import ButtonGlow from '../components/ui/ButtonGlow';
 
 const processSteps = [
@@ -181,6 +182,8 @@ export default function ProcessPage() {
     setIsModalOpen(false);
     setFormState({ status: 'idle', message: '' });
   };
+  const modalRef = useRef<HTMLDivElement>(null);
+  useDialog(isModalOpen, closeModal, modalRef);
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -273,7 +276,7 @@ export default function ProcessPage() {
             the DOM) and each step falls back to its own flex row. */}
         <div
           ref={stepsRef}
-          className="max-w-7xl mx-auto relative lg:grid lg:grid-cols-[150px_minmax(0,38%)_minmax(0,1fr)] lg:gap-x-10 lg:items-start"
+          className="max-w-site-1280 mx-auto relative lg:grid lg:grid-cols-[150px_minmax(0,38%)_minmax(0,1fr)] lg:gap-x-10 lg:items-start"
         >
 
           {/* Build animation, scrubbed by scroll position. Spans every row of
@@ -468,9 +471,15 @@ export default function ProcessPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              ref={modalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={MODAL_COPY[modalType].title}
               className="relative w-full max-w-lg bg-white rounded-3xl overflow-y-auto max-h-[90vh] shadow-2xl z-10"
             >
               <button
+                type="button"
+                aria-label="Close"
                 onClick={closeModal}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-colors text-primary"
               >
@@ -506,11 +515,11 @@ export default function ProcessPage() {
                     </p>
 
                     <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
-                      <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                      <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                      <input type="tel" name="phone" placeholder={copy.showMessage ? "Phone Number" : "Phone Number (Optional)"} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="text" name="name" required autoComplete="name" aria-label="Your name" placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="email" name="email" required autoComplete="email" aria-label="Your email address" placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="tel" name="phone" autoComplete="tel" inputMode="tel" aria-label="Phone number" placeholder={copy.showMessage ? "Phone Number" : "Phone Number (Optional)"} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
                       {copy.showMessage && (
-                        <textarea name="message" rows={4} placeholder="Any additional details or questions? (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors resize-none" />
+                        <textarea name="message" rows={4} aria-label="Additional details or questions" placeholder="Any additional details or questions? (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors resize-none" />
                       )}
 
                       <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2 btn-glow">
@@ -518,7 +527,7 @@ export default function ProcessPage() {
                         {formState.status === 'loading' ? copy.sending : copy.submit}
                       </button>
                       {formState.status === 'error' && (
-                        <p className="text-sm text-center mt-2 font-medium text-red-500">
+                        <p role="alert" className="text-sm text-center mt-2 font-medium text-red-600">
                           {formState.message}
                         </p>
                       )}

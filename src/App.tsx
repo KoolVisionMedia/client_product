@@ -12,6 +12,7 @@ import ScrollToTop from './components/ScrollToTop';
 import ChatWidget from './components/ChatWidget';
 
 import { useEffect } from 'react';
+import { MotionConfig } from 'motion/react';
 
 // Google Analytics Route Tracker for SPAs
 const RouteTracker = () => {
@@ -40,12 +41,22 @@ import { pageRoutes } from './routes';
 
 export default function App() {
   return (
+    // reducedMotion="user": visitors whose device asks for less motion get the
+    // site's motion-library animations without movement (fades only).
+    <MotionConfig reducedMotion="user">
     <div className="bg-surface min-h-screen flex flex-col">
+      {/* Keyboard users can jump past the navigation straight to the page. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-primary focus:px-5 focus:py-3 focus:font-sans focus:text-xs focus:font-semibold focus:uppercase focus:tracking-[0.2em] focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent"
+      >
+        Skip to content
+      </a>
       <RouteTracker />
       <ScrollToTop />
       <Navbar />
 
-      <main className="flex-grow">
+      <main id="main" tabIndex={-1} className="flex-grow outline-none">
         <Routes>
           {pageRoutes.map(({ path, Component }) => (
             <Route key={path} path={path} element={<Component />} />
@@ -58,5 +69,6 @@ export default function App() {
       <SpeedInsights />
       <ChatWidget />
     </div>
+    </MotionConfig>
   );
 }

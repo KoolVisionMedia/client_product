@@ -14,6 +14,21 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 
+  /* Page containers (max-w-site, max-w-site-1200, ...). Each keeps its design
+     width up to a 1600px-wide screen, then grows in step with the screen
+     (N/1600 of the viewport), so 1440p / 2K / ultrawide screens use their
+     width instead of leaving wide empty margins; capped at the 2560px size.
+     Phones, tablets and laptops are unaffected (they're narrower than the
+     design widths). */
+  --breakpoint-3xl: 112.5rem; /* 1800px: 1440p / 2K desktop screens */
+
+  --container-site: clamp(1400px, 87.5vw, 2240px);
+  --container-site-1600: clamp(1600px, 100vw, 2560px);
+  --container-site-1450: clamp(1450px, 90.625vw, 2320px);
+  --container-site-1300: clamp(1300px, 81.25vw, 2080px);
+  --container-site-1280: clamp(1280px, 80vw, 2048px);
+  --container-site-1200: clamp(1200px, 75vw, 1920px);
+
   --animate-spin-slow: spin 20s linear infinite;
   
   --animate-marquee-up: marquee-up 40s linear infinite;
@@ -32,6 +47,18 @@
 
 html {
   scroll-behavior: smooth;
+}
+/* Large screens: type and spacing (all rem-based) step up a little with the
+   wider page containers, so 2K screens get a proportionally bigger layout
+   rather than the same small one in the middle. Breakpoints are unaffected
+   (media queries use the browser default, not this). */
+@media (min-width: 1800px) {
+  html { font-size: 106.25%; }
+}
+@media (min-width: 2200px) {
+  html { font-size: 112.5%; }
+}
+html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -54,6 +81,13 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent);
+}
+
+/* Headings break into even lines (no single word left alone on the last
+   line); body text avoids one-word last lines where the browser supports it. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+  p, li, blockquote, figcaption, dd { text-wrap: pretty; }
 }
 
 @layer utilities {
@@ -426,4 +460,12 @@ body {
   .glow-ring .glow-l3 { stroke-dasharray: none; }
   .glow-ring rect:not(.glow-l3) { display: none; }
   .glow-fx::before { display: none; }
+}
+
+/* Legibility: small gold labels (eyebrows, "learn more" links) on light
+   backgrounds use the deeper brand gold (--color-accent-dark, the buttons'
+   hover gold): about 4.3:1 contrast instead of 3:1. Large gold headings and
+   gold on dark backgrounds keep the bright gold. */
+.text-accent:is(.text-\[9px\], .text-\[10px\], .text-\[11px\], .text-xs):not(:where(.bg-primary, .bg-primary-dark, .bg-black, [class*="bg-[#1b2518]"], [class*="bg-[#1A2118]"], [class*="bg-[#1a2118]"], [class*="bg-[#0f1a0c]"], [class*="bg-[#2E362C]"], .dark-context) *) {
+  color: var(--color-accent-dark);
 }

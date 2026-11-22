@@ -524,7 +524,7 @@ export default function Portfolio() {
   return (
     <section id="portfolio" className="relative">
       {/* Keep this block as it is: ScrollThreadLine measures it (see the note at the top). */}
-      <div id="portfolio-header" className="px-6 md:px-12 max-w-[1600px] mx-auto pt-32 pb-16">
+      <div id="portfolio-header" className="px-6 md:px-12 max-w-site-1600 mx-auto pt-32 pb-16">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -549,7 +549,7 @@ export default function Portfolio() {
       </div>
 
       {/* The shelf. On phones and tablets it scrolls sideways. */}
-      <div className="mx-auto max-w-[1400px] lg:px-12">
+      <div className="mx-auto max-w-site lg:px-12">
         <div className="scrollbar-none snap-x snap-mandatory overflow-x-auto px-6 pb-4 pt-8 md:px-12 lg:overflow-visible lg:px-0 lg:pb-0 lg:pt-2">
           <div
             className="grid w-max grid-cols-[repeat(var(--homes),64vw)] gap-x-5 sm:grid-cols-[repeat(var(--homes),38vw)] md:grid-cols-[repeat(var(--homes),29vw)] lg:w-auto lg:grid-cols-[repeat(var(--homes),minmax(0,1fr))] lg:gap-x-8"

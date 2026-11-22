@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Bed, Bath, Square, Home as HomeIcon, FileText, Send } from 'lucide-react';
 import SEO from '../components/SEO';
 import ButtonGlow from '../components/ui/ButtonGlow';
+import { useDialog } from '../hooks/useDialog';
 import { floorPlans } from '../data/floorPlans';
 
 // The renders ship as a full-size file plus an 800w copy beside it (foo.jpg /
@@ -100,17 +101,11 @@ export default function Floorplans() {
     }
   };
 
-  // Prevent scrolling on body when modal is open
-  useEffect(() => {
-    if (selectedPlan) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedPlan]);
+  // Both popups: Escape, focus in/out, Tab kept inside, page behind held still.
+  const planDialogRef = useRef<HTMLDivElement>(null);
+  const leadDialogRef = useRef<HTMLDivElement>(null);
+  useDialog(!!selectedPlan, () => setSelectedPlan(null), planDialogRef);
+  useDialog(isLeadModalOpen, closeLeadModal, leadDialogRef);
 
   return (
     <div className="bg-surface min-h-screen pt-32 pb-24">
@@ -121,7 +116,7 @@ export default function Floorplans() {
         schema={floorPlansSchema}
       />
       {/* Booklet Hero Section */}
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-16 mt-4">
+      <div className="max-w-site mx-auto px-6 md:px-12 mb-16 mt-4">
         <div className="flex flex-col items-center text-center space-y-6 max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -173,7 +168,7 @@ export default function Floorplans() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="w-full max-w-[1450px] mx-auto px-4 md:px-12 relative mb-28 overflow-hidden"
+        className="w-full max-w-site-1450 mx-auto px-4 md:px-12 relative mb-28 overflow-hidden"
       >
         {/* Soft decorative background blur shapes */}
         <div className="absolute -top-12 -left-12 w-64 h-64 bg-accent/5 rounded-full blur-3xl blob-shape floating" />
@@ -228,14 +223,14 @@ export default function Floorplans() {
       </motion.div>
 
       {/* Grid Section Header */}
-      <div id="floorplans-grid" className="max-w-[1400px] mx-auto px-6 md:px-12 mb-12 text-center scroll-mt-32">
+      <div id="floorplans-grid" className="max-w-site mx-auto px-6 md:px-12 mb-12 text-center scroll-mt-32">
         <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.3em] text-accent mb-3 block">Selectable Options</span>
         <h2 className="font-serif text-3xl md:text-5xl text-primary mb-4 leading-tight">Featured Floorplans</h2>
         <div className="w-16 h-[2px] bg-accent mx-auto" />
       </div>
 
       {/* Grid Cards container */}
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 mb-24">
+      <div className="max-w-site mx-auto px-6 md:px-12 mb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {floorPlans.map((plan, index) => (
             <motion.div
@@ -261,7 +256,11 @@ export default function Floorplans() {
                   <span className="flex items-center gap-1"><Bath size={14} className="text-accent" /> {plan.baths}</span>
                   <span className="flex items-center gap-1"><Square size={14} className="text-accent" /> {plan.sqft}</span>
                 </div>
-                <button className="mt-auto font-sans text-xs tracking-[0.2em] uppercase text-accent font-medium flex items-center gap-2 group-hover:text-primary transition-colors">
+                <button
+                  type="button"
+                  aria-label={`View layouts for ${plan.title}`}
+                  className="mt-auto font-sans text-xs tracking-[0.2em] uppercase text-accent font-medium flex items-center gap-2 group-hover:text-primary transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4"
+                >
                   View Layouts
                   <span className="w-6 h-[1px] bg-accent group-hover:w-10 group-hover:bg-primary transition-all duration-300"></span>
                 </button>
@@ -292,10 +291,16 @@ export default function Floorplans() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-[1200px] max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+              ref={planDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${selectedPlan.title} floor plan`}
+              className="relative w-full max-w-[75rem] max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col"
             >
               {/* Close Button */}
               <button 
+                type="button"
+                aria-label="Close floor plan"
                 onClick={() => setSelectedPlan(null)}
                 className="absolute top-6 right-6 z-10 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 shadow-sm"
               >
@@ -323,25 +328,25 @@ export default function Floorplans() {
                   
                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 bg-white rounded-xl p-3 border border-gray-100">
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Bedrooms</span>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Bedrooms</span>
                       <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
                         <Bed size={14} className="text-accent" /> {selectedPlan.beds}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Bathrooms</span>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Bathrooms</span>
                       <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
                         <Bath size={14} className="text-accent" /> {selectedPlan.baths}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Square Feet</span>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Square Feet</span>
                       <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
                         <Square size={14} className="text-accent" /> {selectedPlan.sqft}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[8px] uppercase tracking-[0.2em] text-primary/40 font-semibold">Type</span>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Type</span>
                       <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
                         <HomeIcon size={14} className="text-accent" /> Custom
                       </span>
@@ -419,7 +424,7 @@ export default function Floorplans() {
 
       {/* Steps to Building Section */}
       <section className="py-24 bg-white border-t border-gray-100 overflow-hidden mt-20">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="max-w-site mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             {/* Left column: Infographic Image with 3D Depth */}
             <div className="lg:col-span-6 flex justify-center order-2 lg:order-1">
@@ -552,9 +557,15 @@ export default function Floorplans() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              ref={leadDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Request the floor plan booklet"
               className="relative w-full max-w-lg bg-white rounded-3xl overflow-y-auto max-h-[90vh] shadow-2xl z-10"
             >
               <button
+                type="button"
+                aria-label="Close"
                 onClick={closeLeadModal}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-colors text-primary"
               >
@@ -588,9 +599,9 @@ export default function Floorplans() {
                       Enter your details below and the Homefront Builders team will send you the floor plan booklet.
                     </p>
                     <form onSubmit={handleLeadSubmit} className="flex flex-col gap-4">
-                      <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                      <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                      <input type="tel" name="phone" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="text" name="name" required autoComplete="name" aria-label="Your name" placeholder="Your Name" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="email" name="email" required autoComplete="email" aria-label="Your email address" placeholder="Your Email Address" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                      <input type="tel" name="phone" autoComplete="tel" inputMode="tel" aria-label="Phone number (optional)" placeholder="Phone Number (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
                       <button
                         disabled={leadFormState.status === 'loading'}
                         type="submit"
@@ -600,7 +611,7 @@ export default function Floorplans() {
                         {leadFormState.status === 'loading' ? 'Sending...' : 'Request Booklet'}
                       </button>
                       {leadFormState.status === 'error' && (
-                        <p className="text-sm text-center mt-2 font-medium text-red-500">
+                        <p role="alert" className="text-sm text-center mt-2 font-medium text-red-600">
                           {leadFormState.message}
                         </p>
                       )}

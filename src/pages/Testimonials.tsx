@@ -169,57 +169,18 @@ const communityImages = [
 ];
 
 // ── Structured data ───────────────────────────────────────────────────
-// AggregateRating + a sample of real, on-page attributed reviews, attached to
-// the same business entity used site-wide (matching name/url so Google can
-// consolidate the reviews with the homepage LocalBusiness). Rating value and
-// count reflect the reviews displayed on this page. Update `reviewCount` if the
-// verified Google review total changes.
+// The page, pointing at the one business entity declared on the home page.
+// No review / aggregateRating markup: Google ignores (and may act on)
+// "self-serving" reviews a business publishes about itself; the reviews
+// themselves stay on the page for visitors.
 const reviewsSchema = {
   "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  "name": "Homefront Builders",
-  "url": "https://www.homefrontbuilderstn.com",
-  "image": "https://www.homefrontbuilderstn.com/og-image.jpg",
-  "telephone": "(931) 221-2566",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Clarksville",
-    "addressRegion": "TN",
-    "addressCountry": "US"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "reviewCount": 15,
-    "bestRating": "5",
-    "worstRating": "1"
-  },
-  "review": [
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "bailey graven" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "Homefront built us the custom home of our dreams! They kept us informed throughout the whole process, and always stayed ahead of things. The build quality is beautiful too — unique and unlike other homes you find in Clarksville."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Mia Scimeca" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "I've built many houses with Homefront Builders — their process is just so simplified. They understand that building a house is scary and it's not simple, but they are extremely comforting and easy to contact and they walk you through it step-by-step."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Karen Priest" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "Highly professional custom home building experience in Clarksville. The team is very attentive and responsive to questions."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Sarah & Michael Thompson" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "Building our forever home with Homefront Builders was an absolute dream. From the first sketch to the final walkthrough, the attention to detail was breathtaking. They didn't just build a house; they understood exactly how we wanted to live."
-    }
-  ]
+  "@type": "WebPage",
+  "@id": "https://www.homefrontbuilderstn.com/testimonials#webpage",
+  "url": "https://www.homefrontbuilderstn.com/testimonials",
+  "name": "Homefront Builders Reviews & Testimonials",
+  "isPartOf": { "@id": "https://www.homefrontbuilderstn.com/#website" },
+  "about": { "@id": "https://www.homefrontbuilderstn.com/#business" }
 };
 
 // ── Interactive Masonry Marquee ─────────────────────────────────
@@ -284,7 +245,7 @@ const ReviewCard = ({ review }: { review: any }) => (
 
 const MasonryMarquee = () => {
   return (
-    <div className="relative h-[900px] overflow-hidden scroll-mask flex gap-6 px-6 md:px-12 max-w-7xl mx-auto items-start pt-10">
+    <div className="relative h-[900px] overflow-hidden scroll-mask flex gap-6 px-6 md:px-12 max-w-site-1280 mx-auto items-start pt-10">
       <div className="flex-1 flex flex-col animate-marquee-up pt-10">
         {[...col1, ...col1].map((review, i) => (
           <ReviewCard key={`col1-${i}`} review={review} />
@@ -306,12 +267,30 @@ const MasonryMarquee = () => {
 
 // ── Page ──────────────────────────────────────────────────────────────
 export default function Testimonials() {
+  const seminarVideoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = seminarVideoRef.current;
+    if (!v || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[entries.length - 1].isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
   const [formState, setFormState] = useState<{ status: 'idle' | 'loading' | 'success' | 'error', message: string }>({ status: 'idle', message: '' });
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormState({ status: 'loading', message: '' });
-    const formData = new FormData(e.currentTarget);
+    // Keep the form itself: React clears e.currentTarget once the handler
+    // awaits, so resetting through it afterwards threw, and a successful
+    // signup was reported as a network error.
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
     formData.append("subject", "New Community Update Subscription");
 
@@ -325,7 +304,7 @@ export default function Testimonials() {
 
       if (data.success) {
         setFormState({ status: 'success', message: 'Thank you! You are now subscribed to our updates.' });
-        e.currentTarget.reset();
+        form.reset();
       } else {
         console.error("Web3Forms Error", data);
         setFormState({ status: 'error', message: data.message || "Something went wrong. Please try again." });
@@ -370,7 +349,7 @@ export default function Testimonials() {
       <section ref={heroRef} className="relative h-[400px] md:h-[450px] overflow-hidden">
         {/* Parallax background */}
         <motion.div className="absolute inset-0 scale-110" style={{ y: heroImageY }}>
-          <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.webp"
+          <img decoding="async" fetchPriority="high" src="/assets/DSC04388-Edit.webp"
             alt="Completed luxury custom home by Homefront Builders in Clarksville, Tennessee"
             className="w-full h-full object-cover"
           />
@@ -418,13 +397,18 @@ export default function Testimonials() {
 
       {/* ── Video Card Rating Section ─────────────────────────────────────── */}
       <section className="bg-[#FAFAF5] py-16 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto relative rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <div className="max-w-site-1280 mx-auto relative rounded-[2.5rem] overflow-hidden shadow-2xl">
           {/* Background Video */}
+          {/* Background loop: plays only while on screen (and not at all for
+              visitors who ask for reduced motion); the poster shows otherwise. */}
           <video 
-            autoPlay 
+            ref={seminarVideoRef}
             muted 
             loop 
             playsInline 
+            preload="none"
+            poster="/assets/holiday-seminar-poster.webp"
+            aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/assets/holiday-seminar.mp4" type="video/mp4" />
@@ -469,7 +453,7 @@ export default function Testimonials() {
 
       {/* ── Community Reviews Masonry ──────────────────────────────────── */}
       <section className="py-24 bg-[#1b2518] overflow-hidden">
-        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-6 text-center md:text-left">
+        <div className="px-6 md:px-12 max-w-site-1280 mx-auto mb-6 text-center md:text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -499,7 +483,7 @@ export default function Testimonials() {
           className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-multiply"
           style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        <div className="relative z-10 max-w-site mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           {/* Text Content */}
           <div className="w-full lg:w-5/12 space-y-8">
@@ -542,14 +526,14 @@ export default function Testimonials() {
                     If you would like updates for any of our upcoming educational classes, seminars, or exclusive events, send us your information below.
                   </p>
                   <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
-                    <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                    <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <input type="text" name="name" required autoComplete="name" aria-label="Your name" placeholder="Your Name" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <input type="email" name="email" required autoComplete="email" aria-label="Your email address" placeholder="Your Email Address" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
                     <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-3 rounded-lg hover:bg-[#c9a96e] transition-colors disabled:opacity-50 btn-glow">
                       <ButtonGlow />
                       {formState.status === 'loading' ? 'Submitting...' : 'Sign Up for Updates'}
                     </button>
                     {formState.message && (
-                      <p className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+                      <p role={formState.status === 'error' ? 'alert' : 'status'} className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-700' : 'text-red-600'}`}>
                         {formState.message}
                       </p>
                     )}
@@ -612,7 +596,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 mx-auto mt-20 flex max-w-[1400px] items-center gap-6 px-6 md:mt-24 md:px-12"
+          className="relative z-10 mx-auto mt-20 flex max-w-site items-center gap-6 px-6 md:mt-24 md:px-12"
         >
           {/* Explicit stops rather than Tailwind's from/via/to — via sits at 50%,
               which faded the rule out over its whole length and left only the

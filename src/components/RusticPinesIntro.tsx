@@ -58,8 +58,10 @@ const reveal = (delay = 0) => ({
   transition: { duration: 1, delay, ease: EASE },
 });
 
+// The film panel is under ~900px wide below 1280px screens: 720p is plenty
+// there and roughly halves the download and decode work.
 const pickSrc = () =>
-  window.matchMedia('(min-width: 768px)').matches ? PROMO.src1080 : PROMO.src720;
+  window.matchMedia('(min-width: 1280px)').matches ? PROMO.src1080 : PROMO.src720;
 
 const controlBtn =
   'h-9 lg:h-10 rounded-full bg-black/45 ring-1 ring-white/25 text-white inline-flex items-center justify-center hover:bg-[#c9a96e] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white';
@@ -90,7 +92,10 @@ export default function RusticPinesIntro() {
     const el = frameRef.current;
     if (!el || !PROMO.filmReady) return;
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
-    if (saveData) {
+    // Save-Data, or a device asking for reduced motion: no autoplay. The poster
+    // and play button show instead (nothing downloads until they press play).
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (saveData || reducedMotion) {
       autoRef.current = false;
       return; // poster + play button; nothing downloads until they press play
     }
@@ -250,8 +255,8 @@ export default function RusticPinesIntro() {
         {/* Text: over the film's faded edge. */}
         {/* The wrapper spans the band (over the film on desktop), so it passes
             clicks through; only the text column itself takes them. */}
-        <div className="relative z-10 pointer-events-none max-w-[1400px] mx-auto px-6 md:px-12 -mt-8 md:-mt-14 lg:mt-0 lg:h-full lg:flex lg:items-center">
-          <div className="pointer-events-auto lg:w-[44%] max-w-[540px]">
+        <div className="relative z-10 pointer-events-none max-w-site mx-auto px-6 md:px-12 -mt-8 md:-mt-14 lg:mt-0 lg:h-full lg:flex lg:items-center">
+          <div className="pointer-events-auto lg:w-[44%] max-w-[33.75rem]">
             <motion.div
               {...reveal()}
               className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-3 mb-4 md:mb-6 text-[10px] font-sans tracking-[0.25em] sm:tracking-[0.3em] uppercase text-accent"

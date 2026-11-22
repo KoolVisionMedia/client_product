@@ -9,6 +9,10 @@ export default function Hero() {
   // multi-MB video download — the biggest mobile performance win on this page.
   const [showVideo, setShowVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  // Moving background: visitors can pause it (WCAG 2.2.2); once paused it
+  // stays paused until they press play, even if it scrolls out and back.
+  const [playing, setPlaying] = useState(true);
+  const userPausedRef = useRef(false);
 
   useEffect(() => {
     const canPlay =
@@ -26,8 +30,9 @@ export default function Hero() {
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) v.play().catch(() => {});
-        else v.pause();
+        if (entry.isIntersecting) {
+          if (!userPausedRef.current) v.play().catch(() => {});
+        } else v.pause();
       },
       { threshold: 0.05 }
     );
@@ -58,9 +63,35 @@ export default function Hero() {
               playsInline
               poster="/assets/hero-poster.webp"
               className="absolute inset-0 w-full h-full object-cover z-0"
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
             >
               <source src="/background-video-v4.mp4" type="video/mp4" />
             </video>
+          )}
+          {showVideo && (
+            <button
+              type="button"
+              onClick={() => {
+                const v = videoRef.current;
+                if (!v) return;
+                if (v.paused) {
+                  userPausedRef.current = false;
+                  v.play().catch(() => {});
+                } else {
+                  userPausedRef.current = true;
+                  v.pause();
+                }
+              }}
+              aria-label={playing ? 'Pause background video' : 'Play background video'}
+              className="absolute bottom-6 left-6 md:left-24 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white ring-1 ring-white/30 transition-colors hover:bg-[#c9a96e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              {playing ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" /></svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              )}
+            </button>
           )}
           <div className="absolute inset-0 bg-black/40 z-10"></div> {/* Dark Overlay */}
         </div>

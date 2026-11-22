@@ -86,7 +86,7 @@ type Insert = {
  * alone, the SVG would be stretched over a much shorter region and every curve
  * above would slide up off the content it was placed around. So:
  *  - the viewBox keeps the px-per-unit scale the region had with the old stack
- *    (its old height is known: header + LEGACY_CARDS screens + LEGACY_PAD);
+ *    (its old height is known: header + LEGACY_CARDS screens + LEGACY_PAD_REM);
  *  - the thread is untouched down to the top of the floor plans (exact Bezier
  *    split), so About, the announcement and the Process are pixel-identical to
  *    before at every size;
@@ -101,7 +101,7 @@ type Insert = {
  * original course (and its loop into Custom Care) is used.
  */
 const LEGACY_CARDS = 5; // full-screen cards the old stack had
-const LEGACY_PAD = 80; // its bottom padding, px
+const LEGACY_PAD_REM = 5; // its bottom padding (pb-20)
 const LANE_BIAS = 0.3; // which gap the thread runs down: 0 = nearest the landing point, 1 = nearest where it comes in
 type Cut = {
   /** section top, in viewBox units (i.e. including any inserted section above) */
@@ -506,8 +506,9 @@ export default function ScrollThreadLine() {
       // the thread was drawn for (see SHORTENED SECTIONS above).
       const shelf = document.getElementById('portfolio')?.getBoundingClientRect();
       const shelfHead = document.getElementById('portfolio-header')?.getBoundingClientRect();
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
       const shelfWas =
-        shelf && shelfHead ? shelfHead.height + LEGACY_CARDS * window.innerHeight + LEGACY_PAD : 0;
+        shelf && shelfHead ? shelfHead.height + LEGACY_CARDS * window.innerHeight + LEGACY_PAD_REM * rem : 0;
       const cutPx = shelf && shelf.height > 0 && shelfWas > shelf.height ? shelfWas - shelf.height : 0;
       // The region's height as the thread was drawn for it.
       const drawnH = c.height + cutPx;
