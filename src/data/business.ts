@@ -4,9 +4,9 @@
  * area served / hours can never drift apart between pages. Other pages point at
  * it by its @id.
  *
- * Facts here must match what the site says. Not included until confirmed by
- * the client: a street address (the site publishes none, so this reads as a
- * service-area business), a founding year, and named founders.
+ * Facts here must match what the site says (address and map pin: the contact
+ * page's location map). Not included until confirmed by the client: a founding
+ * year and named founders.
  */
 export const SITE = 'https://www.homefrontbuilderstn.com';
 export const BUSINESS_ID = `${SITE}/#business`;
@@ -28,12 +28,17 @@ export const BUSINESS = {
     'Luxury custom home builder in Clarksville, TN and Middle Tennessee with 20+ years of experience: custom homes, ready-to-build floor plans, transparent budgeting, and a 10-year Quality Builders Warranty backed by Liberty Mutual.',
   telephone: '+1-931-221-2566',
   email: 'homefrontsalesTN@gmail.com',
+  // The office location shown on the contact page's map (ContactSection.tsx).
   address: {
     '@type': 'PostalAddress',
+    streetAddress: '1811 Memorial Cir',
     addressLocality: 'Clarksville',
     addressRegion: 'TN',
+    postalCode: '37043',
     addressCountry: 'US',
   },
+  geo: { '@type': 'GeoCoordinates', latitude: 36.515362, longitude: -87.310433 },
+  hasMap: 'https://www.google.com/maps/place/?q=place_id:ChIJwVyv3y2CFIERnnSRyihCJmo',
   areaServed: [
     { '@type': 'City', name: 'Clarksville, Tennessee' },
     { '@type': 'AdministrativeArea', name: 'Montgomery County, Tennessee' },

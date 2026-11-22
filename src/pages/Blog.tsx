@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useRef } from 'react';
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import Tilt from 'react-parallax-tilt';
@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import { blogArticles } from '../data/blogArticles';
 import { blogPosts, blogPostPath, postDateLabel, type BlogPost } from '../data/blogPosts';
 import SEO from '../components/SEO';
+import { useDialog } from '../hooks/useDialog';
 
 const SITE = 'https://www.homefrontbuilderstn.com';
 
@@ -148,14 +149,10 @@ export default function Blog() {
     else navigate('/blog', { replace: true });
   }, [location.state, navigate]);
 
-  useEffect(() => {
-    if (!openPost) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closePost();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [openPost, closePost]);
+  // Escape closes; focus moves into the article and back; the list behind
+  // neither scrolls nor takes Tab focus while it's open.
+  const articleRef = useRef<HTMLDivElement>(null);
+  useDialog(!!openPost, closePost, articleRef);
 
   if (slug && !openPost) return <Navigate to="/blog" replace />;
 
@@ -220,6 +217,7 @@ export default function Blog() {
               exit={{ y: 20, opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
+              ref={articleRef}
               role="dialog"
               aria-modal="true"
               aria-label={openPost.title}
@@ -297,7 +295,7 @@ export default function Blog() {
       </section>
 
       {/* Featured Post (Index 0) */}
-      <section className="px-6 md:px-12 max-w-7xl mx-auto -mt-16 md:-mt-24 relative z-20">
+      <section className="px-6 md:px-12 max-w-site-1280 mx-auto -mt-16 md:-mt-24 relative z-20">
         <Tilt
           tiltMaxAngleX={3}
           tiltMaxAngleY={3}
@@ -355,7 +353,7 @@ export default function Blog() {
       </section>
 
       {/* Standard Grid */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+      <section className="py-24 px-6 md:px-12 max-w-site-1280 mx-auto">
         <motion.div
           variants={containerVariants}
           initial="hidden"

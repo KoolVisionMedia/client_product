@@ -130,7 +130,7 @@ const FloorPlanCard = ({ plan, index, total }: { key?: any, plan: any, index: nu
 export default function Portfolio() {
   return (
     <section id="portfolio" className="relative">
-      <div className="px-6 md:px-12 max-w-[1600px] mx-auto pt-32 pb-16">
+      <div className="px-6 md:px-12 max-w-site-1600 mx-auto pt-32 pb-16">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -30 }}

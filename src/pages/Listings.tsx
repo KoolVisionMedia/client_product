@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { AnimatedGrid } from '../components/ui/animated-grid';
 import ButtonGlow from '../components/ui/ButtonGlow';
+import { useDialog } from '../hooks/useDialog';
 
 const listings = [
   {
@@ -113,7 +114,7 @@ const listings = [
     price: '$1,150,000',
     stats: '5 Bed • 4.5 Bath • 4,200 SqFt',
     description: "A stunning architectural masterpiece situated on a prime lot at 24 Solitude Way. This custom home features a grand open-concept layout, soaring ceilings, high-end designer finishes, a chef's kitchen with top-of-the-line appliances, and a luxurious primary suite. Experience true elegance and unparalleled craftsmanship in every detail.",
-    image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001.jpg',
+    image: '/assets/active_listings/24-solitude-way/KoolVisionMedia001-card.webp',
     images: Array.from({length: 81}, (_, i) => `/assets/active_listings/24-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/QXDeAi2wibY?feature=share',
     status: 'Sold',
@@ -124,7 +125,7 @@ const listings = [
     price: '$1,250,000',
     stats: '5 Bed • 5 Bath • 4,800 SqFt',
     description: "Welcome to 193 Solitude Way, an exquisite custom-built estate that blends modern luxury with timeless design. This spectacular property boasts an expansive floor plan with custom millwork, an oversized gourmet kitchen, multiple living areas perfect for entertaining, and a private backyard oasis. A rare opportunity in a highly sought-after neighborhood.",
-    image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001.jpg',
+    image: '/assets/active_listings/193-solitude-way/KoolVisionMedia001-card.webp',
     images: Array.from({length: 85}, (_, i) => `/assets/active_listings/193-solitude-way/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
     video: 'https://youtube.com/shorts/HdOP20eKP74',
     status: 'Under Contract',
@@ -135,7 +136,7 @@ const listings = [
     price: 'Under Contract',
     stats: '4 Bed • 2 Bath • 2,650 SqFt • The Cypress',
     description: "A beautifully crafted Cypress model home at 1215 Hill Lane. This stunning property features an open-concept living space with premium finishes, a spacious chef's kitchen, elegant primary suite, and thoughtfully designed outdoor areas. Every detail reflects the hallmark quality and craftsmanship that Homefront Builders is known for.",
-    image: '/assets/active_listings/1215-hill-ln/1-web-or-mls-1215-hill-ln.jpg',
+    image: '/assets/active_listings/1215-hill-ln/1-web-or-mls-1215-hill-ln-card.webp',
     images: Array.from({length: 51}, (_, i) => `/assets/active_listings/1215-hill-ln/${i + 1}-web-or-mls-1215-hill-ln.jpg`),
     status: 'Under Contract',
   },
@@ -145,7 +146,7 @@ const listings = [
     price: 'Available',
     stats: '4 Bed • 2.5 Bath • 2,600 SqFt • The Dogwood',
     description: "This exceptional Dogwood model at 1177 Gholson Road showcases the finest in custom home building. With a spacious layout featuring high ceilings, premium hardwood floors, designer lighting, and a gourmet kitchen with top-of-the-line finishes. The sprawling outdoor areas and meticulous landscaping complete this remarkable property.",
-    image: '/assets/active_listings/16-gholson-rd/1-web-or-mls-1177-gholson-rd.jpg',
+    image: '/assets/active_listings/16-gholson-rd/1-web-or-mls-1177-gholson-rd-card.webp',
     images: Array.from({length: 74}, (_, i) => `/assets/active_listings/16-gholson-rd/${i + 1}-web-or-mls-1177-gholson-rd.jpg`)
       .filter(img => !img.endsWith('70-web-or-mls-1177-gholson-rd.jpg') && !img.endsWith('73-web-or-mls-1177-gholson-rd.jpg')),
     status: 'Sold',
@@ -156,7 +157,7 @@ const listings = [
     price: 'Under Contract',
     stats: 'The Birchwood',
     description: "Welcome to 183 Solitude Drive, a gorgeous Birchwood model home that perfectly balances modern luxury with warm, inviting design. Featuring an expansive open floor plan, designer finishes throughout, a stunning primary suite, and beautifully appointed living spaces ideal for both everyday comfort and elegant entertaining.",
-    image: '/assets/active_listings/17-fawn-birchwood/1-web-or-mls-183-solitude-dr.jpg',
+    image: '/assets/active_listings/17-fawn-birchwood/1-web-or-mls-183-solitude-dr-card.webp',
     images: Array.from({length: 54}, (_, i) => `/assets/active_listings/17-fawn-birchwood/${i + 1}-web-or-mls-183-solitude-dr.jpg`),
     status: 'Under Contract',
   },
@@ -166,7 +167,7 @@ const listings = [
     price: 'Available',
     stats: '4 Bed • 3.5 Bath • 2,860 SqFt • The Harmony',
     description: "Situated at 411 Blue Ridge Court, this stunning Harmony model home showcases an exceptional blend of style and functionality. From the moment you step inside, you're greeted by a grand foyer, open-concept living areas, and a chef's kitchen with premium appliances. The spacious primary suite and beautifully finished lower level make this an ideal family home.",
-    image: '/assets/active_listings/41-longview-harmony/1-web-or-mls-411-blue-rdg-ct.jpg',
+    image: '/assets/active_listings/41-longview-harmony/1-web-or-mls-411-blue-rdg-ct-card.webp',
     images: Array.from({length: 52}, (_, i) => `/assets/active_listings/41-longview-harmony/${i + 1}-web-or-mls-411-blue-rdg-ct.jpg`),
     video: 'https://www.youtube.com/embed/xR7JxTj79-o',
     status: 'Available',
@@ -177,7 +178,7 @@ const listings = [
     price: 'Under Contract',
     stats: '5 Bed • 3 Bath • 2,650 SqFt • The Magnolia',
     description: "This remarkable Magnolia model at 418 Blue Ridge Court is a true showpiece. Featuring an elegant open floor plan, designer finishes, custom lighting, and a gourmet kitchen with oversized island. The thoughtfully designed living spaces flow seamlessly, creating an atmosphere of refined luxury throughout. An impeccably built home with attention to every detail.",
-    image: '/assets/active_listings/44-longview-magnolia/1-web-or-mls-418-blue-rdg-ct.jpg',
+    image: '/assets/active_listings/44-longview-magnolia/1-web-or-mls-418-blue-rdg-ct-card.webp',
     images: Array.from({length: 50}, (_, i) => `/assets/active_listings/44-longview-magnolia/${i + 1}-web-or-mls-418-blue-rdg-ct.jpg`),
     status: 'Under Contract',
   },
@@ -187,7 +188,7 @@ const listings = [
     price: 'Available',
     stats: '4 Bed • 2 Bath • 1,900 SqFt • The Myrtle',
     description: "Located at 830 Willowicke Drive, this beautiful Myrtle model home offers the perfect combination of elegance and everyday livability. Featuring a well-designed open floor plan, premium finishes, a stunning kitchen with custom cabinetry, and a generous primary suite. The outdoor entertaining spaces and professional landscaping complete this exceptional property.",
-    image: '/assets/active_listings/52-longview-myrtle/1-web-or-mls-830-willowicke-dr-lot-52.jpg',
+    image: '/assets/active_listings/52-longview-myrtle/1-web-or-mls-830-willowicke-dr-lot-52-card.webp',
     images: Array.from({length: 39}, (_, i) => `/assets/active_listings/52-longview-myrtle/${i + 1}-web-or-mls-830-willowicke-dr-lot-52.jpg`),
     status: 'Available',
   },
@@ -197,7 +198,7 @@ const listings = [
     price: 'Under Contract',
     stats: '4 Bed • 2 Bath • 2,650 SqFt • The Cypress',
     description: "This gorgeous Cypress model at 822 Willowicke Drive features an expansive open-concept design with soaring ceilings, a beautifully appointed kitchen, and premium finishes throughout. The spacious primary suite, covered outdoor living areas, and professionally landscaped yard create the perfect backdrop for comfortable, luxury living.",
-    image: '/assets/active_listings/54-longview-cypress/1.jpg',
+    image: '/assets/active_listings/54-longview-cypress/1-card.webp',
     images: [
       ...Array.from({length: 10}, (_, i) => `/assets/active_listings/54-longview-cypress/${i + 1}.jpg`).filter(img => !img.endsWith('/8.jpg')),
       ...Array.from({length: 41}, (_, i) => `/assets/active_listings/54-longview-cypress/${i + 7}-web-or-mls-822-willowicke.jpg`)
@@ -211,7 +212,7 @@ const listings = [
     price: 'Available',
     stats: '4 Bed • 2.5 Bath • 2,600 SqFt • The Dogwood',
     description: "Welcome to 513 Foxglove Lane, a meticulously crafted Dogwood model home that exemplifies Homefront Builders' commitment to quality. This beautiful property features a grand open layout, hardwood flooring, a designer kitchen with premium appliances, and a luxurious primary retreat. Every room has been thoughtfully designed for both beauty and functionality.",
-    image: '/assets/active_listings/62-longview-dogwood/1-web-or-mls-513-foxglove-ln.jpg',
+    image: '/assets/active_listings/62-longview-dogwood/1-web-or-mls-513-foxglove-ln-card.webp',
     images: Array.from({length: 45}, (_, i) => `/assets/active_listings/62-longview-dogwood/${i + 1}-web-or-mls-513-foxglove-ln.jpg`),
     status: 'Available',
   },
@@ -221,7 +222,7 @@ const listings = [
     price: 'Under Contract',
     stats: 'Custom Build',
     description: "Nestled on a scenic property at 3159 Lewis Atkins Road in Woodlawn, this custom-built home delivers the perfect blend of country charm and modern luxury. Featuring a spacious open-concept design, premium finishes, a gourmet kitchen, and expansive outdoor living areas that take full advantage of the beautiful surrounding landscape.",
-    image: '/assets/active_listings/3159-lewis-atkins-rd/1-web-or-mls-3159-lewis-atkins-rd.jpg',
+    image: '/assets/active_listings/3159-lewis-atkins-rd/1-web-or-mls-3159-lewis-atkins-rd-card.webp',
     images: Array.from({length: 44}, (_, i) => `/assets/active_listings/3159-lewis-atkins-rd/${i + 1}-web-or-mls-3159-lewis-atkins-rd.jpg`),
     status: 'Under Contract',
   },
@@ -231,7 +232,7 @@ const listings = [
     price: 'Available',
     stats: 'Custom Build',
     description: "This elegant custom home at 482 Ridge Top Court showcases exceptional design and superior construction. With an inviting open floor plan, designer kitchen, custom millwork, and a stunning primary suite, every space has been crafted to the highest standards. The beautifully landscaped grounds and outdoor entertaining areas make this property truly special.",
-    image: '/assets/active_listings/482-ridge-top-ct/1-web-or-mls-482-ridge-top-ct.jpg',
+    image: '/assets/active_listings/482-ridge-top-ct/1-web-or-mls-482-ridge-top-ct-card.webp',
     images: Array.from({length: 35}, (_, i) => `/assets/active_listings/482-ridge-top-ct/${i + 1}-web-or-mls-482-ridge-top-ct.jpg`),
     status: 'Sold',
   },
@@ -279,7 +280,7 @@ const listingsSchema = [
         '@type': 'SingleFamilyResidence',
         name: l.name,
         description: l.description,
-        image: `${SITE}${l.image}`,
+        image: `${SITE}${l.images[0] ?? l.image}`, // full size for search (cards use a 900px copy)
         url: `${SITE}/listings`,
         address: {
           '@type': 'PostalAddress',
@@ -370,16 +371,16 @@ function ListingInquiry({ listing }: { listing: typeof listings[0] }) {
             <h3 className="font-serif text-2xl md:text-3xl mb-2">Have questions about {listing.name}?</h3>
             <p className="font-sans text-sm text-white/70 mb-7 max-w-xl">Leave your details and our team will reach out with pricing, timelines, floor plans, and answers to anything you'd like to know about this home.</p>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-              <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-              <input type="tel" name="phone" required placeholder="Phone Number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-              <input type="text" name="question" placeholder="Your question (optional)" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="text" name="name" required autoComplete="name" aria-label="Your name" placeholder="Your Name" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="email" name="email" required autoComplete="email" aria-label="Email address" placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="tel" name="phone" required autoComplete="tel" inputMode="tel" aria-label="Phone number" placeholder="Phone Number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+              <input type="text" name="question" aria-label="Your question (optional)" placeholder="Your question (optional)" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
               <button type="submit" disabled={status === 'loading'} className="md:col-span-2 mt-1 bg-[#c9a96e] text-[#1b2518] font-sans font-bold text-xs uppercase tracking-[0.2em] py-4 rounded-xl hover:bg-white transition-colors disabled:opacity-60 btn-glow">
                 <ButtonGlow />
                 {status === 'loading' ? 'Sending...' : 'Ask About This Home'}
               </button>
               {status === 'error' && (
-                <p className="md:col-span-2 text-sm text-red-300 text-center">{errorMsg}</p>
+                <p role="alert" className="md:col-span-2 text-sm text-red-300 text-center">{errorMsg}</p>
               )}
             </form>
           </>
@@ -395,6 +396,8 @@ export default function Listings() {
   }, []);
 
   const [selectedListing, setSelectedListing] = useState<typeof listings[0] | null>(null);
+  const listingDialogRef = useRef<HTMLDivElement>(null);
+  useDialog(!!selectedListing, () => setSelectedListing(null), listingDialogRef);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState<string>('All');
   const [sortOption, setSortOption] = useState<string>('default');
@@ -495,7 +498,7 @@ export default function Listings() {
       <section className="relative py-16 md:py-32 px-4 md:px-12">
         {/* Animated grid backdrop in the brand palette: warm lines, gold major grid and glow. */}
         <AnimatedGrid color="#e2ded3" accent="#B48C36" />
-        <div className="relative max-w-[1400px] mx-auto">
+        <div className="relative max-w-site mx-auto">
           {/* Elegant Filter & Sort Bar */}
           {/* Elegant Filter Bar */}
           <div className="flex flex-wrap gap-2 md:gap-3 mb-12 pb-8 border-b border-neutral-200">
@@ -514,7 +517,7 @@ export default function Listings() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-6 md:gap-8 lg:gap-10">
             {sortedListings.map((listing, i) => (
               <motion.div
                 layout
@@ -523,10 +526,19 @@ export default function Listings() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '0px 0px -60px 0px' }}
                 transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="group cursor-pointer"
+                className="group cursor-pointer rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e] focus-visible:ring-offset-4"
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   setSelectedListing(listing);
                   setCurrentImageIndex(0);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedListing(listing);
+                    setCurrentImageIndex(0);
+                  }
                 }}
               >
                 {/* Image Container with Info Overlay */}
@@ -546,7 +558,7 @@ export default function Listings() {
                   {/* Status Badge */}
                   {(listing.status === 'Coming Soon' || listing.status === 'Under Construction') && (
                     <div className="absolute top-4 left-4 flex gap-2 z-20">
-                      <span className="px-4 py-1.5 rounded-full text-[9px] uppercase font-sans tracking-widest font-semibold bg-[#c9a96e] text-white shadow-sm">
+                      <span className="px-4 py-1.5 rounded-full text-[10px] uppercase font-sans tracking-widest font-semibold bg-[#c9a96e] text-[#1b2518] shadow-sm">
                         Build in Progress
                       </span>
                     </div>
@@ -607,9 +619,15 @@ export default function Listings() {
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="bg-white w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl relative"
               onClick={e => e.stopPropagation()}
+              ref={listingDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={selectedListing.name}
             >
               {/* Close Button */}
               <button 
+                type="button"
+                aria-label="Close"
                 onClick={() => setSelectedListing(null)}
                 className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black text-white p-2 rounded-full backdrop-blur-md transition-colors"
               >
@@ -642,8 +660,18 @@ export default function Listings() {
                       {selectedListing.images.map((imgSrc, idx) => (
                         <div 
                           key={idx}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`Show photo ${idx + 1} of ${selectedListing.images.length}`}
+                          aria-pressed={idx === currentImageIndex}
                           onClick={() => setCurrentImageIndex(idx)}
-                          className={`relative flex-none w-[calc(25%-0.375rem)] aspect-[4/3] cursor-pointer rounded overflow-hidden snap-center ${idx === currentImageIndex ? 'ring-2 ring-[#c9a96e]' : 'opacity-40 hover:opacity-100 transition-opacity'}`}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setCurrentImageIndex(idx);
+                            }
+                          }}
+                          className={`relative flex-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-[calc(25%-0.375rem)] aspect-[4/3] cursor-pointer rounded overflow-hidden snap-center ${idx === currentImageIndex ? 'ring-2 ring-[#c9a96e]' : 'opacity-40 hover:opacity-100 transition-opacity'}`}
                         >
                           <img
                             src={imgSrc}
@@ -691,7 +719,7 @@ export default function Listings() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 pb-8 border-b border-gray-200">
                   <div>
                     {(selectedListing.status === 'Coming Soon' || selectedListing.status === 'Under Construction') && (
-                      <span className="inline-block px-3 py-1 bg-[#c9a96e] text-white text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
+                      <span className="inline-block px-3 py-1 bg-[#c9a96e] text-[#1b2518] text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
                         Build in Progress
                       </span>
                     )}

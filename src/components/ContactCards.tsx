@@ -52,7 +52,7 @@ export default function ContactCards() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1200px] mx-auto py-12 relative z-20">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-site-1200 mx-auto py-12 relative z-20">
       {cardsData.map((card) => {
         const Icon = card.icon;
         const isHovered = hoveredCard === card.id;

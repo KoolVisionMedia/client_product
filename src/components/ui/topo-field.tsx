@@ -159,7 +159,7 @@ export default function TopoField({
   brightness = 1,
   paperColor,
   inkColor,
-  maxFps = 30,
+  maxFps = 15, // the drift is very slow; 15fps looks identical and halves the GPU time
   className,
   style,
 }: TopoFieldProps) {
@@ -228,7 +228,9 @@ export default function TopoField({
     const uInk = u("u_ink");
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Soft, slow-drifting background lines: rendering above 1.25x density buys
+      // nothing visible and multiplies the shader work (4x at 2x on retina).
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
       const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
       if (canvas.width !== w || canvas.height !== h) {

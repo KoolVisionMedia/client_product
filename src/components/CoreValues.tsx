@@ -49,7 +49,7 @@ const values = [
 export default function CoreValues() {
   return (
     <section className="relative py-24 md:py-0">
-      <div className="flex flex-col lg:flex-row items-start justify-between px-6 md:px-12 max-w-[1400px] mx-auto relative">
+      <div className="flex flex-col lg:flex-row items-start justify-between px-6 md:px-12 max-w-site mx-auto relative">
         
         {/* Left Content - Pinned */}
         <div className="w-full lg:w-5/12 lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center py-16 lg:py-0 z-10">

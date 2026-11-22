@@ -245,7 +245,7 @@ const ReviewCard = ({ review }: { review: any }) => (
 
 const MasonryMarquee = () => {
   return (
-    <div className="relative h-[900px] overflow-hidden scroll-mask flex gap-6 px-6 md:px-12 max-w-7xl mx-auto items-start pt-10">
+    <div className="relative h-[900px] overflow-hidden scroll-mask flex gap-6 px-6 md:px-12 max-w-site-1280 mx-auto items-start pt-10">
       <div className="flex-1 flex flex-col animate-marquee-up pt-10">
         {[...col1, ...col1].map((review, i) => (
           <ReviewCard key={`col1-${i}`} review={review} />
@@ -267,12 +267,30 @@ const MasonryMarquee = () => {
 
 // ── Page ──────────────────────────────────────────────────────────────
 export default function Testimonials() {
+  const seminarVideoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = seminarVideoRef.current;
+    if (!v || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[entries.length - 1].isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
   const [formState, setFormState] = useState<{ status: 'idle' | 'loading' | 'success' | 'error', message: string }>({ status: 'idle', message: '' });
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormState({ status: 'loading', message: '' });
-    const formData = new FormData(e.currentTarget);
+    // Keep the form itself: React clears e.currentTarget once the handler
+    // awaits, so resetting through it afterwards threw, and a successful
+    // signup was reported as a network error.
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     formData.append("access_key", "6734d3d0-0e39-4112-b5b6-3247d6699948");
     formData.append("subject", "New Community Update Subscription");
 
@@ -286,7 +304,7 @@ export default function Testimonials() {
 
       if (data.success) {
         setFormState({ status: 'success', message: 'Thank you! You are now subscribed to our updates.' });
-        e.currentTarget.reset();
+        form.reset();
       } else {
         console.error("Web3Forms Error", data);
         setFormState({ status: 'error', message: data.message || "Something went wrong. Please try again." });
@@ -331,7 +349,7 @@ export default function Testimonials() {
       <section ref={heroRef} className="relative h-[400px] md:h-[450px] overflow-hidden">
         {/* Parallax background */}
         <motion.div className="absolute inset-0 scale-110" style={{ y: heroImageY }}>
-          <img loading="lazy" decoding="async" src="/assets/DSC04388-Edit.webp"
+          <img decoding="async" fetchPriority="high" src="/assets/DSC04388-Edit.webp"
             alt="Completed luxury custom home by Homefront Builders in Clarksville, Tennessee"
             className="w-full h-full object-cover"
           />
@@ -379,13 +397,18 @@ export default function Testimonials() {
 
       {/* ── Video Card Rating Section ─────────────────────────────────────── */}
       <section className="bg-[#FAFAF5] py-16 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto relative rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <div className="max-w-site-1280 mx-auto relative rounded-[2.5rem] overflow-hidden shadow-2xl">
           {/* Background Video */}
+          {/* Background loop: plays only while on screen (and not at all for
+              visitors who ask for reduced motion); the poster shows otherwise. */}
           <video 
-            autoPlay 
+            ref={seminarVideoRef}
             muted 
             loop 
             playsInline 
+            preload="none"
+            poster="/assets/holiday-seminar-poster.webp"
+            aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/assets/holiday-seminar.mp4" type="video/mp4" />
@@ -430,7 +453,7 @@ export default function Testimonials() {
 
       {/* ── Community Reviews Masonry ──────────────────────────────────── */}
       <section className="py-24 bg-[#1b2518] overflow-hidden">
-        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-6 text-center md:text-left">
+        <div className="px-6 md:px-12 max-w-site-1280 mx-auto mb-6 text-center md:text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -460,7 +483,7 @@ export default function Testimonials() {
           className="absolute inset-0 opacity-[0.08] pointer-events-none mix-blend-multiply"
           style={{ backgroundImage: 'url(/assets/blueprint_bg.webp)', backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        <div className="relative z-10 max-w-site mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
           
           {/* Text Content */}
           <div className="w-full lg:w-5/12 space-y-8">
@@ -503,14 +526,14 @@ export default function Testimonials() {
                     If you would like updates for any of our upcoming educational classes, seminars, or exclusive events, send us your information below.
                   </p>
                   <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
-                    <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                    <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <input type="text" name="name" required autoComplete="name" aria-label="Your name" placeholder="Your Name" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
+                    <input type="email" name="email" required autoComplete="email" aria-label="Your email address" placeholder="Your Email Address" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
                     <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-3 rounded-lg hover:bg-[#c9a96e] transition-colors disabled:opacity-50 btn-glow">
                       <ButtonGlow />
                       {formState.status === 'loading' ? 'Submitting...' : 'Sign Up for Updates'}
                     </button>
                     {formState.message && (
-                      <p className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+                      <p role={formState.status === 'error' ? 'alert' : 'status'} className={`text-sm mt-2 ${formState.status === 'success' ? 'text-green-700' : 'text-red-600'}`}>
                         {formState.message}
                       </p>
                     )}
@@ -573,7 +596,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 mx-auto mt-20 flex max-w-[1400px] items-center gap-6 px-6 md:mt-24 md:px-12"
+          className="relative z-10 mx-auto mt-20 flex max-w-site items-center gap-6 px-6 md:mt-24 md:px-12"
         >
           {/* Explicit stops rather than Tailwind's from/via/to — via sits at 50%,
               which faded the rule out over its whole length and left only the

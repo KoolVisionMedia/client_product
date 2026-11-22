@@ -288,7 +288,7 @@ export default function EventsShowcase() {
 
   return (
     // z-10 keeps the rail above the host section's blueprint background wash.
-    <div className="relative z-10 mx-auto max-w-[1400px] px-6 md:px-12">
+    <div className="relative z-10 mx-auto max-w-site px-6 md:px-12">
       {/* Label — h3 under the host section's h2 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

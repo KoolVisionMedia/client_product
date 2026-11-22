@@ -64,11 +64,13 @@ export default function FloatingLogo3D({
 
       let renderer: InstanceType<typeof THREE.WebGLRenderer>;
       try {
-        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
+        // No MSAA (about half the per-frame cost; at this size the edges stay clean) and
+        // a pixel ratio capped at 1.5: the badge is small, and weaker GPUs feel it.
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'low-power' });
       } catch {
         return; // No WebGL: the fallback image stays visible.
       }
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       // Neutral keeps the brand orange saturated (ACES washed it out to peach).
       renderer.toneMapping = THREE.NeutralToneMapping;
       renderer.toneMappingExposure = 0.93;
@@ -295,7 +297,16 @@ export default function FloatingLogo3D({
       let elapsed = 0;
       const idle = reduceMotion ? 0 : IDLE_SPIN;
 
+      // Drawn at up to ~30fps: the motion is slow, and it halves the GPU work
+      // while the page scrolls past.
+      let lastDraw = 0;
       const tick = (now: number) => {
+        if (now - lastDraw < 32) {
+          if (visible) frame = requestAnimationFrame(tick);
+          else running = false;
+          return;
+        }
+        lastDraw = now;
         const dt = Math.min((now - last) / 1000, 0.05);
         last = now;
         elapsed += dt;
@@ -422,13 +433,33 @@ export default function FloatingLogo3D({
     };
 
     let initStarted = false;
+    let quietTimer = 0;
+    let quietListener: (() => void) | undefined;
+    const whenQuiet = (run: () => void) => {
+      const schedule = () => {
+        window.clearTimeout(quietTimer);
+        quietTimer = window.setTimeout(() => {
+          window.removeEventListener('scroll', schedule);
+          const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+          if (ric) ric(run, { timeout: 1500 });
+          else run();
+        }, 180);
+      };
+      quietListener = schedule;
+      window.addEventListener('scroll', schedule, { passive: true });
+      schedule();
+    };
     const observer = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
         if (visible && !initStarted) {
           initStarted = true;
+          // Start (download three.js + the model, compile shaders) once scrolling
+          // has paused and the browser is idle, never in the middle of a scroll.
           // If the model fails to load, the fallback image simply stays visible.
-          init().catch((err) => console.warn('FloatingLogo3D: 3D logo unavailable', err));
+          whenQuiet(() => {
+            if (!disposed) init().catch((err) => console.warn('FloatingLogo3D: 3D logo unavailable', err));
+          });
         }
         if (visible) startLoop?.();
       },
@@ -438,6 +469,8 @@ export default function FloatingLogo3D({
 
     return () => {
       disposed = true;
+      window.clearTimeout(quietTimer);
+      if (quietListener) window.removeEventListener('scroll', quietListener);
       observer.disconnect();
       cleanupScene?.();
     };

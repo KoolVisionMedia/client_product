@@ -95,6 +95,11 @@ for (const route of [...routes, '/404']) {
     const bodyContent = firstDivIndex > 0 ? appHtml.substring(firstDivIndex) : appHtml;
 
     let pageHtml = templateBase;
+    // The hero poster is only the home page's main image: preloading it at
+    // high priority elsewhere competes with that page's own hero image.
+    if (route !== '/') {
+      pageHtml = pageHtml.replace(/\s*<link rel="preload" as="image" href="\/assets\/hero-poster\.webp"[^>]*>/, '');
+    }
 
     // Replace placeholder title with actual page head tags (title + meta + canonical)
     if (headTags) {

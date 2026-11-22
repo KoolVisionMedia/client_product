@@ -621,7 +621,7 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
               className={field}
               defaultValue={`I'm interested in Lot ${lot.number} at Rustic Pines at Paris Landing. Please send me more information.`}
             />
-            {state === 'error' && <p className="text-sm text-red-600">Something went wrong. Please try again.</p>}
+            {state === 'error' && <p role="alert" className="text-sm text-red-600">Something went wrong. Please try again.</p>}
             <button
               type="submit"
               disabled={state === 'loading'}
@@ -921,7 +921,7 @@ export default function RusticPines() {
                 </span>
                 <span className="text-right">
                   <span className="block font-medium text-primary">{l.home ? usd(l.home.price) : usd(l.price)}</span>
-                  <span className="block text-[10px] uppercase tracking-wide text-primary/40">
+                  <span className="block text-[10px] uppercase tracking-wide text-primary/60">
                     {l.home ? 'Home + Lot' : 'Lot Only'}
                   </span>
                   <span className="inline-flex items-center gap-1.5 text-xs text-primary/60 mt-0.5">
@@ -937,7 +937,7 @@ export default function RusticPines() {
         {/* tablet + desktop: full table */}
         <div className="hidden md:block overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[920px] text-sm whitespace-nowrap">
-            <thead className="text-[10px] text-primary/50 bg-surface-alt">
+            <thead className="text-[10px] text-primary/70 bg-surface-alt">
               <tr className="text-left">
                 <th className="px-5 py-4 font-semibold">{sortHeader('number', 'Lot')}</th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Phase</th>
@@ -947,7 +947,7 @@ export default function RusticPines() {
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">MLS</th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Per Acre</th>
                 <th className="px-5 py-4 font-semibold uppercase tracking-[0.15em]">Status</th>
-                <th className="px-5 py-4" />
+                <th className="px-5 py-4"><span className="sr-only">Map</span></th>
               </tr>
             </thead>
             <tbody>
@@ -958,7 +958,7 @@ export default function RusticPines() {
                   <td className="px-5 py-4 text-primary">{l.acres.toFixed(2)}</td>
                   <td className="px-5 py-4 font-medium text-primary">{usd(l.price)}</td>
                   <td className="px-5 py-4 font-medium text-primary">
-                    {l.home ? usd(l.home.price) : <span className="text-primary/40">Coming soon</span>}
+                    {l.home ? usd(l.home.price) : <span className="text-primary/60">Coming soon</span>}
                   </td>
                   <td className="px-5 py-4 text-primary/60">
                     {l.home ? (
@@ -966,7 +966,7 @@ export default function RusticPines() {
                         href={realtracsUrl(l.home.realtracsId)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`View Lot ${l.number} listing (MLS ${l.home.mls}) on RealTracs`}
+                        aria-label={`${l.home.mls}: Lot ${l.number} listing on RealTracs (opens in a new tab)`}
                         className="inline-flex items-center gap-1.5 text-accent hover:text-accent-dark underline-offset-2 hover:underline"
                       >
                         {l.home.mls} <ExternalLink className="w-3.5 h-3.5" />
@@ -1085,7 +1085,7 @@ export default function RusticPines() {
                 href={RUSTIC_PINES_SITE.url}
                 target="_blank"
                 rel="noopener"
-                aria-label="Visit the official Rustic Pines at Paris Landing website (opens in a new tab)"
+                aria-label="Visit the website: the official Rustic Pines at Paris Landing site (opens in a new tab)"
                 className="inline-flex items-center gap-2 rounded-full border border-white/35 hover:border-[#c9a96e] hover:bg-white/5 text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
               >
                 <ButtonGlow />
@@ -1098,7 +1098,7 @@ export default function RusticPines() {
 
       {/* Stats */}
       <section className="bg-[#1b2518] border-y border-white/10">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-2 md:grid-cols-4">
+        <div className="max-w-site mx-auto grid grid-cols-2 md:grid-cols-4">
           {[
             [String(lots.length), 'Homesites'],
             [`${Math.floor(MIN_ACRES)}–${Math.ceil(MAX_ACRES)}`, 'Acres per Lot'],
@@ -1118,7 +1118,7 @@ export default function RusticPines() {
 
       {/* Interactive map */}
       <section ref={mapSectionRef} id="lot-map" className="bg-[#1b2518] px-4 md:px-8 pb-20 md:pb-28 scroll-mt-20">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-site mx-auto">
           <div className="pt-12 md:pt-16 pb-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <div>
               <p className="text-[10px] uppercase tracking-[0.35em] text-[#c9a96e]">The Site Plan</p>
@@ -1255,7 +1255,7 @@ export default function RusticPines() {
 
       {/* Every lot */}
       <section className="py-16 md:py-24 px-4 md:px-8">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-site mx-auto">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
             <div>
               <p className="text-[10px] uppercase tracking-[0.35em] text-accent">Lot Schedule</p>
@@ -1272,7 +1272,7 @@ export default function RusticPines() {
 
       {/* Community details */}
       <section className="pb-20 md:pb-28 px-4 md:px-8">
-        <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="max-w-site mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div className="min-w-0">
             <p className="text-[10px] uppercase tracking-[0.35em] text-accent">The Community</p>
             <h2 className="font-serif text-3xl md:text-5xl text-primary mt-3 leading-tight">
@@ -1351,7 +1351,7 @@ export default function RusticPines() {
 
       {/* FAQ: the visible copy of the FAQPage structured data */}
       <section className="pb-20 md:pb-28 px-4 md:px-8">
-        <div className="max-w-[900px] mx-auto">
+        <div className="max-w-[56.25rem] mx-auto">
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent text-center">Questions</p>
           <h2 className="font-serif text-3xl md:text-5xl text-primary mt-3 text-center">Rustic Pines FAQ</h2>
           <div className="mt-10 rounded-2xl border border-neutral-200 bg-white divide-y divide-neutral-100">
