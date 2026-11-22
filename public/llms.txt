@@ -17,6 +17,10 @@ Homefront Builders designs and builds custom homes across Middle Tennessee. The 
 - [Blog](https://www.homefrontbuilderstn.com/blog): Home building tips, design inspiration, and local market insights from the Homefront Builders team.
 - [Contact Us](https://www.homefrontbuilderstn.com/contact-us): Get in touch to start your custom home journey in Clarksville, TN.
 
+## Blog Articles
+
+<!-- BLOG_POSTS: article links are generated here at build time by prerender.mjs -->
+
 ## Contact
 
 - Phone: (931) 221-2566

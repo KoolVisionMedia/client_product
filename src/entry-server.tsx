@@ -7,6 +7,11 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { pageRoutes, preloadAllRoutes } from './routes';
+import { blogPosts } from './data/blogPosts';
+import { blogArticles } from './data/blogArticles';
+
+/** Published blog posts (newest first), for prerender.mjs: article routes, sitemap, llms.txt. */
+export const publishedPosts = blogPosts.filter((p) => blogArticles[p.slug]);
 
 export async function render(url: string) {
   // Resolve every code-split page first (cached after the first call), so
