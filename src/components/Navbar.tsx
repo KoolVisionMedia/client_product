@@ -343,7 +343,7 @@ export default function Navbar() {
                   setHovered(null);
                   setOpenMenu(null);
                 }}
-                className="btn-glow group hidden lg:inline-flex items-center gap-2 rounded-full bg-[#c9a96e] px-5 py-2.5 font-sans text-sm font-medium text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
+                className="btn-glow group hidden lg:inline-flex items-center gap-2 rounded-lg bg-[#c9a96e] px-5 py-2.5 font-sans text-sm font-medium text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
               >
                 <ButtonGlow />
                 {CONTACT.name}

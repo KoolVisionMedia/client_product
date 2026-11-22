@@ -143,7 +143,7 @@ export default function Floorplans() {
           >
             <button
               onClick={() => setIsLeadModalOpen(true)}
-              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg group btn-glow"
+              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-lg hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg group btn-glow"
             >
               <ButtonGlow />
               Request the Booklet
@@ -154,7 +154,7 @@ export default function Floorplans() {
                 const el = document.getElementById('floorplans-grid');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-white transition-all duration-300 btn-glow"
+              className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-lg hover:bg-white transition-all duration-300 btn-glow"
             >
               <ButtonGlow />
               Browse Interactive Grid
@@ -382,7 +382,7 @@ export default function Floorplans() {
 
                       return (
                       <div key={i} className="w-full bg-surface rounded-xl p-2 border border-gray-100 shadow-sm flex items-center justify-center relative group/blueprint overflow-hidden min-h-0">
-                        <div className="absolute top-3 right-3 bg-primary/95 text-white text-[8px] uppercase tracking-widest font-semibold py-1 px-2.5 rounded-full shadow-md opacity-0 group-hover/blueprint:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        <div className="absolute top-3 right-3 bg-primary/95 text-white text-[8px] uppercase tracking-widest font-semibold py-1 px-2.5 rounded-lg shadow-md opacity-0 group-hover/blueprint:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
                           {levelLabel}
                         </div>
 
@@ -406,7 +406,7 @@ export default function Floorplans() {
                             type="button"
                             onClick={() => setFlippedSheets(prev => ({ ...prev, [i]: !prev[i] }))}
                             aria-pressed={showBlueprint}
-                            className="absolute bottom-2 right-2 z-10 inline-flex items-center justify-center min-h-[44px] bg-primary/95 text-white text-[9px] uppercase tracking-widest font-semibold py-2 px-4 rounded-full shadow-md active:scale-95 transition-transform"
+                            className="absolute bottom-2 right-2 z-10 inline-flex items-center justify-center min-h-[44px] bg-primary/95 text-white text-[9px] uppercase tracking-widest font-semibold py-2 px-4 rounded-lg shadow-md active:scale-95 transition-transform"
                           >
                             {showBlueprint ? `${levelLabel} · Render` : `${levelLabel} · Blueprint`}
                           </button>

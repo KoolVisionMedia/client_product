@@ -389,7 +389,7 @@ export default function ProcessPage() {
                           {(step as any).primaryLink && (
                             <Link
                               to={(step as any).primaryLink.url}
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn0 btn-glow"
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-lg text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn0 btn-glow"
                             >
                               <ButtonGlow />
                               {(step as any).primaryLink.text}
@@ -399,7 +399,7 @@ export default function ProcessPage() {
                           {step.link && (
                             <Link 
                               to={step.link.url}
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn btn-glow"
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-lg text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn btn-glow"
                             >
                               <ButtonGlow />
                               {step.link.text}
@@ -407,7 +407,7 @@ export default function ProcessPage() {
                             </Link>
                           )}
                           {(step as any).secondaryButton && (
-                             <button onClick={() => openModal((step as any).secondaryButton.action === 'meeting' ? 'meeting' : 'booklet')} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-full font-medium hover:bg-accent transition-all group/btn2 btn-glow">
+                             <button onClick={() => openModal((step as any).secondaryButton.action === 'meeting' ? 'meeting' : 'booklet')} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-lg font-medium hover:bg-accent transition-all group/btn2 btn-glow">
                                <ButtonGlow />
                                {(step as any).secondaryButton.text}
                                <Send className="w-4 h-4 text-white group-hover/btn2:translate-x-0.5 transition-transform" />
@@ -446,7 +446,7 @@ export default function ProcessPage() {
             </p>
             <button
               onClick={() => openModal('booklet')}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#c9a96e] text-white rounded-full font-sans font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-[#1b2518] transition-all duration-300 shadow-xl group btn-glow"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-[#c9a96e] text-white rounded-lg font-sans font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-[#1b2518] transition-all duration-300 shadow-xl group btn-glow"
             >
               <ButtonGlow />
               Request the Booklet

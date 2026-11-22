@@ -214,7 +214,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           <div className="lg:col-span-5 flex flex-col justify-between py-2">
             <div className="flex flex-col gap-6 md:gap-8">
               {/* Pill badge */}
-              <div className="border border-primary/25 bg-[#c9a96e]/5 rounded-full px-4 py-1.5 w-fit">
+              <div className="border border-primary/25 bg-[#c9a96e]/5 rounded-lg px-4 py-1.5 w-fit">
                 <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#c9a96e] font-bold">Get in Touch</span>
               </div>
 

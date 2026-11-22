@@ -161,7 +161,7 @@ export default function RusticPinesSpotlight() {
               )}
               {/* legibility for the caption chip */}
               <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/55 to-transparent" />
-              <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/45 px-3 py-1.5 font-sans text-[11px] font-medium text-white ring-1 ring-white/20 md:bottom-4 md:left-4">
+              <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-lg bg-black/45 px-3 py-1.5 font-sans text-[11px] font-medium text-white ring-1 ring-white/20 md:bottom-4 md:left-4">
                 <MapPin className="h-3.5 w-3.5 text-[#c9a96e]" aria-hidden="true" />
                 Paris Landing · Stewart County, TN
               </span>
@@ -207,11 +207,11 @@ export default function RusticPinesSpotlight() {
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
               <Link
                 to="/rustic-pines"
-                className="btn-glow group inline-flex items-center gap-3 rounded-full bg-[#c9a96e] py-2 pl-6 pr-2 font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
+                className="btn-glow group inline-flex items-center gap-3 rounded-lg bg-[#c9a96e] py-2 pl-6 pr-2 font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
               >
                 <ButtonGlow />
                 Explore Rustic Pines
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1b2518] text-[#c9a96e] transition-transform duration-300 group-hover:translate-x-0.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[#1b2518] text-[#c9a96e] transition-transform duration-300 group-hover:translate-x-0.5">
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Link>

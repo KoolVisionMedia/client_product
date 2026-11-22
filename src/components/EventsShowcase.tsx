@@ -191,7 +191,7 @@ function EventCard({ event, index, revealed, active, anyActive, canHover, onEnte
         />
 
         {/* Role tag */}
-        <span className="absolute left-4 top-4 inline-block rounded-full border border-white/25 bg-[#1b2518]/60 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.25em] text-white/85">
+        <span className="absolute left-4 top-4 inline-block rounded-lg border border-white/25 bg-[#1b2518]/60 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.25em] text-white/85">
           {event.role}
         </span>
 

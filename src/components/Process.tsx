@@ -154,7 +154,7 @@ export default function Process() {
                     `}>
                       {step.letter}
                     </span>
-                    <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-full transition-colors
+                    <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-lg transition-colors
                       ${isActive ? 'bg-white/10 text-white/90' : 'bg-primary/5 text-primary/60 opacity-0 group-hover:opacity-100'}
                     `}>
                       0{index + 1}
@@ -236,7 +236,7 @@ export default function Process() {
                 >
                   <span className="text-accent font-serif text-3xl md:text-5xl font-bold leading-none">{processSteps[activeStep].letter}</span>
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-accent/30"></div>
-                  <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-semibold text-primary/70 bg-primary/5 px-3 py-1 rounded-full">Step 0{activeStep + 1}</span>
+                  <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-semibold text-primary/70 bg-primary/5 px-3 py-1 rounded-lg">Step 0{activeStep + 1}</span>
                 </motion.div>
                 
                 <motion.h4 

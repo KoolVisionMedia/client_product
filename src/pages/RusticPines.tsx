@@ -470,7 +470,7 @@ function LotDetails({ lot, onInquire }: { lot: Lot; onInquire: (n: number) => vo
         <button
           type="button"
           onClick={() => onInquire(lot.number)}
-          className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors btn-glow"
+          className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors btn-glow"
         >
           <ButtonGlow />
           Inquire About Lot {lot.number} <ArrowRight className="w-4 h-4" />
@@ -579,7 +579,7 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
             <button
               type="button"
               onClick={onClose}
-              className="mt-8 rounded-full bg-[#1b2518] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-3.5 btn-glow"
+              className="mt-8 rounded-lg bg-[#1b2518] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-3.5 btn-glow"
             >
               <ButtonGlow />
               Back to the Map
@@ -625,7 +625,7 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
             <button
               type="submit"
               disabled={state === 'loading'}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#1b2518] hover:bg-[#2E362C] disabled:opacity-60 text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors btn-glow"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#1b2518] hover:bg-[#2E362C] disabled:opacity-60 text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors btn-glow"
             >
               <ButtonGlow />
               {state === 'loading' ? 'Sending…' : 'Send Inquiry'} <Send className="w-4 h-4" />
@@ -897,7 +897,7 @@ export default function RusticPines() {
               key={k}
               type="button"
               onClick={() => toggleSort(k)}
-              className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-[10px] uppercase tracking-widest font-semibold border transition-colors ${
+              className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-semibold border transition-colors ${
                 sort.key === k ? 'bg-[#1b2518] text-white border-[#1b2518]' : 'border-neutral-200 text-primary/70'
               }`}
             >
@@ -1001,7 +1001,7 @@ export default function RusticPines() {
   }, [tableLots, sort, showOnMap]);
 
   const chip = (on: boolean) =>
-    `shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-semibold transition-colors duration-300 ${
+    `shrink-0 whitespace-nowrap px-4 py-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest font-semibold transition-colors duration-300 ${
       on
         ? 'bg-[#c9a96e] text-[#1b2518] border border-[#c9a96e]'
         : 'bg-transparent text-white/70 border border-white/15 hover:border-white/50 hover:text-white'
@@ -1074,7 +1074,7 @@ export default function RusticPines() {
               <button
                 type="button"
                 onClick={() => mapSectionRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })}
-                className="inline-flex items-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
               >
                 <ButtonGlow />
                 Explore the Lots <ArrowRight className="w-4 h-4" />
@@ -1086,7 +1086,7 @@ export default function RusticPines() {
                 target="_blank"
                 rel="noopener"
                 aria-label="Visit the website: the official Rustic Pines at Paris Landing site (opens in a new tab)"
-                className="inline-flex items-center gap-2 rounded-full border border-white/35 hover:border-[#c9a96e] hover:bg-white/5 text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
+                className="inline-flex items-center gap-2 rounded-lg border border-white/35 hover:border-[#c9a96e] hover:bg-white/5 text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
               >
                 <ButtonGlow />
                 Visit the Website <ExternalLink className="w-4 h-4" aria-hidden="true" />
@@ -1210,7 +1210,7 @@ export default function RusticPines() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 6 }}
-                    className="absolute left-3 bottom-3 md:left-5 md:bottom-5 pointer-events-none rounded-full bg-[#1b2518]/85 ring-1 ring-white/15 px-4 py-2 text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/85"
+                    className="absolute left-3 bottom-3 md:left-5 md:bottom-5 pointer-events-none rounded-lg bg-[#1b2518]/85 ring-1 ring-white/15 px-4 py-2 text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/85"
                   >
                     {canHover ? 'Hover a lot to explore' : zoomed ? 'Drag to pan · Tap a lot' : 'Tap a lot for details'}
                   </motion.div>
@@ -1220,7 +1220,7 @@ export default function RusticPines() {
                 type="button"
                 onClick={() => setZoomed((z) => !z)}
                 aria-pressed={zoomed}
-                className="lg:hidden absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-[#1b2518]/90 ring-1 ring-white/20 px-3.5 py-2 text-[10px] uppercase tracking-[0.2em] font-semibold text-white active:bg-[#2E362C]"
+                className="lg:hidden absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-lg bg-[#1b2518]/90 ring-1 ring-white/20 px-3.5 py-2 text-[10px] uppercase tracking-[0.2em] font-semibold text-white active:bg-[#2E362C]"
               >
                 {zoomed ? <ZoomOut className="w-3.5 h-3.5" /> : <ZoomIn className="w-3.5 h-3.5" />}
                 {zoomed ? 'Zoom Out' : 'Zoom In'}
@@ -1290,14 +1290,14 @@ export default function RusticPines() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/floorplans"
-                className="inline-flex items-center gap-2 rounded-full bg-[#1b2518] hover:bg-[#2E362C] text-white text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors btn-glow"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#1b2518] hover:bg-[#2E362C] text-white text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors btn-glow"
               >
                 <ButtonGlow />
                 Browse Floor Plans <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/contact-us"
-                className="inline-flex items-center gap-2 rounded-full border border-primary/20 hover:border-primary text-primary text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors btn-glow"
+                className="inline-flex items-center gap-2 rounded-lg border border-primary/20 hover:border-primary text-primary text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors btn-glow"
               >
                 <ButtonGlow />
                 Contact Us

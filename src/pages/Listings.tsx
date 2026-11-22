@@ -323,7 +323,7 @@ function ListingInquiry({ listing }: { listing: typeof listings[0] }) {
         <Link
           to="/contact-us"
           onClick={() => window.scrollTo(0, 0)}
-          className="shrink-0 inline-flex items-center gap-2 bg-[#1b2518] text-white px-7 py-4 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a96e] transition-colors btn-glow"
+          className="shrink-0 inline-flex items-center gap-2 bg-[#1b2518] text-white px-7 py-4 rounded-lg font-sans text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a96e] transition-colors btn-glow"
         >
           <ButtonGlow />
           Have Questions About a Build?
@@ -520,7 +520,7 @@ export default function Listings() {
               <button
                 key={status}
                 onClick={() => setActiveFilter(status)}
-                className={`px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold transition-all duration-300 ${
+                className={`px-4 md:px-5 py-2 rounded-lg text-[10px] md:text-xs uppercase tracking-widest font-sans font-semibold transition-all duration-300 ${
                   activeFilter === status
                     ? 'bg-[#1b2518] text-white border border-[#1b2518] shadow-md'
                     : 'bg-transparent text-primary/70 border border-neutral-200 hover:border-neutral-800 hover:text-primary'
@@ -572,7 +572,7 @@ export default function Listings() {
                   {/* Status Badge */}
                   {(listing.status === 'Coming Soon' || listing.status === 'Under Construction') && (
                     <div className="absolute top-4 left-4 flex gap-2 z-20">
-                      <span className="px-4 py-1.5 rounded-full text-[10px] uppercase font-sans tracking-widest font-semibold bg-[#c9a96e] text-[#1b2518] shadow-sm">
+                      <span className="px-4 py-1.5 rounded-lg text-[10px] uppercase font-sans tracking-widest font-semibold bg-[#c9a96e] text-[#1b2518] shadow-sm">
                         Build in Progress
                       </span>
                     </div>
@@ -739,7 +739,7 @@ export default function Listings() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 pb-8 border-b border-gray-200">
                   <div>
                     {(selectedListing.status === 'Coming Soon' || selectedListing.status === 'Under Construction') && (
-                      <span className="inline-block px-3 py-1 bg-[#c9a96e] text-[#1b2518] text-[10px] uppercase tracking-widest font-bold rounded-full mb-4">
+                      <span className="inline-block px-3 py-1 bg-[#c9a96e] text-[#1b2518] text-[10px] uppercase tracking-widest font-bold rounded-lg mb-4">
                         Build in Progress
                       </span>
                     )}

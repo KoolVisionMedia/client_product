@@ -21,14 +21,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg btn-glow"
+            className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-lg hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg btn-glow"
           >
             <ButtonGlow />
             Back to Home
           </Link>
           <Link
             to="/contact-us"
-            className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-white transition-all duration-300 btn-glow"
+            className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-lg hover:bg-white transition-all duration-300 btn-glow"
           >
             <ButtonGlow />
             Contact Us

@@ -49,7 +49,7 @@ export default function App() {
       {/* Keyboard users can jump past the navigation straight to the page. */}
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-primary focus:px-5 focus:py-3 focus:font-sans focus:text-xs focus:font-semibold focus:uppercase focus:tracking-[0.2em] focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-primary focus:px-5 focus:py-3 focus:font-sans focus:text-xs focus:font-semibold focus:uppercase focus:tracking-[0.2em] focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent"
       >
         Skip to content
       </a>
