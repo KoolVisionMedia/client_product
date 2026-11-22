@@ -456,7 +456,9 @@ export default function AboutUs() {
         path="/about-us"
       />
       {/* ─── Hero Banner ─── */}
-      <section className="relative min-h-[500px] md:min-h-0 h-[50vh] md:h-[60vh] pt-28 pb-24 md:pt-0 md:pb-0 overflow-hidden flex items-center justify-center">
+      {/* Same banner as the Blog page (height, card padding, title size) so the two read as one system.
+          min-h in rem grows with enlarged phone text, so the card never runs into the navbar or the video. */}
+      <section className="relative h-[50vh] md:h-[60vh] min-h-[27rem] overflow-hidden flex items-center justify-center">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -471,10 +473,10 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 sm:p-10 md:p-16 rounded-3xl text-center max-w-3xl mx-4 shadow-2xl"
+          className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-10 sm:p-10 md:p-16 rounded-3xl text-center max-w-3xl lg:max-w-none mx-4 shadow-2xl"
         >
           <p className="text-xs md:text-sm font-sans tracking-[0.4em] uppercase text-[#c9a96e] mb-4 drop-shadow-md">Our People</p>
-          <h1 className="font-serif text-4xl md:text-6xl text-white tracking-wide drop-shadow-lg leading-tight">
+          <h1 className="font-serif text-[2rem] md:text-6xl text-white tracking-wide drop-shadow-lg leading-tight lg:leading-none lg:whitespace-nowrap">
             Meet the Homefront Builders Team
           </h1>
         </motion.div>

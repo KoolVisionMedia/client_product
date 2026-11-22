@@ -298,7 +298,7 @@ export default function Blog() {
       </AnimatePresence>
 
       {/* Hero with Parallax & Glassmorphism */}
-      <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
+      <section className="relative h-[50vh] md:h-[60vh] min-h-[27rem] overflow-hidden flex items-center justify-center">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
