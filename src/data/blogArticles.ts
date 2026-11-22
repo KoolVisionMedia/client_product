@@ -1,8 +1,269 @@
+// Article bodies (markdown), keyed by slug. Metadata, ordering and URLs live in ./blogPosts.ts.
+// Each body opens with its own '# ' title (the page <h1>). A '## Frequently Asked Questions'
+// section of '### question' + one answer paragraph is also published as FAQPage structured data.
 export const blogArticles: Record<string, string> = {
+  'buying-land-to-build-a-house-in-tennessee': `
+# Buying Land to Build a House in Tennessee: 7 Hidden Lot Costs to Check Before You Close
+
+A five-acre wooded homesite in Middle Tennessee for under $100,000 looks like the bargain of the decade — and sometimes it is. But the price on a land listing is what it costs to *own* the dirt, not what it costs to *build* on it. Out past the city sewer lines, the expensive surprises aren't hiding in the house. They're in the ground under it, the road in front of it, and the power pole a quarter mile away.
+
+Few builders bring this up before a contract is signed, because it complicates a clean "from $X" number. We'd rather you hear it now. Here's what actually stands between a raw lot and a buildable one in Tennessee — what each piece typically costs, and what to check before you close.
+
+## The Short Answer: What Lot Prep Costs in Tennessee
+
+On a rural lot with no city sewer or water, plan for seven line items on top of the land and the house:
+
+1. **Septic soil evaluation and permit** — a soils map plus the state permit fee; a few hundred to a couple thousand dollars.
+2. **Septic system installation** — roughly $6,000–$16,000 for a conventional system; $12,000–$35,000 or more for an alternative or engineered system.
+3. **Water** — a private well (roughly $6,000–$20,000 all-in) or a utility tap and service line.
+4. **Electric service** — anywhere from very little out of pocket to five figures, depending on distance to existing lines.
+5. **Driveway and road entrance** — commonly $4–$12 per linear foot for gravel, plus a culvert and permit.
+6. **Clearing and the house pad** — roughly $2,500–$5,000 per acre to clear mixed hardwoods, plus grading.
+7. **Stormwater, flood zones, and inspections** — smaller line items, but not optional.
+
+Stack the typical ranges together and it's easy to see how site work on a wooded rural homesite reaches **$30,000 to $100,000** before the first footing is poured. Every one of those numbers depends on the specific lot — which is exactly why you evaluate the lot *before* you buy it.
+
+## 1. The Septic Soil Test Decides Your Floor Plan
+
+This is the one almost nobody explains, and it's the most important item on the list.
+
+If a property can't connect to public sewer, you need a **subsurface sewage disposal system construction permit** before you build — in most Tennessee counties from TDEC's Division of Water Resources, and in a handful of contract counties from the local health department. Most people call the evaluation a "perc test." In Tennessee it usually centers on a **soils map** prepared by a soil scientist certified by TDEC, which classifies the soil and shows where on the property a drain field can go.
+
+Here's the part that catches buyers off guard: **a septic permit is written for a specific number of bedrooms.** State rules size both the tank and the drain field by bedroom count:
+
+- Septic tank minimums run **750 gallons for two bedrooms or fewer, 900 for three, and 1,000 for four**, plus 250 gallons for every bedroom after that.
+- The drain field is sized per bedroom too — never less than **370 square feet of trench bottom per bedroom** in the best soils, and considerably more in tighter, slower-draining ones.
+- The permit also needs a **duplicate (backup) area** in suitable soil, not just room for the primary field.
+
+So the soil on your lot quietly sets a ceiling on your house. A five-acre parcel might have only one patch of soil good enough for a drain field — and that patch decides where the house can sit, and whether the four-bedroom plan you love is possible at all. If the bedroom count changes after a permit is issued, you'll need a modification permit. And don't assume a bonus room or office with a closet won't be counted as a bedroom; ask how it will be treated before you finalize the plan.
+
+**What it costs:** TDEC's posted fee for a new conventional system permit is $400 (up to 1,000 gallons per day of design flow), plus a $100 construction inspection. The soil scientist's map is a separate, private fee. Installation runs roughly $6,000–$16,000 for a conventional system; when the soil can't support one, an alternative system such as drip dispersal can push the cost to $12,000–$35,000 or more.
+
+**What to do:** Make your land purchase contingent on a satisfactory soil evaluation for the number of bedrooms you actually want. Allow time, too: TDEC can take up to 45 days to process a complete application, and it advises getting the permit before any dirt work starts — including the building pad. TDEC's [septic construction permit page](https://www.tn.gov/environment/permits/water/septic-systems-permits/ssp/permit-water-septic-system-construction-permit.html) has the current requirements and fees.
+
+## 2. Protect the Drain Field Before the First Truck Arrives
+
+Here's a detail you won't find on most builder websites: **an approved drain field can be ruined by construction itself.**
+
+Tennessee's rules say the area approved for the disposal field shouldn't be disturbed during grading, and if it is, the area has to be re-evaluated. Soil absorbs wastewater because of its structure. Run a loaded concrete truck, a skid steer, or a lumber delivery across it a few times and you can compact that structure into something that no longer drains — on a lot where it may have been the only good spot.
+
+A disciplined builder fences off the primary and duplicate septic areas on day one and keeps them off-limits: no parking, no material staging, no dirt stockpiles, no burn piles. Ask any builder you're considering how they protect the septic area during construction. If they look at you blankly, that tells you something.
+
+## 3. Water: Well or Tap — and What Your Neighbors' Wells Can Tell You
+
+If a public water line runs along the road frontage, you'll pay a tap fee plus the cost of a service line to the house. Confirm three things in writing before you close: that the main actually runs past *your* frontage (not just "nearby"), what size it is, and the current tap fee.
+
+If not, you're drilling a well. Middle Tennessee sits on limestone, and wells here are drilled until they hit a water-bearing fracture — sometimes at 150 feet, sometimes much deeper. Drilling commonly runs about **$22–$60 per foot**, and the pump, pressure tank, and trenching come on top of that. All in, **$6,000–$20,000** is a reasonable planning range.
+
+Three things to know:
+
+- **Ask the well driller about wells on neighboring properties.** Local depths and yields are the best predictor you'll get of what your well will cost.
+- **Tennessee requires a well to sit at least 50 feet from a septic tank and drain field.** The house, well, primary septic area, duplicate area, and driveway all compete for space — one more reason to site everything together before you commit.
+- **Budget for testing and treatment.** Limestone aquifers often produce hard water, and every new well should be tested for bacteria before anyone drinks from it.
+
+## 4. Power: Distance to the Nearest Pole Is a Line Item
+
+In rural Middle Tennessee, electric service usually comes from an electric cooperative, and each co-op sets its own line-extension policy. A common pattern is an allowance toward the first stretch of line, then a per-foot charge beyond it — and underground service typically costs more than overhead. A homesite set 800 feet back in the trees is beautiful. It's also 800 feet of wire.
+
+**What to do:** Before you close, call the utility with the parcel number and ask for a written estimate to bring service to your intended house site. If the line has to cross a neighbor's property, find out whether an easement already exists. While you're at it, check internet options — fiber, fixed wireless, or satellite — if anyone in the house works from home.
+
+## 5. The Driveway Has to Carry a Concrete Truck
+
+A rural driveway isn't a landscaping feature; it's the road your entire build travels on. It has to support loaded concrete trucks, lumber deliveries, and eventually a fire engine — on a grade those vehicles can climb in wet weather.
+
+Gravel driveways commonly run about **$4–$12 per linear foot**, more with a heavy stone base, rock, or steep grades. Where the driveway meets the road, counties typically require an entrance permit and often a culvert sized to the ditch. On a state highway, you'll need a [highway entrance permit from TDOT](https://www.tn.gov/tdot/traffic-design/highway-entrance-permits.html) before construction. Check sight distance at the entrance too; a driveway that exits just past a blind curve is a problem no amount of gravel fixes.
+
+## 6. Clearing, Grading, and the House Pad
+
+The trees are probably why you fell for the lot, so clear selectively: the house, the driveway, the septic areas, and a safe buffer. Mixed hardwoods in Tennessee commonly run **$2,500–$5,000 per acre** to clear, before grading, stump removal, and hauling or burning debris.
+
+Then there's the ground itself. Middle Tennessee is known for limestone close to the surface, and hitting rock while digging footings or a basement can add real cost. Slope cuts both ways — a sloped lot can be ideal for a walkout basement, but it adds excavation, retaining, and drainage work. A builder who walks the site with you can tell you which side of that line your lot falls on.
+
+## 7. Stormwater, Flood Zones, and Who Inspects Your Home
+
+Three smaller items round out the list:
+
+- **Construction stormwater.** Clearing a house pad, a long driveway, and a septic area adds up fast. Once total land disturbance reaches one acre, Tennessee's construction stormwater general permit generally applies — silt fencing, stabilization, and inspections included.
+- **Flood zones.** Look up any parcel near a creek or the lake on [FEMA's Flood Map Service Center](https://msc.fema.gov/portal/home). A flood zone affects where you can build, how high, and what insurance will cost.
+- **Codes and inspections.** In Tennessee, residential building codes are enforced locally in some counties and through the State Fire Marshal's residential permit program in others, and some counties have opted out entirely. Find out which applies to your parcel — and choose a builder who builds to code whether or not anyone is checking.
+
+## Your Pre-Purchase Land Checklist
+
+Before you sign a land contract in Tennessee, get these answers — ideally as written contingencies:
+
+1. A satisfactory **septic soil evaluation** for the number of bedrooms you want, including a duplicate area.
+2. **Water availability** in writing: a utility letter with tap fees, or well information from a local driller.
+3. A written **electric service estimate** to your intended house site.
+4. A current **boundary survey**, recorded easements, and the recorded plat (read any septic notes on it).
+5. **Deed restrictions or covenants** — minimum square footage, outbuildings, fences, RVs.
+6. **Flood zone status** and any wetlands or streams on the property.
+7. **Road access** and entrance permit requirements from the county or TDOT.
+8. A **site walk with your builder** to sketch where the house, drain field, well, and driveway can actually go.
+
+That last item ties the rest together — and it costs you nothing but an afternoon.
+
+## Building on Land Near Kentucky Lake: Rustic Pines at Paris Landing
+
+All of this is front of mind for us right now. [Rustic Pines at Paris Landing](/rustic-pines) is a new wooded community near Kentucky Lake in Stewart County, with 41 homesites from about 5 to 24 acres. Land starts at $79,000, and completed Homefront home-and-lot packages start at $449,000. As with any rural homesite, package pricing doesn't include lot preparation and utilities — because those depend on which lot you choose and exactly where you place the home on it.
+
+That's a conversation we'd rather have before you pick a lot, not after. Walk a homesite with us and we'll talk through where the house, septic areas, well, and driveway can sit, so you understand the site work in the same detail as the home itself.
+
+## Frequently Asked Questions
+
+### How much does it cost to prepare a lot to build a house in Tennessee?
+
+On a rural lot without city sewer or water, site work — septic, well, electric service, driveway, clearing, and grading — can total $30,000 to $100,000 depending on the soil, distance to utilities, terrain, and tree cover. A lot with public water and sewer at the road typically costs far less to prepare.
+
+### Do I need a perc test to build a house in Tennessee?
+
+If the property isn't served by public sewer, yes — you need a septic construction permit, and that requires an evaluation of the soil. In Tennessee the evaluation is usually based on a soils map from a TDEC-certified soil scientist. Make a satisfactory result a contingency in your land contract.
+
+### Does a septic permit limit how many bedrooms I can build?
+
+Yes. Tennessee septic permits are issued for a specific number of bedrooms, and both the tank and the drain field are sized by bedroom count. If your soil only supports a three-bedroom system, a four-bedroom plan won't be approved without more suitable area or an alternative system.
+
+### How far does a well need to be from a septic system in Tennessee?
+
+Tennessee's well construction rules require at least 50 feet between a well and a septic tank or drain field. Keep that in mind when siting the house, well, primary septic area, and duplicate area on a lot.
+
+### Should I choose a builder before or after buying land?
+
+Before you close, if you can. A builder can walk the lot, spot septic, access, slope, and utility issues, and give you a realistic site-work budget while you still have contingencies in place to walk away.
+
+**Looking at land in Montgomery County, Stewart County, or anywhere in Middle Tennessee?** [Contact Homefront Builders](/contact-us) before you close, and we'll help you evaluate it. You can also explore [Rustic Pines at Paris Landing](/rustic-pines), review [our building process](/process), browse [our floor plans](/floorplans), read [how to choose a custom home builder in Clarksville](/blog/how-to-choose-a-custom-home-builder-clarksville-tn), or, if you're financing with a VA loan, see our guide to [building a new home with a VA loan](/blog/va-loan-new-construction-clarksville-tn).
+`,
+  'va-loan-new-construction-clarksville-tn': `
+# Building a New Home With a VA Loan in Clarksville, TN: What Fort Campbell Families Need to Know
+
+Clarksville is a military town. Fort Campbell sits on the state line, and thousands of soldiers, veterans, and their families call Montgomery County home. Yet almost everything written about VA loans assumes you're buying a house that already exists. Far fewer people realize a VA loan can also pay to *build* one — land and construction together, often with no down payment.
+
+The rules for doing that changed in 2025, and much of what's still online is out of date. Here's how building with a VA loan actually works today, what it costs, and what to ask before you sign anything.
+
+*This guide is general information, not lending advice. VA rules and fees change; confirm the details with your lender and the VA.*
+
+## Yes, a VA Loan Can Pay to Build a New Home
+
+The VA guarantees loans to build a home that the veteran will own and live in. In practice, that looks like this:
+
+- **Land and construction can be financed together.** If you buy the lot within a year of closing, its cost goes into the loan.
+- **Land you already own counts.** A lot you've owned longer than a year is counted at its appraised value, and that equity can work like a down payment.
+- **Vacant land alone isn't eligible.** You can't use a VA loan to buy a lot now and build someday; the land has to be part of the construction financing.
+- **One-time close or two-time close.** A one-time-close (construction-to-permanent) loan closes once and converts to your permanent mortgage when the home is finished. A two-time-close approach uses a separate construction loan, then VA permanent financing at the end.
+- **No VA loan limit with full entitlement.** If you have your full entitlement, the VA [doesn't cap the loan amount](https://www.va.gov/housing-assistance/home-loans/loan-limits/). The lender still underwrites your income and credit, and the appraisal still caps what can be financed.
+
+## The 2025 Change Most Websites Still Get Wrong
+
+For years, the standard advice was "find a VA-approved builder with a VA builder ID." That's no longer how it works. In **VA Circular 26-25-1 (March 31, 2025)**, the VA eliminated the builder identification number for VA-guaranteed loans on new and proposed construction. A builder no longer needs a VA-issued ID for the loan to be processed. (Builder IDs still apply to Specially Adapted Housing grants and Native American Direct Loans.) You can find the circular in the VA's [list of current circulars](https://benefits.va.gov/homeloans/resources_circulars.asp).
+
+What still matters:
+
+- **State licensing.** Builders must still meet state and local licensing requirements. In Tennessee, that means a contractor's license with a monetary limit large enough for your project — our guide to [choosing a custom home builder in Clarksville](/blog/how-to-choose-a-custom-home-builder-clarksville-tn) shows how to check it in thirty seconds.
+- **Your lender's own review.** Construction lenders typically vet the builder's license, insurance, and track record themselves before approving the loan.
+
+The same circular confirms something else buyers rarely hear: the VA stopped performing its own construction compliance inspections back in 2006, and it no longer steps in on disputes with builders. It points veterans to local building departments, licensing boards, or legal counsel instead. In other words, the VA guarantee protects the lender — your protection on quality comes from local inspections, your warranty, and the builder you choose.
+
+## Inspections and Warranties: Why Your County Matters
+
+For a home that hasn't been built yet, the VA relies on local inspections. If the local building authority inspects the foundation, framing, and final construction, those inspections (and a certificate of occupancy, where issued) satisfy the requirement.
+
+If the local authority **doesn't** inspect new homes, VA guidance calls for a HUD-acceptable 10-year insured protection plan plus a one-year builder's warranty. That's relevant around here: Tennessee counties handle residential code enforcement differently, and rural parcels may fall under a different inspection setup than lots inside Clarksville city limits.
+
+Before you choose a lot, ask your lender which inspection or warranty documentation they need for that specific parcel — and ask your builder whether their 10-year warranty is insured by a third party. If you're looking at acreage, our guide to [buying land to build a house in Tennessee](/blog/buying-land-to-build-a-house-in-tennessee) covers the septic, well, and site costs that come with it.
+
+## How the VA Appraisal Works When the House Doesn't Exist Yet
+
+On a construction loan, the VA appraisal is based on the **plans and specifications** — the appraiser values the home as it will be when finished. When construction is complete, the appraiser returns for a final inspection to confirm the home was built to those plans, meets the VA's minimum property requirements, and still supports the value.
+
+Two consequences that trip people up:
+
+- **Change orders after the appraisal are a problem.** Changes made after the appraisal can't simply be rolled into the loan. You can pay for them out of pocket with the appraiser's approval; financing them requires a new appraisal, at your expense. Finalize your floor plan and major selections *before* the appraisal is ordered.
+- **Energy upgrades get extra room.** The maximum loan is generally the lesser of the VA's reasonable value or your total costs — plus up to $6,000 for energy-efficiency improvements, plus the funding fee. That makes better insulation, windows, or HVAC easier to include.
+
+## The VA Funding Fee — and Who Doesn't Pay It
+
+For purchase and construction loans, the [VA funding fee](https://www.va.gov/housing-assistance/home-loans/funding-fee-and-closing-costs/) is:
+
+| Down payment | First use | After first use |
+| --- | --- | --- |
+| Less than 5% | 2.15% | 3.3% |
+| 5% to less than 10% | 1.5% | 1.5% |
+| 10% or more | 1.25% | 1.25% |
+
+You **don't pay the fee** if you receive VA compensation for a service-connected disability, are eligible for compensation but receive retirement or active-duty pay instead, are a surviving spouse receiving Dependency and Indemnity Compensation, have a proposed or memorandum disability rating before closing, or are an active-duty service member who has received a Purple Heart.
+
+Land equity matters here too. If a lot you own counts toward a down payment of 5% or more, you can land in a lower fee bracket. On a one-time-close loan, expect the fee to be due at the start, shortly after closing — not at move-in.
+
+## Draws, Interest, and Rate Locks During Construction
+
+After closing, the construction money sits in an account and is released in **draws** as work is completed, and the lender needs your written approval before each draw. Principal payments can be postponed for up to a year while the home is built.
+
+Questions worth asking every lender:
+
+- **How is interest during construction handled** — monthly payments, an interest reserve, or something else?
+- **When is the rate locked?** Some lenders lock at closing. VA rules also allow an option where the rate can float during construction up to a set ceiling — but you have to qualify at that ceiling rate.
+- **How many VA construction loans have you closed in the last year?** Relatively few lenders offer them, and experience matters. Your builder can often point you toward lenders who have closed them locally.
+
+## Timing a Build Around PCS Orders
+
+A VA loan requires you to intend to live in the home. If you can't occupy it because of active duty, your spouse can certify occupancy instead. With construction running nine to fourteen months, the timing deserves a real conversation with your lender before you start — especially if orders are possible within the next couple of years. Planning the build around a known report date is far easier than reacting to one mid-construction.
+
+## Tennessee Property Tax Relief for Disabled Veterans
+
+If you have a qualifying service-connected disability — including a permanent and total disability rating from the VA — Tennessee's property tax relief program can reimburse property taxes on up to **$175,000 of your home's market value**. The home must be your primary residence, and you apply through your county trustee. The Comptroller's [tax relief brochure](https://www.comptroller.tn.gov/content/dam/cot/pa/documents/tax-relief/TaxReliefBrochure.pdf) lists the qualifying disabilities and forms. It's worth factoring into your monthly budget before you build.
+
+## Your VA New-Construction Checklist
+
+1. **Get your Certificate of Eligibility** and confirm your available entitlement.
+2. **Find a lender that actually closes VA construction loans** — ask how many they've done recently.
+3. **Vet the builder on Tennessee licensing, insurance, and warranty** — not on a VA builder ID, which no longer exists for these loans.
+4. **Decide how the land fits in:** bought within the loan, or equity in a lot you already own.
+5. **Finalize the plan and major selections before the appraisal.**
+6. **Confirm the inspection and warranty requirements** for your specific parcel and county.
+7. **Check whether you're exempt from the funding fee.**
+8. **Line up the construction timeline with your orders and occupancy plans.**
+
+## Building Near Fort Campbell With Homefront Builders
+
+We build custom homes throughout Clarksville and Montgomery County, on your land or ours. Every home carries a [10-year warranty through Quality Builders Warranty](/warranties), and you'll get weekly photo updates during construction — which matters when deployments and TDYs keep you away from the jobsite.
+
+## Frequently Asked Questions
+
+### Can I use a VA loan to build a house in Tennessee?
+
+Yes. The VA guarantees construction loans for a home the veteran will occupy, and the loan can include the land. Fewer lenders offer VA construction loans than standard VA purchase loans, so ask lenders directly whether they close them.
+
+### Does a builder need a VA builder ID?
+
+Not anymore for VA-guaranteed loans. VA Circular 26-25-1, issued March 31, 2025, eliminated the builder ID requirement for new and proposed construction. Builders must still meet state and local licensing requirements, and lenders typically vet them.
+
+### Can I use a VA loan to buy land?
+
+Not on its own. Land can be financed only as part of a VA construction loan to build your home. If you already own a lot, its value can count toward the project and may act as a down payment.
+
+### What is the VA funding fee on a construction loan?
+
+For first-time use with less than 5% down, it's 2.15% of the loan amount; for subsequent use, 3.3%. Putting 5% down lowers it to 1.5%, and 10% down lowers it to 1.25%. Veterans receiving VA disability compensation are exempt.
+
+### Is there a VA loan limit in Tennessee?
+
+There's no VA loan limit for borrowers with full entitlement. If part of your entitlement is tied up in another VA loan, county loan limits affect how much you can borrow without a down payment.
+
+**Building near Fort Campbell with a VA loan?** [Contact Homefront Builders](/contact-us) to talk through plans, lots, and timing. You can also browse our [floor plans](/floorplans), see our [current builds](/listings), or read [5 things to know before building a custom home in Tennessee](/blog/building-a-custom-home-in-tennessee-what-to-know).
+`,
   'how-to-choose-a-custom-home-builder-clarksville-tn': `
 # How to Choose a Custom Home Builder in Clarksville, TN: Questions to Ask and Red Flags to Watch
 
-There's no shortage of people building houses in Clarksville right now. The city issued roughly 2,900 residential building permits in 2025 alone — an average of about 240 a month — and growth around Fort Campbell, the new manufacturing employers, and I-24 shows no sign of slowing. That's good news if you're building. It also means the hardest decision you'll make isn't your floor plan or your countertops. It's who you hand the keys of the project to. Here's how to tell the difference between builders when everyone's website says roughly the same thing.
+There's no shortage of people building houses in Clarksville right now. The city issued roughly 2,900 residential building permits in 2025 alone — an average of about 240 a month — and growth around Fort Campbell, the new manufacturing employers, and I-24 shows no sign of slowing. That's good news if you're building. It also means the hardest decision you'll make isn't your floor plan or your countertops. It's who you hand the project to. Here's how to tell builders apart when everyone's website says roughly the same thing.
+
+## Custom, Semi-Custom, or Production: Know What You're Shopping For
+
+Not every builder who uses the word "custom" builds fully custom homes, and the difference decides how much you actually control:
+
+- **Production builders** sell a fixed set of floor plans with a limited menu of finishes, usually in their own subdivisions. You choose from what they offer.
+- **Semi-custom builders** let you modify an existing plan and pick from a wider range of finishes, but you're still working inside their system.
+- **True custom builders** start from your needs, your lot, and your budget. The floor plan, exterior, and every major selection are specific to you.
+
+All three are active in Clarksville, and none is wrong. Just make sure the builder you're interviewing is the type you actually want — then use the rest of this guide to judge whether they're any good at it.
 
 ## Start With the License — and Actually Look It Up
 
@@ -18,16 +279,18 @@ If a builder hesitates, gets cagey, or tells you the number "isn't something we 
 
 While you're at it, ask for certificates of **general liability and workers' compensation insurance** sent directly from their agent, not a PDF forwarded from the builder's inbox. If an uninsured framer gets hurt on your lot, you do not want to be the one finding out how that works.
 
-## The Questions That Actually Reveal Something
+## 8 Questions That Actually Reveal Something
 
 Most builders will answer "how long have you been in business?" the same way. These get you further:
 
 1. **"Who runs my job day to day, and how many other jobs do they have right now?"** You're not really hiring a company — you're hiring a superintendent. Get a name. A super carrying four homes is present. One carrying fifteen is a voicemail.
 2. **"Can I walk an active jobsite this week?"** This is the highest-signal question on the list. Sites that are swept, staged, and protected from weather tend to produce homes finished the same way. You'll learn more in ten minutes on a slab than in an hour in a design center.
-3. **"Are your key trades long-term partners or whoever's cheapest this month?"** Framers, plumbers, and electricians who've worked with a builder for a decade know their standards without being told. Rotating subs is where quality goes to die.
-4. **"Is this a fixed-price contract or cost-plus, and what happens when an allowance runs over?"** Both structures are legitimate. Fixed price puts more risk on the builder; cost-plus puts it on you. What matters is that your builder can explain, clearly and without hedging, which one you're signing and exactly how overages get handled.
-5. **"What's your warranty, in writing?"** The industry norm is the 1-2-10 structure: one year on workmanship and materials, two years on major systems like plumbing and electrical distribution, ten years on structural defects. It's a convention, not a law — so read the actual document rather than assuming.
-6. **"Can I talk to a client from three years ago?"** Anyone can produce a happy client from a home that closed last month. The three-year reference tells you how a builder handles a warranty call after the excitement wears off.
+3. **"Do you build on my land, in your own communities, or both?"** Some builders only build on lots they control. If you've found land — or want help finding it — you need a builder who's comfortable with client-owned lots and the site work that comes with them.
+4. **"How will I hear from you during the build?"** Ask for specifics: how often you'll get updates, whether they include photos, and who answers your question on a Tuesday afternoon. Vague answers here predict a frustrating year.
+5. **"Are your key trades long-term partners or whoever's cheapest this month?"** Framers, plumbers, and electricians who've worked with a builder for a decade know their standards without being told. Rotating subs is where quality goes to die.
+6. **"Is this fixed-price or cost-plus, what's in the base price, and what happens when an allowance runs over?"** Both contract structures are legitimate. Fixed price puts more risk on the builder; cost-plus puts it on you. What matters is that your builder can show you, line by line, what's included as standard and exactly how overages and upgrades get handled.
+7. **"What's your warranty, in writing?"** The industry norm is the 1-2-10 structure: one year on workmanship and materials, two years on major systems like plumbing and electrical distribution, ten years on structural defects. It's a convention, not a Tennessee law — so read the actual document, and ask whether the ten-year coverage is insured by a third party.
+8. **"Can I talk to a client who moved in this year — and one from three years ago?"** The recent client tells you how the builder operates today. The three-year reference tells you how they handle a warranty call after the excitement wears off.
 
 ## Red Flags Worth Walking Away From
 
@@ -39,297 +302,52 @@ Industry veterans tend to name the same warning signs, and they hold up locally:
 - **Reluctance to put commitments in writing.** If it was promised verbally and isn't in the contract, it doesn't exist.
 - **Defensiveness when you ask hard questions.** You're about to spend a year in a working relationship with this person. Watch how they handle being challenged politely, because you will need to challenge them at some point.
 
+## What Local Experience Actually Buys You in Clarksville
+
+Clarksville's mix of Fort Campbell families, Nashville-area transplants, and fast suburban expansion into Montgomery County makes it a market where local knowledge pays for itself. A builder who works here every day knows:
+
+- **Where city utilities end** and well and septic begin — and what that does to a site budget (we break that down in our guide to [buying land to build a house in Tennessee](/blog/buying-land-to-build-a-house-in-tennessee)).
+- **How permitting differs** between lots inside city limits, unincorporated Montgomery County, and neighboring rural counties.
+- **What's in the ground** — the limestone, clay, and slopes that drive foundation and drainage decisions.
+
+A national builder importing a standardized process from another market simply doesn't start with that knowledge.
+
 ## The Part No Checklist Covers
 
-Everything above is verifiable. The last piece isn't. Building a custom home is nine to fourteen months of decisions, weather delays, and phone calls — and the builder who is technically qualified but doesn't communicate will make you miserable anyway. Pay attention to how quickly they return calls *before* you've signed anything. That's the best available preview of what year one looks like.
+Everything above is verifiable. The last piece isn't. Building a custom home means nine to fourteen months of construction — longer once you count design and permitting — full of decisions, weather delays, and phone calls. A builder who is technically qualified but doesn't communicate will make you miserable anyway. Pay attention to how quickly they return calls *before* you've signed anything. That's the best available preview of what the build will be like.
 
-At Homefront Builders, we're comfortable being asked all of it — the license number, the monetary limit, the insurance certificates, the subs, the warranty language, and the client from three years ago. We'd rather earn a project from someone who did their homework than win one from someone who didn't ask.
+At Homefront Builders, we're comfortable being asked all of it — the license number, the monetary limit, the insurance certificates, the subs, the warranty language, and the client from three years ago. We build on your land or ours, send weekly photo updates during construction, and back our homes with a [10-year warranty through Quality Builders Warranty](/warranties). We'd rather earn a project from someone who did their homework than win one from someone who didn't ask.
 
-**Comparing builders in Clarksville or Montgomery County?** [Contact Homefront Builders](/contact-us) and bring your list of questions — we'll answer all of them and walk you through an active jobsite. You can also review [our building process](/process) or browse our [current builds](/listings) to see the standard we hold every home to.
-`,
-  'modern-farmhouse-design': `
-If you've driven through the rolling hills of Montgomery County lately, you've probably noticed it: wrap-around porches, board-and-batten siding, black-framed windows, and that unmistakable blend of rustic warmth and clean, modern lines. Modern farmhouse design has become the defining architectural style for new custom homes in Clarksville and across Middle Tennessee — and for good reason. It captures everything homeowners want today: timeless curb appeal, a connection to the land, and interiors built for the way families actually live.
+## Frequently Asked Questions
 
-At Homefront Builders, modern farmhouse design isn't a trend we follow — it's a style we've helped define for custom homeowners throughout the Clarksville area. Here's what makes this style so enduring, and what to consider if you're planning a custom farmhouse build of your own.
+### How do I check a contractor's license in Tennessee?
 
-## What Defines Modern Farmhouse Design?
+Ask the builder for their legal business name and license number, then search it at verify.tn.gov. Confirm the license is active, that it carries a residential classification, and that its monetary limit is higher than your project's contract price.
 
-Modern farmhouse architecture borrows its bones from classic American farmhouses — gabled rooflines, deep porches, simple symmetrical facades — and updates them with contemporary materials, open floor plans, and clean detailing. The result is a home that feels both nostalgic and brand new.
+### How long does it take to build a custom home in Clarksville, TN?
 
-Key exterior elements we build into nearly every modern farmhouse project include:
+Construction itself typically takes about nine to fourteen months. Counting design, selections, and permitting, plan on roughly twelve to sixteen months from the first design meeting to move-in, depending on the home's size and complexity.
 
-- **Wrap-around or full-width front porches** with tapered columns and metal roof accents
-- **Board-and-batten or shiplap siding**, often paired with stone or brick accents at the base
-- **Black-framed windows** for crisp contrast against light exterior palettes
-- **Standing-seam metal roof accents** over porches, dormers, or bay windows
-- **Simple, steep gable rooflines** that echo traditional barn and farmhouse silhouettes
+### What's the difference between a custom builder and a production builder?
 
-## Interior Features That Bring the Style Home
+A production builder sells a fixed set of plans and finishes, usually in its own subdivisions. A custom builder designs the home around your needs and your lot, so the floor plan, exterior, and selections are specific to you.
 
-The farmhouse aesthetic doesn't stop at the front door. Inside, we focus on soaring vaulted ceilings, exposed wood beams, and shiplap accent walls that carry the exterior character through the home. Open-concept kitchens with oversized islands, apron-front sinks, and matte black or brass fixtures have become signature touches for our Clarksville clients — combining farmhouse warmth with the functionality today's families expect.
+### What warranty should a new home builder in Tennessee offer?
 
-Popular interior selections we see again and again include:
+Most reputable builders follow the 1-2-10 structure: one year on workmanship and materials, two years on major systems, and ten years on structural defects. Tennessee doesn't mandate that structure, so get the warranty in writing and ask whether the ten-year coverage is insured by a third party.
 
-1. **Vaulted great rooms** with exposed beam trusses as a dramatic focal point
-2. **Oversized kitchen islands** built for both meal prep and everyday gathering
-3. **Apron-front farmhouse sinks** paired with quartz or butcher-block countertops
-4. **Wide-plank engineered hardwood flooring** for durability and warmth
-5. **Mudrooms and drop zones** designed for active, growing families
+### How many builders should I get bids from?
 
-## Why Modern Farmhouse Works So Well in Middle Tennessee
+Two or three detailed bids is usually enough. Compare the scope and allowances line by line rather than just the bottom line — the lowest number often leaves something out.
 
-Middle Tennessee's landscape — open pastureland, mature trees, and wide lots outside the city core — is practically built for this architectural style. Modern farmhouse homes sit naturally on acreage near Clarksville, Fort Campbell, and the surrounding communities, and the style's emphasis on durable, low-maintenance materials holds up well against our regional humidity and seasonal weather swings.
-
-It's also a style with staying power. Unlike more ornate or highly trend-driven designs, modern farmhouse architecture has remained one of the top-requested styles for custom home buyers nationally for nearly a decade — which matters for long-term resale value as much as it does for day-to-day livability.
-
-## Building Your Own Modern Farmhouse Home
-
-Every farmhouse build starts with the same question: how do you make a popular style feel personal? At Homefront Builders, we work with each client to customize layout, materials, and finishes so the final home reflects their family — not a cookie-cutter template. Whether that means a larger covered outdoor living space for entertaining, a dedicated home office, or a primary suite wing separated from the rest of the home, we build the floor plan around how you'll actually live in it.
-
-If you're considering a custom farmhouse home in Clarksville or anywhere in Middle Tennessee, our team can walk you through site selection, design, and the full construction process from the first sketch to final walkthrough.
-
-**Ready to start designing your modern farmhouse home?** [Contact Homefront Builders](/contact-us) today to schedule a consultation, or browse our [current listings](/listings) to see modern farmhouse design in action.
-`,
-  'before-building-custom': `
-Building a custom home is one of the biggest financial and personal decisions most people will ever make — and it's also one of the most rewarding. Unlike buying an existing house or a production-builder spec home, a custom build means every square foot, every finish, and every design decision is yours to make. That freedom is exciting, but it also comes with a learning curve.
-
-After years of building custom homes throughout Clarksville and Middle Tennessee, we've found that the families who feel most confident going into their build are the ones who understand a handful of key things up front. Here are the five most important.
-
-## 1. Land Acquisition Shapes Everything Else
-
-Your homesite isn't just a backdrop for your house — it determines your floor plan, your foundation type, your utility costs, and even your design style. Before you fall in love with a floor plan, it pays to understand:
-
-- **Topography and drainage**, which affect foundation costs and site prep
-- **Soil conditions**, which can require additional engineering
-- **Utility access** (well vs. municipal water, septic vs. sewer, electric and internet availability)
-- **Zoning and deed restrictions**, especially in growing areas around Clarksville and Fort Campbell
-- **Setbacks and easements**, which determine how and where you can build
-
-A reputable custom home builder will walk your lot with you before any design work begins, helping you avoid costly surprises after construction starts.
-
-## 2. Your Budget Needs to Include More Than the Build Cost
-
-First-time custom home buyers are often surprised by everything that falls outside the base construction contract. A realistic custom home budget accounts for:
-
-1. **Land cost and site preparation** (clearing, grading, driveway)
-2. **Permits, surveys, and impact fees**
-3. **Design and architectural fees**
-4. **Landscaping, fencing, and exterior finishing**
-5. **Contingency funds** — we recommend 10-15% — for selections upgrades or unforeseen site conditions
-
-Working with a builder who provides transparent, itemized estimates early in the process is the single best way to avoid budget surprises later.
-
-## 3. The Design and Selections Process Takes Time — Plan for It
-
-One of the most common misconceptions about custom building is that the timeline starts the day construction begins. In reality, design, permitting, and selections (flooring, cabinetry, fixtures, paint, countertops) often take as long as the build itself. Rushing this phase is one of the top causes of change orders and budget overruns.
-
-The smoothest projects we build are the ones where clients lock in major selections — kitchen layout, primary suite design, exterior materials — before the foundation is poured, rather than making decisions on the fly mid-construction.
-
-## 4. Not All Builders Operate the Same Way
-
-The custom home builder you choose affects everything from your day-to-day communication during the build to the quality of materials behind your walls. Before signing a contract, ask any builder you're considering:
-
-- Do you build on your own land, or do you only build in your communities?
-- How do you communicate project updates — and how often?
-- What's included in your base price versus considered an upgrade?
-- Can I see homes you've completed, and can I speak with past clients?
-- What warranty do you offer after closing?
-
-At Homefront Builders, we build one-on-one with clients on their own land throughout Clarksville and the surrounding Middle Tennessee region, with clear communication and a structured process from first consultation to final walkthrough — see our [process page](/process) for a full breakdown.
-
-## 5. Quality Materials and Craftsmanship Pay Off Long-Term
-
-It's tempting to compare builders primarily on price per square foot, but the materials and trade partners behind that number matter just as much as the number itself. Premium framing lumber, quality windows, properly installed HVAC systems, and experienced craftsmen cost more upfront — but they significantly reduce maintenance costs, energy bills, and repair headaches for decades after move-in.
-
-## Ready to Start Your Custom Home Journey?
-
-Building custom doesn't have to be overwhelming when you're working with a team that guides you through every step. From your first conversation about land and budget through final selections and walkthrough, Homefront Builders is with you the whole way.
-
-**Thinking about building a custom home in Clarksville or Middle Tennessee?** [Contact our team](/contact-us) to schedule a no-obligation consultation, or explore our [floor plans and listings](/listings) to start envisioning your build.
-`,
-  'why-quality-matters': `
-Every custom home builder will tell you they build quality homes. Far fewer can explain, in concrete terms, what that actually means — which materials, which trade partners, which standards, and why those choices matter once the drywall goes up and the finishes hide what's behind the walls. At Homefront Builders, quality isn't a marketing line. It's the standard we hold every project to, on every lot, for every client across Clarksville and Middle Tennessee.
-
-Here's what quality construction actually looks like, and why it's worth insisting on.
-
-## Quality Starts Below the Surface
-
-The parts of a home that matter most for its long-term performance are the parts no one ever sees again after the final inspection: the foundation, the framing, the moisture barriers, the mechanical systems. Cutting corners here doesn't show up at closing — it shows up five, ten, or twenty years later as foundation cracks, energy inefficiency, water intrusion, or HVAC systems that fail well before their expected lifespan.
-
-We choose:
-
-- **Engineered foundation systems** suited to the specific soil and site conditions of each lot
-- **Premium framing lumber and structural components** that meet or exceed code minimums
-- **Properly sized and installed HVAC systems**, not one-size-fits-all units
-- **High-performance windows and insulation** that reduce energy costs year-round in Tennessee's humid summers and cold winters
-
-## Skilled Craftsmen Make the Difference Material Alone Can't
-
-You can buy the same premium countertop, the same designer fixtures, the same imported tile as any other builder. What separates a well-built home from a beautifully finished but poorly executed one is the craftsmanship behind the install — square corners, level floors, properly sealed joints, and trim work that lines up exactly where it should.
-
-That's why we work with experienced, vetted trade partners on every Homefront Builders project rather than rotating through the lowest bidder on each job. Consistency in our trade relationships means consistency in the quality of work delivered in your home, whether it's framing, electrical, plumbing, or finish carpentry.
-
-## The Real Cost of Cutting Corners
-
-Lower-quality construction often looks identical to high-quality construction on move-in day. The differences show up later, and they tend to be expensive:
-
-1. **Higher utility bills** from poor insulation, inefficient HVAC sizing, or air leakage
-2. **Premature repairs** to roofing, siding, or windows that weren't rated for the regional climate
-3. **Foundation and structural issues** from inadequate site engineering
-4. **Reduced resale value** when inspections during a future sale reveal shortcuts
-5. **Voided or limited warranty coverage** when builders use uncertified materials or unlicensed trades
-
-A custom home is one of the largest investments most families will make. Quality construction protects that investment for decades, not just through the first year of ownership.
-
-## How We Hold Every Build to the Same Standard
-
-Quality control at Homefront Builders isn't a single inspection at the end — it's built into every phase of construction, from site prep through final walkthrough. We perform structured checkpoints throughout the build, work exclusively with licensed and insured trade partners, and back every home with a builder's warranty for added peace of mind. You can review our full warranty coverage on our [warranties page](/warranties).
-
-This is also why we encourage prospective clients to ask hard questions before choosing a builder. The right questions about materials, trades, and process reveal a lot about what you'll actually get once the home is built.
-
-## Built to Last, Built for You
-
-Quality isn't a feature you add to a custom home — it's the foundation everything else is built on. Whether you're drawn to a modern farmhouse design or a different architectural style entirely, the materials and craftsmanship behind your walls determine how that home performs for the next 30+ years.
-
-**Want to see what quality construction looks like up close?** [Contact Homefront Builders](/contact-us) to schedule a tour of a current build, or explore our [listings](/listings) to see completed homes throughout Clarksville and Middle Tennessee.
-`,
-  'choose-custom-home-builder-clarksville-tn': `
-# How to Choose the Right Custom Home Builder in Clarksville, TN
-
-Clarksville is one of the fastest-growing cities in Tennessee, and with that growth has come an influx of home builders — national production builders, regional semi-custom companies, and local custom builders all competing for your attention. If you're planning to build a custom home in the Clarksville area in 2026, choosing the right builder is the most important decision you'll make before breaking ground. Get it right, and the entire experience is rewarding. Get it wrong, and a custom home build can become one of the most stressful projects of your life.
-
-Here's a straightforward guide to evaluating custom home builders in Clarksville, TN — what to look for, what questions to ask, and what sets truly custom builders apart from the rest.
-
-## Understand the Difference: Custom vs. Semi-Custom vs. Production
-
-Not every builder who uses the word "custom" is actually building fully custom homes. The distinctions matter when it comes to what you can control:
-
-- **Production builders** offer a defined set of floor plans and a limited selection of finishes. You choose from what they offer, not from open-ended options.
-- **Semi-custom builders** allow more flexibility — often letting you modify an existing floor plan and choose from a wider selection of finishes — but you're still working within their system.
-- **True custom builders** start from scratch with your needs, your land, and your vision. The floor plan, exterior design, and every major selection are specific to you, not adapted from a catalog.
-
-In Clarksville's growing market, you'll find all three types. If you want a home that reflects your family's lifestyle — not a neighborhood full of variations on the same four plans — a true custom builder is the right choice. See our [current floor plans](/floorplans) for examples of what a fully custom approach looks like in practice.
-
-## 5 Questions to Ask Every Builder You Interview
-
-Before you commit to any builder in 2026, sit down with their team and ask these questions directly:
-
-### 1. Do you build on my land, or only in your communities?
-
-Some builders in the Clarksville area only build in their own neighborhoods and on lots they control. If you've found your own land — or want to find land that suits you specifically — you need a builder who works with client-owned lots.
-
-### 2. How do you communicate during the build, and how often?
-
-A 10–14 month custom home build involves hundreds of decisions and dozens of moving parts. Ask specifically: Do you use a client portal? Do you provide weekly updates? Who is my point of contact if I have a question on a Tuesday afternoon? The answer tells you a lot about how the company is run. Learn more about how we handle communication on our [build process page](/process).
-
-### 3. What's included in your base price, and what triggers an upgrade?
-
-Base price transparency is one of the most important factors in keeping a custom build on budget. Get a clear list of what's included as standard and what triggers an additional cost. Builders who are vague about this at the proposal stage are often the ones with surprise change orders mid-build.
-
-### 4. Can I speak with families you've built for in the last year?
-
-References from past clients are one of the strongest signals of builder quality and communication. Ask specifically for recent clients — not families from five years ago whose homes were built under potentially different management or trade partners. You can read what Homefront Builders clients are saying on our [testimonials page](/testimonials).
-
-### 5. What's your warranty coverage, and what does it include?
-
-Tennessee law requires certain builder warranties, but quality builders often go beyond the minimum. Ask what's covered, for how long, and who you call if something needs attention after move-in. Review our own [warranty coverage](/warranties) to see exactly what we stand behind.
-
-## What Makes Clarksville a Unique Market for Custom Home Builders
-
-Clarksville's combination of Fort Campbell's military community, a growing civilian population, and rapid suburban expansion into Montgomery County creates a unique dynamic for custom builders. In 2026, land is still available at relatively accessible prices compared to the Nashville metro, but the permitting, infrastructure, and utility landscape varies significantly between city-limit lots and rural sites further out.
-
-A builder with deep experience in the Clarksville market understands:
-
-- Which areas require well and septic vs. municipal utility service
-- How Montgomery County permitting timelines compare to city-limit projects
-- Which soil and topography conditions are common in different parts of the area and what they mean for foundation decisions
-
-This local knowledge is something a national builder bringing standardized processes from another market simply doesn't have.
-
-## Why Homefront Builders Has Become a Trusted Name in Clarksville Custom Homes
-
-Homefront Builders was built around one principle: treat every family's home the way we'd want ours treated. That means full transparency on pricing, consistent communication throughout the build — including photo updates and weekly check-ins — and a commitment to quality materials and craftsmanship that holds up long after move-in day. Learn more about [who we are and how we got started](/about-us).
-
-We build on your land, not ours. We work from your vision, not a catalog. And we've built enough homes throughout Montgomery County and the surrounding area to understand the local market, the permitting landscape, and the materials that perform well in Middle Tennessee's climate. Browse our [current builds](/listings) to see active projects and recently completed homes.
-
-**Ready to talk about building your custom home in Clarksville in 2026?** [Contact our team](/contact-us) to schedule a consultation — no obligation, no pressure, just a conversation about what you want to build and whether we're the right fit to build it.
-`,
-  'new-construction-homes-clarksville-tn-2026': `
-# New Construction Homes in Clarksville, TN: What to Expect in 2026
-
-Clarksville, Tennessee continues to rank among the fastest-growing cities in the Southeast — and the housing market reflects it. Whether you're a military family relocating to Fort Campbell, a Nashville-area buyer looking for more space at a better price point, or a long-time Clarksville resident ready to build rather than buy, understanding the current new construction landscape is essential before you start the process.
-
-Here's what buyers and families should know about new construction homes in Clarksville, TN in 2026 — including timelines, costs, the difference between new construction options, and what the market looks like right now.
-
-## The Clarksville New Construction Market in 2026
-
-Clarksville's population has grown by over 20% in the past decade, and new construction has worked hard to keep pace. The result in 2026 is a market with several distinct options:
-
-- **Master-planned communities** with production builders offering spec homes and quick-move-in inventory
-- **Subdivision lots** where semi-custom builders offer modified floor plans on available lots
-- **Custom builds** on land you select yourself, with a builder who designs and constructs a home specific to your needs
-
-Each path has different tradeoffs on price, timeline, flexibility, and the degree of control you have over the final product. Browse our [available floor plans](/floorplans) to see what the custom path looks like in terms of scope and design options.
-
-## New Construction Timelines: What's Realistic in 2026
-
-One of the most common questions we get from families considering new construction is how long the process takes. The honest answer depends heavily on which type of construction you're pursuing:
-
-**Spec/inventory homes**: 0–3 months from contract to close, since the home is already built or nearly complete. You get speed, but limited customization.
-
-**Semi-custom builds**: Typically 6–10 months from design finalization to move-in, depending on the builder's current workload and the complexity of modifications.
-
-**True custom builds**: Generally 12–16 months from the start of design through final walkthrough. This includes time for design, permitting (which varies by jurisdiction in the Clarksville area), and construction itself. Our [build process page](/process) walks through each phase in detail so you know what to expect at every step.
-
-Supply chain conditions have stabilized significantly since the disruptions of 2021–2023, and most quality builders in the Clarksville area are now able to hold to more predictable timelines than was possible a few years ago.
-
-## What Does New Construction Cost in Clarksville in 2026?
-
-Pricing for new construction in Clarksville varies significantly based on builder type, finishes, and location. General ranges as of 2026:
-
-- **Entry-level production new construction**: $275,000–$375,000 for 3–4 bedroom homes in established subdivision communities
-- **Semi-custom new construction**: $375,000–$575,000 for more flexibility in floor plan and finishes
-- **Luxury custom homes**: $550,000 and up for truly custom design, premium materials, and larger square footages — with no ceiling based on the scope of the project
-
-Land prices in Montgomery County vary significantly. Lots within established neighborhoods typically range from $55,000–$130,000, while rural acreage outside the city limits can range widely based on size, topography, and utility access.
-
-It's worth noting that Clarksville remains meaningfully more affordable than Nashville's immediate suburbs for comparable new construction quality — which is a significant driver of the market's continued growth into 2026.
-
-## The Custom Build Advantage in Today's Clarksville Market
-
-With inventory still tight across Middle Tennessee, many buyers are finding that the custom build path — while longer — delivers a significantly better outcome than competing for existing inventory or settling for a production home that doesn't quite fit.
-
-Building custom in Clarksville in 2026 means:
-
-- **You choose your land** rather than being limited to available lots in a specific neighborhood
-- **Every aspect of the floor plan is designed for your family** — room sizes, layout, storage, and flow
-- **You select every finish** from flooring to cabinetry to countertops to fixtures
-- **The home is built to your energy standards** rather than minimum code compliance
-
-For families who've been frustrated by the resale market or disappointed by what production builders offer, custom construction has become an increasingly compelling path — especially in a market where land outside the core city is still reasonably available. See our [current builds and listings](/listings) to get a sense of what's actively underway.
-
-## What to Look for in a Clarksville Custom Home Builder
-
-The builder you choose determines your experience as much as your floor plan does. When evaluating custom home builders in the Clarksville area in 2026, prioritize:
-
-- **Local experience**: Builders with a track record in Montgomery County understand the permitting landscape, local soil conditions, and utility infrastructure far better than builders importing a standard process from another market. Read more [about Homefront Builders](/about-us) and our roots in the Clarksville area.
-- **Transparent pricing**: Ask specifically what's included in base pricing and what constitutes an upgrade — the answer tells you a lot about how the project will go
-- **Communication standards**: Ask how they handle weekly updates, who your primary contact is, and how decisions are documented throughout the build. Our [process page](/process) outlines exactly how we communicate from first consultation through final walkthrough.
-- **Verified references**: Talk to families who've built with the company in the last 12–18 months. Our [testimonials page](/testimonials) features real clients from the Clarksville and Montgomery County area.
-- **Warranty backing**: Understand what's covered after you close. Our [warranty page](/warranties) details exactly what Homefront Builders stands behind on every home we build.
-
-## Start Your New Construction Journey with Homefront Builders
-
-Homefront Builders has been building custom homes throughout Clarksville and Montgomery County for years — and we know this market in detail. We build on your land with a process designed to keep you informed, on budget, and genuinely excited about every step of construction.
-
-**Thinking about new construction in Clarksville, TN in 2026?** [Contact us](/contact-us) to talk through your timeline, budget, and vision — or explore our [current listings](/listings) to see the homes we've built for families throughout the area.
+**Comparing builders in Clarksville or Montgomery County?** [Contact Homefront Builders](/contact-us) and bring your list of questions — we'll answer all of them and walk you through an active jobsite. You can also review [our building process](/process), browse our [current builds](/listings), or read what [our clients say](/testimonials).
 `,
   'luxury-custom-home-features-middle-tennessee': `
 # Luxury Custom Home Features Worth Every Penny in Middle Tennessee
 
 Building a luxury custom home gives you the rare opportunity to put real thought and real resources into the features that will define how you live for the next 20, 30, or 40 years. With that opportunity comes a lot of decisions — and it's easy to spend on the things that look impressive in a showroom but deliver less value in everyday life, while overlooking the upgrades that quietly transform how a home feels to live in.
 
-After building luxury custom homes throughout Middle Tennessee — from Clarksville and Fort Campbell to the surrounding communities of Montgomery County — our team at Homefront Builders has a clear picture of which features our clients consistently describe as their best investments in 2026. Here's what's worth every penny.
+After building luxury custom homes throughout Middle Tennessee — from Clarksville and Fort Campbell to the surrounding communities of Montgomery County — our team at Homefront Builders has a clear picture of which features our clients consistently describe as their best investments. Here's what's worth every penny — and why.
 
 ## 1. A Chef-Level Kitchen Designed Around How You Actually Cook
 
@@ -355,7 +373,7 @@ Features our clients consistently love:
 
 ## 3. Whole-Home Automation Done Right
 
-Smart home technology has matured significantly in 2026, and done correctly, it's one of the most genuinely useful features in a modern luxury home. Done poorly, it's a source of frustration that gets abandoned within the first year.
+Smart home technology has matured significantly, and done correctly, it's one of the most genuinely useful features in a modern luxury home. Done poorly, it's a source of frustration that gets abandoned within the first year.
 
 The difference is in the system design and integration:
 
@@ -364,7 +382,7 @@ The difference is in the system design and integration:
 - **Whole-home audio** with in-ceiling speakers in key rooms and outdoor spaces, tied to a single, intuitive interface
 - **Lighting scenes** designed for how you actually use each space — not just on/off but layered, dimmable, and programmed for time of day
 
-We recommend working with a dedicated AV and automation integrator alongside your builder rather than treating technology as an afterthought during the punch list phase. Our [build process](/process) includes dedicated technology planning milestones so these systems are designed into the home from the start, not bolted on at the end.
+We recommend bringing a dedicated AV and automation integrator in during design, alongside your builder, rather than treating technology as an afterthought at the punch-list stage. Low-voltage wiring, equipment closets, and shade pockets are cheap to plan before drywall and expensive to retrofit after it.
 
 ## 4. Outdoor Living Space That Extends Your Square Footage
 
@@ -377,16 +395,16 @@ What separates truly great outdoor living areas from underused ones:
 - **A fireplace or fire pit** for shoulder-season use when evenings cool off
 - **Thoughtful lighting** including path lighting, landscape uplighting, and string or café lights for ambiance
 
-For families with children, a combination of a pool area and a flat lawn space with room to run often outperforms elaborate entertaining features in terms of everyday use.
+For families with children, a combination of a pool area and a flat lawn space with room to run often outperforms elaborate entertaining features in terms of everyday use. On a wooded or acreage lot, plan these spaces before clearing so the best trees frame the view instead of ending up on a burn pile.
 
 ## 5. Energy Performance Features You Won't See But Always Feel
 
 Luxury homes are increasingly being built to standards that go well beyond minimum code, and the gap between a code-minimum home and a high-performance custom home shows up in utility bills, comfort, and air quality every single day.
 
-Worth the investment in Middle Tennessee's climate in 2026:
+Worth the investment in Middle Tennessee's climate:
 
 - **Spray foam insulation** throughout the building envelope rather than standard batt insulation — especially in the attic, which is a major source of heat gain in Tennessee summers
-- **High-performance windows** (triple-pane in north-facing exposures, low-e coatings throughout) that reduce solar heat gain and cold-weather heat loss
+- **High-performance windows** with low-E coatings selected for each exposure — especially on south- and west-facing walls — to cut summer heat gain and winter heat loss
 - **Zoned HVAC systems** so you're not conditioning unoccupied areas of a large home
 - **ERV or HRV ventilation** for healthy indoor air quality without sacrificing conditioned air
 
@@ -394,8 +412,256 @@ These features don't make for impressive showroom moments, but they're the ones 
 
 ## Building Your Luxury Custom Home in Middle Tennessee
 
-The difference between a luxury home that looks impressive and one that actually changes your daily life comes down to how the features are selected and how they're executed. At Homefront Builders, we work with each client to prioritize the features that match their lifestyle — not the ones that photograph best in a listing. Learn more [about our team and approach](/about-us), or review our [builder warranty](/warranties) to understand how we stand behind every home we build.
+The difference between a luxury home that looks impressive and one that actually changes your daily life comes down to how the features are selected and how they're executed. At Homefront Builders, we work with each client to prioritize the features that match their lifestyle — not the ones that photograph best in a listing. If you're drawn to the modern farmhouse look, our [modern farmhouse design guide](/blog/modern-farmhouse-homes-middle-tennessee) covers the materials and details that hold up best here.
 
-**Ready to design a luxury custom home in Clarksville or Middle Tennessee in 2026?** [Contact our team](/contact-us) to start the conversation, or browse our [current builds and listings](/listings) to see our work firsthand.
-`
+## Frequently Asked Questions
+
+### Which luxury features add the most value to a custom home?
+
+The features owners use every day deliver the most value: a highly functional kitchen with a working pantry, a primary suite designed as a retreat, covered outdoor living space, and energy-performance upgrades like better insulation, windows, and zoned HVAC that lower bills and improve comfort for decades.
+
+### Is spray foam insulation worth it in Tennessee?
+
+For many custom homes, yes — especially in the attic, where Tennessee summers drive heavy heat gain. Spray foam seals air leaks as well as insulating, which improves comfort and efficiency. Pair it with proper mechanical ventilation, such as an ERV, for healthy indoor air.
+
+### When should I plan smart home and audio systems?
+
+During design, before construction starts. Bringing an AV and automation integrator in early lets wiring, equipment space, and motorized shade pockets be built in, which costs far less than retrofitting after drywall.
+
+### How do I keep a luxury build on budget?
+
+Prioritize the features you'll use daily, finalize major selections before construction begins, and carry a 10–15% contingency. Our guide to [5 things to know before building a custom home in Tennessee](/blog/building-a-custom-home-in-tennessee-what-to-know) covers budgeting in more detail.
+
+**Ready to design a luxury custom home in Clarksville or Middle Tennessee?** [Contact our team](/contact-us) to start the conversation, explore our [floor plans](/floorplans), review our [10-year builder warranty](/warranties), or browse our [current builds](/listings) to see our work firsthand.
+`,
+  'new-construction-homes-clarksville-tn': `
+# New Construction Homes in Clarksville, TN: Costs, Timelines, and Your Options (2026 Guide)
+
+Clarksville, Tennessee continues to rank among the fastest-growing cities in the Southeast — and the housing market reflects it. Whether you're a military family relocating to Fort Campbell, a Nashville-area buyer looking for more space at a better price, or a longtime Clarksville resident ready to build rather than buy, it pays to understand the new construction landscape before you start.
+
+Here's what buyers should know about new construction homes in Clarksville, TN in 2026: the main options, realistic timelines, current costs, and how to pay for it.
+
+## Your New Construction Options in Clarksville
+
+Clarksville's population has grown by more than 20% over the past decade, and new construction has worked hard to keep pace. Today you'll find four distinct paths:
+
+- **Master-planned communities** where production builders offer spec homes and quick-move-in inventory
+- **Subdivision lots** where semi-custom builders offer modified floor plans
+- **Custom builds** on land you choose, designed and built around your family
+- **Acreage communities and rural homesites** — like [Rustic Pines at Paris Landing](/rustic-pines), west of Clarksville in Stewart County — for buyers who want five acres or more
+
+Each path trades off price, timeline, flexibility, and control differently. Browse our [floor plans](/floorplans) to see what the custom path looks like in scope and design.
+
+## New Construction Timelines: What's Realistic
+
+How long new construction takes depends heavily on the path you choose:
+
+- **Spec/inventory homes:** 0–3 months from contract to close, since the home is already built or nearly finished. You get speed, but little customization.
+- **Semi-custom builds:** typically 6–10 months from design finalization to move-in, depending on the builder's workload and the complexity of the changes.
+- **True custom builds:** construction itself typically runs 9–14 months. Counting design, selections, and permitting, plan on roughly 12–16 months from the first design meeting to move-in. Our [build process page](/process) walks through each phase.
+
+Supply chain conditions have stabilized significantly since the disruptions of 2021–2023, and quality builders in the Clarksville area can hold to far more predictable schedules than they could a few years ago.
+
+## What Does New Construction Cost in Clarksville in 2026?
+
+Pricing varies with builder type, finishes, and location. General ranges in 2026:
+
+- **Entry-level production new construction:** about $275,000–$375,000 for three- to four-bedroom homes in established subdivisions
+- **Semi-custom new construction:** about $375,000–$575,000, with more flexibility in plan and finishes
+- **Luxury custom homes:** $550,000 and up for fully custom design, premium materials, and larger square footage
+
+Land prices in Montgomery County vary widely. Lots in established neighborhoods often run roughly $55,000–$130,000, while rural acreage depends heavily on size, topography, and utilities. Rural lots also carry site costs — septic, well, power, driveway, clearing — that don't appear on the listing; our guide to [buying land to build a house in Tennessee](/blog/buying-land-to-build-a-house-in-tennessee) explains how to budget for them.
+
+Clarksville remains meaningfully more affordable than Nashville's inner suburbs for comparable new construction, which is a big part of why the market keeps growing.
+
+## How to Pay for New Construction
+
+Spec homes are financed like any other purchase. Custom builds usually use a **construction loan**, where the lender releases money in draws as work is completed and you typically pay interest only on what's been drawn. A one-time-close loan converts to your permanent mortgage when the home is finished.
+
+For Fort Campbell families, a **VA loan can finance new construction** — land and building together, often with no down payment. The VA's builder rules changed in 2025, so read our guide to [building a new home with a VA loan in Clarksville](/blog/va-loan-new-construction-clarksville-tn) before you talk to lenders.
+
+## The Custom Build Advantage in Today's Clarksville Market
+
+With inventory still tight across Middle Tennessee, many buyers find the custom path — while longer — delivers a better result than competing for existing homes or settling for a production plan that doesn't quite fit. Building custom means:
+
+- **You choose your land** instead of picking from the lots left in one neighborhood
+- **The floor plan is designed around your family** — room sizes, layout, storage, and flow
+- **You select every finish**, from flooring and cabinetry to countertops and fixtures
+- **The home can be built beyond minimum code** for comfort and lower energy bills
+
+See our [current builds and listings](/listings) for a sense of what's underway right now.
+
+## Choosing a Builder for New Construction in Clarksville
+
+The builder you choose shapes your experience as much as the floor plan does. Prioritize local experience in Montgomery County, transparent line-item pricing, clear communication standards, recent references, and a written warranty. Our full guide on [how to choose a custom home builder in Clarksville](/blog/how-to-choose-a-custom-home-builder-clarksville-tn) covers how to verify a Tennessee contractor license, the eight questions worth asking, and the red flags to walk away from.
+
+## Frequently Asked Questions
+
+### How much does it cost to build a new home in Clarksville, TN?
+
+In 2026, new production homes generally run about $275,000–$375,000, semi-custom homes about $375,000–$575,000, and luxury custom homes start around $550,000. Land and site work are additional for custom builds.
+
+### How long does it take to build a new home in Clarksville?
+
+Spec homes can close within a few months. Semi-custom builds typically take 6–10 months. A fully custom home usually takes 9–14 months to build, or about 12–16 months including design and permitting.
+
+### Is it cheaper to build in Clarksville than in Nashville?
+
+Generally, yes. Land and new construction in Clarksville and Montgomery County cost meaningfully less than in Nashville's inner suburbs for comparable quality, which is a major driver of the area's growth.
+
+### Can I use a VA loan for new construction in Clarksville?
+
+Yes. Eligible veterans and service members can use a VA construction loan to buy land and build a home they'll occupy, often with no down payment. Not every lender offers VA construction loans, so ask directly.
+
+**Thinking about new construction in Clarksville?** [Contact Homefront Builders](/contact-us) to talk through your timeline, budget, and vision — or explore our [current listings](/listings) to see the homes we're building for families throughout the area.
+`,
+  'building-a-custom-home-in-tennessee-what-to-know': `
+# Building a Custom Home in Tennessee: 5 Things to Know Before You Start
+
+Building a custom home is one of the biggest financial and personal decisions most people ever make — and one of the most rewarding. Unlike buying an existing house or a production builder's spec home, a custom build means every square foot, every finish, and every design decision is yours. That freedom is exciting, but it comes with a learning curve.
+
+The families who feel most confident going into a build are the ones who understand a handful of things up front. Whether you're building in Clarksville, elsewhere in Montgomery County, or on acreage across Middle Tennessee, here are the five that matter most.
+
+## 1. Land Shapes Everything Else
+
+Your homesite isn't just a backdrop for the house — it determines your floor plan, your foundation, your utility costs, and even your design style. Before you fall in love with a plan, understand:
+
+- **Topography and drainage**, which affect foundation costs and site prep
+- **Soil conditions**, which can require extra engineering — and, without public sewer, decide how many bedrooms a septic permit will allow
+- **Utility access**: public water or a well, sewer or septic, electric service, and internet
+- **Zoning, deed restrictions, and covenants**, especially in fast-growing areas around Clarksville and Fort Campbell
+- **Setbacks and easements**, which determine where on the lot you can build
+
+A good custom builder will walk the lot with you before design work begins. For rural land, our guide to [buying land to build a house in Tennessee](/blog/buying-land-to-build-a-house-in-tennessee) breaks down the septic, well, power, and driveway costs that don't appear on a land listing.
+
+## 2. Your Budget Needs to Include More Than the Build Cost
+
+First-time custom home buyers are often surprised by what falls outside the base construction contract. A realistic budget accounts for:
+
+1. **Land and site preparation** — clearing, grading, driveway, and utilities
+2. **Permits, surveys, and impact or tap fees**
+3. **Design and engineering fees**
+4. **Landscaping, fencing, and exterior finishing**
+5. **A contingency of 10–15%** for selection upgrades or unforeseen site conditions
+
+A builder who provides a transparent, itemized estimate early is the best protection you have against budget surprises later.
+
+## 3. Construction Financing Works Differently Than a Mortgage
+
+A custom build is usually financed with a construction loan, not a standard mortgage, and the mechanics catch people off guard:
+
+- **Money is released in draws.** The lender pays the builder in stages as work is completed and inspected, rather than in one lump sum.
+- **You typically pay interest only on what's been drawn** during construction, so payments start small and grow as the house goes up.
+- **One-time-close vs. two-time-close.** A construction-to-permanent (one-time-close) loan converts to your mortgage when the home is finished, with one set of closing costs. A two-time-close loan pays off the construction loan with a separate mortgage at the end.
+- **The lender underwrites the project, not just you.** Expect to provide plans, specifications, the signed contract, and a detailed budget — and expect the appraisal to be based on the plans.
+
+Eligible veterans and service members can also finance a new build with a VA loan, often with no down payment. Our guide to [building a new home with a VA loan near Fort Campbell](/blog/va-loan-new-construction-clarksville-tn) explains how it works and what to ask lenders.
+
+## 4. Design and Selections Take Time — Plan for It
+
+One of the most common misconceptions about custom building is that the timeline starts when construction begins. In reality, design, engineering, permitting, and selections — flooring, cabinetry, fixtures, paint, countertops — can take several months before anyone breaks ground. Construction itself typically runs nine to fourteen months, so twelve to sixteen months from first design meeting to move-in is a realistic expectation.
+
+Rushing the front end is one of the top causes of change orders and budget overruns. The smoothest projects are the ones where clients lock in major selections — kitchen layout, primary suite design, exterior materials — before the foundation is poured, rather than deciding on the fly mid-construction.
+
+## 5. The Builder You Choose Matters More Than the Plan
+
+The builder determines everything from how often you hear about progress to the quality of the materials behind your walls. Comparing builders on price per square foot alone misses the point: premium framing, quality windows, properly sized and installed HVAC, and experienced trades cost more up front but pay you back for decades in lower energy bills and fewer repairs.
+
+Before signing, verify the builder's Tennessee contractor license and its monetary limit, walk an active jobsite, and talk to past clients. Our guide on [how to choose a custom home builder in Clarksville](/blog/how-to-choose-a-custom-home-builder-clarksville-tn) covers the eight questions worth asking and the red flags worth walking away from. You can also see how we run every project, step by step, on our [process page](/process).
+
+## Frequently Asked Questions
+
+### How long does it take to build a custom home in Tennessee?
+
+Construction typically takes nine to fourteen months. Including design, selections, and permitting, plan on about twelve to sixteen months from the first design meeting to move-in.
+
+### How much contingency should I budget for a custom home?
+
+Plan for a contingency of 10–15% of the construction budget to cover selection upgrades and unforeseen site conditions. Rural lots with unknown soil or rock may justify the higher end of that range.
+
+### Do I need to own land before I talk to a builder?
+
+No. Talking to a builder first is often better: they can evaluate a lot before you buy it, flag septic, access, and slope issues, and help you budget the site work. Some builders also have lots available in their own communities.
+
+### How does a construction loan work?
+
+The lender releases money in draws as each stage of construction is completed and inspected, and you typically pay interest only on the amount drawn. With a one-time-close loan, it converts to a regular mortgage when the home is finished.
+
+**Thinking about building a custom home in Clarksville or Middle Tennessee?** [Contact our team](/contact-us) for a no-obligation consultation, explore our [floor plans](/floorplans), or see what's underway in our [current builds](/listings).
+`,
+  'modern-farmhouse-homes-middle-tennessee': `
+# Modern Farmhouse Homes in Middle Tennessee: A Design Guide for Your Custom Build
+
+If you've driven through the rolling hills of Montgomery County lately, you've noticed it: board-and-batten gables, black-framed windows, deep front porches, and that blend of rustic warmth and clean, modern lines. Modern farmhouse has become one of the most requested styles for new custom homes in Clarksville and across Middle Tennessee — and for good reason. It delivers timeless curb appeal, a connection to the land, and interiors built for the way families actually live.
+
+It's a style we build often, and the difference between a modern farmhouse that looks great for decades and one that looks tired in five years comes down to a handful of decisions most design inspiration posts never mention. Here's what defines the style, what it looks like in a real plan, and which materials and details hold up in Middle Tennessee's climate.
+
+## What Defines Modern Farmhouse Design?
+
+Modern farmhouse architecture borrows its bones from classic American farmhouses — gabled rooflines, deep porches, simple facades — and updates them with contemporary materials, open floor plans, and clean detailing. The result feels both familiar and brand new.
+
+The exterior elements that define the style:
+
+- **Wrap-around or full-width front porches** with simple or tapered columns and metal roof accents
+- **Board-and-batten siding**, often paired with brick or stone at the base
+- **Black-framed windows** for crisp contrast against light or mid-tone exteriors
+- **Standing-seam metal roof accents** over porches, dormers, or bay windows
+- **Simple, steep gable rooflines** that echo traditional barn and farmhouse silhouettes
+
+## What It Looks Like in a Real Plan: The Harmony
+
+Our [Harmony floor plan](/floorplans) is a good example of the style done with restraint: board-and-batten gables over a full brick base, black-framed windows, and clean lines without fussy trim. Inside, it's a four-bedroom, three-and-a-half-bath layout starting at 2,860 square feet, with a gourmet kitchen and a primary suite designed as a retreat. It shows how the farmhouse look works on a suburban lot just as well as it does on acreage.
+
+## Interior Features That Bring the Style Home
+
+The farmhouse aesthetic doesn't stop at the front door. Inside, vaulted ceilings, exposed wood beams, and natural textures carry the exterior character through the home. Popular selections include:
+
+1. **Vaulted great rooms** with exposed beams as a focal point
+2. **Oversized kitchen islands** built for both meal prep and everyday gathering
+3. **Apron-front sinks** paired with quartz or butcher-block countertops
+4. **Wide-plank engineered hardwood flooring** for durability and warmth
+5. **Mudrooms and drop zones** designed for active, growing families
+
+## Materials That Hold Up in Middle Tennessee's Climate
+
+Here's where the style lives or dies. Middle Tennessee's humidity, summer sun, and freeze-thaw winters are hard on exactly the materials that make a farmhouse look like a farmhouse.
+
+- **Siding:** Real wood board-and-batten is beautiful and high-maintenance in humid summers. Fiber-cement board-and-batten gives you the same lines with far less risk of rot and paint failure, which is why it's the default choice for most new builds here.
+- **A masonry base:** Brick or stone along the bottom of the walls keeps siding out of the splash zone, where rain and lawn sprinklers do the most damage. It's practical, not just decorative.
+- **Black windows:** Dark frames absorb a lot of heat on south- and west-facing walls. Ask whether the window line you're choosing is rated for dark exterior colors — not every frame material handles it equally.
+- **Metal roof accents:** Concealed-fastener standing-seam panels look cleaner and avoid the hundreds of exposed screws (and future leak points) of agricultural-style panels.
+- **Porch depth and orientation:** A porch you'll actually use needs room for furniture and a walkway — about eight feet deep is a good target. A west-facing porch is brutal on July afternoons; on a lot with options, put the porch where it gets afternoon shade.
+
+## Where Modern Farmhouse Costs More (and Where It Saves)
+
+Some of the style's signature moves add real cost: deep wrap-around porches, metal roofing, vaulted ceilings with beams (which also add volume to heat and cool), and large black-framed window walls. Others work in your favor. Simple gable rooflines and rectangular footprints are among the most cost-efficient ways to frame and roof a house. The best farmhouse designs spend on the porch and the great room and keep the rest of the structure simple.
+
+## Is Modern Farmhouse Still in Style?
+
+The style is evolving rather than fading. The all-white, shiplap-everywhere look of a few years ago is giving way to a warmer version: natural wood tones, warm whites and earthy colors instead of stark gray, mixed metals, and fewer "farmhouse" signs and accents. The architecture underneath — gables, porches, board-and-batten, black windows — remains a durable choice, which matters for resale as much as for daily living. Keep the bones classic and let finishes carry the trends, since finishes are easier to change later.
+
+## Why Modern Farmhouse Works So Well in Middle Tennessee
+
+Middle Tennessee's landscape — open pastureland, mature hardwoods, and wide lots outside the city core — suits this style naturally. A modern farmhouse sits as comfortably on five wooded acres as it does in a Clarksville subdivision. If acreage is part of your plan, read our guide to [buying land to build a house in Tennessee](/blog/buying-land-to-build-a-house-in-tennessee) before you make an offer, or explore the wooded homesites at [Rustic Pines at Paris Landing](/rustic-pines).
+
+## Frequently Asked Questions
+
+### What is a modern farmhouse style home?
+
+A modern farmhouse pairs traditional farmhouse forms — gabled roofs, deep porches, board-and-batten siding — with contemporary materials, black-framed windows, open floor plans, and clean detailing.
+
+### Is modern farmhouse still in style in 2026?
+
+Yes, though it's evolving. The architecture remains popular, while interiors are shifting from stark white and gray toward warmer wood tones, earthy colors, and mixed metals.
+
+### What siding is best for a modern farmhouse in Tennessee?
+
+Fiber-cement board-and-batten is the most practical choice for Middle Tennessee's humidity. It holds paint well, resists rot and insects, and gives the same look as wood with far less maintenance. A brick or stone base adds protection where rain splashes.
+
+### How deep should a farmhouse front porch be?
+
+About eight feet deep is a good target for a porch you'll actually furnish and use. Shallower porches look right from the street but don't leave room for seating and a walkway.
+
+**Ready to design your own modern farmhouse?** [Contact Homefront Builders](/contact-us) to talk through your plan, browse our [floor plans](/floorplans) and [current builds](/listings), or see which [luxury custom home features](/blog/luxury-custom-home-features-middle-tennessee) our clients say are worth every penny.
+`,
 };

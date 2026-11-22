@@ -1,4 +1,5 @@
 import { ComponentType, lazy, Suspense } from 'react';
+import { matchPath } from 'react-router-dom';
 import Home from './pages/Home';
 import { RUSTIC_PINES_LIVE } from './data/rusticPinesLaunch';
 
@@ -76,6 +77,8 @@ export const pageRoutes = [
   // Hidden until the launch switch is on (RUSTIC_PINES_LIVE in src/data/rusticPinesLaunch.ts).
   ...(RUSTIC_PINES_LIVE ? [{ path: '/rustic-pines', Component: RusticPines, preload: RusticPines.preload }] : []),
   { path: '/blog', Component: Blog, preload: Blog.preload },
+  // Each article has its own URL; Blog renders it as the open article overlay.
+  { path: '/blog/:slug', Component: Blog, preload: Blog.preload },
   { path: '/contact-us', Component: ContactUs, preload: ContactUs.preload },
   { path: '/warranties', Component: Warranties, preload: Warranties.preload },
   { path: '/process', Component: ProcessPage, preload: ProcessPage.preload },
@@ -89,7 +92,7 @@ export function preloadRoute(pathname: string): Promise<unknown> {
   const normalized =
     pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
   const match =
-    pageRoutes.find((r) => r.path === normalized) ??
+    pageRoutes.find((r) => r.path !== '*' && matchPath(r.path, normalized)) ??
     pageRoutes.find((r) => r.path === '*')!;
   return match.preload ? match.preload() : Promise.resolve();
 }
