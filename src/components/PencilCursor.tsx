@@ -1,19 +1,20 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * The graphite line the carpenter's-pencil cursor leaves behind it.
+ * The graphite line the pencil cursor leaves behind it.
  *
- * The pencil itself is a native CSS cursor (see "Carpenter's-pencil cursor" in
+ * The pencil itself (a blue drafting pencil) is a native CSS cursor (see "Pencil cursor" in
  * index.css), so it tracks the mouse with zero lag and can never freeze. This
  * component only draws the mark: a full-viewport, click-through canvas.
  *
- *  - The line is stroked with a flat pen held at a fixed angle, like the wide
- *    lead of a carpenter's pencil: broad one way, fine the other. A second,
+ *  - The line is stroked with a slightly oval pen held at a fixed angle, like
+ *    a worn pencil point: a touch broader one way than the other. A second,
  *    softer pass under it gives the edge a graphite smudge.
  *  - A fixed speckle ("paper tooth") is knocked out of the marks so they read
  *    as graphite on paper rather than as a vector line.
  *  - Marks are stored in page coordinates, so they stay on the "plans" when the
- *    page scrolls. Each one holds for HOLD_MS, then eases out over FADE_MS.
+ *    page scrolls. Each one holds for HOLD_MS, then eases out over FADE_MS:
+ *    about half a second in all, so the line is a brief wake, not a drawing.
  *  - Over dark surfaces the mark turns silvery so it stays visible.
  *  - Mouse / trackpad only, off for reduced-motion users, and the frame loop
  *    stops entirely once the last mark has faded.
@@ -22,16 +23,16 @@ import { useEffect, useRef } from 'react';
  * under 1ms), nothing at all otherwise.
  */
 
-const HOLD_MS = 650; // how long a mark stays before it starts to fade
-const FADE_MS = 1150; // how long the fade takes
+const HOLD_MS = 150; // how long a mark stays before it starts to fade
+const FADE_MS = 400; // how long the fade takes
 const LIFE_MS = HOLD_MS + FADE_MS;
 const SPACING = 1.5; // px between stored points
 const MAX_POINTS = 4096; // about 6000px of line on screen at once
 const TAIL = 600; // when the buffer is full, the oldest points thin out over this many
 const MAX_JUMP = 320; // px: a bigger gap between two samples is a new line
-const LEAD = 2.1; // px: the lead's wide side
-const LEAD_FLAT = 0.52; // its narrow side, as a fraction of the wide one
-const NIB_ANGLE = -0.6; // rad: how the flat lead is held
+const LEAD = 1.8; // px: the point's wide side
+const LEAD_FLAT = 0.7; // its narrow side, as a fraction of the wide one
+const NIB_ANGLE = -0.6; // rad: how the point is held
 const NIB_COS = Math.cos(NIB_ANGLE);
 const NIB_SIN = Math.sin(NIB_ANGLE);
 const LEVELS = 28; // opacity steps; neighbours on the same step share one stroke
@@ -303,7 +304,7 @@ export default function PencilCursor() {
       ctx.lineCap = 'butt';
 
       // The path is built in page pixels, then stroked through a squashed,
-      // rotated transform: that makes the pen an ellipse (a flat lead).
+      // rotated transform: that makes the pen an ellipse (a worn point).
       let open = false;
       let level = 0;
       let light = 0;

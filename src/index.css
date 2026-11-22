@@ -42,10 +42,10 @@ body {
 }
 
 /* ==========================================================================
-   Carpenter's-pencil cursor
+   Pencil cursor (a blue drafting pencil)
    The pencil is a native cursor (no lag, never freezes); the graphite line it
    leaves is drawn by components/PencilCursor.tsx. Mouse / trackpad only.
-   The lead's tip is the hotspot (5 27). Cursors stay 32px: browsers drop
+   The point is the hotspot (5 27). Cursors stay 32px: browsers drop
    bigger ones near the window edge.
    ========================================================================== */
 @media (hover: hover) and (pointer: fine) {
