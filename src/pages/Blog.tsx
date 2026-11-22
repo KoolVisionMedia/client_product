@@ -6,7 +6,7 @@ import { ArrowRight, Calendar, Tag, X } from 'lucide-react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { blogArticles } from '../data/blogArticles';
-import { blogPosts, blogPostPath, postDateLabel, type BlogPost } from '../data/blogPosts';
+import { blogPosts, blogPostPath, postDateLabel, type BlogPost, postAuthor } from '../data/blogPosts';
 import SEO from '../components/SEO';
 import { useDialog } from '../hooks/useDialog';
 
@@ -53,6 +53,33 @@ function articleFaq(md: string) {
     .filter((qa) => qa.question && qa.answer);
 }
 
+/** The post's byline as a Person who works for the business (E-E-A-T for search and AI answers). */
+function authorSchema(post: BlogPost) {
+  const a = postAuthor(post);
+  return {
+    '@type': 'Person',
+    name: a.name,
+    jobTitle: a.role,
+    image: `${SITE}${a.photo}`,
+    url: `${SITE}/about-us`,
+    worksFor: { '@id': `${SITE}/#business`, '@type': 'HomeAndConstructionBusiness', name: 'Homefront Builders' },
+  };
+}
+
+/** "By <name>" with a small square photo (and their role, where there is room). */
+function Byline({ post, withRole = false }: { post: BlogPost; withRole?: boolean }) {
+  const a = postAuthor(post);
+  return (
+    <span className="flex items-center gap-2 normal-case tracking-normal">
+      <img src={a.photo} alt="" width={28} height={28} loading="lazy" decoding="async" className="h-7 w-7 flex-none rounded-full object-cover ring-1 ring-black/5" />
+      <span className="text-primary-light">
+        By <span className="font-semibold text-primary">{a.name}</span>
+        {withRole && <span className="hidden sm:inline">, {a.role}</span>}
+      </span>
+    </span>
+  );
+}
+
 function postingSchema(post: BlogPost) {
   const url = `${SITE}${blogPostPath(post.slug)}`;
   return {
@@ -67,7 +94,7 @@ function postingSchema(post: BlogPost) {
     url,
     mainEntityOfPage: url,
     inLanguage: 'en-US',
-    author: ORG,
+    author: authorSchema(post),
     publisher: ORG,
     ...(post.keywords ? { keywords: post.keywords.join(', ') } : {}),
   };
@@ -238,6 +265,7 @@ export default function Blog() {
               <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
                 <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
                   <p className="not-prose flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-6">
+                    <Byline post={openPost} withRole />
                     <span className="flex items-center gap-1.5"><Calendar size={14} /> <PostDate post={openPost} /></span>
                     <span className="flex items-center gap-1.5"><Tag size={14} /> {openPost.category}</span>
                   </p>
@@ -333,6 +361,9 @@ export default function Blog() {
                 <span className="hidden md:block w-1 h-1 rounded-full bg-primary/20" />
                 <span className="flex items-center gap-1.5"><Tag size={14} /> {featuredPost.category}</span>
               </div>
+              <div className="mb-4 text-xs font-sans">
+                <Byline post={featuredPost} withRole />
+              </div>
 
               <h2 className="font-serif text-3xl md:text-4xl text-primary mb-6 leading-tight group-hover:text-[#c9a96e] transition-colors duration-500">
                 {featuredPost.title}
@@ -393,6 +424,9 @@ export default function Blog() {
                     <p className="text-[10px] font-sans tracking-widest text-[#c9a96e] uppercase mb-3 flex items-center gap-1.5">
                       <Calendar size={12} /> <PostDate post={post} />
                     </p>
+                    <div className="mb-3 text-xs font-sans">
+                      <Byline post={post} />
+                    </div>
                     <h3 className="font-serif text-2xl text-primary mb-4 group-hover:text-[#c9a96e] transition-colors duration-500">
                       {post.title}
                     </h3>
