@@ -33,11 +33,18 @@
   
   --animate-marquee-up: marquee-up 40s linear infinite;
   --animate-marquee-down: marquee-down 40s linear infinite;
+  --animate-ticker: ticker 90s linear infinite;
 }
 
 @keyframes marquee-up {
   0% { transform: translateY(0); }
   100% { transform: translateY(-50%); }
+}
+
+/* Horizontal ticker: the track holds two identical copies, so -50% loops seamlessly. */
+@keyframes ticker {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 @keyframes marquee-down {
