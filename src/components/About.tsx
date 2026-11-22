@@ -9,7 +9,7 @@ export default function About() {
 
   return (
     <section id="about" className="pt-32 md:pt-40 pb-0 md:pb-0 px-6 md:px-12 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-20 items-center">
+      <div className="max-w-site mx-auto flex flex-col lg:flex-row gap-20 items-center">
         {/* Text Content */}
         <div className="flex-1 space-y-10 z-10">
           <motion.div

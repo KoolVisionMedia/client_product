@@ -54,7 +54,7 @@ export default function Warranties() {
     <div>
       <SEO
         title="New Home Warranty Program"
-        description="Homefront Builders' Custom Care Program offers proactive warranty support and scheduled maintenance to protect your new home investment for years to come."
+        description="Every Homefront home comes with a 10-year Quality Builders Warranty backed by Liberty Mutual, plus Custom Care: proactive warranty support and maintenance."
         path="/warranties"
       />
       {/* Hero Banner */}
@@ -81,7 +81,7 @@ export default function Warranties() {
 
       {/* QBW Introduction */}
       <section className="bg-white py-24 md:py-32 px-6 md:px-12">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-site-1200 mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             {/* Left — Text */}
@@ -149,7 +149,7 @@ export default function Warranties() {
 
       {/* Coverage Diagram Section */}
       <section className="bg-white py-12 md:py-20 px-6 md:px-12 border-t border-gray-100">
-        <div className="max-w-[1000px] mx-auto">
+        <div className="max-w-[62.5rem] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -197,7 +197,7 @@ export default function Warranties() {
 
       {/* Warranty Actions Grid */}
       <section className="bg-[#F4F3F0] py-24 md:py-28 px-6 md:px-12">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-site-1200 mx-auto">
 
           {/* Section Header */}
           <motion.div
@@ -259,7 +259,7 @@ export default function Warranties() {
 
       {/* Trust Banner */}
       <section className="bg-[#1b2518] py-16 px-6 md:px-12">
-        <div className="max-w-[1000px] mx-auto text-center">
+        <div className="max-w-[62.5rem] mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

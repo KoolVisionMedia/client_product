@@ -17,7 +17,7 @@ export default function CustomCare() {
 
   return (
     <section id="custom-care" className="py-32 px-6 md:px-12 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-site mx-auto">
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           {/* Image side */}
           <div id="custom-care-visual" className="flex-1 relative w-full aspect-video">
@@ -31,6 +31,8 @@ export default function CustomCare() {
                transition={desktop ? { duration: 1.2, ease: [0.16, 1, 0.3, 1] } : { duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
              >
                 <img
+                  loading="lazy"
+                  decoding="async"
                   src="/assets/beyond-the-build.webp"
                   alt="Homefront Builders custom home build progression — from foundation to framing to finished home"
                   className="w-full h-full object-cover"

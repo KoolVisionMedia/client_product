@@ -11,6 +11,9 @@ interface SEOProps {
   /** Social share image (site-relative path). Defaults to the site-wide og-image.jpg. */
   image?: string;
   imageAlt?: string;
+  /** Pixel size of a custom `image`, when known (the default image is 1200x630). */
+  imageWidth?: number;
+  imageHeight?: number;
   /** 'article' adds article:published_time / modified_time. */
   type?: 'website' | 'article';
   publishedTime?: string;
@@ -26,14 +29,14 @@ export default function SEO({
   schema,
   image,
   imageAlt,
+  imageWidth,
+  imageHeight,
   type = 'website',
   publishedTime,
   modifiedTime,
   parents = [],
 }: SEOProps) {
-  const fullTitle = path === '/'
-    ? `${title} | ${SITE_NAME}`
-    : `${title} | ${SITE_NAME}`;
+  const fullTitle = `${title} | ${SITE_NAME}`;
   const canonical = `${BASE_URL}${path}`;
 
   const breadcrumbSchema = path !== '/' ? {
@@ -47,6 +50,7 @@ export default function SEO({
   } : null;
 
   const ogImage = `${BASE_URL}${image ?? '/og-image.jpg'}`;
+  const ogImageAlt = imageAlt ?? 'A luxury custom home built by Homefront Builders in Clarksville, TN';
 
   const schemas = [
     ...(schema ? (Array.isArray(schema) ? schema : [schema]) : []),
@@ -66,9 +70,9 @@ export default function SEO({
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_US" />
       <meta property="og:image" content={ogImage} />
-      {!image && <meta property="og:image:width" content="1200" />}
-      {!image && <meta property="og:image:height" content="630" />}
-      <meta property="og:image:alt" content={imageAlt ?? 'A luxury custom home built by Homefront Builders in Clarksville, TN'} />
+      {(image ? imageWidth : 1200) && <meta property="og:image:width" content={String(image ? imageWidth : 1200)} />}
+      {(image ? imageHeight : 630) && <meta property="og:image:height" content={String(image ? imageHeight : 630)} />}
+      <meta property="og:image:alt" content={ogImageAlt} />
       {type === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
       {type === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
@@ -76,6 +80,7 @@ export default function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content={ogImageAlt} />
 
       {schemas.map((s, i) => (
         <script key={i} type="application/ld+json">

@@ -52,7 +52,7 @@ export function AnimatedGrid({
   background-size: ${size}px ${size}px;
   opacity: ${opacity * 0.6};
   animation: ${cls}-drift 26s linear infinite;
-  will-change: background-position;
+  will-change: transform;
 }
 .${cls}::after {
   background-image:
@@ -61,7 +61,7 @@ export function AnimatedGrid({
   background-size: ${major}px ${major}px;
   opacity: ${opacity * 0.5};
   animation: ${cls}-drift 26s linear infinite;
-  will-change: background-position;
+  will-change: transform;
 }
 .${cls} > .${cls}-glow {
   position: absolute; inset: 0;
@@ -69,9 +69,11 @@ export function AnimatedGrid({
   animation: ${cls}-pulse 9s ease-in-out infinite;
   will-change: transform, opacity;
 }
+/* Drift by moving the (oversized) layer itself, a GPU transform, instead of
+   repainting its background every frame. One full major cell keeps the loop seamless. */
 @keyframes ${cls}-drift {
-  from { background-position: 0 0, 0 0; }
-  to   { background-position: ${major}px ${major}px, ${major}px ${major}px; }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(${major}px, ${major}px, 0); }
 }
 @keyframes ${cls}-pulse {
   0%, 100% { transform: scale(1); opacity: 0.7; }

@@ -80,7 +80,7 @@ export default function Process() {
         <div className="absolute inset-0 bg-[rgba(46,54,44,0.06)]"></div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto relative z-10">
+      <div className="max-w-site mx-auto relative z-10">
         
         {/* Header with Staggered Letter Reveal */}
         <div className="text-center mb-16 md:mb-24 flex flex-col items-center">
@@ -131,7 +131,7 @@ export default function Process() {
             {processSteps.map((step, index) => {
               const isActive = activeStep === index;
               return (
-                <Link to="/process" key={index} className="shrink-0 snap-center outline-none">
+                <Link to="/process" key={index} className="shrink-0 snap-center rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4">
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}

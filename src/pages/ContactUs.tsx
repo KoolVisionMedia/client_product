@@ -1,34 +1,18 @@
 import { motion } from 'motion/react';
 import ContactSection from '../components/ContactSection';
 import SEO from '../components/SEO';
+import { BUSINESS } from '../data/business';
 
-// Points at the business entity declared on the home page rather than
-// restating it, and repeats the NAP details that drive local ranking.
+// The contact page's main entity is the business itself: the same shared
+// definition as the home page (src/data/business.ts), so the details match.
 const contactSchema = [
   {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
     name: 'Contact Homefront Builders',
     url: 'https://www.homefrontbuilderstn.com/contact-us',
-    mainEntity: {
-      '@type': 'HomeAndConstructionBusiness',
-      '@id': 'https://www.homefrontbuilderstn.com/#business',
-      name: 'Homefront Builders',
-      telephone: '(931) 221-2566',
-      email: 'homefrontsalesTN@gmail.com',
-      url: 'https://www.homefrontbuilderstn.com',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Clarksville',
-        addressRegion: 'TN',
-        addressCountry: 'US',
-      },
-      areaServed: [
-        { '@type': 'City', name: 'Clarksville' },
-        { '@type': 'AdministrativeArea', name: 'Middle Tennessee' },
-      ],
-      openingHours: 'Mo-Fr 08:00-17:00',
-    },
+    isPartOf: { '@id': 'https://www.homefrontbuilderstn.com/#website' },
+    mainEntity: BUSINESS,
   },
 ];
 

@@ -11,41 +11,13 @@ import TopoField from '../components/ui/topo-field';
 import RusticPinesIntro from '../components/RusticPinesIntro';
 import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
 import { RUSTIC_PINES_PROMO } from '../data/rusticPinesPromo';
+import { BUSINESS, SITE, WEBSITE } from '../data/business';
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  // Stable @id so every other page can point at this one business entity
-  // instead of declaring competing copies of it.
-  "@id": "https://www.homefrontbuilderstn.com/#business",
-  "name": "Homefront Builders",
-  "logo": "https://www.homefrontbuilderstn.com/logo-main.png",
-  "image": "https://www.homefrontbuilderstn.com/og-image.jpg",
-  "description": "Luxury custom home builders in Clarksville, TN and Middle Tennessee. Specializing in high-end custom home construction with transparent budgeting and superior craftsmanship.",
-  "url": "https://www.homefrontbuilderstn.com",
-  "telephone": "(931) 221-2566",
-  "email": "homefrontsalesTN@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Clarksville",
-    "addressRegion": "TN",
-    "addressCountry": "US"
-  },
-  "areaServed": [
-    { "@type": "City", "name": "Clarksville" },
-    { "@type": "State", "name": "Tennessee" },
-    { "@type": "AdministrativeArea", "name": "Middle Tennessee" }
-  ],
-  "priceRange": "$$$",
-  "openingHours": "Mo-Fr 08:00-17:00",
-  "sameAs": [
-    "https://www.facebook.com/HomeFrontBuilderstn/",
-    "https://www.instagram.com/homefrontbuilderstn/",
-    "https://www.tiktok.com/@homefront.builder"
-  ]
-};
+// The business and the website, defined once in src/data/business.ts.
+const localBusinessSchema = { '@context': 'https://schema.org', ...BUSINESS };
+const websiteSchema = { '@context': 'https://schema.org', ...WEBSITE };
 
-const SITE = 'https://www.homefrontbuilderstn.com';
+
 
 // The Rustic Pines promo film in the announcement section, described for
 // search (Google video results / video carousels). Only emitted once the film
@@ -74,15 +46,15 @@ const rusticPinesPromoSchema = {
 };
 const homeSchema =
   RUSTIC_PINES_LIVE && RUSTIC_PINES_PROMO.filmReady
-    ? [localBusinessSchema, rusticPinesPromoSchema]
-    : localBusinessSchema;
+    ? [localBusinessSchema, websiteSchema, rusticPinesPromoSchema]
+    : [localBusinessSchema, websiteSchema];
 
 export default function Home() {
   return (
     <div className="relative">
       <SEO
         title="Custom Home Builders in Clarksville, TN"
-        description="Homefront Builders — luxury custom home builders in Clarksville, TN with 20+ years of expertise. Transparent budgeting, weekly build updates, and superior craftsmanship. Call (931) 221-2566."
+        description="Luxury custom home builder in Clarksville, TN: 20+ years of experience, transparent budgets, weekly build updates, a 10-year warranty. (931) 221-2566."
         path="/"
         schema={homeSchema}
       />

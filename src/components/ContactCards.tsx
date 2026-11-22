@@ -52,7 +52,7 @@ export default function ContactCards() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1200px] mx-auto py-12 relative z-20">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-site-1200 mx-auto py-12 relative z-20">
       {cardsData.map((card) => {
         const Icon = card.icon;
         const isHovered = hoveredCard === card.id;
@@ -113,6 +113,7 @@ export default function ContactCards() {
                     className="w-full rounded-2xl overflow-hidden border border-gray-100 bg-white"
                   >
                     <iframe 
+                      title="Map of Clarksville, Tennessee, where Homefront Builders is based"
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102377.61633535942!2d-87.4206583594326!3d36.53696582522709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8864d0dd882937af%3A0xc665181b5fbcf79b!2sClarksville%2C%20TN!5e0!3m2!1sen!2sus!4v1709664532585!5m2!1sen!2sus" 
                       width="100%" 
                       height="100%" 

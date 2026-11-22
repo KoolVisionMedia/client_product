@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactSection from '../components/ContactSection';
 import { X, Send, Video, Phone, Mail, Award } from 'lucide-react';
 import SEO from '../components/SEO';
 import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
 import ButtonGlow from '../components/ui/ButtonGlow';
+import { useDialog } from '../hooks/useDialog';
 
 const partners = [
   {
@@ -66,7 +67,7 @@ const partners = [
   {
     name: 'Carrie Roseberry',
     title: 'Realtor',
-    image: '/assets/team/Carrie Roseberry.png',
+    image: '/assets/team/Carrie Roseberry.webp',
     bio: `Carrie is a dedicated real estate professional with a passion for helping clients find their dream homes and achieve their real estate goals. Having lived in the Clarksville area since 1979, Carrie brings decades of local knowledge and insight to every transaction. Coming from a military family, Carrie's father was stationed here, giving her firsthand experience with military relocations and the unique challenges that come with PCS moves.\n\nWith years of real estate experience and a deep understanding of the local market, Carrie is committed to providing exceptional service to buyers, sellers, and investors alike. Whether you're purchasing your first home, selling a property, relocating to the area, or building an investment portfolio, Carrie will guide you through every step of the process. Known for being trustworthy, approachable, and attentive to clients' needs, she strives to make every real estate experience as smooth and successful as possible.\n\nWhen you work with Carrie, you're partnering with a knowledgeable local expert who understands both the community and the importance of finding the perfect place to call home.`,
     social: { facebook: 'https://www.facebook.com/HomeFrontBuilderstn/', instagram: 'https://www.instagram.com/homefrontbuilderstn/', linkedin: '#' },
     video: 'https://www.youtube.com/embed/0RA_NdXA0rg',
@@ -121,12 +122,26 @@ function PartnerCard({ partner, index, onClick }: { key?: any; partner: typeof p
       style={{ aspectRatio: '3 / 4' }}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
+      onFocus={() => setExpanded(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setExpanded(false);
+      }}
       onClick={onClick}
     >
+      {/* Keyboard / screen-reader way to open the profile (the card's click
+          does the same for the mouse). A real button, beside, not around, the
+          social links, so nothing interactive is nested. */}
+      <button
+        type="button"
+        aria-label={`${partner.name}, ${partner.title}: watch the interview and get in touch`}
+        className="absolute inset-0 z-0 rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#c9a96e]"
+      />
       {/* Background Image or Initials Fallback */}
       {partner.image ? (
         <motion.img
           src={partner.image}
+          loading="lazy"
+          decoding="async"
           alt={`${partner.name} — Homefront Builders trusted building partner`}
           className="absolute inset-0 w-full h-full object-cover object-top"
           animate={{ scale: expanded ? 1.05 : 1 }}
@@ -213,6 +228,8 @@ function PartnerCard({ partner, index, onClick }: { key?: any; partner: typeof p
 /* ── Partner Modal Component ── */
 function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClose: () => void }) {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialog(true, onClose, dialogRef); // mounted only while open
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(false);
@@ -273,9 +290,15 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
         transition={{ type: 'spring', damping: 25, stiffness: 220 }}
         className="bg-white rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col relative"
         onClick={(e) => e.stopPropagation()}
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${partner.name}: interview and contact`}
       >
         {/* Close Button */}
         <button 
+          type="button"
+          aria-label="Close"
           onClick={onClose}
           className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-all shadow-md"
         >
@@ -353,36 +376,44 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
                       <input
                         type="text"
                         required
+                        autoComplete="name"
+                        aria-label="Your name"
                         placeholder="Your Name"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e]"
+                        className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-base sm:text-xs text-primary outline-none focus:border-[#c9a96e]"
                       />
                       <input
                         type="email"
                         required
+                        autoComplete="email"
+                        aria-label="Email"
                         placeholder="Email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e]"
+                        className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-base sm:text-xs text-primary outline-none focus:border-[#c9a96e]"
                       />
                     </div>
 
                     <input
                       type="tel"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      aria-label="Phone number (optional)"
                       placeholder="Phone Number (Optional)"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e]"
+                      className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-base sm:text-xs text-primary outline-none focus:border-[#c9a96e]"
                     />
 
                     <textarea
                       required
+                      aria-label="Message"
                       placeholder="Type your message..."
                       rows={3}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-xs text-primary outline-none focus:border-[#c9a96e] resize-none"
+                      className="w-full bg-surface border border-primary/10 rounded-xl px-4 py-2.5 font-sans text-base sm:text-xs text-primary outline-none focus:border-[#c9a96e] resize-none"
                     />
 
                     <button
@@ -396,7 +427,7 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
                     </button>
 
                     {error && (
-                      <p className="font-sans text-[11px] text-red-600 text-center">
+                      <p role="alert" className="font-sans text-[11px] text-red-600 text-center">
                         Something went wrong sending your message. Please try again or call us at (931) 221-2566.
                       </p>
                     )}
@@ -421,7 +452,7 @@ export default function AboutUs() {
     <div>
       <SEO
         title="About Us — Luxury Custom Homes in Middle Tennessee"
-        description="Learn about Homefront Builders — Clarksville's premier luxury custom home builder with over two decades of expertise in Middle Tennessee design and construction."
+        description="Meet Homefront Builders, Clarksville's luxury custom home builder: 20+ years designing and building custom homes across Middle Tennessee."
         path="/about-us"
       />
       {/* ─── Hero Banner ─── */}
@@ -451,7 +482,7 @@ export default function AboutUs() {
 
       {/* ─── Video Introduction + Company Description ─── */}
       <section className="pb-20 md:pb-28 px-6 md:px-12 relative z-20 -mt-16 md:-mt-24">
-        <div className="max-w-[1000px] mx-auto">
+        <div className="max-w-[62.5rem] 3xl:max-w-site-1200 mx-auto">
 
           {/* Rustic Pines promo film (same self-hosted files as the home page
               announcement; phones get the 720p copy). */}
@@ -460,7 +491,7 @@ export default function AboutUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '0px 0px -80px 0px' }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16 md:mb-24"
+            className="mb-16 md:mb-24 mx-auto max-w-[62.5rem] 3xl:max-w-[75rem]"
           >
             <div className="relative w-full rounded-2xl overflow-hidden shadow-xl group">
               <video
@@ -594,7 +625,7 @@ export default function AboutUs() {
 
       {/* ─── Meet Our Partners ─── */}
       <section className="bg-[#F4F3F0] py-20 px-6 md:px-12 overflow-hidden">
-        <div className="max-w-[1300px] mx-auto">
+        <div className="max-w-site-1300 mx-auto">
 
           {/* Header */}
           <motion.div
@@ -614,8 +645,8 @@ export default function AboutUs() {
             <div className="mt-8 h-[1px] bg-primary/10 w-full" />
           </motion.div>
 
-          {/* Cards — 3 per row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-6">
+          {/* Cards — 3 per row (4 on large screens, so 8 partners fill two even rows) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-6 lg:gap-6">
             {partners.map((partner, i) => (
               <PartnerCard 
                 key={partner.name} 

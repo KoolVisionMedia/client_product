@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
+import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
 import SEO from './SEO';
 
 export default function Footer() {
   return (
     <footer className="bg-[#0f1a0c] text-white pt-24 pb-8 px-6 md:px-12">
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-site mx-auto">
 
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-20">
@@ -65,8 +66,9 @@ export default function Footer() {
             <ul className="space-y-4 font-sans text-xs text-white/60 tracking-widest uppercase">
               <li><Link to="/warranties" className="hover:text-[#c9a96e] transition-colors">Warranties</Link></li>
               <li><Link to="/contact-us" className="hover:text-[#c9a96e] transition-colors">Contact</Link></li>
-              <li><a href="/#process" className="hover:text-[#c9a96e] transition-colors">Our Process</a></li>
+              <li><Link to="/process" className="hover:text-[#c9a96e] transition-colors">Our Process</Link></li>
               <li><Link to="/floorplans" className="hover:text-[#c9a96e] transition-colors">Floor Plans</Link></li>
+              {RUSTIC_PINES_LIVE && <li><Link to="/rustic-pines" className="hover:text-[#c9a96e] transition-colors">Rustic Pines</Link></li>}
             </ul>
           </div>
 
@@ -96,8 +98,8 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Homefront Builders. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link to="/privacy-policy" className="font-sans text-[10px] text-white/50 tracking-[0.15em] uppercase hover:text-white/50 transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="font-sans text-[10px] text-white/50 tracking-[0.15em] uppercase hover:text-white/50 transition-colors">Terms of Service</Link>
+            <Link to="/privacy-policy" className="inline-block py-2 font-sans text-[10px] text-white/60 tracking-[0.15em] uppercase hover:text-[#c9a96e] transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="inline-block py-2 font-sans text-[10px] text-white/60 tracking-[0.15em] uppercase hover:text-[#c9a96e] transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

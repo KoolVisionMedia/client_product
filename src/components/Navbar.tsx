@@ -4,6 +4,7 @@ import { ChevronDown, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
 import ButtonGlow from './ui/ButtonGlow';
+import { useDialog } from '../hooks/useDialog';
 
 /**
  * Site navigation. Same layout as always: logo left, links right (a menu
@@ -69,7 +70,7 @@ function RollLabel({ children, on }: { children: ReactNode; on: boolean }) {
   return (
     <span className="relative block overflow-y-clip leading-[1.45]">
       <span className={`${t} ${on ? '-translate-y-full' : 'translate-y-0'}`}>{children}</span>
-      <span aria-hidden="true" className={`${t} absolute left-0 top-0 whitespace-nowrap italic text-accent ${on ? 'translate-y-0' : 'translate-y-full'}`}>
+      <span aria-hidden="true" className={`${t} absolute left-0 top-0 whitespace-nowrap italic text-accent-dark ${on ? 'translate-y-0' : 'translate-y-full'}`}>
         {children}
       </span>
     </span>
@@ -85,7 +86,6 @@ export default function Navbar() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const burgerRef = useRef<HTMLButtonElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
   // Where the menu button sits, so the menu's own close button lands exactly on it.
   const [burgerBox, setBurgerBox] = useState<{ top: number; left: number } | null>(null);
   const { scrollYProgress } = useScroll();
@@ -103,38 +103,23 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Escape closes the open desktop menu (focus back on its button) or the mobile menu.
+  // Escape closes the open desktop menu (focus back on its button).
   useEffect(() => {
-    if (!openMenu && !mobileMenuOpen) return;
+    if (!openMenu) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (openMenu) {
-        triggerRefs.current[openMenu]?.focus();
-        setOpenMenu(null);
-      }
-      setMobileMenuOpen(false);
+      triggerRefs.current[openMenu]?.focus();
+      setOpenMenu(null);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [openMenu, mobileMenuOpen]);
+  }, [openMenu]);
 
-  // Focus moves into the open menu (its close button) and back to the menu button after.
-  const wasOpen = useRef(false);
-  useEffect(() => {
-    if (mobileMenuOpen) closeRef.current?.focus({ preventScroll: true });
-    else if (wasOpen.current) burgerRef.current?.focus({ preventScroll: true });
-    wasOpen.current = mobileMenuOpen;
-  }, [mobileMenuOpen]);
-
-  // The full-screen mobile menu holds the page still behind it.
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [mobileMenuOpen]);
+  // The full-screen mobile menu is a modal dialog: focus moves to its close
+  // button (marked data-autofocus) and back to the menu button after, Tab stays
+  // inside it, Escape closes it, and the page behind holds still.
+  const overlayRef = useRef<HTMLDivElement>(null);
+  useDialog(mobileMenuOpen, () => setMobileMenuOpen(false), overlayRef);
 
   const activeItem = NAV_ITEMS.find((item) => itemActive(pathname, item))?.name ?? null;
   // The pill follows the cursor, an open menu, or else rests on the current page.
@@ -168,7 +153,7 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-12 flex justify-between items-center">
+        <div className="max-w-site-1280 mx-auto px-4 md:px-12 flex justify-between items-center">
           {/* Logo container */}
           <div className="flex items-center gap-3 relative z-[70]">
             <Link
@@ -365,6 +350,10 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            ref={overlayRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
             className="fixed inset-0 bg-primary z-[60] flex flex-col justify-center items-center"
             initial={{ opacity: 0, clipPath: 'circle(0% at right 40px top 40px)' }}
             animate={{ opacity: 1, clipPath: 'circle(150% at right 40px top 40px)' }}
@@ -374,7 +363,7 @@ export default function Navbar() {
             {/* Close button, on the exact spot of the menu button (which the menu
                 covers): the menu button's two lines, crossed into an X. */}
             <motion.button
-              ref={closeRef}
+              data-autofocus
               type="button"
               onClick={() => setMobileMenuOpen(false)}
               aria-label="Close menu"
@@ -417,7 +406,7 @@ export default function Navbar() {
                         <div className="font-serif text-3xl md:text-4xl text-white/90 cursor-default mb-4 flex items-center justify-center gap-2">
                           {item.name} <ChevronDown size={20} className="opacity-50" aria-hidden="true" />
                         </div>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-1">
                           {item.dropdown?.map((dropItem) => {
                             const here = isActive(pathname, dropItem.href);
                             return (
@@ -426,7 +415,7 @@ export default function Navbar() {
                                 to={dropItem.href}
                                 aria-current={here ? 'page' : undefined}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className={`inline-flex items-center justify-center gap-2 font-sans text-sm tracking-[0.2em] uppercase transition-colors ${
+                                className={`inline-flex items-center justify-center gap-2 py-2 font-sans text-sm tracking-[0.2em] uppercase transition-colors ${
                                   here ? 'text-white' : 'text-accent hover:text-white'
                                 }`}
                               >
