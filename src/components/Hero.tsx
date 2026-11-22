@@ -43,8 +43,11 @@ export default function Hero() {
 
   return (
     <section className="relative bg-white overflow-hidden" id="home">
-      {/* Full Width Video Container */}
-      <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden shadow-sm">
+      {/* Full Width Video Container. Fills the whole screen: the navbar floats
+          over the top of it, so there is no bar above to leave room for. (svh
+          = the screen with a phone's browser bars showing, so nothing is cut
+          off; h-screen covers browsers without it.) */}
+      <div className="relative w-full h-screen supports-[height:100svh]:h-svh overflow-hidden shadow-sm">
         {/* Hero Background */}
         <div className="absolute inset-0 w-full h-full bg-black/50">
           {/* Poster image — the LCP element; loads instantly on every device */}

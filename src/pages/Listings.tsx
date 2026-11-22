@@ -10,23 +10,6 @@ import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
 
 const listings = [
   {
-    name: '5 Pace Road',
-    location: '5 Pace Road',
-    price: 'Coming Soon',
-    stats: 'Under Construction',
-    description: "Welcome to 5 Pace Road. This upcoming luxury property is currently under construction and will feature the highest standards of architectural design and premium craftsmanship. Stay tuned for full details, video tours, and a complete gallery as we progress toward completion.",
-    // Progress photos, newest first. New drops go at the top of this list.
-    // `image` is the card thumbnail (-card.jpg); `images` stays full resolution.
-    image: '/assets/active_listings/5-pace-rd/progress-1-card.jpg',
-    images: [
-      '/assets/active_listings/5-pace-rd/progress-1.jpg',
-      '/assets/active_listings/5-pace-rd/progress-2.jpg',
-      '/assets/active_listings/5-pace-rd/progress-3.jpg',
-      '/assets/active_listings/5-pace-rd/progress-4.jpg',
-    ],
-    status: 'Coming Soon',
-  },
-  {
     name: '1 Pace Rd',
     location: '1 Pace Rd',
     price: 'Coming Soon',
@@ -109,6 +92,25 @@ const listings = [
     image: '/assets/to-be-built-bg.jpg',
     images: ['/assets/to-be-built-bg.jpg'],
     status: 'Coming Soon',
+  },
+  {
+    name: '5 Pace Road',
+    location: '5 Pace Road',
+    price: 'Available',
+    stats: 'Custom Build',
+    description: "Welcome to 5 Pace Road, a newly completed custom home by Homefront Builders. A vaulted great room centers on a floor-to-ceiling fireplace wall with built-in shelving and opens to a kitchen with warm wood cabinetry, a large island, double wall ovens and pendant lighting. The home also offers a mudroom with a built-in bench, a walk-in pantry, and a primary suite with a tray ceiling, a soaking tub, a herringbone-tiled walk-in shower and a custom closet. Outside, the white exterior, metal roof accents and covered porches sit on a wide, open lot.",
+    // Aerials first (the front view is the card), then the photographer's order.
+    // `image` is the card thumbnail (900px); `images` are 1920px wide.
+    image: '/assets/active_listings/5-pace-rd/aerial-1-card.webp',
+    images: [
+      '/assets/active_listings/5-pace-rd/aerial-1.jpg',
+      '/assets/active_listings/5-pace-rd/aerial-2.jpg',
+      ...Array.from({length: 66}, (_, i) => `/assets/active_listings/5-pace-rd/KoolVisionMedia${String(i + 1).padStart(3, '0')}.jpg`),
+    ],
+    // Self-hosted vertical tour (720x1280, ~11MB). The poster shows until it's played.
+    video: '/assets/active_listings/5-pace-rd/5-pace-rd-tour.mp4',
+    videoPoster: '/assets/active_listings/5-pace-rd/5-pace-rd-tour-poster.webp',
+    status: 'Available',
   },
   {
     name: '24 Solitude Way',
@@ -705,9 +707,15 @@ export default function Listings() {
                       />
                     ) : (
                       <video 
+                        key={selectedListing.video}
                         src={selectedListing.video} 
+                        poster={'videoPoster' in selectedListing ? selectedListing.videoPoster : undefined}
+                        // nothing is downloaded until the visitor presses play
+                        preload="none"
+                        playsInline
                         controls 
                         controlsList="nodownload"
+                        aria-label={`Video tour of ${selectedListing.name}`}
                         className="w-full h-full object-contain max-h-[50vh] md:max-h-[60vh]"
                       />
                     )

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  
+  <g transform="translate(5 27) rotate(45)">
+    <path d="M0 .5 L-.9 -2.8 L-3.2 -10 V-31.4 Q-3.2 -32.6 -2 -32.6 H2 Q3.2 -32.6 3.2 -31.4 V-10 L.9 -2.8 Z" fill="none" stroke="#FAFAF5" stroke-opacity=".7" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M-3.2 -9.6 V-31.4 Q-3.2 -32.6 -2 -32.6 H2 Q3.2 -32.6 3.2 -31.4 V-9.6 Z" fill="#2F66B8"/>
+    <path d="M-3.2 -9.6 V-31.4 Q-3.2 -32.6 -2 -32.6 H-1.1 V-9.6 Z" fill="#5A90DC"/>
+    <path d="M1.1 -9.6 V-32.6 H2 Q3.2 -32.6 3.2 -31.4 V-9.6 Z" fill="#1F4A8C"/>
+    <path d="M-3.2 -28.4 V-31.4 Q-3.2 -32.6 -2 -32.6 H2 Q3.2 -32.6 3.2 -31.4 V-28.4 Z" fill="#16233F"/>
+    <path d="M-3.2 -10 Q-2.15 -11.7 -1.1 -10 Q0 -11.9 1.1 -10 Q2.15 -11.7 3.2 -10 L.9 -2.8 H-.9 Z" fill="#EBD2A6"/>
+    <path d="M1.1 -10 Q2.15 -11.7 3.2 -10 L.9 -2.8 H.3 Z" fill="#D3B37F"/>
+    <path d="M-.9 -2.8 H.9 L0 .2 Z" fill="#2E2F31"/>
+    <path d="M0 .3 L-.9 -2.8 L-3.2 -10 V-31.4 Q-3.2 -32.6 -2 -32.6 H2 Q3.2 -32.6 3.2 -31.4 V-10 L.9 -2.8 Z" fill="none" stroke="#111A2E" stroke-width=".9" stroke-linejoin="round"/>
+  </g>
+</svg>

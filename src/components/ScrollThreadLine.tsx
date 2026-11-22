@@ -86,7 +86,7 @@ type Insert = {
  * alone, the SVG would be stretched over a much shorter region and every curve
  * above would slide up off the content it was placed around. So:
  *  - the viewBox keeps the px-per-unit scale the region had with the old stack
- *    (its old height is known: header + LEGACY_CARDS screens + LEGACY_PAD_REM);
+ *    (its old height is known: see legacyShelfHeight);
  *  - the thread is untouched down to the top of the floor plans (exact Bezier
  *    split), so About, the announcement and the Process are pixel-identical to
  *    before at every size;
@@ -100,8 +100,19 @@ type Insert = {
  * If the section isn't on the page, or isn't shorter than the old stack, the
  * original course (and its loop into Custom Care) is used.
  */
-const LEGACY_CARDS = 5; // full-screen cards the old stack had
-const LEGACY_PAD_REM = 5; // its bottom padding (pb-20)
+/**
+ * How tall "Featured Floor Plans" was when the thread was drawn: its old
+ * heading block, five full-screen cards, and its bottom padding. Worked out
+ * rather than measured, because the heading block has since been redesigned.
+ * The old block was 12rem of padding, a 15px eyebrow with 1rem under it, and
+ * the title at 4.125rem a line (one line, or two on screens under 1296px wide,
+ * where it sat beside the description and wrapped).
+ */
+function legacyShelfHeight(pageWidth: number, viewportHeight: number, rem: number) {
+  const titleLines = pageWidth < 1296 ? 2 : 1;
+  const heading = 13 * rem + 15 + 4.125 * rem * titleLines;
+  return heading + 5 * viewportHeight + 5 * rem;
+}
 const LANE_BIAS = 0.3; // which gap the thread runs down: 0 = nearest the landing point, 1 = nearest where it comes in
 type Cut = {
   /** section top, in viewBox units (i.e. including any inserted section above) */
@@ -505,10 +516,8 @@ export default function ScrollThreadLine() {
       // The floor plans shelf: how much shorter it is than the stack of cards
       // the thread was drawn for (see SHORTENED SECTIONS above).
       const shelf = document.getElementById('portfolio')?.getBoundingClientRect();
-      const shelfHead = document.getElementById('portfolio-header')?.getBoundingClientRect();
       const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      const shelfWas =
-        shelf && shelfHead ? shelfHead.height + LEGACY_CARDS * window.innerHeight + LEGACY_PAD_REM * rem : 0;
+      const shelfWas = shelf ? legacyShelfHeight(c.width, window.innerHeight, rem) : 0;
       const cutPx = shelf && shelf.height > 0 && shelfWas > shelf.height ? shelfWas - shelf.height : 0;
       // The region's height as the thread was drawn for it.
       const drawnH = c.height + cutPx;
