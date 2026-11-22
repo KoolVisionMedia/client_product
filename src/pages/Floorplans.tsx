@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Bed, Bath, Square, Home as HomeIcon, FileText, Send } from 'lucide-react';
 import SEO from '../components/SEO';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 const floorPlans = [
   {
@@ -194,8 +195,9 @@ export default function Floorplans() {
           >
             <button
               onClick={() => setIsLeadModalOpen(true)}
-              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg group"
+              className="inline-flex items-center justify-center px-8 py-4 bg-accent text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-md hover:shadow-lg group btn-glow"
             >
+              <ButtonGlow />
               Request the Booklet
               <span className="w-4 h-[1px] bg-white ml-2 group-hover:w-8 transition-all duration-300"></span>
             </button>
@@ -204,8 +206,9 @@ export default function Floorplans() {
                 const el = document.getElementById('floorplans-grid');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-white transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-full hover:bg-white transition-all duration-300 btn-glow"
             >
+              <ButtonGlow />
               Browse Interactive Grid
             </button>
           </motion.div>
@@ -616,8 +619,9 @@ export default function Floorplans() {
                     </p>
                     <button
                       onClick={closeLeadModal}
-                      className="mt-8 inline-flex items-center justify-center px-8 py-3 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-xl hover:bg-[#c9a96e] transition-colors"
+                      className="mt-8 inline-flex items-center justify-center px-8 py-3 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-xl hover:bg-[#c9a96e] transition-colors btn-glow"
                     >
+                      <ButtonGlow />
                       Close
                     </button>
                   </div>
@@ -637,8 +641,9 @@ export default function Floorplans() {
                       <button
                         disabled={leadFormState.status === 'loading'}
                         type="submit"
-                        className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2 btn-glow"
                       >
+                        <ButtonGlow />
                         {leadFormState.status === 'loading' ? 'Sending...' : 'Request Booklet'}
                       </button>
                       {leadFormState.status === 'error' && (

@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import SEO from '../components/SEO';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 const warrantyActions = [
   {
@@ -63,7 +64,7 @@ export default function Warranties() {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#1b2518]/65" />
-        <div className="relative z-10 h-full flex items-center justify-center pt-20">
+        <div className="relative z-10 h-full flex items-center justify-center pt-20 px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,7 +72,7 @@ export default function Warranties() {
             className="text-center"
           >
             <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Peace of Mind</p>
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white tracking-wide">
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white tracking-wide text-balance">
               Your Home, Protected
             </h1>
           </motion.div>
@@ -105,8 +106,9 @@ export default function Warranties() {
                 href="https://qbwc.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.25em] hover:bg-[#c9a96e] transition-all duration-500 rounded-sm group"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.25em] hover:bg-[#c9a96e] transition-all duration-500 rounded-sm group btn-glow"
               >
+                <ButtonGlow />
                 Learn More About QBW
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                   <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
@@ -180,8 +182,9 @@ export default function Warranties() {
                 href="https://simplebooklet.com/qbw_warrantybook1122singlec#page=1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.25em] hover:bg-[#c9a96e] transition-colors duration-300 rounded-sm"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.25em] hover:bg-[#c9a96e] transition-colors duration-300 rounded-sm btn-glow"
               >
+                <ButtonGlow />
                 View Digital Warranty Book
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>

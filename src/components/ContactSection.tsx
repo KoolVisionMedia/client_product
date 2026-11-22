@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import ContactCards from './ContactCards';
+import ReviewCarousel from './ReviewCarousel';
 import FloatingLogo3D from './FloatingLogo3D';
+import ButtonGlow from './ui/ButtonGlow';
 
 // Letter animation helper for Webflow style text animation
 function AnimatedLetters({ text, variants }: { text: string; variants: any }) {
@@ -197,29 +199,9 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
               </p>
             </div>
 
-            {/* Testimonial Card */}
-            <div className="bg-[#f4f3f0] p-6 rounded-2xl border border-primary/5 shadow-sm max-w-sm mt-8 lg:mt-0 flex flex-col gap-4">
-              <div className="flex gap-0.5">
-                {[1, 2, 3, 4, 5].map(i => (
-                  <svg key={i} width={14} height={14} viewBox="0 0 24 24" fill="#c9a96e" stroke="none">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                  </svg>
-                ))}
-              </div>
-              <p className="font-sans text-[13px] italic text-primary-light leading-relaxed">
-                "Homefront built us the custom home of our dreams! The build quality is beautiful. Unique and unlike other homes you find in Clarksville."
-              </p>
-              <div className="flex items-center gap-3">
-                {/* Initials avatar (matches review-card fallback style) — no customer photo on file */}
-                <div className="w-9 h-9 rounded-full flex-none bg-[#1b2518] border border-primary/10 flex items-center justify-center">
-                  <span className="font-serif text-[#c9a96e] text-[11px] select-none">BG</span>
-                </div>
-                <div>
-                  <h5 className="font-sans text-xs font-semibold text-primary">Bailey Graven</h5>
-                  <p className="font-sans text-[10px] text-primary-light/70">Clarksville Custom Homeowner</p>
-                </div>
-              </div>
-            </div>
+            {/* Recent reviews: auto-advancing carousel, full column width, its
+                bottom lined up with the bottom of the form beside it. */}
+            <ReviewCarousel className="mt-10 lg:mt-12" />
           </div>
 
           {/* Right Column: 7 cols (Dark Form Container) */}
@@ -302,8 +284,9 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="mt-6 px-8 py-4 bg-white rounded-xl font-sans text-xs uppercase tracking-widest font-bold text-[#1b2518] hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors disabled:opacity-50 w-full sm:w-auto"
+                      className="mt-6 px-8 py-4 bg-white rounded-xl font-sans text-xs uppercase tracking-widest font-bold text-[#1b2518] hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors disabled:opacity-50 w-full sm:w-auto btn-glow"
                     >
+                      <ButtonGlow />
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
                   </form>

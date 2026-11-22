@@ -48,7 +48,7 @@ export default function ContactUs() {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#1b2518]/60" />
-        <div className="relative z-10 h-full flex items-center justify-center pt-20">
+        <div className="relative z-10 h-full flex items-center justify-center pt-20 px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,7 +56,7 @@ export default function ContactUs() {
             className="text-center"
           >
             <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-4">Get In Touch</p>
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white tracking-wide">
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white tracking-wide text-balance">
               Let's Build Your Dream Home
             </h1>
           </motion.div>

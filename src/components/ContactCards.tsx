@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import ButtonGlow from './ui/ButtonGlow';
 
 const cardsData = [
   {
@@ -91,8 +92,9 @@ export default function ContactCards() {
                       <a 
                         href={card.actionHref}
                         onClick={handleScrollToForm}
-                        className="block w-full py-3 bg-[#1b2518] text-white text-center font-sans text-xs uppercase tracking-widest rounded-xl hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors"
+                        className="block w-full py-3 bg-[#1b2518] text-white text-center font-sans text-xs uppercase tracking-widest rounded-xl hover:bg-[#c9a96e] hover:text-[#1b2518] transition-colors btn-glow"
                       >
+                        <ButtonGlow />
                         {card.actionText}
                       </a>
                     </motion.div>

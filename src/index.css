@@ -350,4 +350,80 @@ body {
 }
 .scrollbar-none::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
-}
+}
+/* ==========================================================================
+   Button hover glow (src/components/ui/ButtonGlow.tsx)
+   On hover: a streak of light circles the edge, a glint sweeps the face, the
+   button lifts; it presses in on click. No masks/filters/blur (owner's GPU).
+   ========================================================================== */
+@layer components {
+  /* in the components layer so a utility like `absolute` still wins */
+  .btn-glow { position: relative; }
+}
+.btn-glow {
+  -webkit-tap-highlight-color: transparent;
+  /* replaces the buttons' own transition lists; motion-driven `transform`
+     is deliberately left out so it is never eased twice */
+  transition-property: color, background-color, border-color, box-shadow, opacity, translate, scale;
+  transition-duration: 0.35s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glow-fx {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+/* glint: a soft diagonal highlight parked off the right edge; slides across on hover */
+.glow-fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(110deg, transparent 38%, rgba(255, 255, 255, 0.3) 50%, transparent 62%) no-repeat;
+  background-size: 250% 100%;
+  background-position: 135% 0;
+}
+.glow-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.glow-ring rect {
+  stroke-linecap: butt;
+  animation: glow-orbit 2.6s linear infinite paused;
+}
+.glow-ring rect { stroke-width: 2; }
+.glow-ring .glow-halo { stroke: #e0ac55; stroke-width: 7; stroke-opacity: 0.2; }
+.glow-ring .glow-l1 { stroke: #ce6435; stroke-opacity: 0.3; }
+.glow-ring .glow-l2 { stroke: #d9a14a; stroke-opacity: 0.55; }
+.glow-ring .glow-l3 { stroke: #f0c177; stroke-opacity: 0.9; }
+.glow-ring .glow-l4 { stroke: #ffe3ad; }
+.glow-ring .glow-l5 { stroke: #fffaf0; stroke-width: 2.5; }
+@keyframes glow-orbit {
+  to { stroke-dashoffset: -100; }
+}
+@media (hover: hover) {
+  .btn-glow:not(:disabled):hover { translate: 0 -2px; }
+  .btn-glow:not(:disabled):hover .glow-ring { opacity: 1; }
+  .btn-glow:not(:disabled):hover .glow-ring rect { animation-play-state: running; }
+  .btn-glow:not(:disabled):hover .glow-fx::before {
+    background-position: -35% 0;
+    transition: background-position 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+.btn-glow:focus-visible .glow-ring { opacity: 1; }
+.btn-glow:focus-visible .glow-ring rect { animation-play-state: running; }
+.btn-glow:not(:disabled):active { translate: 0 0; scale: 0.97; transition-duration: 0.12s; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-glow:not(:disabled):hover, .btn-glow:not(:disabled):active { translate: none; scale: none; }
+  .glow-ring rect { animation: none; }
+  .glow-ring .glow-l3 { stroke-dasharray: none; }
+  .glow-ring rect:not(.glow-l3) { display: none; }
+  .glow-fx::before { display: none; }
+}

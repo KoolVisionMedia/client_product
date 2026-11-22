@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key, ArrowRight, Send, X } from 'lucide-react';
 import SEO from '../components/SEO';
 import ProcessScrubVideo from '../components/ProcessScrubVideo';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 const processSteps = [
   {
@@ -385,8 +386,9 @@ export default function ProcessPage() {
                           {(step as any).primaryLink && (
                             <Link
                               to={(step as any).primaryLink.url}
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn0"
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn0 btn-glow"
                             >
+                              <ButtonGlow />
                               {(step as any).primaryLink.text}
                               <ArrowRight className="w-4 h-4 text-accent group-hover/btn0:translate-x-1 transition-transform" />
                             </Link>
@@ -394,14 +396,16 @@ export default function ProcessPage() {
                           {step.link && (
                             <Link 
                               to={step.link.url}
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn"
+                              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 shadow-sm rounded-full text-primary font-medium hover:bg-gray-50 hover:border-accent hover:shadow-md transition-all group/btn btn-glow"
                             >
+                              <ButtonGlow />
                               {step.link.text}
                               <ArrowRight className="w-4 h-4 text-accent group-hover/btn:translate-x-1 transition-transform" />
                             </Link>
                           )}
                           {(step as any).secondaryButton && (
-                             <button onClick={() => openModal((step as any).secondaryButton.action === 'meeting' ? 'meeting' : 'booklet')} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-full font-medium hover:bg-accent transition-all group/btn2">
+                             <button onClick={() => openModal((step as any).secondaryButton.action === 'meeting' ? 'meeting' : 'booklet')} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white shadow-sm rounded-full font-medium hover:bg-accent transition-all group/btn2 btn-glow">
+                               <ButtonGlow />
                                {(step as any).secondaryButton.text}
                                <Send className="w-4 h-4 text-white group-hover/btn2:translate-x-0.5 transition-transform" />
                              </button>
@@ -439,8 +443,9 @@ export default function ProcessPage() {
             </p>
             <button
               onClick={() => openModal('booklet')}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#c9a96e] text-white rounded-full font-sans font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-[#1b2518] transition-all duration-300 shadow-xl group"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-[#c9a96e] text-white rounded-full font-sans font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-[#1b2518] transition-all duration-300 shadow-xl group btn-glow"
             >
+              <ButtonGlow />
               Request the Booklet
               <Send className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
             </button>
@@ -484,8 +489,9 @@ export default function ProcessPage() {
                     </p>
                     <button
                       onClick={closeModal}
-                      className="mt-8 inline-flex items-center justify-center px-8 py-3 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-xl hover:bg-[#c9a96e] transition-colors"
+                      className="mt-8 inline-flex items-center justify-center px-8 py-3 bg-[#1b2518] text-white font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-xl hover:bg-[#c9a96e] transition-colors btn-glow"
                     >
+                      <ButtonGlow />
                       Close
                     </button>
                   </div>
@@ -507,7 +513,8 @@ export default function ProcessPage() {
                         <textarea name="message" rows={4} placeholder="Any additional details or questions? (Optional)" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors resize-none" />
                       )}
 
-                      <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2">
+                      <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-4 rounded-xl hover:bg-[#c9a96e] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2 btn-glow">
+                        <ButtonGlow />
                         {formState.status === 'loading' ? copy.sending : copy.submit}
                       </button>
                       {formState.status === 'error' && (

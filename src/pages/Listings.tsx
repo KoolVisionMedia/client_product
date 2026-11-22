@@ -3,6 +3,7 @@ import { useState, useEffect, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { AnimatedGrid } from '../components/ui/animated-grid';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 const listings = [
   {
@@ -317,8 +318,9 @@ function ListingInquiry({ listing }: { listing: typeof listings[0] }) {
         <Link
           to="/contact-us"
           onClick={() => window.scrollTo(0, 0)}
-          className="shrink-0 inline-flex items-center gap-2 bg-[#1b2518] text-white px-7 py-4 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a96e] transition-colors"
+          className="shrink-0 inline-flex items-center gap-2 bg-[#1b2518] text-white px-7 py-4 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a96e] transition-colors btn-glow"
         >
+          <ButtonGlow />
           Have Questions About a Build?
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
         </Link>
@@ -372,7 +374,8 @@ function ListingInquiry({ listing }: { listing: typeof listings[0] }) {
               <input type="email" name="email" required placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
               <input type="tel" name="phone" required placeholder="Phone Number" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
               <input type="text" name="question" placeholder="Your question (optional)" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-sans text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-              <button type="submit" disabled={status === 'loading'} className="md:col-span-2 mt-1 bg-[#c9a96e] text-[#1b2518] font-sans font-bold text-xs uppercase tracking-[0.2em] py-4 rounded-xl hover:bg-white transition-colors disabled:opacity-60">
+              <button type="submit" disabled={status === 'loading'} className="md:col-span-2 mt-1 bg-[#c9a96e] text-[#1b2518] font-sans font-bold text-xs uppercase tracking-[0.2em] py-4 rounded-xl hover:bg-white transition-colors disabled:opacity-60 btn-glow">
+                <ButtonGlow />
                 {status === 'loading' ? 'Sending...' : 'Ask About This Home'}
               </button>
               {status === 'error' && (
@@ -473,7 +476,7 @@ export default function Listings() {
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#1b2518]/60" />
-        <div className="relative z-10 h-full flex items-center justify-center pt-20">
+        <div className="relative z-10 h-full flex items-center justify-center pt-20 px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

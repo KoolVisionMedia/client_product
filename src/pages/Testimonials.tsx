@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useVelocity, useSpring } from 'motion/react';
 import SEO from '../components/SEO';
 import EventsShowcase from '../components/EventsShowcase';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 declare global {
   interface Window {
@@ -543,7 +544,8 @@ export default function Testimonials() {
                   <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
                     <input type="text" name="name" required placeholder="Your Name" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
                     <input type="email" name="email" required placeholder="Your Email Address" className="w-full bg-white border border-primary/10 rounded-lg px-4 py-3 text-primary placeholder:text-primary-light/40 focus:outline-none focus:border-[#c9a96e] transition-colors" />
-                    <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-3 rounded-lg hover:bg-[#c9a96e] transition-colors disabled:opacity-50">
+                    <button disabled={formState.status === 'loading'} type="submit" className="w-full bg-[#1b2518] text-white font-sans font-bold py-3 rounded-lg hover:bg-[#c9a96e] transition-colors disabled:opacity-50 btn-glow">
+                      <ButtonGlow />
                       {formState.status === 'loading' ? 'Submitting...' : 'Sign Up for Updates'}
                     </button>
                     {formState.message && (
@@ -664,11 +666,11 @@ export default function Testimonials() {
             </p>
             <motion.a
               href="/contact-us"
-              whileHover={{ scale: 1.03, backgroundColor: '#967226' }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.2 }}
-              className="inline-flex items-center gap-3 bg-[#B48C36] text-white px-14 py-5 font-sans text-[11px] tracking-[0.25em] uppercase font-semibold"
+              className="inline-flex items-center gap-3 bg-[#B48C36] hover:bg-[#967226] text-white px-14 py-5 font-sans text-[11px] tracking-[0.25em] uppercase font-semibold btn-glow"
             >
+              <ButtonGlow />
               Start Your Journey
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 12h14M12 5l7 7-7 7" />

@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import ButtonGlow from './ui/ButtonGlow';
 
 export default function StayConnected() {
   return (
@@ -39,8 +40,9 @@ export default function StayConnected() {
           />
           <button 
             type="submit"
-            className="bg-accent hover:bg-accent-dark text-white px-12 py-4 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 font-semibold"
+            className="bg-accent hover:bg-accent-dark text-white px-12 py-4 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 font-semibold btn-glow"
           >
+            <ButtonGlow />
             Subscribe
           </button>
         </motion.form>

@@ -7,8 +7,9 @@ import { motion, useInView } from 'motion/react';
  * rail: no section wrapper and no heading of its own, so it sits under that
  * section's existing copy rather than competing with it.
  *
- * Three clips side by side at their native 16:9, captions below the video
- * rather than over it. On scroll-in each frame is uncovered by a panel that
+ * Four clips at their native 16:9 (one row on wide screens, 2×2 on tablets
+ * and small laptops, stacked on phones), captions below the video rather than
+ * over it. Keep the count even so neither layout leaves an orphan card. On scroll-in each frame is uncovered by a panel that
  * wipes upward off it, staggered across the row. On hover the footage pushes in
  * slightly, its scrim clears, a silent 3-second preview loops, and a rule draws
  * under the caption.
@@ -64,6 +65,18 @@ const events: EventItem[] = [
     meta: 'Homefront Design Studio',
     date: 'December 2025',
     blurb: 'An evening of design education — seasonal styling, material selections, and an open floor for questions about building custom.',
+    facebookUrl: HOMEFRONT_FACEBOOK,
+  },
+  {
+    // Vertical (9:16) master: the poster and preview are a 16:9 band cut from
+    // the middle of the frame. Preview = the event footage, stopping before
+    // the black "Happy Thanksgiving" end card.
+    slug: 'sip-n-swag-thanksgiving',
+    title: "Sip N' Swag: Thanksgiving",
+    role: 'Community',
+    meta: 'Thanksgiving Edition',
+    date: 'November 2026',
+    blurb: 'Coffee, Homefront swag, and a gift-basket giveaway. A Thanksgiving thank-you to the community that keeps us building.',
     facebookUrl: HOMEFRONT_FACEBOOK,
   },
   {
@@ -153,7 +166,7 @@ function EventCard({ event, index, revealed, active, anyActive, canHover, onEnte
             className="absolute inset-0 h-full w-full object-cover"
           />
 
-          {/* Silent 3s preview. preload="none" so nothing downloads until hover. */}
+          {/* Silent preview loop. preload="none" so nothing downloads until hover. */}
           <video
             ref={videoRef}
             muted
@@ -292,7 +305,7 @@ export default function EventsShowcase() {
         </h3>
       </motion.div>
 
-      <div ref={gridRef} className="grid gap-x-8 gap-y-14 md:grid-cols-3">
+      <div ref={gridRef} className="grid gap-x-8 gap-y-14 md:grid-cols-2 xl:grid-cols-4 xl:gap-x-7">
         {events.map((event, i) => (
           <EventCard
             key={event.slug}

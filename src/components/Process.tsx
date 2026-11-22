@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Users, Award, DollarSign, ClipboardList, MapPin, FileText, Palette, Heart, Key } from 'lucide-react';
@@ -94,19 +94,34 @@ export default function Process() {
             Our Methodology
           </motion.h2>
           
-          <div className="flex flex-wrap justify-center overflow-hidden font-serif text-5xl md:text-6xl lg:text-7xl text-primary leading-tight">
-            {headingText.map((char, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.03, ease: [0.33, 1, 0.68, 1] }}
-                className="inline-block"
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
+          {/* Letters animate one by one, but are grouped per word so the line can
+              only wrap BETWEEN words (on phones it used to break "Buildin / g"). */}
+          <div className="flex flex-wrap justify-center gap-x-[0.28em] overflow-hidden font-serif text-5xl md:text-6xl lg:text-7xl text-primary leading-tight">
+            {headingText.join("").split(" ").map((word, w, words) => {
+              const start = words.slice(0, w).reduce((n, x) => n + x.length + 1, 0);
+              // The " " keeps the text reading "Steps to Building" for search
+              // engines and screen readers; in a flex row it takes no space
+              // (the gap does the visual spacing).
+              return (
+                <Fragment key={w}>
+                {w > 0 && " "}
+                <span className="inline-flex whitespace-nowrap">
+                  {word.split("").map((char, j) => (
+                    <motion.span
+                      key={j}
+                      initial={{ opacity: 0, y: 50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.5, delay: (start + j) * 0.03, ease: [0.33, 1, 0.68, 1] }}
+                      className="inline-block"
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </span>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
 
