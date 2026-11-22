@@ -8,17 +8,24 @@ import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
  * Home page announcement for Rustic Pines at Paris Landing.
  *
  * Sits between About and "The Homefront Process". A compact band, not a full
- * screen: the promo film autoplays like a background, pinned to the right and
- * fading into the page on its left edge, with the heading and CTA sitting where
- * it fades out. Kept short on words; the CTA sends people to /rustic-pines.
+ * screen. Desktop layout, left to right:
+ *
+ *     [ heading + CTA ]  [ scroll thread ]  [ film, fading in -> full film ]
+ *
+ * The promo film autoplays like a background, pinned to the right and fading
+ * into the page on its left edge. The site's scroll thread (ScrollThreadLine)
+ * runs down the open lane between the text and the film, so it stays in view
+ * the whole way through the section. Kept short on words; the CTA sends people
+ * to /rustic-pines.
  * Phones/tablets: the film runs full width on top and fades into the page at
- * its bottom edge, where the heading picks up.
+ * its bottom edge, where the heading picks up (the thread is desktop-only).
  *
  * Fits the page's existing systems:
  *  - Scroll thread: the section background is transparent like its
- *    neighbours. ScrollThreadLine measures #rustic-pines-intro and the
- *    untransformed #rustic-pines-intro-frame (the film panel) and runs its own
- *    curve down behind the film's opaque part.
+ *    neighbours. ScrollThreadLine measures #rustic-pines-intro and the lane
+ *    marker #rustic-pines-intro-rail and routes the thread through that lane.
+ *    Nothing in this section may cover the lane on desktop: the film panel
+ *    starts to its right, the text column ends to its left.
  *  - Motion: same ease curve and whileInView reveals as About / CoreValues;
  *    the film's scroll zoom is a transform only (GPU, no repaint).
  *  - GPU: no CSS masks, filters or backdrop blur (they've failed on the owner's
@@ -34,7 +41,16 @@ import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const PAGE_BG = '#FAFAF5'; // --color-surface
-const FADE_LEFT = `linear-gradient(to right, ${PAGE_BG} 0%, rgba(250,250,245,0.94) 10%, rgba(250,250,245,0.7) 22%, rgba(250,250,245,0.28) 36%, rgba(250,250,245,0) 50%)`;
+// Desktop geometry, in % of the section width (see the layout note above).
+// The panel's Tailwind classes below mirror these: lg:left-[49.5%] is PANEL_LEFT,
+// and the film inside it is lg:w-[122.772%] = (100 - FILM_LEFT) / (100 - PANEL_LEFT).
+const FILM_LEFT = 38; // the film itself spans 38% -> 100%
+const PANEL_LEFT = 49.5; // ...but is only shown from here: left of this its fade is pure page colour
+const THREAD_LANE = 46.4; // the open strip the scroll thread runs down, between text and film
+const FILM_W = 100 - FILM_LEFT;
+const FADE_FROM = ((PANEL_LEFT - FILM_LEFT) / FILM_W) * 100; // where the fade starts, in % of the film
+// Eased in (no hard start), so the film has no visible left edge.
+const FADE_LEFT = `linear-gradient(to right, ${PAGE_BG} 0%, ${PAGE_BG} ${FADE_FROM.toFixed(2)}%, rgba(250,250,245,0.965) ${(FADE_FROM + 3.5).toFixed(2)}%, rgba(250,250,245,0.86) ${(FADE_FROM + 8).toFixed(2)}%, rgba(250,250,245,0.6) 33%, rgba(250,250,245,0.27) 41%, rgba(250,250,245,0) 50%)`;
 const FADE_BOTTOM = `linear-gradient(to top, ${PAGE_BG} 0%, rgba(250,250,245,0.9) 12%, rgba(250,250,245,0.45) 30%, rgba(250,250,245,0) 55%)`;
 
 const reveal = (delay = 0) => ({
@@ -156,12 +172,25 @@ export default function RusticPinesIntro() {
       className="relative pt-12 md:pt-16 lg:pt-24 pb-12 lg:pb-16"
     >
       <div className="relative lg:h-[clamp(440px,58vh,600px)]">
-        {/* Film panel: full width on top below lg; pinned right, full band height on lg+. */}
+        {/* The lane the scroll thread runs down (measured by ScrollThreadLine).
+            Never transformed, so its position doesn't change with scroll. */}
+        <span
+          id="rustic-pines-intro-rail"
+          aria-hidden="true"
+          className="hidden lg:block absolute inset-y-0 w-px pointer-events-none"
+          style={{ left: `${THREAD_LANE}%` }}
+        />
+
+        {/* Film panel: full width on top below lg; pinned right, full band height on lg+.
+            On lg+ the panel starts right of the thread lane; the film inside it is
+            wider (it starts at FILM_LEFT) and the part the panel clips off is the
+            part its fade had already turned into plain page colour. */}
         <div
           ref={frameRef}
           id="rustic-pines-intro-frame"
-          className="relative w-full aspect-video md:aspect-[16/7] lg:aspect-auto lg:absolute lg:inset-y-0 lg:right-0 lg:w-[62%] overflow-hidden bg-surface"
+          className="relative w-full aspect-video md:aspect-[16/7] lg:aspect-auto lg:absolute lg:inset-y-0 lg:right-0 lg:left-[49.5%] lg:w-auto overflow-hidden bg-surface"
         >
+          <div className="absolute inset-y-0 right-0 w-full lg:w-[122.772%]">
           <motion.div
             style={reduce ? undefined : { scale: filmScale }}
             className="absolute inset-0 will-change-transform"
@@ -199,6 +228,7 @@ export default function RusticPinesIntro() {
           {/* Fade into the page: left edge on desktop, bottom edge below lg. */}
           <div aria-hidden="true" className="absolute inset-0 pointer-events-none hidden lg:block" style={{ background: FADE_LEFT }} />
           <div aria-hidden="true" className="absolute inset-0 pointer-events-none lg:hidden" style={{ background: FADE_BOTTOM }} />
+          </div>
 
           {showControls && (
             <div className="absolute top-3 right-3 md:top-5 md:right-5 lg:top-6 lg:right-6 z-10 flex items-center gap-2">
@@ -234,7 +264,7 @@ export default function RusticPinesIntro() {
         {/* The wrapper spans the band (over the film on desktop), so it passes
             clicks through; only the text column itself takes them. */}
         <div className="relative z-10 pointer-events-none max-w-[1400px] mx-auto px-6 md:px-12 -mt-8 md:-mt-14 lg:mt-0 lg:h-full lg:flex lg:items-center">
-          <div className="pointer-events-auto lg:w-[44%] max-w-[580px]">
+          <div className="pointer-events-auto lg:w-[44%] max-w-[540px]">
             <motion.div
               {...reveal()}
               className="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-3 mb-4 md:mb-6 text-[10px] font-sans tracking-[0.25em] sm:tracking-[0.3em] uppercase text-accent"
