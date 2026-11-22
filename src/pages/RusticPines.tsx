@@ -6,7 +6,7 @@ import type { MotionValue } from 'motion/react';
 import { ArrowRight, BedDouble, ExternalLink, Home, Layers, MapPin, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import { lots, MAP_VIEWBOX, realtracsUrl } from '../data/rusticPines';
+import { lots, MAP_VIEWBOX, realtracsUrl, RUSTIC_PINES_SITE, rusticPinesSiteHost } from '../data/rusticPines';
 import type { Lot, LotStatus } from '../data/rusticPines';
 
 const PATH = '/rustic-pines';
@@ -192,6 +192,8 @@ const STRUCTURED_DATA = [
     about: {
       '@type': 'Place',
       name: NAME,
+      url: RUSTIC_PINES_SITE.url,
+      sameAs: [RUSTIC_PINES_SITE.url],
       description: `${lots.length}-lot wooded subdivision east of State Highway 232 in Stewart County, Tennessee.`,
       address: { '@type': 'PostalAddress', addressLocality: 'Dover', addressRegion: 'TN', addressCountry: 'US' },
       containedInPlace: { '@type': 'AdministrativeArea', name: 'Stewart County, Tennessee' },
@@ -1061,13 +1063,26 @@ export default function RusticPines() {
               in Stewart County near Paris Landing. Buy the land, or a completed Homefront home-and-lot
               package from {usd(HOME_FROM)}. Choose your lot on the map below.
             </p>
-            <button
-              type="button"
-              onClick={() => mapSectionRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })}
-              className="mt-9 inline-flex items-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors"
-            >
-              Explore the Lots <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => mapSectionRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })}
+                className="inline-flex items-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors"
+              >
+                Explore the Lots <ArrowRight className="w-4 h-4" />
+              </button>
+              {/* The community's own site (it links back here). rel keeps the referrer
+                  so that site's analytics credit visits from Homefront. */}
+              <a
+                href={RUSTIC_PINES_SITE.url}
+                target="_blank"
+                rel="noopener"
+                aria-label="Visit the official Rustic Pines at Paris Landing website (opens in a new tab)"
+                className="inline-flex items-center gap-2 rounded-full border border-white/35 hover:border-[#c9a96e] hover:bg-white/5 text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors"
+              >
+                Visit the Website <ExternalLink className="w-4 h-4" aria-hidden="true" />
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -1243,7 +1258,7 @@ export default function RusticPines() {
       {/* Community details */}
       <section className="pb-20 md:pb-28 px-4 md:px-8">
         <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div>
+          <div className="min-w-0">
             <p className="text-[10px] uppercase tracking-[0.35em] text-accent">The Community</p>
             <h2 className="font-serif text-3xl md:text-5xl text-primary mt-3 leading-tight">
               Room to breathe, built your way.
@@ -1271,6 +1286,33 @@ export default function RusticPines() {
                 Contact Us
               </Link>
             </div>
+
+            {/* The community's own site, as a full card so it reads as the official source. */}
+            <a
+              href={RUSTIC_PINES_SITE.url}
+              target="_blank"
+              rel="noopener"
+              className="group mt-8 flex items-center gap-5 rounded-2xl bg-[#1b2518] hover:bg-[#2E362C] p-5 md:p-6 transition-colors"
+            >
+              <span className="shrink-0 w-12 h-12 rounded-full bg-[#B48C36]/15 ring-1 ring-[#c9a96e]/40 flex items-center justify-center">
+                <Trees className="w-5 h-5 text-[#c9a96e]" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[10px] uppercase tracking-[0.3em] text-[#c9a96e]">Official Community Website</span>
+                <span className="block mt-1.5 font-serif text-xl md:text-2xl text-white leading-snug">
+                  Visit the Rustic Pines at Paris Landing website
+                </span>
+                <span className="block mt-1 text-sm text-white/55 leading-relaxed">
+                  The vision, featured builds, the interactive model, and site visits.
+                </span>
+                <span className="block mt-1 text-xs text-[#c9a96e]/80 break-all">{rusticPinesSiteHost}</span>
+              </span>
+              <ExternalLink
+                className="shrink-0 w-5 h-5 text-white/50 group-hover:text-[#c9a96e] transition-colors"
+                aria-hidden="true"
+              />
+              <span className="sr-only">(opens in a new tab)</span>
+            </a>
           </div>
           <dl className="grid sm:grid-cols-2 gap-4">
             {[

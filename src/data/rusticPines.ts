@@ -122,6 +122,21 @@ const HOME_LISTINGS: Record<number, { mls: string; realtracsId: string; price: n
 
 export const realtracsUrl = (id: string) => `https://www.realtracs.com/listings/${id}`;
 
+/**
+ * The community's own website, linked from /rustic-pines (hero button, the
+ * "The Community" callout, and the page's structured data). It links back to
+ * homefrontbuilderstn.com, so the two sites reference each other.
+ *
+ * TEMPORARY address while that site is being finished: when its real domain is
+ * live, change `url` here, and the same address in the Rustic Pines line of
+ * public/llms.txt.
+ */
+export const RUSTIC_PINES_SITE = {
+  url: 'https://rustic-pines-demo.vercel.app/',
+};
+/** Hostname shown to visitors, e.g. "rustic-pines-demo.vercel.app". */
+export const rusticPinesSiteHost = new URL(RUSTIC_PINES_SITE.url).hostname.replace(/^www\./, '');
+
 for (const lot of lots) {
   const home = HOME_LISTINGS[lot.number];
   if (home) lot.home = home;
