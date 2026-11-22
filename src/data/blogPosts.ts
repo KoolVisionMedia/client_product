@@ -19,11 +19,33 @@ export interface BlogPost {
   category: string;
   image: string;
   keywords?: string[];
+  /** Who wrote it (a key of BLOG_AUTHORS). */
+  author?: AuthorId;
 }
+
+/**
+ * Bylines: Homefront team members (the same people as the About page's team).
+ * Each post names the one whose work the topic belongs to. `photo` is a small
+ * square crop of their About-page photo.
+ */
+export const BLOG_AUTHORS = {
+  'amber-wotring': { name: 'Amber Wotring', role: 'Custom Home Builder & Architectural Designer' },
+  'carissa-ockey': { name: 'Carissa Ockey', role: 'Designer' },
+  'kenneth-wotring': { name: 'Kenneth Wotring', role: 'New Construction Specialist' },
+  'patricia-shipley': { name: 'Patricia Shipley', role: 'Director of Sales' },
+  'karen-grimes': { name: 'Karen Grimes', role: 'Broker' },
+} as const;
+export type AuthorId = keyof typeof BLOG_AUTHORS;
+export const DEFAULT_AUTHOR: AuthorId = 'amber-wotring';
+export const postAuthor = (post: BlogPost) => {
+  const id = post.author ?? DEFAULT_AUTHOR;
+  return { id, ...BLOG_AUTHORS[id], photo: `/assets/team/avatars/${id}.webp` };
+};
 
 const posts: BlogPost[] = [
   {
     slug: 'buying-land-to-build-a-house-in-tennessee',
+    author: 'kenneth-wotring',
     title: 'Buying Land to Build a House in Tennessee: 7 Hidden Lot Costs to Check Before You Close',
     seoTitle: 'Buying Land to Build a House in Tennessee: Hidden Lot Costs',
     excerpt:
@@ -43,6 +65,7 @@ const posts: BlogPost[] = [
   },
   {
     slug: 'va-loan-new-construction-clarksville-tn',
+    author: 'patricia-shipley',
     title: 'Building a New Home With a VA Loan in Clarksville, TN: What Fort Campbell Families Need to Know',
     seoTitle: 'VA Construction Loans in Clarksville, TN: Fort Campbell Guide',
     excerpt:
@@ -62,6 +85,7 @@ const posts: BlogPost[] = [
   },
   {
     slug: 'how-to-choose-a-custom-home-builder-clarksville-tn',
+    author: 'amber-wotring',
     title: 'How to Choose a Custom Home Builder in Clarksville, TN: Questions to Ask and Red Flags to Watch',
     seoTitle: 'How to Choose a Custom Home Builder in Clarksville, TN',
     excerpt:
@@ -80,6 +104,7 @@ const posts: BlogPost[] = [
   },
   {
     slug: 'luxury-custom-home-features-middle-tennessee',
+    author: 'carissa-ockey',
     title: 'Luxury Custom Home Features Worth Every Penny in Middle Tennessee',
     seoTitle: 'Luxury Custom Home Features Worth It in Middle Tennessee',
     excerpt:
@@ -98,6 +123,7 @@ const posts: BlogPost[] = [
   },
   {
     slug: 'new-construction-homes-clarksville-tn',
+    author: 'karen-grimes',
     title: 'New Construction Homes in Clarksville, TN: Costs, Timelines, and Your Options (2026 Guide)',
     seoTitle: 'New Construction in Clarksville, TN: 2026 Costs & Timelines',
     excerpt:
@@ -116,6 +142,7 @@ const posts: BlogPost[] = [
   },
   {
     slug: 'building-a-custom-home-in-tennessee-what-to-know',
+    author: 'amber-wotring',
     title: 'Building a Custom Home in Tennessee: 5 Things to Know Before You Start',
     seoTitle: 'Building a Custom Home in Tennessee: 5 Things to Know First',
     excerpt:
@@ -134,6 +161,7 @@ const posts: BlogPost[] = [
   },
   {
     slug: 'modern-farmhouse-homes-middle-tennessee',
+    author: 'carissa-ockey',
     title: 'Modern Farmhouse Homes in Middle Tennessee: A Design Guide for Your Custom Build',
     seoTitle: 'Modern Farmhouse Home Design Guide for Middle Tennessee',
     excerpt:

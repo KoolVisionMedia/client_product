@@ -30,7 +30,7 @@ const serverEntry = path.resolve(__dirname, 'dist/server/entry-server.js');
 // import() requires a file:// URL on Windows (a raw C:\ path throws
 // ERR_UNSUPPORTED_ESM_URL_SCHEME). pathToFileURL is a no-op difference on
 // Linux/Vercel, so this is safe cross-platform.
-const { render, publishedPosts } = await import(pathToFileURL(serverEntry).href);
+const { render, publishedPosts, authorLine } = await import(pathToFileURL(serverEntry).href);
 
 // Every blog article gets its own prerendered page at /blog/<slug>.
 routes.splice(routes.indexOf('/blog') + 1, 0, ...publishedPosts.map((p) => `/blog/${p.slug}`));
@@ -167,7 +167,7 @@ injectBlogPosts(
 injectBlogPosts(
   'llms.txt',
   'BLOG_POSTS',
-  publishedPosts.map((p) => `- [${p.title}](${SITE}/blog/${p.slug}): ${p.excerpt}`)
+  publishedPosts.map((p) => `- [${p.title}](${SITE}/blog/${p.slug}): ${p.excerpt} (By ${authorLine(p)}.)`)
 );
 
 // Remove the server-only SSR bundle so it isn't deployed/served publicly.
