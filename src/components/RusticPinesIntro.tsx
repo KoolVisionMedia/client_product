@@ -62,6 +62,8 @@ export default function RusticPinesIntro() {
   const [failed, setFailed] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  // Current sound setting for the observer callback below (state would be stale there).
+  const mutedRef = useRef(true);
   // Whether the film should play whenever it's on screen: off for Save-Data
   // until the visitor presses play, and off after they pause it.
   const autoRef = useRef(true);
@@ -104,7 +106,9 @@ export default function RusticPinesIntro() {
         const entry = entries[entries.length - 1]; // latest state (see above)
         if (!entry.isIntersecting) v.pause();
         else if (entry.intersectionRatio >= 0.25 && autoRef.current) {
-          v.muted = muted; // must be muted at play() time for autoplay to be allowed
+          // Keep the visitor's sound choice. Muted autoplay is always allowed;
+          // unmuted is allowed once they've turned sound on (a user gesture).
+          v.muted = mutedRef.current;
           v.play().catch(() => {});
         }
       },
@@ -112,7 +116,6 @@ export default function RusticPinesIntro() {
     );
     io.observe(el);
     return () => io.disconnect();
-    // `muted` is only read here when the observer fires; toggleMute handles changes.
   }, [src]);
 
   // React doesn't keep the `muted` DOM property in sync after mount; do it here.
@@ -137,6 +140,7 @@ export default function RusticPinesIntro() {
 
   const toggleMute = () => {
     const next = !muted;
+    mutedRef.current = next;
     setMuted(next);
     if (videoRef.current) videoRef.current.muted = next;
     if (!next && (!videoRef.current || videoRef.current.paused)) start();
