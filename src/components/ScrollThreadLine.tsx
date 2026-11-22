@@ -76,6 +76,45 @@ type Insert = {
   sy: number;
 };
 
+/*
+ * SHORTENED SECTIONS (the floor plans shelf, #portfolio)
+ *
+ * The opposite case. When the thread was drawn, "Featured Floor Plans" was a
+ * stack of five full-screen cards (about five screens tall) and the thread
+ * wound down through it, looped out to the right and ran back along the gap
+ * above Custom Care. It is now a single shelf, roughly one screen tall. Left
+ * alone, the SVG would be stretched over a much shorter region and every curve
+ * above would slide up off the content it was placed around. So:
+ *  - the viewBox keeps the px-per-unit scale the region had with the old stack
+ *    (its old height is known: header + LEGACY_CARDS screens + LEGACY_PAD_REM);
+ *  - the thread is untouched down to the top of the floor plans (exact Bezier
+ *    split), so About, the announcement and the Process are pixel-identical to
+ *    before at every size;
+ *  - from there a new course replaces the old winding stretch: it sweeps
+ *    across BEHIND the shelf (showing in the gaps between the homes), runs
+ *    straight down one of the gaps between two homes so it never crosses the
+ *    names printed under the shelf, then bows across to the same landing point
+ *    on the Custom Care image as before. The section marks its gaps with
+ *    [data-thread-lane] strips and buildShelfPath picks one (see LANE_BIAS);
+ *    with none marked the thread just makes one sweep to the landing point.
+ * If the section isn't on the page, or isn't shorter than the old stack, the
+ * original course (and its loop into Custom Care) is used.
+ */
+const LEGACY_CARDS = 5; // full-screen cards the old stack had
+const LEGACY_PAD_REM = 5; // its bottom padding (pb-20)
+const LANE_BIAS = 0.3; // which gap the thread runs down: 0 = nearest the landing point, 1 = nearest where it comes in
+type Cut = {
+  /** section top, in viewBox units (i.e. including any inserted section above) */
+  top: number;
+  /** the section's height when the thread was drawn / its height now, in units */
+  was: number;
+  now: number;
+  /** px per unit */
+  sy: number;
+  /** the gaps the thread may run down: x, and where each starts and ends (units) */
+  lanes: { x: number; y0: number; y1: number }[];
+};
+
 /** Expand an absolute M/C/S path into explicit cubic segments. */
 function toSegments(path: string): Seg[] {
   const tok = path.match(/[MCS]|-?\d*\.?\d+/g) ?? [];
@@ -121,10 +160,13 @@ const segsToD = (segs: Seg[]) =>
 /** Whether a section starting at `at` (original units) can be spliced into the body. */
 const canInsertAt = (at: number) => at > BODY_Y0 && at < BODY_Y1;
 
-/** Exact split of the original body where it crosses y (original units). */
-function splitAtY(y: number): { k: number; left: Seg; right: Seg; pt: Pt; slope: number } | null {
-  for (let k = 0; k < BODY_SEGS.length; k++) {
-    const seg = BODY_SEGS[k];
+/** Exact split of a run of segments where it crosses y. */
+function splitSegsAtY(
+  segs: Seg[],
+  y: number
+): { k: number; left: Seg; right: Seg; pt: Pt; slope: number } | null {
+  for (let k = 0; k < segs.length; k++) {
+    const seg = segs[k];
     let prev = bezY(seg, 0) - y;
     for (let j = 1; j <= 64; j++) {
       const cur = bezY(seg, j / 64) - y;
@@ -154,17 +196,20 @@ function splitAtY(y: number): { k: number; left: Seg; right: Seg; pt: Pt; slope:
   return null;
 }
 
+/** Exact split of the original body where it crosses y (original units). */
+const splitAtY = (y: number) => splitSegsAtY(BODY_SEGS, y);
+
 // Re-route tuning (see INSERTED SECTIONS).
 const GENTLE = 2; // vertical px the crossing takes per px it moves sideways
 const KEEP_TOP_PX = 140; // the visible start at the hero seam is never touched
 const REJOIN_Y = 1040; // original units: just above the thread's leftmost point in the Process
 
 /** The thread body, re-routed around / through the inserted section (or the original). */
-function buildBody(ins: Insert | null): { body: string; shift: number } {
-  if (!ins || !canInsertAt(ins.at)) return { body: THREAD_BODY, shift: 0 };
+function buildBody(ins: Insert | null): { body: string; shift: number; segs: Seg[] } {
+  if (!ins || !canInsertAt(ins.at)) return { body: THREAD_BODY, shift: 0, segs: BODY_SEGS };
   const { at, h, railX, railTop, sx, sy } = ins;
   const cut = splitAtY(at);
-  if (!cut) return { body: THREAD_BODY, shift: 0 };
+  if (!cut) return { body: THREAD_BODY, shift: 0, segs: BODY_SEGS };
 
   if (railX != null && railTop != null && REJOIN_Y > at + 200 / sy) {
     // W: where the thread arrives in the lane (top of the film), heading straight down.
@@ -191,7 +236,7 @@ function buildBody(ins: Insert | null): { body: string; shift: number } {
         shiftSeg(B.right, h),
         ...BODY_SEGS.slice(B.k + 1).map((s) => shiftSeg(s, h)),
       ];
-      return { body: segsToD(segs), shift: h };
+      return { body: segsToD(segs), shift: h, segs };
     }
   }
 
@@ -206,8 +251,66 @@ function buildBody(ins: Insert | null): { body: string; shift: number } {
     shiftSeg(cut.right, h),
     ...BODY_SEGS.slice(cut.k + 1).map((s) => shiftSeg(s, h)),
   ];
-  return { body: segsToD(segs), shift: h };
+  return { body: segsToD(segs), shift: h, segs };
 }
+
+/**
+ * The whole thread when the floor plans are a shelf (see SHORTENED SECTIONS):
+ * the body as far as the top of the section, then across behind the shelf,
+ * down a gap between two homes, and across again to drop onto the landing
+ * point (ex, ey).
+ */
+function buildShelfPath(segs: Seg[], cut: Cut, ex: number, ey: number): string | null {
+  const A = splitSegsAtY(segs, cut.top);
+  if (!A) return null;
+  const run = ey - A.pt[1];
+  if (run <= 0) return null;
+  const head = [...segs.slice(0, A.k), A.left];
+  // the last stretch comes straight down, like the old approach to the image
+  const P3: Pt = [ex, ey - run * 0.08];
+  const tail = ` L ${r2(ex)} ${r2(ey)}`;
+
+  // Which gap: the first crossing is made behind the homes, so it can be long;
+  // the second is in the open, so the gap nearer the landing point is preferred
+  // (LANE_BIAS of the way from the landing point back to where the thread comes
+  // in). Both crossings must be left some room.
+  const [ax, ay] = A.pt;
+  const room = run * 0.12;
+  const want = ex + (ax - ex) * LANE_BIAS;
+  const lane = cut.lanes
+    .filter((l) => (l.x - ex) * (l.x - ax) < 0 && l.y0 > ay + room && l.y1 < P3[1] - room && l.y1 > l.y0)
+    .sort((a, b) => Math.abs(a.x - want) - Math.abs(b.x - want))[0];
+
+  if (lane) {
+    const W: Pt = [lane.x, lane.y0];
+    const B: Pt = [lane.x, lane.y1];
+    const s1 = W[1] - ay;
+    const s2 = P3[1] - B[1];
+    const course: Seg[] = [
+      // Carries on down past the heading along its own direction, crosses
+      // behind the homes, and turns down into the gap at the shelf. (Long
+      // first arm, short second: the crossing itself happens behind the covers.)
+      [A.pt, [ax + A.slope * s1 * 0.66, ay + s1 * 0.66], [lane.x, W[1] - s1 * 0.13], W],
+      // straight down the gap
+      [W, lerp(W, B, 1 / 3), lerp(W, B, 2 / 3), B],
+      // a slow bow across to the landing point, arriving straight down
+      [B, [lane.x, B[1] + s2 * 0.4], [ex, P3[1] - s2 * 0.4], P3],
+    ];
+    return segsToD([...head, ...course]) + tail;
+  }
+
+  // No gap to use: one sweep, leaving along the thread's direction and arriving vertical.
+  const s = P3[1] - ay;
+  const sweep: Seg = [A.pt, [ax + A.slope * s * 0.34, ay + s * 0.34], [ex, P3[1] - s * 0.46], P3];
+  return segsToD([...head, sweep]) + tail;
+}
+
+/** Where a y in the page-as-drawn ends up now that the section is shorter. */
+const cutY = (y: number, cut: Cut | null) => {
+  if (!cut || y <= cut.top) return y;
+  if (y >= cut.top + cut.was) return y - (cut.was - cut.now);
+  return cut.top + ((y - cut.top) * cut.now) / cut.was;
+};
 
 /* Gradient stops, in thread units. With an inserted section the stops below it
    move down with the thread (so colours over the old sections are unchanged)
@@ -252,6 +355,16 @@ const sameInsert = (a: Insert | null, b: Insert | null) => {
   );
 };
 
+const sameCut = (a: Cut | null, b: Cut | null) => {
+  if (!a || !b) return a === b;
+  const near = (x: number, y: number, tol = 0.25) => Math.abs(x - y) < tol;
+  return (
+    near(a.top, b.top) && near(a.was, b.was) && near(a.now, b.now) && near(a.sy, b.sy, 0.002) &&
+    a.lanes.length === b.lanes.length &&
+    a.lanes.every((l, i) => near(l.x, b.lanes[i].x) && near(l.y0, b.lanes[i].y0) && near(l.y1, b.lanes[i].y1))
+  );
+};
+
 export default function ScrollThreadLine() {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -262,13 +375,16 @@ export default function ScrollThreadLine() {
   const [gap, setGap] = useState<{ y0: number; y1: number } | null>(null);
   const [endPt, setEndPt] = useState<{ x: number; y: number } | null>(null);
   const [ins, setIns] = useState<Insert | null>(null);
+  const [cut, setCut] = useState<Cut | null>(null);
 
   const timingPathRef = useRef<SVGPathElement>(null);
 
   // Values the rAF loop reads (refs, so it never needs to restart).
   // secTop / secH: the inserted section's top (px from the container top) and
   // height, or 0 / 0 when there is none.
-  const geom = useRef({ top: 0, height: 1, vh: 1, secTop: 0, secH: 0 });
+  // cutPx: how much shorter the floor plans section is than when the thread
+  // was drawn (0 when it isn't).
+  const geom = useRef({ top: 0, height: 1, vh: 1, secTop: 0, secH: 0, cutPx: 0 });
   const hookFracRef = useRef(0.75);
   const pEndRef = useRef(1);
   const drawnRef = useRef(0);
@@ -276,17 +392,29 @@ export default function ScrollThreadLine() {
   // tipY lookup table: fraction-of-length -> tip Y in px, for the thread as it
   // is WITHOUT the inserted section (see DRAW TIMING below).
   const lut = useRef<number[]>([]);
+  // The shelf stretch of the draw (see DRAW TIMING): the fraction of the pacing
+  // path at which the tip reaches the top of the floor plans, and the tip's Y
+  // there and at the landing point (px, on the page without the inserted section).
+  const tailRef = useRef<{ fJ: number; yA: number; yEnd: number } | null>(null);
 
-  const { body, shift } = useMemo(() => buildBody(ins), [ins]);
-  const vbH = VB_H + shift;
-  const stops = useMemo(() => gradientStops(ins, shift), [ins, shift]);
+  const { body, shift, segs } = useMemo(() => buildBody(ins), [ins]);
+  // net: how far everything below both sections sits from where it was drawn.
+  const net = shift - (cut ? cut.was - cut.now : 0);
+  const vbH = VB_H + net;
+  const stops = useMemo(
+    () => gradientStops(ins, shift).map(({ y, color }) => ({ y: cutY(y, cut), color })),
+    [ins, shift, cut]
+  );
 
-  const e = endPt ?? { x: DEFAULT_END.x, y: DEFAULT_END.y + shift };
+  const e = endPt ?? { x: DEFAULT_END.x, y: DEFAULT_END.y + net };
   const ex = Math.round(e.x);
   const ey = Math.round(e.y);
   const r = 90;
   const runY = Math.round(Math.max(e.y - 170, 4330 + shift));
-  const d = `${body}
+  const shelfPath = useMemo(() => (cut ? buildShelfPath(segs, cut, ex, ey) : null), [cut, segs, ex, ey]);
+  const d =
+    shelfPath ??
+    `${body}
    C 1450 ${4435 + shift}, 1220 ${runY - 300}, 1220 ${runY - r}
    Q 1220 ${runY}, ${1220 - r} ${runY}
    L ${ex + r} ${runY}
@@ -305,10 +433,18 @@ export default function ScrollThreadLine() {
    * and below it everything is offset by the section's height. The cover only
    * needs the tip's Y, so the visible path can take any route.
    * With no inserted section d0 === d and this is the original behaviour.
+   *
+   * The floor plans shelf (see SHORTENED SECTIONS) is handled the same way: the
+   * pacing still runs on the page as the thread was drawn for it, with the old
+   * five-screen stack, so the draw is exactly as before all the way down to the
+   * top of the floor plans. From the moment the tip gets there, it simply runs
+   * on at an even rate so that it reaches the landing point on the Custom Care
+   * image at the same moment it always did (when that point is three quarters
+   * of the way down the screen, which is what triggers the image's bloom).
    */
-  const end0 = e.y - shift;
+  const end0 = e.y - net;
   const runY0 = Math.round(Math.max(end0 - 170, 4330));
-  const d0 = shift
+  const d0 = shift || cut
     ? `${THREAD_BODY}
    C 1450 4435, 1220 ${runY0 - 300}, 1220 ${runY0 - r}
    Q 1220 ${runY0}, ${1220 - r} ${runY0}
@@ -326,13 +462,28 @@ export default function ScrollThreadLine() {
     setLen(el.getTotalLength());
     const total = timing.getTotalLength();
     // px per unit as it is without the inserted section
-    const sy = ins ? ins.sy : (c.getBoundingClientRect().height || 1) / VB_H;
+    const sy = cut ? cut.sy : ins ? ins.sy : (c.getBoundingClientRect().height || 1) / VB_H;
     const table: number[] = [];
     for (let i = 0; i <= LUT_N; i++) {
       const pt = timing.getPointAtLength((i / LUT_N) * total);
       table.push(pt.y * sy); // thread units -> px
     }
     lut.current = table;
+    // Shelf stretch: where along the pacing path the tip reaches the top of the
+    // floor plans. (The body only ever travels down the page, so the first
+    // crossing is the one.)
+    tailRef.current = null;
+    if (cut && shelfPath) {
+      const yA = (cut.top - shift) * sy;
+      const yEnd = (ey - shift) * sy;
+      for (let i = 0; i < LUT_N; i++) {
+        if (table[i + 1] >= yA && table[i + 1] > table[i]) {
+          const fJ = (i + Math.max(0, (yA - table[i]) / (table[i + 1] - table[i]))) / LUT_N;
+          if (yEnd > yA) tailRef.current = { fJ, yA, yEnd };
+          break;
+        }
+      }
+    }
     try {
       const tmp = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       tmp.setAttribute('d', THREAD_BODY);
@@ -341,7 +492,7 @@ export default function ScrollThreadLine() {
     } catch {
       /* keep default */
     }
-  }, [d, d0, ins]);
+  }, [d, d0, ins, cut, shelfPath, shift, ey]);
 
   // Cache geometry (container position/size, viewport, Process gap, endpoint).
   useEffect(() => {
@@ -351,14 +502,25 @@ export default function ScrollThreadLine() {
       const c = container.getBoundingClientRect();
       if (c.height <= 0) return;
 
+      // The floor plans shelf: how much shorter it is than the stack of cards
+      // the thread was drawn for (see SHORTENED SECTIONS above).
+      const shelf = document.getElementById('portfolio')?.getBoundingClientRect();
+      const shelfHead = document.getElementById('portfolio-header')?.getBoundingClientRect();
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      const shelfWas =
+        shelf && shelfHead ? shelfHead.height + LEGACY_CARDS * window.innerHeight + LEGACY_PAD_REM * rem : 0;
+      const cutPx = shelf && shelf.height > 0 && shelfWas > shelf.height ? shelfWas - shelf.height : 0;
+      // The region's height as the thread was drawn for it.
+      const drawnH = c.height + cutPx;
+
       // px per thread unit (Y). With the announcement on the page, keep the
       // scale the region had without it (see INSERTED SECTIONS above).
-      let sy = c.height / VB_H;
+      let sy = drawnH / VB_H;
       let nextIns: Insert | null = null;
       const intro = document.getElementById('rustic-pines-intro');
       if (intro) {
         const s = intro.getBoundingClientRect();
-        const base = c.height - s.height;
+        const base = drawnH - s.height;
         if (s.height > 0 && base > 0 && canInsertAt((s.top - c.top) / (base / VB_H))) {
           sy = base / VB_H;
           nextIns = { at: (s.top - c.top) / sy, h: s.height / sy, sx: c.width / VB_W, sy };
@@ -373,8 +535,27 @@ export default function ScrollThreadLine() {
       }
       const secH = nextIns ? nextIns.h * sy : 0;
       const secTop = nextIns ? nextIns.at * sy : 0;
-      geom.current = { top: c.top + window.scrollY, height: c.height, vh: window.innerHeight, secTop, secH };
+      geom.current = { top: c.top + window.scrollY, height: c.height, vh: window.innerHeight, secTop, secH, cutPx };
       setIns((prev) => (sameInsert(prev, nextIns) ? prev : nextIns));
+      const nextCut: Cut | null =
+        shelf && cutPx > 0
+          ? {
+              top: (shelf.top - c.top) / sy,
+              was: shelfWas / sy,
+              now: shelf.height / sy,
+              sy,
+              // untransformed, 1px-wide strips in the gaps between the homes
+              lanes: Array.from(document.querySelectorAll('#portfolio [data-thread-lane]'))
+                .map((el) => el.getBoundingClientRect())
+                .filter((l) => l.height > 0)
+                .map((l) => ({
+                  x: ((l.left + l.width / 2 - c.left) / c.width) * VB_W,
+                  y0: (l.top - c.top) / sy,
+                  y1: (l.bottom - c.top) / sy,
+                })),
+            }
+          : null;
+      setCut((prev) => (sameCut(prev, nextCut) ? prev : nextCut));
 
       const toVbY = (px: number) => (px - c.top) / sy;
       const section = document.getElementById('process');
@@ -392,9 +573,12 @@ export default function ScrollThreadLine() {
         const exVb = (((v.left - c.left) + v.width * 0.48) / c.width) * VB_W;
         const eyPx = (v.top - c.top) + v.height * 0.06;
         setEndPt({ x: exVb, y: eyPx / sy });
-        // Paced on the page without the inserted section (see DRAW TIMING).
-        const span = c.height - secH - window.innerHeight / 2;
-        if (span > 0) pEndRef.current = Math.min(1, Math.max(0.5, (eyPx - secH - window.innerHeight * 0.25) / span));
+        // Paced on the page as the thread was drawn for it: without the inserted
+        // section, and with the floor plans at their old height (see DRAW TIMING).
+        const span = drawnH - secH - window.innerHeight / 2;
+        if (span > 0) {
+          pEndRef.current = Math.min(1, Math.max(0.5, (eyPx + cutPx - secH - window.innerHeight * 0.25) / span));
+        }
       }
     };
     measure();
@@ -423,13 +607,14 @@ export default function ScrollThreadLine() {
     let running = false;
 
     const frame = () => {
-      const { top, height, vh, secTop, secH } = geom.current;
+      const { top, height, vh, secTop, secH, cutPx } = geom.current;
       // Middle of the screen, in container px; `off` is how much of the inserted
       // section it has passed (0 when there is none). See DRAW TIMING.
       const mid = window.scrollY - top + vh / 2;
       const off = secH > 0 ? Math.min(secH, Math.max(0, mid - secTop)) : 0;
-      const denom = height - secH - vh / 2;
-      const p = clamp01(denom > 0 ? (mid - off) / denom : 0);
+      const m = mid - off;
+      const denom = height + cutPx - secH - vh / 2;
+      const p = clamp01(denom > 0 ? m / denom : 0);
 
       const hf = hookFracRef.current;
       const pe = pEndRef.current;
@@ -440,6 +625,20 @@ export default function ScrollThreadLine() {
       else if (p <= 0) target = 0;
       else if (p < aScroll) target = (p / aScroll) * hf;
       else target = hf + ((p - aScroll) / (pe - aScroll)) * (1 - hf);
+
+      // Shelf stretch (see DRAW TIMING). `drawn` keeps counting past fJ at the
+      // rate it had on the body (k per px of scroll), and the tip covers the
+      // distance to the landing point at an even pace over that scroll.
+      const tail = tailRef.current;
+      let k = 0;
+      let rate = 0;
+      if (tail && denom > 0 && aScroll > 0 && hf > 0) {
+        k = hf / (aScroll * denom);
+        const mJ = tail.fJ / k; // scroll position where the tip reaches the floor plans
+        const span = Math.max(vh * 0.25, tail.yEnd - vh * 0.25 - mJ);
+        rate = (tail.yEnd - tail.yA) / span;
+        if (m > mJ) target = tail.fJ + Math.min(span, m - mJ) * k;
+      }
 
       drawnRef.current += (target - drawnRef.current) * 0.12;
       offRef.current += (off - offRef.current) * 0.12;
@@ -453,7 +652,9 @@ export default function ScrollThreadLine() {
       // everything below the tip.
       const table = lut.current;
       let tipY = height;
-      if (table.length) {
+      if (tail && k > 0 && drawnRef.current > tail.fJ) {
+        tipY = Math.min(tail.yEnd, tail.yA + ((drawnRef.current - tail.fJ) / k) * rate) + offRef.current;
+      } else if (table.length) {
         const f = clamp01(drawnRef.current) * LUT_N;
         const i = Math.min(LUT_N - 1, Math.floor(f));
         tipY = table[i] + (table[i + 1] - table[i]) * (f - i) + offRef.current;
@@ -482,7 +683,7 @@ export default function ScrollThreadLine() {
       window.removeEventListener('scroll', kick);
       window.removeEventListener('resize', kick);
     };
-  }, [reduce, len, gap, endPt, ins]);
+  }, [reduce, len, gap, endPt, ins, cut]);
 
   return (
     <div
