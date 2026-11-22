@@ -3,29 +3,32 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
+import ButtonGlow from './ui/ButtonGlow';
 
 /**
  * Home page announcement for Rustic Pines at Paris Landing.
  *
- * Sits between About and "The Homefront Process". A compact band, not a full
- * screen. Desktop layout, left to right:
+ * Sits between About and "The Homefront Process". A band, not a full screen.
+ * Desktop layout, left to right:
  *
- *     [ heading + CTA ]  [ scroll thread ]  [ film, fading in -> full film ]
+ *     [ heading + CTA, over the film's faded edge ][ film -> full film ]
  *
- * The promo film autoplays like a background, pinned to the right and fading
- * into the page on its left edge. The site's scroll thread (ScrollThreadLine)
- * runs down the open lane between the text and the film, so it stays in view
- * the whole way through the section. Kept short on words; the CTA sends people
- * to /rustic-pines.
+ * The promo film autoplays like a background, pinned to the right (from about
+ * a third of the way across) and fading into the page on its left edge. It
+ * fills nearly the whole band, and the site's scroll thread (ScrollThreadLine)
+ * passes BEHIND it: in at its top edge, out at its bottom edge, then on along
+ * its original course. Kept short on words; the CTA sends people to
+ * /rustic-pines.
  * Phones/tablets: the film runs full width on top and fades into the page at
  * its bottom edge, where the heading picks up (the thread is desktop-only).
  *
  * Fits the page's existing systems:
  *  - Scroll thread: the section background is transparent like its
- *    neighbours. ScrollThreadLine measures #rustic-pines-intro and the lane
- *    marker #rustic-pines-intro-rail and routes the thread through that lane.
- *    Nothing in this section may cover the lane on desktop: the film panel
- *    starts to its right, the text column ends to its left.
+ *    neighbours. ScrollThreadLine measures #rustic-pines-intro and splices the
+ *    thread through it, keeping its direction; the opaque film panel sits above
+ *    the thread, so the thread runs behind the film. (ScrollThreadLine can also
+ *    route the thread down an open lane instead, if a section marks one with
+ *    #rustic-pines-intro-rail; this one doesn't.)
  *  - Motion: same ease curve and whileInView reveals as About / CoreValues;
  *    the film's scroll zoom is a transform only (GPU, no repaint).
  *  - GPU: no CSS masks, filters or backdrop blur (they've failed on the owner's
@@ -41,16 +44,11 @@ import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const PAGE_BG = '#FAFAF5'; // --color-surface
-// Desktop geometry, in % of the section width (see the layout note above).
-// The panel's Tailwind classes below mirror these: lg:left-[49.5%] is PANEL_LEFT,
-// and the film inside it is lg:w-[122.772%] = (100 - FILM_LEFT) / (100 - PANEL_LEFT).
-const FILM_LEFT = 38; // the film itself spans 38% -> 100%
-const PANEL_LEFT = 49.5; // ...but is only shown from here: left of this its fade is pure page colour
-const THREAD_LANE = 46.4; // the open strip the scroll thread runs down, between text and film
-const FILM_W = 100 - FILM_LEFT;
-const FADE_FROM = ((PANEL_LEFT - FILM_LEFT) / FILM_W) * 100; // where the fade starts, in % of the film
+// Desktop: the film panel spans 32% -> 100% of the section width (lg:left-[32%]
+// below). The text column overlaps its first ~12%, so the fade stays close to
+// page colour there (text stays readable), then eases out to the full film.
 // Eased in (no hard start), so the film has no visible left edge.
-const FADE_LEFT = `linear-gradient(to right, ${PAGE_BG} 0%, ${PAGE_BG} ${FADE_FROM.toFixed(2)}%, rgba(250,250,245,0.965) ${(FADE_FROM + 3.5).toFixed(2)}%, rgba(250,250,245,0.86) ${(FADE_FROM + 8).toFixed(2)}%, rgba(250,250,245,0.6) 33%, rgba(250,250,245,0.27) 41%, rgba(250,250,245,0) 50%)`;
+const FADE_LEFT = `linear-gradient(to right, ${PAGE_BG} 0%, rgba(250,250,245,0.97) 6%, rgba(250,250,245,0.88) 14%, rgba(250,250,245,0.68) 22%, rgba(250,250,245,0.42) 30%, rgba(250,250,245,0.18) 38%, rgba(250,250,245,0) 46%)`;
 const FADE_BOTTOM = `linear-gradient(to top, ${PAGE_BG} 0%, rgba(250,250,245,0.9) 12%, rgba(250,250,245,0.45) 30%, rgba(250,250,245,0) 55%)`;
 
 const reveal = (delay = 0) => ({
@@ -169,28 +167,17 @@ export default function RusticPinesIntro() {
     <section
       id="rustic-pines-intro"
       aria-labelledby="rp-intro-title"
-      className="relative pt-12 md:pt-16 lg:pt-24 pb-12 lg:pb-16"
+      className="relative pt-12 md:pt-16 lg:pt-12 pb-12 lg:pb-3"
     >
-      <div className="relative lg:h-[clamp(440px,58vh,600px)]">
-        {/* The lane the scroll thread runs down (measured by ScrollThreadLine).
-            Never transformed, so its position doesn't change with scroll. */}
-        <span
-          id="rustic-pines-intro-rail"
-          aria-hidden="true"
-          className="hidden lg:block absolute inset-y-0 w-px pointer-events-none"
-          style={{ left: `${THREAD_LANE}%` }}
-        />
-
-        {/* Film panel: full width on top below lg; pinned right, full band height on lg+.
-            On lg+ the panel starts right of the thread lane; the film inside it is
-            wider (it starts at FILM_LEFT) and the part the panel clips off is the
-            part its fade had already turned into plain page colour. */}
+      <div className="relative lg:h-[clamp(520px,76vh,760px)]">
+        {/* Film panel: full width on top below lg; pinned right, full band height
+            on lg+, over the scroll thread (the thread passes behind it). */}
         <div
           ref={frameRef}
           id="rustic-pines-intro-frame"
-          className="relative w-full aspect-video md:aspect-[16/7] lg:aspect-auto lg:absolute lg:inset-y-0 lg:right-0 lg:left-[49.5%] lg:w-auto overflow-hidden bg-surface"
+          className="relative w-full aspect-video md:aspect-[16/7] lg:aspect-auto lg:absolute lg:inset-y-0 lg:right-0 lg:left-[32%] lg:w-auto overflow-hidden bg-surface"
         >
-          <div className="absolute inset-y-0 right-0 w-full lg:w-[122.772%]">
+          <div className="absolute inset-0">
           <motion.div
             style={reduce ? undefined : { scale: filmScale }}
             className="absolute inset-0 will-change-transform"
@@ -198,7 +185,7 @@ export default function RusticPinesIntro() {
             <img
               src={PROMO.poster}
               srcSet={PROMO.posterSrcSet}
-              sizes="(min-width: 1024px) 62vw, 100vw"
+              sizes="(min-width: 1024px) 68vw, 100vw"
               width={PROMO.width}
               height={PROMO.height}
               alt={PROMO.posterAlt}
@@ -304,8 +291,9 @@ export default function RusticPinesIntro() {
               <Link
                 to="/rustic-pines"
                 aria-label="Explore Rustic Pines at Paris Landing homesites"
-                className="flex items-center gap-4 pl-6 pr-2 py-2 bg-primary rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-white hover:bg-accent transition-all duration-300 w-fit group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                className="flex items-center gap-4 pl-6 pr-2 py-2 bg-primary rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-white hover:bg-accent transition-all duration-300 w-fit group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-surface btn-glow"
               >
+                <ButtonGlow />
                 Explore Rustic Pines
                 <span className="w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center group-hover:bg-white group-hover:text-accent transition-all duration-300">
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />

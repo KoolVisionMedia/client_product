@@ -8,6 +8,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { lots, MAP_VIEWBOX, realtracsUrl, RUSTIC_PINES_SITE, rusticPinesSiteHost } from '../data/rusticPines';
 import type { Lot, LotStatus } from '../data/rusticPines';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 const PATH = '/rustic-pines';
 const NAME = 'Rustic Pines at Paris Landing';
@@ -468,8 +469,9 @@ function LotDetails({ lot, onInquire }: { lot: Lot; onInquire: (n: number) => vo
         <button
           type="button"
           onClick={() => onInquire(lot.number)}
-          className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors"
+          className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors btn-glow"
         >
+          <ButtonGlow />
           Inquire About Lot {lot.number} <ArrowRight className="w-4 h-4" />
         </button>
       )}
@@ -576,8 +578,9 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
             <button
               type="button"
               onClick={onClose}
-              className="mt-8 rounded-full bg-[#1b2518] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-3.5"
+              className="mt-8 rounded-full bg-[#1b2518] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-3.5 btn-glow"
             >
+              <ButtonGlow />
               Back to the Map
             </button>
           </div>
@@ -621,8 +624,9 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
             <button
               type="submit"
               disabled={state === 'loading'}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#1b2518] hover:bg-[#2E362C] disabled:opacity-60 text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#1b2518] hover:bg-[#2E362C] disabled:opacity-60 text-white text-xs font-semibold uppercase tracking-[0.2em] py-4 transition-colors btn-glow"
             >
+              <ButtonGlow />
               {state === 'loading' ? 'Sending…' : 'Send Inquiry'} <Send className="w-4 h-4" />
             </button>
           </form>
@@ -640,9 +644,8 @@ const SORT_LABEL: Record<SortKey, string> = { number: 'Lot #', acres: 'Acres', p
 /** Grace period before "pointer left a lot" counts, so crossing a road between lots doesn't flicker. */
 const LEAVE_GRACE_MS = 90;
 
-/** A chip row that wraps on desktop and becomes one swipeable line on phones. */
-const CHIP_ROW =
-  'flex gap-2 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
+/** A chip row. Wraps at every width, so no chip is ever left half off the screen edge. */
+const CHIP_ROW = 'flex flex-wrap gap-2';
 
 export default function RusticPines() {
   const reduce = !!useReducedMotion();
@@ -1035,7 +1038,10 @@ export default function RusticPines() {
       </Helmet>
 
       {/* Hero */}
-      <section className="relative h-[480px] md:h-[580px] overflow-hidden bg-[#1b2518]">
+      {/* min-h, not a fixed height: on phones (and with larger system text) the
+          copy and both buttons are taller than the box, and a fixed height cut
+          the buttons off and pushed the top line under the menu bar. */}
+      <section className="relative flex min-h-[480px] md:min-h-[580px] overflow-hidden bg-[#1b2518]">
         <img
           src={HERO_SRC}
           srcSet={HERO_SRCSET}
@@ -1046,7 +1052,7 @@ export default function RusticPines() {
           className="absolute inset-0 w-full h-full object-cover scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1b2518]/80 via-[#1b2518]/55 to-[#1b2518]" />
-        <div className="relative z-10 h-full flex items-center justify-center pt-20 px-6">
+        <div className="relative z-10 w-full flex items-center justify-center pt-32 pb-12 md:pt-20 md:pb-0 px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1067,8 +1073,9 @@ export default function RusticPines() {
               <button
                 type="button"
                 onClick={() => mapSectionRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })}
-                className="inline-flex items-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full bg-[#B48C36] hover:bg-[#967226] text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
               >
+                <ButtonGlow />
                 Explore the Lots <ArrowRight className="w-4 h-4" />
               </button>
               {/* The community's own site (it links back here). rel keeps the referrer
@@ -1078,8 +1085,9 @@ export default function RusticPines() {
                 target="_blank"
                 rel="noopener"
                 aria-label="Visit the official Rustic Pines at Paris Landing website (opens in a new tab)"
-                className="inline-flex items-center gap-2 rounded-full border border-white/35 hover:border-[#c9a96e] hover:bg-white/5 text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-white/35 hover:border-[#c9a96e] hover:bg-white/5 text-white text-xs font-semibold uppercase tracking-[0.2em] px-8 py-4 transition-colors btn-glow"
               >
+                <ButtonGlow />
                 Visit the Website <ExternalLink className="w-4 h-4" aria-hidden="true" />
               </a>
             </div>
@@ -1134,6 +1142,7 @@ export default function RusticPines() {
           </div>
 
           <div className="grid lg:grid-cols-[minmax(0,1fr)_380px] gap-6 lg:gap-8 items-start">
+            <div className="min-w-0">
             {/* map frame: overlays (hint, zoom, compass, credit) stay put while the map itself can pan */}
             <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.45)] ring-1 ring-white/10 select-none">
               <div
@@ -1215,13 +1224,18 @@ export default function RusticPines() {
                 {zoomed ? <ZoomOut className="w-3.5 h-3.5" /> : <ZoomIn className="w-3.5 h-3.5" />}
                 {zoomed ? 'Zoom Out' : 'Zoom In'}
               </button>
-              <p className="absolute right-2 bottom-1.5 md:right-3 md:bottom-2 pointer-events-none text-[8px] md:text-[9px] text-white/55">
+              <p className="hidden md:block absolute right-3 bottom-2 pointer-events-none text-[9px] text-white/55">
                 Imagery ©2025 Airbus, Maxar Technologies · Google
               </p>
               <div className="absolute right-3 top-3 md:right-5 md:top-5 pointer-events-none w-9 h-9 md:w-11 md:h-11 rounded-full bg-[#1b2518]/85 ring-1 ring-white/15 flex flex-col items-center justify-center text-white">
                 <span className="block w-0 h-0 border-x-[4px] border-x-transparent border-b-[7px] border-b-[#c9a96e]" />
                 <span className="text-[9px] md:text-[10px] font-semibold leading-none mt-0.5">N</span>
               </div>
+            </div>
+            {/* phones: the imagery credit gets its own line so it never sits under the hint pill */}
+            <p className="md:hidden mt-2 px-1 text-right text-[9px] text-white/45">
+              Imagery ©2025 Airbus, Maxar Technologies · Google
+            </p>
             </div>
 
             {/* desktop details panel: swaps instantly (keyed), no stacked cross-fades */}
@@ -1275,45 +1289,22 @@ export default function RusticPines() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/floorplans"
-                className="inline-flex items-center gap-2 rounded-full bg-[#1b2518] hover:bg-[#2E362C] text-white text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full bg-[#1b2518] hover:bg-[#2E362C] text-white text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors btn-glow"
               >
+                <ButtonGlow />
                 Browse Floor Plans <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/contact-us"
-                className="inline-flex items-center gap-2 rounded-full border border-primary/20 hover:border-primary text-primary text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-primary/20 hover:border-primary text-primary text-xs font-semibold uppercase tracking-[0.2em] px-7 py-4 transition-colors btn-glow"
               >
+                <ButtonGlow />
                 Contact Us
               </Link>
             </div>
 
-            {/* The community's own site, as a full card so it reads as the official source. */}
-            <a
-              href={RUSTIC_PINES_SITE.url}
-              target="_blank"
-              rel="noopener"
-              className="group mt-8 flex items-center gap-5 rounded-2xl bg-[#1b2518] hover:bg-[#2E362C] p-5 md:p-6 transition-colors"
-            >
-              <span className="shrink-0 w-12 h-12 rounded-full bg-[#B48C36]/15 ring-1 ring-[#c9a96e]/40 flex items-center justify-center">
-                <Trees className="w-5 h-5 text-[#c9a96e]" aria-hidden="true" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[10px] uppercase tracking-[0.3em] text-[#c9a96e]">Official Community Website</span>
-                <span className="block mt-1.5 font-serif text-xl md:text-2xl text-white leading-snug">
-                  Visit the Rustic Pines at Paris Landing website
-                </span>
-                <span className="block mt-1 text-sm text-white/55 leading-relaxed">
-                  The vision, featured builds, the interactive model, and site visits.
-                </span>
-                <span className="block mt-1 text-xs text-[#c9a96e]/80 break-all">{rusticPinesSiteHost}</span>
-              </span>
-              <ExternalLink
-                className="shrink-0 w-5 h-5 text-white/50 group-hover:text-[#c9a96e] transition-colors"
-                aria-hidden="true"
-              />
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
           </div>
+          <div className="min-w-0">
           <dl className="grid sm:grid-cols-2 gap-4">
             {[
               ['Location', 'East of State Highway 232, 11th Civil District, Stewart County, TN'],
@@ -1327,6 +1318,33 @@ export default function RusticPines() {
               </div>
             ))}
           </dl>
+              {/* The community's own site: full width under the info cards, so it reads as the official source. */}
+              <a
+                href={RUSTIC_PINES_SITE.url}
+                target="_blank"
+                rel="noopener"
+                className="group mt-4 flex items-center gap-5 rounded-2xl bg-[#1b2518] hover:bg-[#2E362C] p-5 md:p-6 transition-colors"
+              >
+                <span className="hidden sm:flex shrink-0 w-12 h-12 rounded-full bg-[#B48C36]/15 ring-1 ring-[#c9a96e]/40 items-center justify-center">
+                  <Trees className="w-5 h-5 text-[#c9a96e]" aria-hidden="true" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[10px] uppercase tracking-[0.3em] text-[#c9a96e]">Official Community Website</span>
+                  <span className="block mt-1.5 font-serif text-xl md:text-2xl text-white leading-snug">
+                    Visit the Rustic Pines at Paris Landing website
+                  </span>
+                  <span className="block mt-1 text-sm text-white/55 leading-relaxed">
+                    The vision, featured builds, the interactive model, and site visits.
+                  </span>
+                  <span className="block mt-1 text-xs text-[#c9a96e]/80 break-all">{rusticPinesSiteHost}</span>
+                </span>
+                <ExternalLink
+                  className="shrink-0 w-5 h-5 text-white/50 group-hover:text-[#c9a96e] transition-colors"
+                  aria-hidden="true"
+                />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+          </div>
         </div>
       </section>
 

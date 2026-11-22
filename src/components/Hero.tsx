@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import ButtonGlow from './ui/ButtonGlow';
 
 export default function Hero() {
   // Only load the hero video on larger screens (and when motion is allowed).
@@ -93,8 +94,9 @@ export default function Hero() {
           >
             <Link
               to="/listings"
-              className="inline-block bg-accent hover:bg-accent-dark text-primary-dark px-10 py-5 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 font-bold"
+              className="inline-block bg-accent hover:bg-accent-dark text-primary-dark px-10 py-5 font-sans text-xs tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 font-bold btn-glow"
             >
+              <ButtonGlow />
               View Our Builds
             </Link>
           </motion.div>

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import ContactSection from '../components/ContactSection';
 import { X, Send, Video, Phone, Mail, Award } from 'lucide-react';
 import SEO from '../components/SEO';
+import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
+import ButtonGlow from '../components/ui/ButtonGlow';
 
 const partners = [
   {
@@ -386,8 +388,9 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3 bg-primary text-white font-sans text-[10px] uppercase tracking-widest hover:bg-[#c9a96e] transition-all rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full py-3 bg-primary text-white font-sans text-[10px] uppercase tracking-widest hover:bg-[#c9a96e] transition-all rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed btn-glow"
                     >
+                      <ButtonGlow />
                       <Send className={`w-3.5 h-3.5 ${isSubmitting ? 'animate-pulse' : ''}`} />
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
@@ -413,9 +416,6 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
 /* ── Page ── */
 export default function AboutUs() {
   const [selectedPartner, setSelectedPartner] = useState<typeof partners[0] | null>(null);
-  // Tracks whether the intro video has started playing yet, so we can show a
-  // still frame from partway through the clip and then reset to the start on play.
-  const videoStartedRef = React.useRef(false);
 
   return (
     <div>
@@ -425,7 +425,7 @@ export default function AboutUs() {
         path="/about-us"
       />
       {/* ─── Hero Banner ─── */}
-      <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
+      <section className="relative min-h-[500px] md:min-h-0 h-[50vh] md:h-[60vh] pt-28 pb-24 md:pt-0 md:pb-0 overflow-hidden flex items-center justify-center">
         <motion.img
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -440,7 +440,7 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-10 md:p-16 rounded-3xl text-center max-w-3xl mx-4 shadow-2xl"
+          className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 sm:p-10 md:p-16 rounded-3xl text-center max-w-3xl mx-4 shadow-2xl"
         >
           <p className="text-xs md:text-sm font-sans tracking-[0.4em] uppercase text-[#c9a96e] mb-4 drop-shadow-md">Our People</p>
           <h1 className="font-serif text-4xl md:text-6xl text-white tracking-wide drop-shadow-lg leading-tight">
@@ -453,81 +453,121 @@ export default function AboutUs() {
       <section className="pb-20 md:pb-28 px-6 md:px-12 relative z-20 -mt-16 md:-mt-24">
         <div className="max-w-[1000px] mx-auto">
 
-          {/* Homefront Planning Stage Video */}
+          {/* Rustic Pines promo film (same self-hosted files as the home page
+              announcement; phones get the 720p copy). */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '0px 0px -80px 0px' }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full rounded-2xl overflow-hidden shadow-xl mb-16 group"
+            className="mb-16 md:mb-24"
           >
-            <video
-              id="about-video"
-              controls
-              preload="metadata"
-              className="w-full rounded-2xl bg-black"
-              style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
-              onLoadedMetadata={(e) => {
-                // No fixed poster image — show a frame from partway through the
-                // clip as the still. Seeking while paused renders that frame.
-                const video = e.currentTarget;
-                if (!videoStartedRef.current && video.duration) {
-                  video.currentTime = Math.min(video.duration / 2, 4);
-                }
-              }}
-              onClick={(e) => {
-                const video = e.currentTarget;
-                if (video.paused) {
-                  video.play();
-                } else {
-                  video.pause();
-                }
-              }}
-              onPlay={(e) => {
-                const video = e.currentTarget;
-                // On the first play, rewind to the beginning so the whole video
-                // plays even though the still frame was taken from the middle.
-                if (!videoStartedRef.current) {
-                  videoStartedRef.current = true;
-                  video.currentTime = 0;
-                }
-                const overlay = video.parentElement?.querySelector('.play-overlay');
-                if (overlay) overlay.classList.add('hidden');
-              }}
-              onPause={(e) => {
-                const overlay = e.currentTarget.parentElement?.querySelector('.play-overlay');
-                if (overlay) overlay.classList.remove('hidden');
-              }}
-            >
-              <source src="https://www.dropbox.com/scl/fi/h45dv3jrz8kyljlcrfi3c/Homefront-Planning-Stage.mp4?rlkey=r7ehptb96ssw18c2ox0m907dy&raw=1" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-xl group">
+              <video
+                id="about-video"
+                controls
+                playsInline
+                preload="metadata"
+                poster={PROMO.poster}
+                aria-label="Introducing Rustic Pines at Paris Landing, a Homefront Builders community"
+                className="w-full rounded-2xl bg-black"
+                style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
+                onClick={(e) => {
+                  const video = e.currentTarget;
+                  if (video.paused) {
+                    video.play();
+                  } else {
+                    video.pause();
+                  }
+                }}
+                onPlay={(e) => {
+                  const overlay = e.currentTarget.parentElement?.querySelector('.play-overlay');
+                  if (overlay) overlay.classList.add('hidden');
+                }}
+                onPause={(e) => {
+                  const overlay = e.currentTarget.parentElement?.querySelector('.play-overlay');
+                  if (overlay) overlay.classList.remove('hidden');
+                }}
+              >
+                {/* Browsers that ignore `media` on <source> take the first (1080p) file. */}
+                <source src={PROMO.src1080} media="(min-width: 768px)" type="video/mp4" />
+                <source src={PROMO.src720} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
 
-            {/* Custom Play Overlay */}
-            <div
-              className="play-overlay absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors pointer-events-none"
-            >
-              <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center translate-y-0 group-hover:scale-110 transition-transform duration-500">
-                <PlayIcon />
+              {/* Custom Play Overlay */}
+              <div
+                className="play-overlay absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors pointer-events-none"
+              >
+                <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center translate-y-0 group-hover:scale-110 transition-transform duration-500 shadow-2xl">
+                  <PlayIcon />
+                </div>
               </div>
             </div>
+            <p className="mt-4 flex items-center justify-center gap-3 text-[10px] font-sans uppercase tracking-[0.3em] text-primary-light/70">
+              <span className="w-8 h-px bg-[#c9a96e]" aria-hidden="true" />
+              Now Introducing · Rustic Pines at Paris Landing
+              <span className="w-8 h-px bg-[#c9a96e]" aria-hidden="true" />
+            </p>
           </motion.div>
 
-          {/* Company Description */}
+          {/* Company Description: same copy as before, laid out as an editorial
+              opener plus a numbered "why us" card. */}
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-start">
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="md:col-span-5"
+            >
+              <p className="flex items-center gap-4 text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e] mb-5">
+                <span className="w-10 h-px bg-[#c9a96e]" aria-hidden="true" />
+                Who We Are
+              </p>
+              <h2 className="font-serif text-4xl md:text-5xl text-primary leading-[1.08]">
+                Not your typical <span className="italic text-[#B48C36]">general contractor.</span>
+              </h2>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+              transition={{ duration: 0.9, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="md:col-span-7 md:pt-9"
+            >
+              <p className="font-sans text-base md:text-lg leading-relaxed text-primary-light">
+                Specializing exclusively in building custom homes and luxury residences across Middle Tennessee, Homefront Builders is not your typical general contractor. With over two decades of expertise in the region, we&apos;ve transformed the visions of hundreds of families into beautifully appointed dream homes that are built to stand the test of time, both structurally and conceptually.
+              </p>
+              <div className="mt-8 pt-6 border-t border-primary/10 flex items-center gap-5">
+                <span className="font-serif text-5xl md:text-6xl text-[#B48C36] leading-none">20+</span>
+                <span className="text-[10px] md:text-[11px] font-sans uppercase tracking-[0.25em] text-primary-light leading-relaxed">
+                  Years building custom homes
+                  <br />
+                  across Middle Tennessee
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '0px 0px -60px 0px' }}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-6"
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-14 md:mt-20 rounded-3xl bg-[#1b2518] p-7 sm:p-9 md:p-12 grid md:grid-cols-12 gap-8 md:gap-10 shadow-[0_30px_70px_rgba(27,37,24,0.22)]"
           >
-            <p className="font-sans text-base md:text-lg leading-loose text-primary-light">
-              Specializing exclusively in building custom homes and luxury residences across Middle Tennessee, Homefront Builders is not your typical general contractor. With over two decades of expertise in the region, we've transformed the visions of hundreds of families into beautifully appointed dream homes that are built to stand the test of time, both structurally and conceptually.
-            </p>
-            <p className="font-sans text-base md:text-lg leading-loose text-primary-light">
-              Some of the reasons why so many families have chosen to build with Homefront include:
-            </p>
-            <ul className="space-y-4 pl-1">
+            <div className="md:col-span-4">
+              <p className="text-[10px] font-sans tracking-[0.35em] uppercase text-[#c9a96e]">The Homefront Difference</p>
+              <h3 className="mt-3 font-serif text-3xl md:text-[34px] text-white leading-tight">
+                Why families build with Homefront
+              </h3>
+              <p className="mt-4 font-sans text-sm leading-relaxed text-white/60">
+                Some of the reasons why so many families have chosen to build with Homefront include:
+              </p>
+            </div>
+            <ol className="md:col-span-8 divide-y divide-white/10">
               {[
                 'Unmatched quality craftsmanship and attention to detail in every build',
                 'Transparent project management from foundation to final walkthrough',
@@ -539,15 +579,15 @@ export default function AboutUs() {
                   key={i}
                   initial={{ opacity: 0, x: -15 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.6, delay: 0.1 * i, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-start gap-4 text-primary-light font-sans text-base leading-relaxed"
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.6, delay: 0.08 * i, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex items-baseline gap-5 py-4 first:pt-0 last:pb-0"
                 >
-                  <span className="mt-2 w-2 h-2 rounded-full bg-[#c9a96e] shrink-0" />
-                  {item}
+                  <span className="font-serif text-2xl text-[#c9a96e] leading-none w-9 shrink-0">0{i + 1}</span>
+                  <span className="font-sans text-[15px] md:text-base leading-relaxed text-white/85">{item}</span>
                 </motion.li>
               ))}
-            </ul>
+            </ol>
           </motion.div>
         </div>
       </section>
