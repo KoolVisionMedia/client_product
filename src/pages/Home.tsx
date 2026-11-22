@@ -8,6 +8,9 @@ import StayConnected from '../components/StayConnected';
 import ScrollThreadLine from '../components/ScrollThreadLine';
 import SEO from '../components/SEO';
 import TopoField from '../components/ui/topo-field';
+import RusticPinesIntro from '../components/RusticPinesIntro';
+import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
+import { RUSTIC_PINES_PROMO } from '../data/rusticPinesPromo';
 
 const localBusinessSchema = {
   "@context": "https://schema.org",
@@ -42,6 +45,38 @@ const localBusinessSchema = {
   ]
 };
 
+const SITE = 'https://www.homefrontbuilderstn.com';
+
+// The Rustic Pines promo film in the announcement section, described for
+// search (Google video results / video carousels). Only emitted once the film
+// files are in place and the Rustic Pines page is live.
+const rusticPinesPromoSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "@id": `${SITE}/#rustic-pines-promo`,
+  "name": RUSTIC_PINES_PROMO.title,
+  "description": RUSTIC_PINES_PROMO.description,
+  "thumbnailUrl": [`${SITE}${RUSTIC_PINES_PROMO.thumbnailJpg}`],
+  "uploadDate": RUSTIC_PINES_PROMO.uploadDate,
+  "duration": RUSTIC_PINES_PROMO.duration,
+  "contentUrl": `${SITE}${RUSTIC_PINES_PROMO.src1080}`,
+  "width": RUSTIC_PINES_PROMO.width,
+  "height": RUSTIC_PINES_PROMO.height,
+  "inLanguage": "en-US",
+  "isFamilyFriendly": true,
+  "publisher": { "@id": `${SITE}/#business` },
+  "about": {
+    "@type": "Place",
+    "name": "Rustic Pines at Paris Landing",
+    "url": `${SITE}/rustic-pines`,
+    "containedInPlace": { "@type": "AdministrativeArea", "name": "Stewart County, Tennessee" }
+  }
+};
+const homeSchema =
+  RUSTIC_PINES_LIVE && RUSTIC_PINES_PROMO.filmReady
+    ? [localBusinessSchema, rusticPinesPromoSchema]
+    : localBusinessSchema;
+
 export default function Home() {
   return (
     <div className="relative">
@@ -49,7 +84,7 @@ export default function Home() {
         title="Custom Home Builders in Clarksville, TN"
         description="Homefront Builders — luxury custom home builders in Clarksville, TN with 20+ years of expertise. Transparent budgeting, weekly build updates, and superior craftsmanship. Call (931) 221-2566."
         path="/"
-        schema={localBusinessSchema}
+        schema={homeSchema}
       />
       <Hero />
       {/* Below-hero region: the scroll thread line lives here so it starts at
@@ -59,6 +94,10 @@ export default function Home() {
       <div className="relative isolate">
         <ScrollThreadLine />
         <About />
+        {/* Rustic Pines announcement. Follows the same launch switch as the
+            /rustic-pines page so it never points at a hidden page. The scroll
+            thread routes its own curve through it (see ScrollThreadLine). */}
+        {RUSTIC_PINES_LIVE && <RusticPinesIntro />}
         {/* Topographic background behind "The Homefront Process" (CoreValues) only.
             The canvas is one viewport tall and sticky, so it stays put like a fixed backdrop
             while this stretch scrolls (a canvas spanning several screens would be far too
