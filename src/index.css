@@ -526,3 +526,7 @@ body {
 .text-accent:is(.text-\[9px\], .text-\[10px\], .text-\[11px\], .text-xs):not(:where(.bg-primary, .bg-primary-dark, .bg-black, [class*="bg-[#1b2518]"], [class*="bg-[#1A2118]"], [class*="bg-[#1a2118]"], [class*="bg-[#0f1a0c]"], [class*="bg-[#2E362C]"], .dark-context) *) {
   color: var(--color-accent-dark);
 }
+
+/* 3D floor-plan carousel: transparent canvas, no built-in loading bar */
+.fp3d-mv { --poster-color: transparent; background: transparent; }
+.fp3d-mv::part(default-progress-bar) { display: none; }

@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import ButtonGlow from '../components/ui/ButtonGlow';
 import { useDialog } from '../hooks/useDialog';
 import { floorPlans } from '../data/floorPlans';
+import FloorPlanCarousel3D from '../components/FloorPlanCarousel3D';
 
 // The renders ship as a full-size file plus an 800w copy beside it (foo.jpg /
 // foo-800.jpg). Phones only ever paint ~400 CSS px of these, so letting them pull
@@ -221,6 +222,9 @@ export default function Floorplans() {
           </div>
         </div>
       </motion.div>
+
+      {/* Interactive 3D floor-plan carousel */}
+      <FloorPlanCarousel3D />
 
       {/* Grid Section Header */}
       <div id="floorplans-grid" className="max-w-site mx-auto px-6 md:px-12 mb-12 text-center scroll-mt-32">
