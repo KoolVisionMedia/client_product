@@ -169,57 +169,18 @@ const communityImages = [
 ];
 
 // ── Structured data ───────────────────────────────────────────────────
-// AggregateRating + a sample of real, on-page attributed reviews, attached to
-// the same business entity used site-wide (matching name/url so Google can
-// consolidate the reviews with the homepage LocalBusiness). Rating value and
-// count reflect the reviews displayed on this page. Update `reviewCount` if the
-// verified Google review total changes.
+// The page, pointing at the one business entity declared on the home page.
+// No review / aggregateRating markup: Google ignores (and may act on)
+// "self-serving" reviews a business publishes about itself; the reviews
+// themselves stay on the page for visitors.
 const reviewsSchema = {
   "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  "name": "Homefront Builders",
-  "url": "https://www.homefrontbuilderstn.com",
-  "image": "https://www.homefrontbuilderstn.com/og-image.jpg",
-  "telephone": "(931) 221-2566",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Clarksville",
-    "addressRegion": "TN",
-    "addressCountry": "US"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "reviewCount": 15,
-    "bestRating": "5",
-    "worstRating": "1"
-  },
-  "review": [
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "bailey graven" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "Homefront built us the custom home of our dreams! They kept us informed throughout the whole process, and always stayed ahead of things. The build quality is beautiful too — unique and unlike other homes you find in Clarksville."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Mia Scimeca" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "I've built many houses with Homefront Builders — their process is just so simplified. They understand that building a house is scary and it's not simple, but they are extremely comforting and easy to contact and they walk you through it step-by-step."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Karen Priest" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "Highly professional custom home building experience in Clarksville. The team is very attentive and responsive to questions."
-    },
-    {
-      "@type": "Review",
-      "author": { "@type": "Person", "name": "Sarah & Michael Thompson" },
-      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-      "reviewBody": "Building our forever home with Homefront Builders was an absolute dream. From the first sketch to the final walkthrough, the attention to detail was breathtaking. They didn't just build a house; they understood exactly how we wanted to live."
-    }
-  ]
+  "@type": "WebPage",
+  "@id": "https://www.homefrontbuilderstn.com/testimonials#webpage",
+  "url": "https://www.homefrontbuilderstn.com/testimonials",
+  "name": "Homefront Builders Reviews & Testimonials",
+  "isPartOf": { "@id": "https://www.homefrontbuilderstn.com/#website" },
+  "about": { "@id": "https://www.homefrontbuilderstn.com/#business" }
 };
 
 // ── Interactive Masonry Marquee ─────────────────────────────────

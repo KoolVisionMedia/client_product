@@ -199,6 +199,78 @@ export default function Blog() {
           schema={blogSchema}
         />
       )}
+      {/* Article Overlay — /blog/<slug>. initial={false}: when the page is opened at an article
+          URL (prerendered), the article renders fully visible instead of fading in from opacity 0.
+          It comes first in the page so its <h1> and text lead the prerendered HTML (crawlers,
+          AI search) ahead of the list behind it; it's a fixed overlay, so its place in the
+          markup doesn't change how it looks. */}
+      <AnimatePresence initial={false}>
+        {openPost && (
+          <motion.div
+            key={openPost.slug}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closePost}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 bg-[#1A2118]/80 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0, scale: 0.95 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 20, opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={openPost.title}
+              className="relative w-full max-w-4xl max-h-full bg-[#FAFAF5] rounded-3xl shadow-2xl overflow-hidden flex flex-col"
+            >
+              {/* Header with Close Button */}
+              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
+                <button
+                  onClick={closePost}
+                  className="p-2 sm:p-3 bg-white/90 hover:bg-white backdrop-blur-md rounded-full text-primary hover:text-[#c9a96e] transition-colors shadow-sm"
+                  aria-label="Close article"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Article Content */}
+              <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
+                <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
+                  <p className="not-prose flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-6">
+                    <span className="flex items-center gap-1.5"><Calendar size={14} /> <PostDate post={openPost} /></span>
+                    <span className="flex items-center gap-1.5"><Tag size={14} /> {openPost.category}</span>
+                  </p>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                    {articleBody(openPost)}
+                  </ReactMarkdown>
+                </article>
+
+                {/* Keep reading — internal links to related articles */}
+                <aside aria-labelledby="keep-reading" className="mt-16 pt-10 border-t border-primary/10">
+                  <h2 id="keep-reading" className="font-serif text-2xl md:text-3xl text-primary mb-6">Keep Reading</h2>
+                  <ul className="grid gap-4 md:grid-cols-3">
+                    {relatedPosts(openPost).map((post) => (
+                      <li key={post.slug}>
+                        <Link
+                          to={blogPostPath(post.slug)}
+                          className="group block h-full rounded-2xl bg-white p-5 shadow-sm hover:shadow-lg transition-shadow"
+                        >
+                          <span className="block text-[10px] font-sans tracking-widest uppercase text-[#c9a96e] mb-2">{post.category}</span>
+                          <span className="block font-serif text-lg leading-snug text-primary group-hover:text-[#c9a96e] transition-colors">{post.title}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Hero with Parallax & Glassmorphism */}
       <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
         <motion.img
@@ -342,74 +414,6 @@ export default function Blog() {
         </motion.div>
       </section>
 
-      {/* Article Overlay — /blog/<slug>. initial={false}: when the page is opened at an article
-          URL (prerendered), the article renders fully visible instead of fading in from opacity 0. */}
-      <AnimatePresence initial={false}>
-        {openPost && (
-          <motion.div
-            key={openPost.slug}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closePost}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 bg-[#1A2118]/80 backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ y: 50, opacity: 0, scale: 0.95 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: 20, opacity: 0, scale: 0.95 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-modal="true"
-              aria-label={openPost.title}
-              className="relative w-full max-w-4xl max-h-full bg-[#FAFAF5] rounded-3xl shadow-2xl overflow-hidden flex flex-col"
-            >
-              {/* Header with Close Button */}
-              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
-                <button
-                  onClick={closePost}
-                  className="p-2 sm:p-3 bg-white/90 hover:bg-white backdrop-blur-md rounded-full text-primary hover:text-[#c9a96e] transition-colors shadow-sm"
-                  aria-label="Close article"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              {/* Article Content */}
-              <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
-                <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
-                  <p className="not-prose flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-6">
-                    <span className="flex items-center gap-1.5"><Calendar size={14} /> <PostDate post={openPost} /></span>
-                    <span className="flex items-center gap-1.5"><Tag size={14} /> {openPost.category}</span>
-                  </p>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                    {articleBody(openPost)}
-                  </ReactMarkdown>
-                </article>
-
-                {/* Keep reading — internal links to related articles */}
-                <aside aria-labelledby="keep-reading" className="mt-16 pt-10 border-t border-primary/10">
-                  <h2 id="keep-reading" className="font-serif text-2xl md:text-3xl text-primary mb-6">Keep Reading</h2>
-                  <ul className="grid gap-4 md:grid-cols-3">
-                    {relatedPosts(openPost).map((post) => (
-                      <li key={post.slug}>
-                        <Link
-                          to={blogPostPath(post.slug)}
-                          className="group block h-full rounded-2xl bg-white p-5 shadow-sm hover:shadow-lg transition-shadow"
-                        >
-                          <span className="block text-[10px] font-sans tracking-widest uppercase text-[#c9a96e] mb-2">{post.category}</span>
-                          <span className="block font-serif text-lg leading-snug text-primary group-hover:text-[#c9a96e] transition-colors">{post.title}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

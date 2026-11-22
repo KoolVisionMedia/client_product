@@ -421,7 +421,7 @@ export default function AboutUs() {
     <div>
       <SEO
         title="About Us — Luxury Custom Homes in Middle Tennessee"
-        description="Learn about Homefront Builders — Clarksville's premier luxury custom home builder with over two decades of expertise in Middle Tennessee design and construction."
+        description="Meet Homefront Builders, Clarksville's luxury custom home builder: 20+ years designing and building custom homes across Middle Tennessee."
         path="/about-us"
       />
       {/* ─── Hero Banner ─── */}

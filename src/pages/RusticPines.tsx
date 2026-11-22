@@ -187,13 +187,14 @@ const STRUCTURED_DATA = [
     name: TITLE,
     description: DESCRIPTION,
     inLanguage: 'en-US',
-    isPartOf: { '@type': 'WebSite', name: 'Homefront Builders', url: SITE },
+    isPartOf: { '@id': `${SITE}/#website` },
     publisher: { '@id': `${SITE}/#business` },
     primaryImageOfPage: { '@type': 'ImageObject', url: OG_URL, width: 1200, height: 630 },
     about: {
       '@type': 'Place',
       name: NAME,
-      url: RUSTIC_PINES_SITE.url,
+      // This page is the community's page on this site; its own website is a sameAs.
+      url: PAGE_URL,
       sameAs: [RUSTIC_PINES_SITE.url],
       description: `${lots.length}-lot wooded subdivision east of State Highway 232 in Stewart County, Tennessee.`,
       address: { '@type': 'PostalAddress', addressLocality: 'Dover', addressRegion: 'TN', addressCountry: 'US' },

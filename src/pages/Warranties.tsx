@@ -54,7 +54,7 @@ export default function Warranties() {
     <div>
       <SEO
         title="New Home Warranty Program"
-        description="Homefront Builders' Custom Care Program offers proactive warranty support and scheduled maintenance to protect your new home investment for years to come."
+        description="Every Homefront home comes with a 10-year Quality Builders Warranty backed by Liberty Mutual, plus Custom Care: proactive warranty support and maintenance."
         path="/warranties"
       />
       {/* Hero Banner */}

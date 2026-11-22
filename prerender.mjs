@@ -51,6 +51,7 @@ const routeSources = {
   '/contact-us': 'src/pages/ContactUs.tsx',
   '/privacy-policy': 'src/pages/PrivacyPolicy.tsx',
   '/terms': 'src/pages/Terms.tsx',
+  '/404': 'src/pages/NotFound.tsx',
 };
 let manifest = {};
 try {
@@ -80,7 +81,10 @@ const templateBase = rawTemplate
   .replace(/<meta property="og:[^>]*>\s*/g, '')
   .replace(/<meta name="twitter:[^>]*>\s*/g, '');
 
-for (const route of routes) {
+// '/404' isn't a real route: it renders the catch-all NotFound page into
+// dist/404.html, which Vercel serves (with a 404 status) for any URL that has
+// no prerendered page.
+for (const route of [...routes, '/404']) {
   try {
     const { html: appHtml } = await render(route);
 
@@ -106,6 +110,11 @@ for (const route of routes) {
       pageHtml = pageHtml.replace('</head>', `    ${preloadTags}\n  </head>`);
     }
 
+    if (route === '/404') {
+      fs.writeFileSync(path.resolve(__dirname, 'dist', '404.html'), pageHtml);
+      console.log('✓ Prerendered: 404.html');
+      continue;
+    }
     const outDir = route === '/'
       ? path.resolve(__dirname, 'dist')
       : path.resolve(__dirname, 'dist', route.slice(1));
