@@ -42,7 +42,7 @@ export default function Hero() {
   }, [showVideo]);
 
   return (
-    <section className="relative pt-[100px] bg-white overflow-hidden" id="home">
+    <section className="relative bg-white overflow-hidden" id="home">
       {/* Full Width Video Container */}
       <div className="relative w-full h-[80vh] md:h-[90vh] overflow-hidden shadow-sm">
         {/* Hero Background */}
