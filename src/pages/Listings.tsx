@@ -5,6 +5,8 @@ import SEO from '../components/SEO';
 import { AnimatedGrid } from '../components/ui/animated-grid';
 import ButtonGlow from '../components/ui/ButtonGlow';
 import { useDialog } from '../hooks/useDialog';
+import RusticPinesSpotlight from '../components/RusticPinesSpotlight';
+import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
 
 const listings = [
   {
@@ -494,8 +496,11 @@ export default function Listings() {
         </div>
       </section>
 
+      {/* Rustic Pines: also available (overlaps the banner's bottom edge) */}
+      {RUSTIC_PINES_LIVE && <RusticPinesSpotlight />}
+
       {/* Gallery Section */}
-      <section className="relative py-16 md:py-32 px-4 md:px-12">
+      <section className={`relative px-4 md:px-12 ${RUSTIC_PINES_LIVE ? 'pt-14 pb-16 md:pt-20 md:pb-32' : 'py-16 md:py-32'}`}>
         {/* Animated grid backdrop in the brand palette: warm lines, gold major grid and glow. */}
         <AnimatedGrid color="#e2ded3" accent="#B48C36" />
         <div className="relative max-w-site mx-auto">
