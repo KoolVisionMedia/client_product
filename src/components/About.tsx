@@ -83,9 +83,11 @@ export default function About() {
                 />
              </div>
           </motion.div>
-          {/* 3D badge tucked into the stack: overlaps the kitchen's left edge, just above Harmony */}
+          {/* 3D badge. Desktop: tucked into the stack, overlapping the kitchen's left edge just
+              above Harmony. Phones/tablets (stacked layout): sits on the kitchen photo's top-right
+              corner, half over the open space above it, clear of both photos' main subjects. */}
           {/* Outer div centers the badge on its anchor point; the inner motion.div owns the transform for the entrance animation */}
-          <div className="absolute z-30 -translate-x-1/2 -translate-y-1/2 left-1/2 top-[calc(24%+64px)] md:top-[calc(24%+88px)] lg:left-[calc(-4%+112px)] lg:top-[calc(24%+112px)]">
+          <div className="absolute z-30 -translate-x-1/2 -translate-y-1/2 left-[76%] top-[2%] md:left-[80%] md:top-[3%] lg:left-[calc(-4%+112px)] lg:top-[calc(24%+112px)]">
             <motion.div
               className="w-[min(192px,45vw)] h-[min(192px,45vw)] md:w-[264px] md:h-[264px] lg:w-[336px] lg:h-[336px]"
               initial={{ opacity: 0, scale: 0.6 }}
