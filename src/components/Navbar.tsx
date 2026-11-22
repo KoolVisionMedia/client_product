@@ -187,13 +187,13 @@ export default function Navbar() {
         layoutId="nav-pill"
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-white/[0.11]"
-        style={{ borderRadius: 10 }}
+        style={{ borderRadius: 4 }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 460, damping: 38 }}
       />
     );
 
   const linkCls =
-    'relative isolate flex items-center gap-1.5 whitespace-nowrap rounded-[10px] px-3 xl:px-3.5 py-2 font-sans text-sm text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]/70';
+    'relative isolate flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 xl:px-3.5 py-2 font-sans text-sm text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]/70';
 
   const overlayOrigin = burgerBox ? `${burgerBox.left + 22}px ${burgerBox.top + 22}px` : '40px 40px';
 
@@ -343,7 +343,7 @@ export default function Navbar() {
                   setHovered(null);
                   setOpenMenu(null);
                 }}
-                className="btn-glow group hidden lg:inline-flex items-center gap-2 rounded-full bg-[#c9a96e] px-5 py-2.5 font-sans text-sm font-medium text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
+                className="btn-glow group hidden lg:inline-flex items-center gap-2 rounded-lg bg-[#c9a96e] px-5 py-2.5 font-sans text-sm font-medium text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
               >
                 <ButtonGlow />
                 {CONTACT.name}

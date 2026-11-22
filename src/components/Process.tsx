@@ -154,7 +154,7 @@ export default function Process() {
                     `}>
                       {step.letter}
                     </span>
-                    <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-full transition-colors
+                    <span className={`font-sans text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 lg:mt-2 px-2.5 py-1 rounded-lg transition-colors
                       ${isActive ? 'bg-white/10 text-white/90' : 'bg-primary/5 text-primary/60 opacity-0 group-hover:opacity-100'}
                     `}>
                       0{index + 1}
@@ -186,7 +186,7 @@ export default function Process() {
                 },
                 exit: { opacity: 0, scale: 0.98, transition: { duration: 0.2, ease: "easeIn" } }
               }}
-              className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start min-h-[380px] sm:min-h-[340px] md:min-h-[280px] lg:min-h-[250px] w-full"
+              className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start min-h-[380px] sm:min-h-[340px] md:min-h-[280px] lg:min-h-[250px] w-full"
             >
               {/* Green round logo overlapping the upper right corner like a premium stamp */}
               <motion.div
@@ -209,7 +209,7 @@ export default function Process() {
                   caching during scroll. The soft radial gradients read the
                   same at these 5% opacities with no filter cost. */}
               <div
-                className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none z-0"
+                className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none z-0"
                 style={{
                   backgroundImage:
                     'radial-gradient(240px circle at top right, rgba(180,140,54,0.05), transparent 70%), radial-gradient(200px circle at bottom left, rgba(46,54,44,0.05), transparent 70%)',
@@ -236,7 +236,7 @@ export default function Process() {
                 >
                   <span className="text-accent font-serif text-3xl md:text-5xl font-bold leading-none">{processSteps[activeStep].letter}</span>
                   <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-accent/30"></div>
-                  <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-semibold text-primary/70 bg-primary/5 px-3 py-1 rounded-full">Step 0{activeStep + 1}</span>
+                  <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-semibold text-primary/70 bg-primary/5 px-3 py-1 rounded-lg">Step 0{activeStep + 1}</span>
                 </motion.div>
                 
                 <motion.h4 

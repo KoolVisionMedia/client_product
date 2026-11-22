@@ -214,7 +214,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           <div className="lg:col-span-5 flex flex-col justify-between py-2">
             <div className="flex flex-col gap-6 md:gap-8">
               {/* Pill badge */}
-              <div className="border border-primary/25 bg-[#c9a96e]/5 rounded-full px-4 py-1.5 w-fit">
+              <div className="border border-primary/25 bg-[#c9a96e]/5 rounded-lg px-4 py-1.5 w-fit">
                 <span className="font-sans text-[9px] uppercase tracking-[0.25em] text-[#c9a96e] font-bold">Get in Touch</span>
               </div>
 
@@ -235,7 +235,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           </div>
 
           {/* Right Column: 7 cols (Dark Form Container) */}
-          <div className="lg:col-span-7 bg-[#1b2518] text-white p-8 md:p-12 lg:p-14 rounded-[2.5rem] shadow-xl flex flex-col justify-center">
+          <div className="lg:col-span-7 bg-[#1b2518] text-white p-8 md:p-12 lg:p-14 rounded-3xl shadow-xl flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

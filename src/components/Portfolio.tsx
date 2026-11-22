@@ -52,7 +52,7 @@ function CoverFront({ plan, index, eager = false }: { plan: FloorPlan; index: nu
   const tone = toneOf(index);
   return (
     <div
-      className="absolute inset-0 flex flex-col overflow-hidden rounded-[1.4cqw] text-center"
+      className="absolute inset-0 flex flex-col overflow-hidden rounded-[0.6cqw] text-center"
       style={{ backgroundColor: tone.bg, color: tone.ink }}
     >
       <div className="relative h-[61%] shrink-0 overflow-hidden">
@@ -112,13 +112,13 @@ function CoverBack({
   const levelName = (i: number) => (many ? (i === 0 ? 'Main Level' : 'Upper Level') : 'Floor Plan');
   const small: CSSProperties = { fontSize: 'max(9px, 2.3cqw)', letterSpacing: '0.24em' };
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[1.4cqw] bg-white text-primary">
+    <div className="absolute inset-0 flex flex-col overflow-hidden rounded-[0.6cqw] bg-white text-primary">
       <div className="flex shrink-0 items-center justify-between gap-3" style={{ padding: '4cqw 5cqw 0' }}>
         <span className="whitespace-nowrap font-sans font-semibold uppercase text-accent" style={small}>
           {plan.title}
         </span>
         {many ? (
-          <span className="flex rounded-full bg-surface-alt p-[3px]">
+          <span className="flex rounded-xl bg-surface-alt p-[3px]">
             {plan.blueprints.map((src, i) => (
               <button
                 key={src}
@@ -126,7 +126,7 @@ function CoverBack({
                 onClick={() => onLevel(i)}
                 aria-pressed={level === i}
                 aria-label={levelName(i)}
-                className={`cursor-pointer whitespace-nowrap rounded-full px-3.5 py-1.5 font-sans font-semibold uppercase transition-colors duration-300 ${
+                className={`cursor-pointer whitespace-nowrap rounded-lg px-3.5 py-1.5 font-sans font-semibold uppercase transition-colors duration-300 ${
                   level === i ? 'bg-primary text-white' : 'text-primary/55 hover:text-primary'
                 }`}
                 style={small}
@@ -145,7 +145,7 @@ function CoverBack({
         type="button"
         onClick={(ev) => onZoom(ev.currentTarget)}
         aria-label={`Enlarge the ${plan.title} ${levelName(level).toLowerCase()} drawing`}
-        className="relative min-h-0 flex-1 cursor-zoom-in rounded-[1cqw] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
+        className="relative min-h-0 flex-1 cursor-zoom-in rounded-[0.45cqw] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
         style={{ margin: '2cqw 4cqw 4cqw' }}
       >
         {plan.blueprints.map((src, i) => (
@@ -224,7 +224,7 @@ function PlanZoom({ src, alt, from, onClose }: { src: string; alt: string; from:
         ref={scope}
         type="button"
         aria-label="Put the floor plan back"
-        className="relative aspect-[4/5] h-[min(94vh,calc((100vw-1.5rem)*1.25))] cursor-zoom-out rounded-[10px] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
+        className="relative aspect-[4/5] h-[min(94vh,calc((100vw-1.5rem)*1.25))] cursor-zoom-out rounded-2xl bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
         style={{ boxShadow: OPEN_SHADOW, willChange: 'transform' }}
       >
         <img src={src} alt={alt} decoding="async" draggable={false} className="h-full w-full object-contain p-[2.5%]" />
@@ -408,7 +408,7 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
                 <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
                   <Link
                     to={`/floorplans?plan=${plan.id}`}
-                    className="btn-glow group inline-flex items-center justify-center rounded-full bg-primary px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-md hover:bg-accent"
+                    className="btn-glow group inline-flex items-center justify-center rounded-lg bg-primary px-7 py-3.5 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-md hover:bg-accent"
                   >
                     <ButtonGlow />
                     View Full Plan
@@ -456,14 +456,14 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
                       onClick={flip}
                       inert={flipped}
                       aria-label={`Show the ${plan.title} floor plan`}
-                      className="absolute inset-0 block cursor-pointer rounded-[6px] [backface-visibility:hidden] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+                      className="absolute inset-0 block cursor-pointer rounded-lg [backface-visibility:hidden] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
                       style={{ ...cq, boxShadow: OPEN_SHADOW }}
                     >
                       <CoverFront plan={plan} index={index} eager />
                     </button>
                     <div
                       inert={!flipped}
-                      className="absolute inset-0 rounded-[6px] [backface-visibility:hidden] [transform:rotateY(180deg)]"
+                      className="absolute inset-0 rounded-lg [backface-visibility:hidden] [transform:rotateY(180deg)]"
                       style={{ ...cq, boxShadow: OPEN_SHADOW }}
                     >
                       <CoverBack plan={plan} level={level} onLevel={setLevel} onZoom={openZoom} />
@@ -490,7 +490,7 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
               <button
                 type="button"
                 onClick={flip}
-                className="btn-glow inline-flex min-h-11 items-center gap-2.5 rounded-full bg-primary px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-md hover:bg-accent"
+                className="btn-glow inline-flex min-h-11 items-center gap-2.5 rounded-lg bg-primary px-6 py-3 font-sans text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-md hover:bg-accent"
               >
                 <ButtonGlow />
                 <RotateCw size={14} />
@@ -663,13 +663,13 @@ export default function Portfolio() {
                     onBlur={() => setHot((h) => (h === plan.id ? null : h))}
                     aria-haspopup="dialog"
                     aria-label={`${plan.title}: ${specLine(plan)}. Open this home.`}
-                    className="group relative block aspect-square w-full cursor-pointer rounded-[4px] [perspective:1100px] focus-visible:outline-none"
+                    className="group relative block aspect-square w-full cursor-pointer rounded-md [perspective:1100px] focus-visible:outline-none"
                   >
                     <span
                       ref={(el) => {
                         slots.current[plan.id] = el;
                       }}
-                      className="absolute inset-0 block origin-bottom rounded-[4px] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-focus-visible:ring-2 group-focus-visible:ring-accent/70 group-focus-visible:ring-offset-4 group-focus-visible:ring-offset-surface"
+                      className="absolute inset-0 block origin-bottom rounded-md transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-focus-visible:ring-2 group-focus-visible:ring-accent/70 group-focus-visible:ring-offset-4 group-focus-visible:ring-offset-surface"
                       style={{
                         ...cq,
                         boxShadow: COVER_SHADOW,
@@ -680,7 +680,7 @@ export default function Portfolio() {
                       <CoverFront plan={plan} index={i} />
                       <span
                         aria-hidden="true"
-                        className={`absolute left-1/2 top-[61%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-white px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.22em] text-primary shadow-lg transition-opacity duration-300 ${
+                        className={`absolute left-1/2 top-[61%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-white px-4 py-2 font-sans text-[10px] font-semibold uppercase tracking-[0.22em] text-primary shadow-lg transition-opacity duration-300 ${
                           lifted ? 'opacity-100' : 'opacity-0'
                         }`}
                       >
@@ -695,7 +695,7 @@ export default function Portfolio() {
             {/* the shelf itself */}
             <div
               aria-hidden="true"
-              className="relative h-[14px] rounded-[3px] lg:-mx-8"
+              className="relative h-[14px] rounded-sm lg:-mx-8"
               style={{
                 gridRow: 2,
                 gridColumn: `1 / span ${count}`,
@@ -755,7 +755,7 @@ export default function Portfolio() {
         </p>
         <Link
           to="/floorplans"
-          className="btn-glow group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-md hover:bg-accent"
+          className="btn-glow group inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-md hover:bg-accent"
         >
           <ButtonGlow />
           Explore All Floor Plans

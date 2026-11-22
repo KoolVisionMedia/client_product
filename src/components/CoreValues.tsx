@@ -74,7 +74,7 @@ export default function CoreValues() {
               From the initial site visit to the final walkthrough, our proven process ensures that every stage of your custom home build is executed with precision, transparency, and care.
             </p>
             
-            <Link to="/contact-us" className="flex items-center gap-4 px-6 py-4 bg-accent/10 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-primary hover:bg-accent hover:text-white transition-all duration-300 w-fit group btn-glow">
+            <Link to="/contact-us" className="flex items-center gap-4 px-6 py-4 bg-accent/10 rounded-lg font-sans text-xs uppercase tracking-[0.2em] font-bold text-primary hover:bg-accent hover:text-white transition-all duration-300 w-fit group btn-glow">
               <ButtonGlow />
               START YOUR BUILD
               <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center group-hover:bg-white group-hover:text-accent transition-all duration-300">

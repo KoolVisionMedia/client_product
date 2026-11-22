@@ -64,7 +64,7 @@ const pickSrc = () =>
   window.matchMedia('(min-width: 1280px)').matches ? PROMO.src1080 : PROMO.src720;
 
 const controlBtn =
-  'h-9 lg:h-10 rounded-full bg-black/45 ring-1 ring-white/25 text-white inline-flex items-center justify-center hover:bg-[#c9a96e] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white';
+  'h-9 lg:h-10 rounded-lg bg-black/45 ring-1 ring-white/25 text-white inline-flex items-center justify-center hover:bg-[#c9a96e] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white';
 
 export default function RusticPinesIntro() {
   const reduce = useReducedMotion();
@@ -265,7 +265,7 @@ export default function RusticPinesIntro() {
                 <span className="hidden sm:block w-12 h-[1px] bg-accent" aria-hidden="true" />
                 Now Introducing
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 tracking-[0.2em] text-primary font-semibold">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-1 tracking-[0.2em] text-primary font-semibold">
                 <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 motion-safe:animate-ping" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
@@ -296,11 +296,11 @@ export default function RusticPinesIntro() {
               <Link
                 to="/rustic-pines"
                 aria-label="Explore Rustic Pines at Paris Landing homesites"
-                className="flex items-center gap-4 pl-6 pr-2 py-2 bg-primary rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-white hover:bg-accent transition-all duration-300 w-fit group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-surface btn-glow"
+                className="flex items-center gap-4 pl-6 pr-2 py-2 bg-primary rounded-lg font-sans text-xs uppercase tracking-[0.2em] font-bold text-white hover:bg-accent transition-all duration-300 w-fit group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-surface btn-glow"
               >
                 <ButtonGlow />
                 Explore Rustic Pines
-                <span className="w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center group-hover:bg-white group-hover:text-accent transition-all duration-300">
+                <span className="w-10 h-10 rounded-md bg-accent text-white flex items-center justify-center group-hover:bg-white group-hover:text-accent transition-all duration-300">
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </span>
               </Link>
