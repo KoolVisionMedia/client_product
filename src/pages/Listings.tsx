@@ -478,9 +478,16 @@ export default function Listings() {
       />
       {/* Hero Header */}
       <section className="relative h-[400px] md:h-[450px] overflow-hidden">
-        <img fetchPriority="high" decoding="async" src="/assets/DSC04388-Edit.webp"
-          alt="Luxury custom home built by Homefront Builders in Clarksville, Tennessee"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+        {/* A build in progress. Phones get the whole photo (their banner is nearly square);
+            wider screens get a copy cropped to the band around the frame. */}
+        <img fetchPriority="high" decoding="async"
+          src="/assets/current-builds-hero-2000.webp"
+          srcSet="/assets/current-builds-hero-1000.webp 1000w, /assets/current-builds-hero-2000.webp 2000w"
+          sizes="100vw"
+          width={2000}
+          height={1040}
+          alt="A Homefront Builders timber-frame build in progress, framed against fall woods in Middle Tennessee"
+          className="absolute inset-0 w-full h-full object-cover object-[center_42%]"
         />
         <div className="absolute inset-0 bg-[#1b2518]/60" />
         <div className="relative z-10 h-full flex items-center justify-center pt-20 px-6">
