@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://www.homefrontbuilderstn.com/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://www.homefrontbuilderstn.com/og-image.jpg</image:loc>
       <image:title>Luxury custom home by Homefront Builders in Clarksville, TN</image:title>
     </image:image>
+    <image:image>
+      <image:loc>https://www.homefrontbuilderstn.com/assets/rustic-pines/promo/rustic-pines-promo-poster.jpg</image:loc>
+      <image:title>Rustic Pines at Paris Landing, a new wooded community by Homefront Builders in Stewart County, TN</image:title>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://www.homefrontbuilderstn.com/assets/rustic-pines/promo/rustic-pines-promo-poster.jpg</video:thumbnail_loc>
+      <video:title>Introducing Rustic Pines at Paris Landing | Homefront Builders</video:title>
+      <video:description>A first look at Rustic Pines at Paris Landing, the new wooded community near Kentucky Lake in Stewart County, Tennessee, headlined by Homefront Builders. 41 homesites, 5 to 24 acres each.</video:description>
+      <video:content_loc>https://www.homefrontbuilderstn.com/assets/rustic-pines/promo/rustic-pines-promo-1080.mp4</video:content_loc>
+      <video:duration>98</video:duration>
+      <video:publication_date>2026-11-22</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/about-us</loc>

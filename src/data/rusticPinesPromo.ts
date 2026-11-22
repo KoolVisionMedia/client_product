@@ -18,7 +18,7 @@ const DIR = '/assets/rustic-pines/promo';
  * While false the section shows the Rustic Pines aerial photo (no player, no
  * video files requested) and the VideoObject structured data is left out.
  */
-const FILM_READY = false;
+const FILM_READY = true;
 
 const FALLBACK = {
   poster: '/assets/rustic-pines/hero-1400.webp',
@@ -41,15 +41,15 @@ export const RUSTIC_PINES_PROMO = {
         poster: `${DIR}/rustic-pines-promo-poster-1600.webp`,
         posterSrcSet: `${DIR}/rustic-pines-promo-poster-800.webp 800w, ${DIR}/rustic-pines-promo-poster-1600.webp 1600w`,
         posterAlt:
-          'Opening frame of the Rustic Pines at Paris Landing promo film: the wooded community in Stewart County, Tennessee, by Homefront Builders',
+          'Rustic Pines at Paris Landing logo over an aerial view of the wooded community in Stewart County, Tennessee, from the Homefront Builders promo film',
       }
     : FALLBACK),
   /** JPEG copy of the poster for structured data and the video sitemap. */
   thumbnailJpg: `${DIR}/rustic-pines-promo-poster.jpg`,
   width: 1920,
   height: 1080,
-  /** ISO 8601 duration, from ffprobe. */
-  duration: 'PT0S',
-  uploadDate: '2026-11-22',
+  /** ISO 8601 duration (ffprobe: 97.7 s). */
+  duration: 'PT1M38S',
+  uploadDate: '2026-11-22T00:00:00-06:00',
   hasAudio: true,
 };

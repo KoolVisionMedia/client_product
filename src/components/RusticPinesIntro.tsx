@@ -220,7 +220,7 @@ export default function RusticPinesIntro() {
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   poster={PROMO.poster}
                   aria-labelledby={FILM_LABEL_ID}
                   className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}
@@ -254,7 +254,7 @@ export default function RusticPinesIntro() {
                 type="button"
                 onClick={start}
                 aria-label="Play the Rustic Pines promo film"
-                className="group absolute inset-0 m-auto w-16 h-16 md:w-24 md:h-24 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/40 flex items-center justify-center text-white transition-all duration-500 hover:scale-105 hover:bg-[#c9a96e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="group absolute left-1/2 -translate-x-1/2 bottom-[16%] md:bottom-[18%] w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/40 flex items-center justify-center text-white transition-all duration-500 hover:scale-105 hover:bg-[#c9a96e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 <Play className="w-6 h-6 md:w-8 md:h-8 translate-x-0.5" fill="currentColor" aria-hidden="true" />
               </button>
