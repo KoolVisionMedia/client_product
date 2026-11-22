@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ChatWidget from './components/ChatWidget';
+import PencilCursor from './components/PencilCursor';
 
 import { useEffect } from 'react';
 
@@ -57,6 +58,7 @@ export default function App() {
       <Analytics />
       <SpeedInsights />
       <ChatWidget />
+      <PencilCursor />
     </div>
   );
 }
