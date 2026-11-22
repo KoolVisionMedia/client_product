@@ -397,7 +397,7 @@ export default function Testimonials() {
 
       {/* ── Video Card Rating Section ─────────────────────────────────────── */}
       <section className="bg-[#FAFAF5] py-16 px-6 md:px-12">
-        <div className="max-w-site-1280 mx-auto relative rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <div className="max-w-site-1280 mx-auto relative rounded-3xl overflow-hidden shadow-2xl">
           {/* Background Video */}
           {/* Background loop: plays only while on screen (and not at all for
               visitors who ask for reduced motion); the poster shows otherwise. */}

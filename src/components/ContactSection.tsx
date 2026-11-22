@@ -235,7 +235,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
           </div>
 
           {/* Right Column: 7 cols (Dark Form Container) */}
-          <div className="lg:col-span-7 bg-[#1b2518] text-white p-8 md:p-12 lg:p-14 rounded-[2.5rem] shadow-xl flex flex-col justify-center">
+          <div className="lg:col-span-7 bg-[#1b2518] text-white p-8 md:p-12 lg:p-14 rounded-3xl shadow-xl flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

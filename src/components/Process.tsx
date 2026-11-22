@@ -186,7 +186,7 @@ export default function Process() {
                 },
                 exit: { opacity: 0, scale: 0.98, transition: { duration: 0.2, ease: "easeIn" } }
               }}
-              className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start min-h-[380px] sm:min-h-[340px] md:min-h-[280px] lg:min-h-[250px] w-full"
+              className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-100 relative flex flex-col md:flex-row gap-8 items-center md:items-start min-h-[380px] sm:min-h-[340px] md:min-h-[280px] lg:min-h-[250px] w-full"
             >
               {/* Green round logo overlapping the upper right corner like a premium stamp */}
               <motion.div
@@ -209,7 +209,7 @@ export default function Process() {
                   caching during scroll. The soft radial gradients read the
                   same at these 5% opacities with no filter cost. */}
               <div
-                className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none z-0"
+                className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none z-0"
                 style={{
                   backgroundImage:
                     'radial-gradient(240px circle at top right, rgba(180,140,54,0.05), transparent 70%), radial-gradient(200px circle at bottom left, rgba(46,54,44,0.05), transparent 70%)',

@@ -115,7 +115,7 @@ export default function RusticPinesSpotlight() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '0px 0px -60px 0px' }}
         transition={{ duration: 1, ease: EASE }}
-        className="relative mx-auto max-w-site overflow-hidden rounded-[1.75rem] bg-[#1b2518] text-white shadow-[0_40px_90px_-40px_rgba(15,22,12,0.85)] ring-1 ring-white/10"
+        className="relative mx-auto max-w-site overflow-hidden rounded-3xl bg-[#1b2518] text-white shadow-[0_40px_90px_-40px_rgba(15,22,12,0.85)] ring-1 ring-white/10"
       >
         {/* Faint contour lines, the land's own topography motif (static SVG). */}
         <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.07]" preserveAspectRatio="none" viewBox="0 0 800 400">
