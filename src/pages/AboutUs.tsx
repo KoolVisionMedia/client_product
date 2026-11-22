@@ -499,7 +499,8 @@ export default function AboutUs() {
                 controls
                 playsInline
                 preload="metadata"
-                poster={PROMO.poster}
+                // Thumbnail: the film at 1:23 (the lot-map sign at Rustic Pines), the owner's pick.
+                poster="/assets/rustic-pines/promo/about-video-poster.webp"
                 aria-label="Introducing Rustic Pines at Paris Landing, a Homefront Builders community"
                 className="w-full rounded-2xl bg-black"
                 style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
