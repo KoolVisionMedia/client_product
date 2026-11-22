@@ -51,9 +51,9 @@ const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
  *    section's height, and a new curve is spliced into the gap.
  * Result: the thread over About, the Process, the floor plans and Custom Care
  * is pixel-identical to before at every width, and the new section gets its
- * own curve, routed from the measured layout: it swings into the open space
- * right of the heading, runs down behind the film frame, and re-joins the
- * original thread with the same direction it left with (no kinks).
+ * own curve, routed from the measured layout: it runs down behind the opaque
+ * part of the film panel and re-joins the original thread with the same
+ * direction it left with (no kinks).
  * If the section isn't on the page, everything falls back to the original.
  */
 type Pt = [number, number];
@@ -63,8 +63,9 @@ type Insert = {
   at: number;
   /** section height, in units */
   h: number;
-  /** film frame: rail x, and top/bottom offsets from the section top (units) */
-  railX?: number;
+  /** film panel: left/right x, and top/bottom offsets from the section top (units) */
+  left?: number;
+  right?: number;
   top?: number;
   bottom?: number;
   pad?: number;
@@ -170,12 +171,18 @@ function buildBody(ins: Insert | null): { body: string; shift: number } {
   const into = (dy: number): Pt => [P3[0] - slope * dy, P3[1] - dy];
 
   let bridge: Seg[];
-  const { railX, top, bottom, pad = 0 } = ins;
+  const { left: panelL, right: panelR, top, bottom, pad = 0 } = ins;
   const A1y = top != null ? at + top + pad : NaN;
   const B1y = bottom != null ? at + bottom - pad : NaN;
-  if (railX != null && A1y > P0[1] && B1y > A1y && P3[1] > B1y) {
-    // Swing out into the space right of the heading, run down behind the
-    // film (hidden by it), then ease back onto the original line.
+  // Rail: inside the film's opaque part (its left half fades into the page),
+  // as close to the line's own x as that allows, so the bends stay gentle.
+  const railX =
+    panelL != null && panelR != null
+      ? Math.min(panelR - (panelR - panelL) * 0.06, Math.max(P0[0], panelL + (panelR - panelL) * 0.62))
+      : NaN;
+  if (Number.isFinite(railX) && A1y > P0[1] && B1y > A1y && P3[1] > B1y) {
+    // Run down behind the film (hidden by it), then ease back onto the
+    // original line with the direction it left with.
     const dyA = A1y - P0[1];
     const dyC = P3[1] - B1y;
     const A1: Pt = [railX, A1y];
@@ -237,7 +244,7 @@ const sameInsert = (a: Insert | null, b: Insert | null) => {
   if (!a || !b) return a === b;
   const q = (v?: number) => (v == null ? 'x' : Math.round(v * 2));
   return (
-    q(a.at) === q(b.at) && q(a.h) === q(b.h) && q(a.railX) === q(b.railX) &&
+    q(a.at) === q(b.at) && q(a.h) === q(b.h) && q(a.left) === q(b.left) && q(a.right) === q(b.right) &&
     q(a.top) === q(b.top) && q(a.bottom) === q(b.bottom) && q(a.pad) === q(b.pad)
   );
 };
@@ -321,14 +328,15 @@ export default function ScrollThreadLine() {
         if (s.height > 0 && base > 0 && canInsertAt((s.top - c.top) / (base / VB_H))) {
           sy = base / VB_H;
           nextIns = { at: (s.top - c.top) / sy, h: s.height / sy };
-          // The frame wrapper is never transformed (the scale animation is on
-          // its child), so this rect doesn't change with scroll position.
+          // The film panel is never transformed (the zoom is on its child), so
+          // this rect doesn't change with scroll position.
           const f = document.getElementById('rustic-pines-intro-frame')?.getBoundingClientRect();
           if (f && f.height > 0) {
-            nextIns.railX = ((f.left - c.left + f.width * 0.86) / c.width) * VB_W;
+            nextIns.left = ((f.left - c.left) / c.width) * VB_W;
+            nextIns.right = ((f.right - c.left) / c.width) * VB_W;
             nextIns.top = (f.top - s.top) / sy;
             nextIns.bottom = (f.bottom - s.top) / sy;
-            nextIns.pad = 56 / sy;
+            nextIns.pad = Math.min(56, f.height * 0.12) / sy;
           }
         }
       }
