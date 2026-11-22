@@ -4,8 +4,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import Tilt from 'react-parallax-tilt';
 import { ArrowRight, Calendar, Tag, X } from 'lucide-react';
 import ReactMarkdown, { type Components } from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { blogArticles } from '../data/blogArticles';
-import { blogPosts, blogPostPath, type BlogPost } from '../data/blogPosts';
+import { blogPosts, blogPostPath, postDateLabel, type BlogPost } from '../data/blogPosts';
 import SEO from '../components/SEO';
 
 const SITE = 'https://www.homefrontbuilderstn.com';
@@ -110,6 +111,19 @@ function articleSchema(post: BlogPost) {
   ];
 }
 
+/** Up to three other posts to read next: same category first, then the most recent. */
+function relatedPosts(post: BlogPost) {
+  const others = posts.filter((p) => p.slug !== post.slug);
+  return [
+    ...others.filter((p) => p.category === post.category),
+    ...others.filter((p) => p.category !== post.category),
+  ].slice(0, 3);
+}
+
+const PostDate = ({ post }: { post: BlogPost }) => (
+  <time dateTime={post.updated ?? post.published}>{postDateLabel(post)}</time>
+);
+
 // Site links inside an article navigate in-app; outside links open in a new tab.
 const markdownComponents: Components = {
   a: ({ href = '', children }) =>
@@ -179,8 +193,8 @@ export default function Blog() {
         />
       ) : (
         <SEO
-          title="Custom Home Building Blog | Tips & Insights"
-          description="Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders — Middle Tennessee's premier luxury custom home builder."
+          title="Custom Home Building Blog: Clarksville & Middle TN Guides"
+          description="Guides to building a custom home in Clarksville and Middle Tennessee: buying land, VA construction loans, costs, timelines, choosing a builder, and design."
           path="/blog"
           schema={blogSchema}
         />
@@ -245,7 +259,7 @@ export default function Blog() {
             {/* Content Half */}
             <div className="lg:w-2/5 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
               <div className="flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-4">
-                <span className="flex items-center gap-1.5"><Calendar size={14} /> {featuredPost.date}</span>
+                <span className="flex items-center gap-1.5"><Calendar size={14} /> <PostDate post={featuredPost} /></span>
                 <span className="hidden md:block w-1 h-1 rounded-full bg-primary/20" />
                 <span className="flex items-center gap-1.5"><Tag size={14} /> {featuredPost.category}</span>
               </div>
@@ -307,7 +321,7 @@ export default function Blog() {
 
                   <div className="p-8 flex flex-col flex-1">
                     <p className="text-[10px] font-sans tracking-widest text-[#c9a96e] uppercase mb-3 flex items-center gap-1.5">
-                      <Calendar size={12} /> {post.date}
+                      <Calendar size={12} /> <PostDate post={post} />
                     </p>
                     <h3 className="font-serif text-2xl text-primary mb-4 group-hover:text-[#c9a96e] transition-colors duration-500">
                       {post.title}
@@ -366,13 +380,31 @@ export default function Blog() {
               <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
                 <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
                   <p className="not-prose flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-6">
-                    <span className="flex items-center gap-1.5"><Calendar size={14} /> <time dateTime={openPost.published}>{openPost.date}</time></span>
+                    <span className="flex items-center gap-1.5"><Calendar size={14} /> <PostDate post={openPost} /></span>
                     <span className="flex items-center gap-1.5"><Tag size={14} /> {openPost.category}</span>
                   </p>
-                  <ReactMarkdown components={markdownComponents}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                     {articleBody(openPost)}
                   </ReactMarkdown>
                 </article>
+
+                {/* Keep reading — internal links to related articles */}
+                <aside aria-labelledby="keep-reading" className="mt-16 pt-10 border-t border-primary/10">
+                  <h2 id="keep-reading" className="font-serif text-2xl md:text-3xl text-primary mb-6">Keep Reading</h2>
+                  <ul className="grid gap-4 md:grid-cols-3">
+                    {relatedPosts(openPost).map((post) => (
+                      <li key={post.slug}>
+                        <Link
+                          to={blogPostPath(post.slug)}
+                          className="group block h-full rounded-2xl bg-white p-5 shadow-sm hover:shadow-lg transition-shadow"
+                        >
+                          <span className="block text-[10px] font-sans tracking-widest uppercase text-[#c9a96e] mb-2">{post.category}</span>
+                          <span className="block font-serif text-lg leading-snug text-primary group-hover:text-[#c9a96e] transition-colors">{post.title}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
               </div>
             </motion.div>
           </motion.div>
