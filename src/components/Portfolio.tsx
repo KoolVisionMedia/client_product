@@ -13,16 +13,17 @@ import { floorPlans, type FloorPlan } from '../data/floorPlans';
  * Each floor plan stands on the shelf as a cover (its exterior photo over a
  * coloured title band). Picking one takes it off the shelf: it flies to the
  * middle of the screen and enlarges, with the home's details beside it. The
- * cover can be flipped over to show the floor plan drawings on its back, and
- * the list on the right (or the arrow keys) moves along the shelf.
+ * cover can be flipped over to show the floor plan drawings on its back
+ * (clicking a drawing enlarges it; clicking again puts it back), and the list
+ * on the right (or the arrow keys) moves along the shelf.
  *
  * Fits the page's existing systems:
  *  - Scroll thread: the section is transparent like its neighbours, so the
  *    thread shows in the gaps between the covers and passes BEHIND the covers,
- *    the shelf and the button. ScrollThreadLine measures #portfolio and
- *    #portfolio-header to route itself; this section used to be a five-screen
- *    stack of cards, so see SHORTENED SECTIONS there before changing either id
- *    or the header block.
+ *    the shelf and the button. ScrollThreadLine measures #portfolio (and the
+ *    [data-thread-lane] gaps) to route itself; this section used to be a
+ *    five-screen stack of cards, so see SHORTENED SECTIONS there before
+ *    changing the id.
  *  - GPU: transforms and opacity only. No CSS masks, filters or backdrop blur
  *    (they've failed on the owner's GPU before; see RusticPines.tsx), so the
  *    page behind an open home is veiled with a plain page-coloured layer.
@@ -93,18 +94,19 @@ function CoverFront({ plan, index, eager = false }: { plan: FloorPlan; index: nu
 
 /**
  * The back of a cover: the floor plan drawing, one level at a time so it gets
- * the whole cover. Tapping the drawing turns the cover back over.
+ * the whole cover. Clicking the drawing enlarges it (see PlanZoom).
  */
 function CoverBack({
   plan,
   level,
   onLevel,
-  onFlip,
+  onZoom,
 }: {
   plan: FloorPlan;
   level: number;
   onLevel: (level: number) => void;
-  onFlip: () => void;
+  /** called with the drawing's button, so the enlarged view can grow out of it */
+  onZoom: (from: HTMLElement) => void;
 }) {
   const many = plan.blueprints.length > 1;
   const levelName = (i: number) => (many ? (i === 0 ? 'Main Level' : 'Upper Level') : 'Floor Plan');
@@ -141,9 +143,9 @@ function CoverBack({
       </div>
       <button
         type="button"
-        onClick={onFlip}
-        aria-label={`Show the ${plan.title} exterior`}
-        className="relative min-h-0 flex-1 cursor-pointer focus-visible:outline-none"
+        onClick={(ev) => onZoom(ev.currentTarget)}
+        aria-label={`Enlarge the ${plan.title} ${levelName(level).toLowerCase()} drawing`}
+        className="relative min-h-0 flex-1 cursor-zoom-in rounded-[1cqw] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
         style={{ margin: '2cqw 4cqw 4cqw' }}
       >
         {plan.blueprints.map((src, i) => (
@@ -167,6 +169,70 @@ const cq: CSSProperties = { containerType: 'inline-size' };
 const COVER_SHADOW = '0 22px 28px -18px rgba(26,33,24,0.55), 0 2px 6px rgba(26,33,24,0.14)';
 const OPEN_SHADOW = '0 40px 60px -30px rgba(26,33,24,0.55), 0 6px 18px rgba(26,33,24,0.16)';
 
+/**
+ * A floor plan drawing, enlarged to fill the screen. It grows out of the
+ * drawing on the back of the cover and shrinks back into it; a click anywhere
+ * (or Escape) puts it back.
+ */
+function PlanZoom({ src, alt, from, onClose }: { src: string; alt: string; from: DOMRect; onClose: () => void }) {
+  const reduce = useReducedMotion();
+  const [isPresent, safeToRemove] = usePresence();
+  const [scope, animate] = useAnimate<HTMLButtonElement>();
+
+  // How the enlarged sheet has to be moved/scaled to sit on the small drawing.
+  // (Both are as tall as their drawing, so heights give the scale.)
+  const toSmall = () => {
+    const to = scope.current?.getBoundingClientRect();
+    if (!to || !to.height || !from.height) return null;
+    return {
+      x: from.left + from.width / 2 - (to.left + to.width / 2),
+      y: from.top + from.height / 2 - (to.top + to.height / 2),
+      scale: from.height / to.height,
+    };
+  };
+
+  useLayoutEffect(() => {
+    const start = reduce ? null : toSmall();
+    if (start) {
+      animate(scope.current, { x: [start.x, 0], y: [start.y, 0], scale: [start.scale, 1] }, { duration: 0.5, ease: EASE });
+    } else {
+      animate(scope.current, { opacity: [0, 1] }, { duration: 0.25 });
+    }
+    scope.current?.focus({ preventScroll: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isPresent) return;
+    const end = reduce ? null : toSmall();
+    const done = end
+      ? animate(scope.current, { x: end.x, y: end.y, scale: end.scale }, { duration: 0.4, ease: EASE })
+      : animate(scope.current, { opacity: 0 }, { duration: 0.2 });
+    done.then(() => safeToRemove?.());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPresent]);
+
+  return (
+    <div className="fixed inset-0 z-[110] flex cursor-zoom-out items-center justify-center p-3 md:p-6" onClick={onClose}>
+      <motion.div
+        className="absolute inset-0 bg-surface"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isPresent ? 0.94 : 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      />
+      <button
+        ref={scope}
+        type="button"
+        aria-label="Put the floor plan back"
+        className="relative aspect-[4/5] h-[min(94vh,calc((100vw-1.5rem)*1.25))] cursor-zoom-out rounded-[10px] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
+        style={{ boxShadow: OPEN_SHADOW, willChange: 'transform' }}
+      >
+        <img src={src} alt={alt} decoding="async" draggable={false} className="h-full w-full object-contain p-[2.5%]" />
+      </button>
+    </div>
+  );
+}
+
 type SpotlightProps = {
   index: number;
   onIndex: (index: number) => void;
@@ -188,6 +254,17 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
   const [flipped, setFlipped] = useState(false);
   const [level, setLevel] = useState(0);
   const [dir, setDir] = useState(1);
+  // The enlarged drawing: where it grows from, and what to refocus afterwards.
+  const [zoom, setZoom] = useState<DOMRect | null>(null);
+  const zoomOpener = useRef<HTMLElement | null>(null);
+  const openZoom = (from: HTMLElement) => {
+    zoomOpener.current = from;
+    setZoom(from.getBoundingClientRect());
+  };
+  const closeZoom = useCallback(() => {
+    setZoom(null);
+    zoomOpener.current?.focus({ preventScroll: true });
+  }, []);
   const flip = () => setFlipped((f) => !f);
   const [, lead, name] = plan.title.match(/^(The)\s+(.+)$/) ?? ['', '', plan.title];
 
@@ -247,13 +324,18 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
   // Keyboard, focus, and no page scrolling behind the open home.
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
+      if (zoom) {
+        // an enlarged drawing takes Escape first; the shelf stays put behind it
+        if (ev.key === 'Escape') closeZoom();
+        return;
+      }
       if (ev.key === 'Escape') onClose();
       else if (ev.key === 'ArrowRight') go(index + 1);
       else if (ev.key === 'ArrowLeft') go(index - 1);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [go, index, onClose]);
+  }, [go, index, onClose, zoom, closeZoom]);
 
   useEffect(() => {
     closeRef.current?.focus({ preventScroll: true });
@@ -384,7 +466,7 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
                       className="absolute inset-0 rounded-[6px] [backface-visibility:hidden] [transform:rotateY(180deg)]"
                       style={{ ...cq, boxShadow: OPEN_SHADOW }}
                     >
-                      <CoverBack plan={plan} level={level} onLevel={setLevel} onFlip={flip} />
+                      <CoverBack plan={plan} level={level} onLevel={setLevel} onZoom={openZoom} />
                     </div>
                   </div>
                 </motion.div>
@@ -476,6 +558,18 @@ function Spotlight({ index, onIndex, onClose, slotRect }: SpotlightProps) {
         </div>
       </div>
 
+      <AnimatePresence>
+        {zoom && (
+          <PlanZoom
+            key="zoom"
+            src={plan.blueprints[level] ?? plan.blueprints[0]}
+            alt={`${plan.title} floor plan, enlarged`}
+            from={zoom}
+            onClose={closeZoom}
+          />
+        )}
+      </AnimatePresence>
+
       <motion.button
         ref={closeRef}
         type="button"
@@ -523,29 +617,18 @@ export default function Portfolio() {
 
   return (
     <section id="portfolio" className="relative">
-      {/* Keep this block as it is: ScrollThreadLine measures it (see the note at the top). */}
-      <div id="portfolio-header" className="px-6 md:px-12 max-w-site-1600 mx-auto pt-32 pb-16">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-16">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="text-[10px] font-sans tracking-[0.3em] uppercase text-accent mb-4">Our Work</h2>
-            <h3 className="font-serif text-5xl md:text-6xl text-primary leading-[1.1]">Featured Floor Plans</h3>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="md:pb-2"
-          >
-            <p className="text-primary-light font-sans max-w-xl text-lg leading-relaxed">Explore our curated collection of architectural masterpieces, featuring stunning exteriors and highly functional layouts.</p>
-          </motion.div>
-        </div>
+      {/* Heading, centred over the shelf */}
+      <div id="portfolio-header" className="px-6 md:px-12 max-w-site-1600 mx-auto pt-32 pb-14 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h2 className="text-[10px] font-sans tracking-[0.3em] uppercase text-accent mb-4">Our Work</h2>
+          <h3 className="font-serif text-5xl md:text-6xl text-primary leading-[1.1]">Featured Floor Plans</h3>
+          <p className="mx-auto mt-6 max-w-2xl text-primary-light font-sans text-lg leading-relaxed">Explore our curated collection of architectural masterpieces, featuring stunning exteriors and highly functional layouts.</p>
+        </motion.div>
       </div>
 
       {/* The shelf. On phones and tablets it scrolls sideways. */}
