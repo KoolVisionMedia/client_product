@@ -93,10 +93,11 @@
   </url>
   <url>
     <loc>https://www.homefrontbuilderstn.com/blog</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- BLOG_POSTS: one <url> per article is generated here at build time by prerender.mjs -->
   <url>
     <loc>https://www.homefrontbuilderstn.com/contact-us</loc>
     <lastmod>2026-08-07</lastmod>

@@ -1,75 +1,76 @@
-import { useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import Tilt from 'react-parallax-tilt';
 import { ArrowRight, Calendar, Tag, X } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import { blogArticles } from '../data/blogArticles';
+import { blogPosts, blogPostPath, type BlogPost } from '../data/blogPosts';
 import SEO from '../components/SEO';
-
-const posts = [
-  {
-    title: 'How to Choose a Custom Home Builder in Clarksville, TN: Questions to Ask and Red Flags to Watch',
-    excerpt: 'Comparing home builders in Clarksville? Here\'s how to verify a Tennessee contractor license in thirty seconds, the six questions that actually reveal something, and the red flags that predict a difficult build.',
-    date: 'August 1, 2026',
-    category: 'Guides',
-    image: '/assets/beyond-the-build.webp',
-    slug: 'how-to-choose-a-custom-home-builder-clarksville-tn'
-  },
-  {
-    title: 'The Art of Modern Farmhouse Design',
-    excerpt: 'Exploring the timeless elements that make the modern farmhouse a favorite for Middle Tennessee families. From wrap-around porches to soaring vaulted ceilings, discover how we blend rustic charm with modern luxury.',
-    date: 'May 12, 2024',
-    category: 'Design Trends',
-    image: '/assets/Harmony.webp',
-    slug: 'modern-farmhouse-design'
-  },
-  {
-    title: 'How to Choose the Right Custom Home Builder in Clarksville, TN',
-    excerpt: 'Not all custom home builders operate the same way. Here\'s what to look for — and what questions to ask — before signing a contract with a builder in the Clarksville, TN area.',
-    date: 'June 3, 2026',
-    category: 'Guides',
-    image: '/assets/DSC04388-Edit.webp',
-    slug: 'choose-custom-home-builder-clarksville-tn'
-  },
-  {
-    title: 'New Construction Homes in Clarksville, TN: What to Expect in 2026',
-    excerpt: 'Clarksville\'s housing market continues to grow. Here\'s what buyers and families should know about new construction timelines, costs, and the custom build process in 2026.',
-    date: 'June 20, 2026',
-    category: 'Market Insights',
-    image: '/assets/Cypress.jpg',
-    slug: 'new-construction-homes-clarksville-tn-2026'
-  },
-  {
-    title: 'Luxury Custom Home Features Worth Every Penny in Middle Tennessee',
-    excerpt: 'When building a luxury custom home in Middle Tennessee, some upgrades deliver outsized returns — in daily enjoyment and resale value. Here are the ones our clients love most.',
-    date: 'July 1, 2026',
-    category: 'Design Trends',
-    image: '/assets/Magnolia.jpg',
-    slug: 'luxury-custom-home-features-middle-tennessee'
-  },
-  {
-    title: '5 Things to Know Before Building Custom',
-    excerpt: 'A comprehensive guide to preparing for your custom home journey, from land acquisition to final selections.',
-    date: 'April 28, 2024',
-    category: 'Guides',
-    image: '/assets/Myrtle.jpg',
-    slug: 'before-building-custom'
-  },
-  {
-    title: 'Why Quality Matters in Construction',
-    excerpt: 'Why we choose premium materials and craftsmen for every Homefront Builders project.',
-    date: 'April 15, 2024',
-    category: 'Quality',
-    image: '/assets/about-hero.jpg',
-    slug: 'why-quality-matters'
-  }
-];
 
 const SITE = 'https://www.homefrontbuilderstn.com';
 
-// Articles open in a modal rather than at their own URL, so the Blog entity
-// carries each post as a BlogPosting. Anchored to /blog#<slug> so every post
-// still has a stable, referenceable identity for crawlers.
+const ORG = {
+  '@type': 'Organization',
+  name: 'Homefront Builders',
+  url: SITE,
+  logo: { '@type': 'ImageObject', url: `${SITE}/logo-main.png` },
+};
+
+// Only posts that have a body are listed or linked.
+const posts = blogPosts.filter((p) => blogArticles[p.slug]);
+
+/** Article markdown, guaranteed to open with the post title as its one <h1>. */
+function articleBody(post: BlogPost) {
+  const md = blogArticles[post.slug].trimStart();
+  return md.startsWith('# ') ? md : `# ${post.title}\n\n${md}`;
+}
+
+const plainText = (md: string) =>
+  md
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[#*_`>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+/** Q&A pairs from an article's "## Frequently Asked Questions" section (### question, answer paragraph). */
+function articleFaq(md: string) {
+  const start = md.indexOf('\n## Frequently Asked Questions');
+  if (start < 0) return [];
+  const rest = md.slice(start + 1);
+  const end = rest.indexOf('\n## ');
+  const section = end < 0 ? rest : rest.slice(0, end);
+  return section
+    .split('\n### ')
+    .slice(1)
+    .map((block) => {
+      const [question, ...lines] = block.split('\n');
+      const answer = lines.join('\n').split(/\n\s*\n/).map((p) => p.trim()).find(Boolean) ?? '';
+      return { question: question.trim(), answer: plainText(answer) };
+    })
+    .filter((qa) => qa.question && qa.answer);
+}
+
+function postingSchema(post: BlogPost) {
+  const url = `${SITE}${blogPostPath(post.slug)}`;
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.published,
+    dateModified: post.updated ?? post.published,
+    image: `${SITE}${post.image}`,
+    articleSection: post.category,
+    url,
+    mainEntityOfPage: url,
+    inLanguage: 'en-US',
+    author: ORG,
+    publisher: ORG,
+    ...(post.keywords ? { keywords: post.keywords.join(', ') } : {}),
+  };
+}
+
 const blogSchema = [
   {
     '@context': 'https://schema.org',
@@ -78,35 +79,75 @@ const blogSchema = [
     name: 'Homefront Builders Custom Home Building Blog',
     description: "Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders.",
     url: `${SITE}/blog`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'Homefront Builders',
-      logo: { '@type': 'ImageObject', url: `${SITE}/logo-main.png` },
-    },
-    blogPost: posts.map((p) => ({
-      '@type': 'BlogPosting',
-      '@id': `${SITE}/blog#${p.slug}`,
-      headline: p.title,
-      description: p.excerpt,
-      datePublished: new Date(p.date).toISOString().split('T')[0],
-      image: `${SITE}${p.image}`,
-      articleSection: p.category,
-      url: `${SITE}/blog#${p.slug}`,
-      author: { '@type': 'Organization', name: 'Homefront Builders' },
-      publisher: {
-        '@type': 'Organization',
-        name: 'Homefront Builders',
-        logo: { '@type': 'ImageObject', url: `${SITE}/logo-main.png` },
-      },
-    })),
+    publisher: ORG,
+    blogPost: posts.map(postingSchema),
   },
 ];
 
-export default function Blog() {
-  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+function articleSchema(post: BlogPost) {
+  const md = blogArticles[post.slug];
+  const faq = articleFaq(md);
+  return [
+    {
+      '@context': 'https://schema.org',
+      ...postingSchema(post),
+      wordCount: plainText(md).split(' ').length,
+      isPartOf: { '@type': 'Blog', '@id': `${SITE}/blog` },
+    },
+    ...(faq.length
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faq.map(({ question, answer }) => ({
+              '@type': 'Question',
+              name: question,
+              acceptedAnswer: { '@type': 'Answer', text: answer },
+            })),
+          },
+        ]
+      : []),
+  ];
+}
 
-  const featuredPost = posts[0];
-  const remainingPosts = posts.slice(1);
+// Site links inside an article navigate in-app; outside links open in a new tab.
+const markdownComponents: Components = {
+  a: ({ href = '', children }) =>
+    href.startsWith('/') ? (
+      <Link to={href}>{children}</Link>
+    ) : (
+      <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>
+    ),
+};
+
+export default function Blog() {
+  // Each article lives at /blog/<slug> and renders as an overlay on the blog list, so the
+  // article is in the prerendered HTML at its own URL (indexable) while keeping the modal feel.
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const openPost = slug ? posts.find((p) => p.slug === slug) : undefined;
+
+  // Opened from the list: step back so the list stays where it was. Landed directly: go to /blog.
+  const closePost = useCallback(() => {
+    if ((location.state as { fromList?: boolean } | null)?.fromList) navigate(-1);
+    else navigate('/blog', { replace: true });
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    if (!openPost) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closePost();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [openPost, closePost]);
+
+  if (slug && !openPost) return <Navigate to="/blog" replace />;
+
+  const [featuredPost, ...remainingPosts] = posts;
+  // The article supplies the page's <h1> while one is open.
+  const HeroHeading = openPost ? 'p' : 'h1';
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -123,12 +164,27 @@ export default function Blog() {
 
   return (
     <div className="bg-[#F4F3F0] min-h-screen">
-      <SEO
-        title="Custom Home Building Blog | Tips & Insights"
-        description="Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders — Middle Tennessee's premier luxury custom home builder."
-        path="/blog"
-        schema={blogSchema}
-      />
+      {openPost ? (
+        <SEO
+          title={openPost.seoTitle ?? openPost.title}
+          description={openPost.excerpt}
+          path={blogPostPath(openPost.slug)}
+          type="article"
+          image={openPost.image}
+          imageAlt={openPost.title}
+          publishedTime={openPost.published}
+          modifiedTime={openPost.updated ?? openPost.published}
+          parents={[{ name: 'Blog', path: '/blog' }]}
+          schema={articleSchema(openPost)}
+        />
+      ) : (
+        <SEO
+          title="Custom Home Building Blog | Tips & Insights"
+          description="Custom home building tips, design trends, and Clarksville TN housing market insights from Homefront Builders — Middle Tennessee's premier luxury custom home builder."
+          path="/blog"
+          schema={blogSchema}
+        />
+      )}
       {/* Hero with Parallax & Glassmorphism */}
       <section className="relative h-[50vh] md:h-[60vh] overflow-hidden flex items-center justify-center">
         <motion.img
@@ -148,9 +204,9 @@ export default function Blog() {
           className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-10 md:p-16 rounded-3xl text-center max-w-3xl mx-4 shadow-2xl"
         >
           <p className="text-xs md:text-sm font-sans tracking-[0.4em] uppercase text-[#c9a96e] mb-4 drop-shadow-md">The Journal</p>
-          <h1 className="font-serif text-4xl md:text-6xl text-white tracking-wide drop-shadow-lg">
+          <HeroHeading className="font-serif text-4xl md:text-6xl text-white tracking-wide drop-shadow-lg">
             Insights & Inspiration
-          </h1>
+          </HeroHeading>
         </motion.div>
       </section>
 
@@ -166,11 +222,11 @@ export default function Blog() {
           glareMaxOpacity={0.15}
           glarePosition="all"
         >
+          <Link to={blogPostPath(featuredPost.slug)} state={{ fromList: true }} className="block">
           <motion.article
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            onClick={() => setSelectedPost(featuredPost.slug)}
             className="bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row group"
           >
             {/* Image Half */}
@@ -208,6 +264,7 @@ export default function Blog() {
               </div>
             </div>
           </motion.article>
+          </Link>
         </Tilt>
       </section>
 
@@ -221,7 +278,7 @@ export default function Blog() {
           className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-12"
         >
           {remainingPosts.map((post) => (
-            <motion.div key={post.title} variants={itemVariants}>
+            <motion.div key={post.slug} variants={itemVariants}>
               <Tilt
                 tiltMaxAngleX={5}
                 tiltMaxAngleY={5}
@@ -232,9 +289,9 @@ export default function Blog() {
                 glareMaxOpacity={0.1}
                 glarePosition="all"
               >
+                <Link to={blogPostPath(post.slug)} state={{ fromList: true }} className="block h-full">
                 <article
                   className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full flex flex-col group"
-                  onClick={() => setSelectedPost(post.slug)}
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img loading="lazy" decoding="async" src={post.image}
@@ -264,20 +321,23 @@ export default function Blog() {
                     </div>
                   </div>
                 </article>
+                </Link>
               </Tilt>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
-      {/* Article Modal Overlay */}
-      <AnimatePresence>
-        {selectedPost && blogArticles[selectedPost] && (
+      {/* Article Overlay — /blog/<slug>. initial={false}: when the page is opened at an article
+          URL (prerendered), the article renders fully visible instead of fading in from opacity 0. */}
+      <AnimatePresence initial={false}>
+        {openPost && (
           <motion.div
+            key={openPost.slug}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedPost(null)}
+            onClick={closePost}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 bg-[#1A2118]/80 backdrop-blur-sm"
           >
             <motion.div
@@ -286,12 +346,15 @@ export default function Blog() {
               exit={{ y: 20, opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={openPost.title}
               className="relative w-full max-w-4xl max-h-full bg-[#FAFAF5] rounded-3xl shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header with Close Button */}
               <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
                 <button
-                  onClick={() => setSelectedPost(null)}
+                  onClick={closePost}
                   className="p-2 sm:p-3 bg-white/90 hover:bg-white backdrop-blur-md rounded-full text-primary hover:text-[#c9a96e] transition-colors shadow-sm"
                   aria-label="Close article"
                 >
@@ -302,8 +365,12 @@ export default function Blog() {
               {/* Article Content */}
               <div className="p-8 sm:p-12 md:p-16 overflow-y-auto">
                 <article className="prose prose-stone prose-lg md:prose-xl max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-[#c9a96e] hover:prose-a:text-primary transition-colors prose-strong:text-primary">
-                  <ReactMarkdown>
-                    {blogArticles[selectedPost]}
+                  <p className="not-prose flex flex-wrap items-center gap-4 text-xs font-sans tracking-widest text-[#c9a96e] uppercase mb-6">
+                    <span className="flex items-center gap-1.5"><Calendar size={14} /> <time dateTime={openPost.published}>{openPost.date}</time></span>
+                    <span className="flex items-center gap-1.5"><Tag size={14} /> {openPost.category}</span>
+                  </p>
+                  <ReactMarkdown components={markdownComponents}>
+                    {articleBody(openPost)}
                   </ReactMarkdown>
                 </article>
               </div>

@@ -1,4 +1,134 @@
 export const blogArticles: Record<string, string> = {
+  'buying-land-to-build-a-house-in-tennessee': `
+# Buying Land to Build a House in Tennessee: 7 Hidden Lot Costs to Check Before You Close
+
+A five-acre wooded homesite in Middle Tennessee for under $100,000 looks like the bargain of the decade — and sometimes it is. But the price on a land listing is what it costs to *own* the dirt, not what it costs to *build* on it. Out past the city sewer lines, the expensive surprises aren't hiding in the house. They're in the ground under it, the road in front of it, and the power pole a quarter mile away.
+
+Few builders bring this up before a contract is signed, because it complicates a clean "from $X" number. We'd rather you hear it now. Here's what actually stands between a raw lot and a buildable one in Tennessee — what each piece typically costs, and what to check before you close.
+
+## The Short Answer: What Lot Prep Costs in Tennessee
+
+On a rural lot with no city sewer or water, plan for seven line items on top of the land and the house:
+
+1. **Septic soil evaluation and permit** — a soils map plus the state permit fee; a few hundred to a couple thousand dollars.
+2. **Septic system installation** — roughly $6,000–$16,000 for a conventional system; $12,000–$35,000 or more for an alternative or engineered system.
+3. **Water** — a private well (roughly $6,000–$20,000 all-in) or a utility tap and service line.
+4. **Electric service** — anywhere from very little out of pocket to five figures, depending on distance to existing lines.
+5. **Driveway and road entrance** — commonly $4–$12 per linear foot for gravel, plus a culvert and permit.
+6. **Clearing and the house pad** — roughly $2,500–$5,000 per acre to clear mixed hardwoods, plus grading.
+7. **Stormwater, flood zones, and inspections** — smaller line items, but not optional.
+
+Stack the typical ranges together and it's easy to see how site work on a wooded rural homesite reaches **$30,000 to $100,000** before the first footing is poured. Every one of those numbers depends on the specific lot — which is exactly why you evaluate the lot *before* you buy it.
+
+## 1. The Septic Soil Test Decides Your Floor Plan
+
+This is the one almost nobody explains, and it's the most important item on the list.
+
+If a property can't connect to public sewer, you need a **subsurface sewage disposal system construction permit** before you build — in most Tennessee counties from TDEC's Division of Water Resources, and in a handful of contract counties from the local health department. Most people call the evaluation a "perc test." In Tennessee it usually centers on a **soils map** prepared by a soil scientist certified by TDEC, which classifies the soil and shows where on the property a drain field can go.
+
+Here's the part that catches buyers off guard: **a septic permit is written for a specific number of bedrooms.** State rules size both the tank and the drain field by bedroom count:
+
+- Septic tank minimums run **750 gallons for two bedrooms or fewer, 900 for three, and 1,000 for four**, plus 250 gallons for every bedroom after that.
+- The drain field is sized per bedroom too — never less than **370 square feet of trench bottom per bedroom** in the best soils, and considerably more in tighter, slower-draining ones.
+- The permit also needs a **duplicate (backup) area** in suitable soil, not just room for the primary field.
+
+So the soil on your lot quietly sets a ceiling on your house. A five-acre parcel might have only one patch of soil good enough for a drain field — and that patch decides where the house can sit, and whether the four-bedroom plan you love is possible at all. If the bedroom count changes after a permit is issued, you'll need a modification permit. And don't assume a bonus room or office with a closet won't be counted as a bedroom; ask how it will be treated before you finalize the plan.
+
+**What it costs:** TDEC's posted fee for a new conventional system permit is $400 (up to 1,000 gallons per day of design flow), plus a $100 construction inspection. The soil scientist's map is a separate, private fee. Installation runs roughly $6,000–$16,000 for a conventional system; when the soil can't support one, an alternative system such as drip dispersal can push the cost to $12,000–$35,000 or more.
+
+**What to do:** Make your land purchase contingent on a satisfactory soil evaluation for the number of bedrooms you actually want. Allow time, too: TDEC can take up to 45 days to process a complete application, and it advises getting the permit before any dirt work starts — including the building pad. TDEC's [septic construction permit page](https://www.tn.gov/environment/permits/water/septic-systems-permits/ssp/permit-water-septic-system-construction-permit.html) has the current requirements and fees.
+
+## 2. Protect the Drain Field Before the First Truck Arrives
+
+Here's a detail you won't find on most builder websites: **an approved drain field can be ruined by construction itself.**
+
+Tennessee's rules say the area approved for the disposal field shouldn't be disturbed during grading, and if it is, the area has to be re-evaluated. Soil absorbs wastewater because of its structure. Run a loaded concrete truck, a skid steer, or a lumber delivery across it a few times and you can compact that structure into something that no longer drains — on a lot where it may have been the only good spot.
+
+A disciplined builder fences off the primary and duplicate septic areas on day one and keeps them off-limits: no parking, no material staging, no dirt stockpiles, no burn piles. Ask any builder you're considering how they protect the septic area during construction. If they look at you blankly, that tells you something.
+
+## 3. Water: Well or Tap — and What Your Neighbors' Wells Can Tell You
+
+If a public water line runs along the road frontage, you'll pay a tap fee plus the cost of a service line to the house. Confirm three things in writing before you close: that the main actually runs past *your* frontage (not just "nearby"), what size it is, and the current tap fee.
+
+If not, you're drilling a well. Middle Tennessee sits on limestone, and wells here are drilled until they hit a water-bearing fracture — sometimes at 150 feet, sometimes much deeper. Drilling commonly runs about **$22–$60 per foot**, and the pump, pressure tank, and trenching come on top of that. All in, **$6,000–$20,000** is a reasonable planning range.
+
+Three things to know:
+
+- **Ask the well driller about wells on neighboring properties.** Local depths and yields are the best predictor you'll get of what your well will cost.
+- **Tennessee requires a well to sit at least 50 feet from a septic tank and drain field.** The house, well, primary septic area, duplicate area, and driveway all compete for space — one more reason to site everything together before you commit.
+- **Budget for testing and treatment.** Limestone aquifers often produce hard water, and every new well should be tested for bacteria before anyone drinks from it.
+
+## 4. Power: Distance to the Nearest Pole Is a Line Item
+
+In rural Middle Tennessee, electric service usually comes from an electric cooperative, and each co-op sets its own line-extension policy. A common pattern is an allowance toward the first stretch of line, then a per-foot charge beyond it — and underground service typically costs more than overhead. A homesite set 800 feet back in the trees is beautiful. It's also 800 feet of wire.
+
+**What to do:** Before you close, call the utility with the parcel number and ask for a written estimate to bring service to your intended house site. If the line has to cross a neighbor's property, find out whether an easement already exists. While you're at it, check internet options — fiber, fixed wireless, or satellite — if anyone in the house works from home.
+
+## 5. The Driveway Has to Carry a Concrete Truck
+
+A rural driveway isn't a landscaping feature; it's the road your entire build travels on. It has to support loaded concrete trucks, lumber deliveries, and eventually a fire engine — on a grade those vehicles can climb in wet weather.
+
+Gravel driveways commonly run about **$4–$12 per linear foot**, more with a heavy stone base, rock, or steep grades. Where the driveway meets the road, counties typically require an entrance permit and often a culvert sized to the ditch. On a state highway, you'll need a [highway entrance permit from TDOT](https://www.tn.gov/tdot/traffic-design/highway-entrance-permits.html) before construction. Check sight distance at the entrance too; a driveway that exits just past a blind curve is a problem no amount of gravel fixes.
+
+## 6. Clearing, Grading, and the House Pad
+
+The trees are probably why you fell for the lot, so clear selectively: the house, the driveway, the septic areas, and a safe buffer. Mixed hardwoods in Tennessee commonly run **$2,500–$5,000 per acre** to clear, before grading, stump removal, and hauling or burning debris.
+
+Then there's the ground itself. Middle Tennessee is known for limestone close to the surface, and hitting rock while digging footings or a basement can add real cost. Slope cuts both ways — a sloped lot can be ideal for a walkout basement, but it adds excavation, retaining, and drainage work. A builder who walks the site with you can tell you which side of that line your lot falls on.
+
+## 7. Stormwater, Flood Zones, and Who Inspects Your Home
+
+Three smaller items round out the list:
+
+- **Construction stormwater.** Clearing a house pad, a long driveway, and a septic area adds up fast. Once total land disturbance reaches one acre, Tennessee's construction stormwater general permit generally applies — silt fencing, stabilization, and inspections included.
+- **Flood zones.** Look up any parcel near a creek or the lake on [FEMA's Flood Map Service Center](https://msc.fema.gov/portal/home). A flood zone affects where you can build, how high, and what insurance will cost.
+- **Codes and inspections.** In Tennessee, residential building codes are enforced locally in some counties and through the State Fire Marshal's residential permit program in others, and some counties have opted out entirely. Find out which applies to your parcel — and choose a builder who builds to code whether or not anyone is checking.
+
+## Your Pre-Purchase Land Checklist
+
+Before you sign a land contract in Tennessee, get these answers — ideally as written contingencies:
+
+1. A satisfactory **septic soil evaluation** for the number of bedrooms you want, including a duplicate area.
+2. **Water availability** in writing: a utility letter with tap fees, or well information from a local driller.
+3. A written **electric service estimate** to your intended house site.
+4. A current **boundary survey**, recorded easements, and the recorded plat (read any septic notes on it).
+5. **Deed restrictions or covenants** — minimum square footage, outbuildings, fences, RVs.
+6. **Flood zone status** and any wetlands or streams on the property.
+7. **Road access** and entrance permit requirements from the county or TDOT.
+8. A **site walk with your builder** to sketch where the house, drain field, well, and driveway can actually go.
+
+That last item ties the rest together — and it costs you nothing but an afternoon.
+
+## Building on Land Near Kentucky Lake: Rustic Pines at Paris Landing
+
+All of this is front of mind for us right now. [Rustic Pines at Paris Landing](/rustic-pines) is a new wooded community near Kentucky Lake in Stewart County, with 41 homesites from about 5 to 24 acres. Land starts at $79,000, and completed Homefront home-and-lot packages start at $449,000. As with any rural homesite, package pricing doesn't include lot preparation and utilities — because those depend on which lot you choose and exactly where you place the home on it.
+
+That's a conversation we'd rather have before you pick a lot, not after. Walk a homesite with us and we'll talk through where the house, septic areas, well, and driveway can sit, so you understand the site work in the same detail as the home itself.
+
+## Frequently Asked Questions
+
+### How much does it cost to prepare a lot to build a house in Tennessee?
+
+On a rural lot without city sewer or water, site work — septic, well, electric service, driveway, clearing, and grading — can total $30,000 to $100,000 depending on the soil, distance to utilities, terrain, and tree cover. A lot with public water and sewer at the road typically costs far less to prepare.
+
+### Do I need a perc test to build a house in Tennessee?
+
+If the property isn't served by public sewer, yes — you need a septic construction permit, and that requires an evaluation of the soil. In Tennessee the evaluation is usually based on a soils map from a TDEC-certified soil scientist. Make a satisfactory result a contingency in your land contract.
+
+### Does a septic permit limit how many bedrooms I can build?
+
+Yes. Tennessee septic permits are issued for a specific number of bedrooms, and both the tank and the drain field are sized by bedroom count. If your soil only supports a three-bedroom system, a four-bedroom plan won't be approved without more suitable area or an alternative system.
+
+### How far does a well need to be from a septic system in Tennessee?
+
+Tennessee's well construction rules require at least 50 feet between a well and a septic tank or drain field. Keep that in mind when siting the house, well, primary septic area, and duplicate area on a lot.
+
+### Should I choose a builder before or after buying land?
+
+Before you close, if you can. A builder can walk the lot, spot septic, access, slope, and utility issues, and give you a realistic site-work budget while you still have contingencies in place to walk away.
+
+**Looking at land in Montgomery County, Stewart County, or anywhere in Middle Tennessee?** [Contact Homefront Builders](/contact-us) before you close, and we'll help you evaluate it. You can also explore [Rustic Pines at Paris Landing](/rustic-pines), review [our building process](/process), browse [our floor plans](/floorplans), or read [how to choose a custom home builder in Clarksville](/blog/how-to-choose-a-custom-home-builder-clarksville-tn).
+`,
   'how-to-choose-a-custom-home-builder-clarksville-tn': `
 # How to Choose a Custom Home Builder in Clarksville, TN: Questions to Ask and Red Flags to Watch
 
@@ -146,52 +276,6 @@ It's tempting to compare builders primarily on price per square foot, but the ma
 Building custom doesn't have to be overwhelming when you're working with a team that guides you through every step. From your first conversation about land and budget through final selections and walkthrough, Homefront Builders is with you the whole way.
 
 **Thinking about building a custom home in Clarksville or Middle Tennessee?** [Contact our team](/contact-us) to schedule a no-obligation consultation, or explore our [floor plans and listings](/listings) to start envisioning your build.
-`,
-  'why-quality-matters': `
-Every custom home builder will tell you they build quality homes. Far fewer can explain, in concrete terms, what that actually means — which materials, which trade partners, which standards, and why those choices matter once the drywall goes up and the finishes hide what's behind the walls. At Homefront Builders, quality isn't a marketing line. It's the standard we hold every project to, on every lot, for every client across Clarksville and Middle Tennessee.
-
-Here's what quality construction actually looks like, and why it's worth insisting on.
-
-## Quality Starts Below the Surface
-
-The parts of a home that matter most for its long-term performance are the parts no one ever sees again after the final inspection: the foundation, the framing, the moisture barriers, the mechanical systems. Cutting corners here doesn't show up at closing — it shows up five, ten, or twenty years later as foundation cracks, energy inefficiency, water intrusion, or HVAC systems that fail well before their expected lifespan.
-
-We choose:
-
-- **Engineered foundation systems** suited to the specific soil and site conditions of each lot
-- **Premium framing lumber and structural components** that meet or exceed code minimums
-- **Properly sized and installed HVAC systems**, not one-size-fits-all units
-- **High-performance windows and insulation** that reduce energy costs year-round in Tennessee's humid summers and cold winters
-
-## Skilled Craftsmen Make the Difference Material Alone Can't
-
-You can buy the same premium countertop, the same designer fixtures, the same imported tile as any other builder. What separates a well-built home from a beautifully finished but poorly executed one is the craftsmanship behind the install — square corners, level floors, properly sealed joints, and trim work that lines up exactly where it should.
-
-That's why we work with experienced, vetted trade partners on every Homefront Builders project rather than rotating through the lowest bidder on each job. Consistency in our trade relationships means consistency in the quality of work delivered in your home, whether it's framing, electrical, plumbing, or finish carpentry.
-
-## The Real Cost of Cutting Corners
-
-Lower-quality construction often looks identical to high-quality construction on move-in day. The differences show up later, and they tend to be expensive:
-
-1. **Higher utility bills** from poor insulation, inefficient HVAC sizing, or air leakage
-2. **Premature repairs** to roofing, siding, or windows that weren't rated for the regional climate
-3. **Foundation and structural issues** from inadequate site engineering
-4. **Reduced resale value** when inspections during a future sale reveal shortcuts
-5. **Voided or limited warranty coverage** when builders use uncertified materials or unlicensed trades
-
-A custom home is one of the largest investments most families will make. Quality construction protects that investment for decades, not just through the first year of ownership.
-
-## How We Hold Every Build to the Same Standard
-
-Quality control at Homefront Builders isn't a single inspection at the end — it's built into every phase of construction, from site prep through final walkthrough. We perform structured checkpoints throughout the build, work exclusively with licensed and insured trade partners, and back every home with a builder's warranty for added peace of mind. You can review our full warranty coverage on our [warranties page](/warranties).
-
-This is also why we encourage prospective clients to ask hard questions before choosing a builder. The right questions about materials, trades, and process reveal a lot about what you'll actually get once the home is built.
-
-## Built to Last, Built for You
-
-Quality isn't a feature you add to a custom home — it's the foundation everything else is built on. Whether you're drawn to a modern farmhouse design or a different architectural style entirely, the materials and craftsmanship behind your walls determine how that home performs for the next 30+ years.
-
-**Want to see what quality construction looks like up close?** [Contact Homefront Builders](/contact-us) to schedule a tour of a current build, or explore our [listings](/listings) to see completed homes throughout Clarksville and Middle Tennessee.
 `,
   'choose-custom-home-builder-clarksville-tn': `
 # How to Choose the Right Custom Home Builder in Clarksville, TN

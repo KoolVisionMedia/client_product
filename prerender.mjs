@@ -30,7 +30,10 @@ const serverEntry = path.resolve(__dirname, 'dist/server/entry-server.js');
 // import() requires a file:// URL on Windows (a raw C:\ path throws
 // ERR_UNSUPPORTED_ESM_URL_SCHEME). pathToFileURL is a no-op difference on
 // Linux/Vercel, so this is safe cross-platform.
-const { render } = await import(pathToFileURL(serverEntry).href);
+const { render, publishedPosts } = await import(pathToFileURL(serverEntry).href);
+
+// Every blog article gets its own prerendered page at /blog/<slug>.
+routes.splice(routes.indexOf('/blog') + 1, 0, ...publishedPosts.map((p) => `/blog/${p.slug}`));
 
 // Map each route to its code-split page module so we can inject
 // <link rel="modulepreload"> into that route's prerendered HTML — the page
@@ -58,7 +61,7 @@ try {
   console.warn('No client manifest found — skipping modulepreload injection.');
 }
 function preloadTagsFor(route) {
-  const src = routeSources[route];
+  const src = routeSources[route] ?? (route.startsWith('/blog/') ? routeSources['/blog'] : undefined);
   const entry = src && manifest[src];
   if (!entry) return '';
   const tags = [`<link rel="modulepreload" crossorigin href="/${entry.file}" />`];
@@ -114,6 +117,44 @@ for (const route of routes) {
     console.error(`✗ Failed to prerender ${route}:`, err);
   }
 }
+
+// Blog article URLs are generated into the sitemap and llms.txt from src/data/blogPosts.ts, so a
+// new post only needs its data entry. Each file holds a marker line that is replaced here.
+const SITE = 'https://www.homefrontbuilderstn.com';
+const xml = (v) =>
+  String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+function injectBlogPosts(file, marker, entries) {
+  const target = path.resolve(__dirname, 'dist', file);
+  const text = fs.readFileSync(target, 'utf-8');
+  const line = text.split('\n').find((l) => l.includes(marker));
+  if (!line) {
+    console.warn(`✗ ${file}: no ${marker} marker — blog posts not listed.`);
+    return;
+  }
+  fs.writeFileSync(target, text.replace(line, entries.join('\n')));
+  console.log(`✓ ${file}: listed ${publishedPosts.length} blog posts`);
+}
+injectBlogPosts(
+  'sitemap.xml',
+  'BLOG_POSTS',
+  publishedPosts.map(
+    (p) => `  <url>
+    <loc>${SITE}/blog/${p.slug}</loc>
+    <lastmod>${p.updated ?? p.published}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>${xml(SITE + encodeURI(p.image))}</image:loc>
+      <image:title>${xml(p.title)}</image:title>
+    </image:image>
+  </url>`
+  )
+);
+injectBlogPosts(
+  'llms.txt',
+  'BLOG_POSTS',
+  publishedPosts.map((p) => `- [${p.title}](${SITE}/blog/${p.slug}): ${p.excerpt}`)
+);
 
 // Remove the server-only SSR bundle so it isn't deployed/served publicly.
 // (It is only needed at build time, by this script.)
