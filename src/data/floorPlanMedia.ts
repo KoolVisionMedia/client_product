@@ -8,7 +8,9 @@
  *              marks the older extruded model (shallower camera).
  *  - exterior: a full exterior model, where one has been made.
  *  - photos:   captions for /assets/floorplans/gallery/<id>-<n>-{240,800,1600}.webp
- *  - film:     a short clip for the stage.
+ *  - film:     the plan's video tour (a finished home, shot by the photographer),
+ *              in /assets/floorplans/films/. `portrait` marks a vertical clip,
+ *              shown whole over a blurred copy of itself instead of cropped.
  */
 export type PlanFloor = { label: string; glb: string; poster: string; scan: boolean; rooms: string[] };
 export type PlanMedia = {
@@ -19,12 +21,19 @@ export type PlanMedia = {
   exterior?: { glb: string; poster: string };
   photosNote: string;
   photos: string[];
-  film?: { src: string; poster: string; caption: string };
+  film?: { src: string; poster: string; caption: string; portrait?: boolean };
 };
 
 const model = (id: string, k: number | 'ext') => ({
   glb: `/models/floorplans/${id}-${k}.glb`,
   poster: `/assets/floorplans/3d/${id}-${k}.webp`,
+});
+
+const tour = (id: string, caption: string, portrait = false) => ({
+  src: `/assets/floorplans/films/${id}-tour.mp4`,
+  poster: `/assets/floorplans/films/${id}-tour-poster.webp`,
+  caption,
+  ...(portrait ? { portrait } : {}),
 });
 
 export const planPhoto = (id: string, n: number, w: 240 | 800 | 1600) =>
@@ -49,11 +58,7 @@ export const planMedia: Record<string, PlanMedia> = {
       "A bedroom painted sage green, with a tray ceiling and a window to the yard",
       "The covered rear porch, wood decking under a black metal ceiling",
     ],
-    film: {
-      src: '/assets/floorplans/cypress-build.mp4',
-      poster: '/assets/floorplans/cypress-build-poster.webp',
-      caption: 'Illustration: from a wooded lot to a finished Cypress.',
-    },
+    film: tour('cypress', 'A finished Cypress at Fawn Meadows, Clarksville: outside, then room by room.', true),
   },
   dogwood: {
     kind: "Two stories",
@@ -75,6 +80,7 @@ export const planMedia: Record<string, PlanMedia> = {
       "The covered rear porch, wood decking under a black board ceiling, looking out to timber",
       "The house seen from the air, sitting in a cleared hillside with autumn timber around it",
     ],
+    film: tour('dogwood', 'A finished Dogwood in Clarksville, from the air down to every room.'),
   },
   harmony: {
     kind: "Two stories",
@@ -95,6 +101,7 @@ export const planMedia: Record<string, PlanMedia> = {
       "The covered rear porch under a green board ceiling, looking out over the lawn",
       "The back of the house: brick and dark siding with the covered porch running along it",
     ],
+    film: tour('harmony', 'A finished Harmony at Longview, Clarksville: front door to the rear porch.'),
   },
   magnolia: {
     kind: "Two stories",
@@ -115,6 +122,7 @@ export const planMedia: Record<string, PlanMedia> = {
       "The mudroom in black board-and-batten with a wood bench and hooks",
       "The covered rear deck, wood rail and stained ceiling, over the back lawn",
     ],
+    film: tour('magnolia', 'A finished Magnolia at Longview, Clarksville, inside and out.'),
   },
   myrtle: {
     kind: "One level, optional bonus room",
@@ -135,5 +143,6 @@ export const planMedia: Record<string, PlanMedia> = {
       "A double vanity in white cabinetry with brass fixtures and round mirrors",
       "The covered rear porch under a stained ceiling, looking out over open ground",
     ],
+    film: tour('myrtle', 'A finished Myrtle at Longview, Clarksville: outside, then through the rooms.', true),
   },
 };

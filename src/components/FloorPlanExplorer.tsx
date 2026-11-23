@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   ArrowUpRight, Bath, Bed, CarFront, ChevronLeft, ChevronRight, Clapperboard, FileText, Images,
-  LoaderCircle, Pause, Play, RefreshCw, Rotate3d, RotateCcw, Ruler, Square, ZoomIn, ZoomOut,
+  LoaderCircle, Pause, Play, RefreshCw, Rotate3d, RotateCcw, Ruler, Square, Volume2, VolumeX, ZoomIn, ZoomOut,
 } from 'lucide-react';
 import { floorPlans } from '../data/floorPlans';
 import { planMedia, planPhoto } from '../data/floorPlanMedia';
@@ -118,6 +118,7 @@ export default function FloorPlanExplorer({ initialPlan, onRequestBooklet }: Pro
   const [canHover, setCanHover] = useState(true);
   const [lens, setLens] = useState({ on: false, x: 50, y: 50 });
   const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const plan = plans[idx];
@@ -225,13 +226,21 @@ export default function FloorPlanExplorer({ initialPlan, onRequestBooklet }: Pro
     if (!v) return;
     if (v.paused) { v.play().catch(() => {}); setPlaying(true); } else { v.pause(); setPlaying(false); }
   };
-  useEffect(() => { if (mode === 'film') setPlaying(true); }, [mode, idx]);
+  // Each tour starts muted (autoplay needs it); the sound button turns it on.
+  const toggleSound = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+    if (!v.muted && v.paused) { v.play().catch(() => {}); setPlaying(true); }
+  };
+  useEffect(() => { if (mode === 'film') { setPlaying(true); setMuted(true); } }, [mode, idx]);
 
   const modes: { key: Mode; label: string; more?: string; icon: typeof Rotate3d; note?: string }[] = [
     { key: '3d', label: '3D', more: ' model', icon: Rotate3d },
     { key: 'layout', label: 'Layout', icon: Ruler },
     { key: 'photos', label: 'Photos', icon: Images, note: String(media.photos.length) },
-    ...(media.film ? [{ key: 'film' as Mode, label: 'Film', more: ' of the build', icon: Clapperboard }] : []),
+    ...(media.film ? [{ key: 'film' as Mode, label: 'Video', more: ' tour', icon: Clapperboard }] : []),
   ];
 
   const levelTabs = [
@@ -526,13 +535,23 @@ export default function FloorPlanExplorer({ initialPlan, onRequestBooklet }: Pro
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
                     className="absolute inset-0 bg-black"
                   >
+                    {/* Vertical tours play whole, over a blurred, darkened copy of the cover frame. */}
+                    {media.film.portrait && (
+                      <img
+                        src={media.film.poster}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-2xl"
+                      />
+                    )}
                     <video
+                      key={media.film.src}
                       ref={videoRef}
                       src={media.film.src}
                       poster={media.film.poster}
                       autoPlay muted loop playsInline preload="metadata"
                       aria-label={media.film.caption}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className={`absolute inset-0 h-full w-full ${media.film.portrait ? 'object-contain' : 'object-cover'}`}
                     />
                     <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 p-3 sm:p-4">
@@ -543,6 +562,15 @@ export default function FloorPlanExplorer({ initialPlan, onRequestBooklet }: Pro
                         className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#c9a96e] text-[#1b2518] transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                       >
                         {playing ? <Pause className="h-4 w-4" fill="currentColor" aria-hidden="true" /> : <Play className="h-4 w-4 translate-x-px" fill="currentColor" aria-hidden="true" />}
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={muted ? 'Turn the sound on' : 'Turn the sound off'}
+                        aria-pressed={!muted}
+                        onClick={toggleSound}
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-black/45 text-white ring-1 ring-white/25 backdrop-blur transition-colors hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      >
+                        {muted ? <VolumeX className="h-4 w-4" aria-hidden="true" /> : <Volume2 className="h-4 w-4" aria-hidden="true" />}
                       </button>
                       <p className="font-sans text-xs leading-snug text-white/90 sm:text-sm">{media.film.caption}</p>
                     </div>
