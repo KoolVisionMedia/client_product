@@ -1,16 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Bed, Bath, Square, Home as HomeIcon, FileText, Send } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import SEO from '../components/SEO';
 import ButtonGlow from '../components/ui/ButtonGlow';
 import { useDialog } from '../hooks/useDialog';
 import { floorPlans } from '../data/floorPlans';
-
-// The renders ship as a full-size file plus an 800w copy beside it (foo.jpg /
-// foo-800.jpg). Phones only ever paint ~400 CSS px of these, so letting them pull
-// the 800w version saves ~65% of the bytes on the slowest connections.
-const renderSrcSet = (src: string) => `${src.replace(/\.jpg$/, '-800.jpg')} 800w, ${src} 1500w`;
+import FloorPlanExplorer from '../components/FloorPlanExplorer';
 
 const SITE = 'https://www.homefrontbuilderstn.com';
 
@@ -44,32 +40,13 @@ const floorPlansSchema = [
 ];
 
 export default function Floorplans() {
-  const [selectedPlan, setSelectedPlan] = useState<typeof floorPlans[0] | null>(null);
-  // Tailwind wraps group-hover in @media (hover: hover), so on touch the blueprint
-  // layer is unreachable. There we swap the hover for an explicit per-sheet toggle.
-  const [canHover, setCanHover] = useState(true);
-  const [flippedSheets, setFlippedSheets] = useState<Record<number, boolean>>({});
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [leadFormState, setLeadFormState] = useState({ status: 'idle', message: '' });
 
-  useEffect(() => {
-    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
-    const sync = () => setCanHover(mq.matches);
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, []);
-
-  useEffect(() => { setFlippedSheets({}); }, [selectedPlan]);
-
-  // /floorplans?plan=cypress opens that plan straight away (the home page shelf
-  // links here this way).
+  // /floorplans?plan=cypress opens that plan in the explorer straight away (the
+  // home page shelf links here this way).
   const [searchParams] = useSearchParams();
   const requestedPlan = searchParams.get('plan');
-  useEffect(() => {
-    const plan = floorPlans.find((p) => p.id === requestedPlan);
-    if (plan) setSelectedPlan(plan);
-  }, [requestedPlan]);
 
   const closeLeadModal = () => {
     setIsLeadModalOpen(false);
@@ -101,10 +78,8 @@ export default function Floorplans() {
     }
   };
 
-  // Both popups: Escape, focus in/out, Tab kept inside, page behind held still.
-  const planDialogRef = useRef<HTMLDivElement>(null);
+  // Escape, focus in/out, Tab kept inside, page behind held still.
   const leadDialogRef = useRef<HTMLDivElement>(null);
-  useDialog(!!selectedPlan, () => setSelectedPlan(null), planDialogRef);
   useDialog(isLeadModalOpen, closeLeadModal, leadDialogRef);
 
   return (
@@ -128,10 +103,10 @@ export default function Floorplans() {
               Featured Floorplans
             </h1>
             <p className="font-sans text-primary-light text-base md:text-lg leading-relaxed">
-              Explore our curated collection of architectural masterpieces. Each custom home floorplan is 
-              thoughtfully designed with flow, natural lighting, and timeless luxury in mind. Hover over 
-              any book below to swing the cover open and preview its interior layout. Click any floor plan
-              to inspect detailed specifications, or select the central Booklet to request the complete catalog.
+              Explore our curated collection of architectural masterpieces. Each custom home floorplan is
+              thoughtfully designed with flow, natural lighting, and timeless luxury in mind. Open the booklet
+              below to request the complete catalog, then step into the Plan Explorer to turn each home in 3D,
+              study its layout, and walk through photos of the finished build.
             </p>
           </motion.div>
 
@@ -151,13 +126,13 @@ export default function Floorplans() {
             </button>
             <button
               onClick={() => {
-                const el = document.getElementById('floorplans-grid');
+                const el = document.getElementById('plan-explorer');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
               className="inline-flex items-center justify-center px-8 py-4 border border-primary/20 text-primary font-sans text-xs uppercase tracking-[0.2em] font-semibold rounded-lg hover:bg-white transition-all duration-300 btn-glow"
             >
               <ButtonGlow />
-              Browse Interactive Grid
+              Explore the Plans in 3D
             </button>
           </motion.div>
         </div>
@@ -222,208 +197,11 @@ export default function Floorplans() {
         </div>
       </motion.div>
 
-      {/* Grid Section Header */}
-      <div id="floorplans-grid" className="max-w-site mx-auto px-6 md:px-12 mb-12 text-center scroll-mt-32">
-        <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.3em] text-accent mb-3 block">Selectable Options</span>
-        <h2 className="font-serif text-3xl md:text-5xl text-primary mb-4 leading-tight">Featured Floorplans</h2>
-        <div className="w-16 h-[2px] bg-accent mx-auto" />
-      </div>
-
-      {/* Grid Cards container */}
-      <div className="max-w-site mx-auto px-6 md:px-12 mb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {floorPlans.map((plan, index) => (
-            <motion.div
-              key={plan.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer group flex flex-col"
-              onClick={() => setSelectedPlan(plan)}
-            >
-              <div className="relative h-64 overflow-hidden">
-                <img loading="lazy" decoding="async" src={plan.exterior}
-                  alt={`${plan.title} floor plan exterior — ${plan.beds} bedroom, ${plan.baths} bathroom custom home starting at ${plan.sqft} sq ft by Homefront Builders`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
-              </div>
-              <div className="p-8 flex flex-col flex-grow">
-                <h3 className="font-serif text-3xl text-primary mb-4">{plan.title}</h3>
-                <div className="flex gap-4 mb-6 text-primary/60 font-sans text-xs uppercase tracking-widest border-b border-gray-100 pb-6">
-                  <span className="flex items-center gap-1"><Bed size={14} className="text-accent" /> {plan.beds}</span>
-                  <span className="flex items-center gap-1"><Bath size={14} className="text-accent" /> {plan.baths}</span>
-                  <span className="flex items-center gap-1"><Square size={14} className="text-accent" /> {plan.sqft}</span>
-                </div>
-                <button
-                  type="button"
-                  aria-label={`View layouts for ${plan.title}`}
-                  className="mt-auto font-sans text-xs tracking-[0.2em] uppercase text-accent font-medium flex items-center gap-2 group-hover:text-primary transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4"
-                >
-                  View Layouts
-                  <span className="w-6 h-[1px] bg-accent group-hover:w-10 group-hover:bg-primary transition-all duration-300"></span>
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Modal */}
-      <AnimatePresence>
-        {selectedPlan && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
-          >
-            {/* Backdrop */}
-            <div 
-              className="absolute inset-0 bg-[#0f1a0c]/80 backdrop-blur-sm cursor-pointer"
-              onClick={() => setSelectedPlan(null)}
-            />
-            
-            {/* Modal Content */}
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              ref={planDialogRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label={`${selectedPlan.title} floor plan`}
-              className="relative w-full max-w-[75rem] max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col"
-            >
-              {/* Close Button */}
-              <button 
-                type="button"
-                aria-label="Close floor plan"
-                onClick={() => setSelectedPlan(null)}
-                className="absolute top-6 right-6 z-10 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-accent hover:text-white transition-all duration-300 shadow-sm"
-              >
-                <X size={24} />
-              </button>
-
-              <div className="h-full flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
-                {/* Left Column: Info & Specs */}
-                <div className="w-full lg:w-[38%] bg-surface p-5 md:p-7 flex flex-col gap-3 lg:overflow-y-auto shrink-0">
-                  <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden shadow-sm border border-gray-200/50 bg-white shrink-0">
-                    <img loading="lazy" decoding="async" src={selectedPlan.exterior}
-                      alt={`${selectedPlan.title} custom home exterior — ${selectedPlan.beds} bedroom, ${selectedPlan.baths} bathroom plan by Homefront Builders in Clarksville, TN`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  <div>
-                    <h2 className="font-serif text-2xl md:text-3xl text-primary mb-0.5 leading-tight">{selectedPlan.title}</h2>
-                    <p className="font-sans text-[10px] tracking-[0.2em] uppercase text-accent font-semibold">Custom Home Plan</p>
-                  </div>
-                  
-                  <p className="font-sans text-sm leading-relaxed text-primary/80">
-                    {selectedPlan.description}
-                  </p>
-                  
-                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 bg-white rounded-xl p-3 border border-gray-100">
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Bedrooms</span>
-                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
-                        <Bed size={14} className="text-accent" /> {selectedPlan.beds}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Bathrooms</span>
-                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
-                        <Bath size={14} className="text-accent" /> {selectedPlan.baths}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Square Feet</span>
-                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
-                        <Square size={14} className="text-accent" /> {selectedPlan.sqft}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-primary/60 font-semibold">Type</span>
-                      <span className="font-sans text-sm text-primary flex items-center gap-1 font-bold">
-                        <HomeIcon size={14} className="text-accent" /> Custom
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => setIsLeadModalOpen(true)}
-                    className="inline-flex items-center gap-2.5 font-sans text-sm tracking-wide text-accent hover:text-primary transition-all duration-300 group/pdf w-fit"
-                  >
-                    <FileText size={18} className="text-accent group-hover/pdf:text-primary transition-colors duration-300" />
-                    <span className="border-b-2 border-accent/20 group-hover/pdf:border-primary/50 transition-all duration-300 pb-0.5 font-bold">
-                      Request the Floor Plan Booklet
-                    </span>
-                  </button>
-                </div>
-
-                {/* Right Column: Blueprint Layouts (fills remaining height) */}
-                <div className="w-full lg:w-[62%] p-5 md:p-7 bg-white flex flex-col gap-3 lg:h-full">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-gray-100 pb-1.5 shrink-0">
-                    <h3 className="font-serif text-lg text-primary">Floorplan Layout Sheets</h3>
-                    <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-accent font-semibold">
-                      {selectedPlan.plans.length} {selectedPlan.plans.length > 1 ? 'Sheets' : 'Sheet'} Included
-                    </span>
-                  </div>
-                  
-                  <div className={`w-full flex-grow grid gap-3 ${selectedPlan.plans.length > 1 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} min-h-0`}>
-                    {selectedPlan.plans.map((planImg, i) => {
-                      const levelLabel = selectedPlan.plans.length > 1 ? (i === 0 ? 'Main Level' : 'Upper Level') : 'Floor Plan';
-                      const blueprint = selectedPlan.blueprints?.[i];
-                      // Desktop reveals the drawing on hover; touch reveals it on tap.
-                      const showBlueprint = !canHover && !!flippedSheets[i];
-
-                      return (
-                      <div key={i} className="w-full bg-surface rounded-xl p-2 border border-gray-100 shadow-sm flex items-center justify-center relative group/blueprint overflow-hidden min-h-0">
-                        <div className="absolute top-3 right-3 bg-primary/95 text-white text-[8px] uppercase tracking-widest font-semibold py-1 px-2.5 rounded-lg shadow-md opacity-0 group-hover/blueprint:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                          {levelLabel}
-                        </div>
-
-                        <img loading="eager" decoding="async" src={planImg} srcSet={renderSrcSet(planImg)}
-                          sizes="(min-width: 1024px) 32vw, 90vw"
-                          alt={`${selectedPlan.title} ${i === 0 ? 'main floor' : 'upper floor'} layout — ${selectedPlan.beds} bedroom custom home floor plan by Homefront Builders`}
-                          className={`max-w-full max-h-full object-contain transition-[transform,opacity] duration-500 will-change-[opacity] ${canHover ? 'group-hover/blueprint:scale-[1.01] group-hover/blueprint:opacity-0' : ''} ${showBlueprint ? 'opacity-0' : 'opacity-100'}`}
-                        />
-
-                        {/* Second layer: the measured line drawing of the same floor. */}
-                        {blueprint && (
-                          <img loading="eager" decoding="async" src={blueprint}
-                            alt={`${selectedPlan.title} ${i === 0 ? 'main floor' : 'upper floor'} blueprint — dimensioned floor plan drawing by Homefront Builders`}
-                            className={`absolute inset-0 w-full h-full object-contain p-2 transition-opacity duration-500 will-change-[opacity] pointer-events-none ${canHover ? 'opacity-0 group-hover/blueprint:opacity-100' : (showBlueprint ? 'opacity-100' : 'opacity-0')}`}
-                          />
-                        )}
-
-                        {/* Touch has no hover, so give it a real control. */}
-                        {blueprint && !canHover && (
-                          <button
-                            type="button"
-                            onClick={() => setFlippedSheets(prev => ({ ...prev, [i]: !prev[i] }))}
-                            aria-pressed={showBlueprint}
-                            className="absolute bottom-2 right-2 z-10 inline-flex items-center justify-center min-h-[44px] bg-primary/95 text-white text-[9px] uppercase tracking-widest font-semibold py-2 px-4 rounded-lg shadow-md active:scale-95 transition-transform"
-                          >
-                            {showBlueprint ? `${levelLabel} · Render` : `${levelLabel} · Blueprint`}
-                          </button>
-                        )}
-                      </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Plan Explorer: 3D models, layouts, photos and facts for every plan */}
+      <FloorPlanExplorer initialPlan={requestedPlan} onRequestBooklet={() => setIsLeadModalOpen(true)} />
 
       {/* Steps to Building Section */}
-      <section className="py-24 bg-white border-t border-gray-100 overflow-hidden mt-20">
+      <section className="py-24 bg-white border-t border-gray-100 overflow-hidden">
         <div className="max-w-site mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             {/* Left column: Infographic Image with 3D Depth */}
