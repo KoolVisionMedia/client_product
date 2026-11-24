@@ -4,6 +4,7 @@ import ContactCards from './ContactCards';
 import ReviewCarousel from './ReviewCarousel';
 import FloatingLogo3D from './FloatingLogo3D';
 import ButtonGlow from './ui/ButtonGlow';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 // Letter animation helper for Webflow style text animation
 function AnimatedLetters({ text, variants }: { text: string; variants: any }) {
@@ -111,6 +112,7 @@ export default function ContactSection({ showWhyUs = true }: { showWhyUs?: boole
       data.append("subject", `New Contact: ${formData.subject} - ${formData.name}`);
       data.append("from_name", "Homefront Builders Website");
 
+      sendToFrontDesk(data, 'Contact form');
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: data,

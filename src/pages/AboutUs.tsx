@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import { RUSTIC_PINES_PROMO as PROMO } from '../data/rusticPinesPromo';
 import ButtonGlow from '../components/ui/ButtonGlow';
 import { useDialog } from '../hooks/useDialog';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 const partners = [
   {
@@ -254,6 +255,7 @@ function PartnerModal({ partner, onClose }: { partner: typeof partners[0]; onClo
       data.append("replyto", formData.email);
       data.append("Inquiry via profile", partner.name);
 
+      sendToFrontDesk(data, 'About page form');
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: data,

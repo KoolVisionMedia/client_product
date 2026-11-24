@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { lots, MAP_VIEWBOX, realtracsUrl, RUSTIC_PINES_SITE, rusticPinesSiteHost } from '../data/rusticPines';
 import type { Lot, LotStatus } from '../data/rusticPines';
 import ButtonGlow from '../components/ui/ButtonGlow';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 const PATH = '/rustic-pines';
 const NAME = 'Rustic Pines at Paris Landing';
@@ -532,6 +533,7 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
     const email = fd.get('email');
     if (email) fd.append('replyto', String(email));
     try {
+      sendToFrontDesk(fd, 'Rustic Pines lot inquiry');
       const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
       const json = await res.json();
       setState(json.success ? 'success' : 'error');

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { motion } from 'motion/react';
 import ButtonGlow from './ui/ButtonGlow';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -20,6 +21,7 @@ export default function StayConnected() {
     data.append('subject', 'New Newsletter Signup (Home page)');
     data.append('from_name', 'Homefront Builders Website');
     try {
+      sendToFrontDesk(data, 'Stay connected signup');
       const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
       const json = await res.json();
       if (json.success) {
