@@ -7,6 +7,7 @@ import ButtonGlow from '../components/ui/ButtonGlow';
 import { useDialog } from '../hooks/useDialog';
 import { floorPlans } from '../data/floorPlans';
 import FloorPlanExplorer from '../components/FloorPlanExplorer';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 const SITE = 'https://www.homefrontbuilderstn.com';
 
@@ -65,6 +66,7 @@ export default function Floorplans() {
     const email = formData.get("email");
     if (email) formData.append("replyto", email as string);
     try {
+      sendToFrontDesk(formData, 'Floor plan request');
       const response = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
       const result = await response.json();
       if (result.success) {

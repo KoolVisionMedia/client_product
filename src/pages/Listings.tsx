@@ -7,6 +7,7 @@ import ButtonGlow from '../components/ui/ButtonGlow';
 import { useDialog } from '../hooks/useDialog';
 import RusticPinesSpotlight from '../components/RusticPinesSpotlight';
 import { RUSTIC_PINES_LIVE } from '../data/rusticPinesLaunch';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 const listings = [
   {
@@ -344,6 +345,7 @@ function ListingInquiry({ listing }: { listing: typeof listings[0] }) {
     const email = data.get('email');
     if (email) data.append('replyto', email as string);
     try {
+      sendToFrontDesk(data, 'Listing inquiry');
       const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
       const result = await res.json();
       if (result.success) {

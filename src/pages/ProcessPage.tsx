@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import ProcessScrubVideo from '../components/ProcessScrubVideo';
 import { useDialog } from '../hooks/useDialog';
 import ButtonGlow from '../components/ui/ButtonGlow';
+import { sendToFrontDesk } from '../lib/frontDesk';
 
 const processSteps = [
   {
@@ -200,6 +201,7 @@ export default function ProcessPage() {
     if (email) formData.append("replyto", email as string);
 
     try {
+      sendToFrontDesk(formData, 'Process page form');
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData,
