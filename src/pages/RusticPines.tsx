@@ -665,9 +665,15 @@ function HeroVideo() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [ready, setReady] = useState(false);
+  // The clip being faded out. It stays fully opaque UNDER the incoming one until the fade is
+  // done, so the still photo never shows through mid-crossfade (that read as a flash).
+  const [prev, setPrev] = useState<number | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const videos = useRef<(HTMLVideoElement | null)[]>([]);
   const userPaused = useRef(false);
+  const onScreen = useRef(true);
+  const indexRef = useRef(0);
+  indexRef.current = index;
 
   useEffect(() => {
     setEnabled(
@@ -682,26 +688,36 @@ function HeroVideo() {
     const v = videos.current[index];
     if (!v) return;
     v.currentTime = 0;
-    if (!userPaused.current) v.play().catch(() => {});
+    if (!userPaused.current && onScreen.current) v.play().catch(() => {});
   }, [index, enabled]);
 
-  // Nothing visible, nothing to decode: pause off screen, resume on return.
+  // Drop the outgoing clip once the incoming one has finished fading in.
+  useEffect(() => {
+    if (prev === null) return;
+    const t = window.setTimeout(() => setPrev(null), 1300);
+    return () => window.clearTimeout(t);
+  }, [prev]);
+
+  // Nothing visible, nothing to decode: pause once the hero is fully off screen (with a margin,
+  // so normal scrolling near the top never stops and restarts it), resume on return. One
+  // observer for the component's life; it reads the active clip from a ref.
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!enabled || !wrap) return;
     const io = new IntersectionObserver(
       ([entry]) => {
-        const v = videos.current[index];
+        onScreen.current = entry.isIntersecting;
+        const v = videos.current[indexRef.current];
         if (!v) return;
         if (entry.isIntersecting) {
-          if (!userPaused.current) v.play().catch(() => {});
-        } else v.pause();
+          if (!userPaused.current && v.paused) v.play().catch(() => {});
+        } else if (!v.paused) v.pause();
       },
-      { threshold: 0.05 },
+      { threshold: 0, rootMargin: '200px 0px' },
     );
     io.observe(wrap);
     return () => io.disconnect();
-  }, [enabled, index]);
+  }, [enabled]);
 
   if (!enabled) return null;
 
@@ -721,7 +737,7 @@ function HeroVideo() {
 
   return (
     <>
-      <div ref={wrapRef} className="absolute inset-0" aria-hidden="true">
+      <div ref={wrapRef} className="absolute inset-0 z-0" aria-hidden="true">
         {HERO_CLIPS.map((clip, i) => (
           <video
             key={clip.src}
@@ -735,9 +751,16 @@ function HeroVideo() {
             poster={clip.poster}
             onPlaying={i === index ? () => { setPlaying(true); setReady(true); } : undefined}
             onPause={i === index ? () => setPlaying(false) : undefined}
-            onEnded={() => setIndex((c) => (c === i ? (i + 1) % HERO_CLIPS.length : c))}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms]"
-            style={{ opacity: ready && i === index ? 1 : 0 }}
+            onEnded={() => {
+              if (i !== indexRef.current) return;
+              setPrev(i);
+              setIndex((i + 1) % HERO_CLIPS.length);
+            }}
+            className={`absolute inset-0 w-full h-full object-cover ${i === index ? 'transition-opacity duration-[1200ms]' : ''}`}
+            style={{
+              opacity: ready && (i === index || i === prev) ? 1 : 0,
+              zIndex: i === index ? 2 : i === prev ? 1 : 0,
+            }}
           >
             <source src={clip.src} type="video/mp4" />
           </video>
