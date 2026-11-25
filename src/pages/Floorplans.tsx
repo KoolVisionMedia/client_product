@@ -13,6 +13,8 @@ const SITE = 'https://www.homefrontbuilderstn.com';
 
 // Only the plans published on this page are described here — the full booklet
 // stays gated behind the request form.
+// Typed as schema.org FloorPlan, not Product: these are build-on-your-lot designs,
+// not shippable retail goods, so Product made Google demand reviews/ratings/offers.
 const floorPlansSchema = [
   {
     '@context': 'https://schema.org',
@@ -24,17 +26,19 @@ const floorPlansSchema = [
       '@type': 'ListItem',
       position: i + 1,
       item: {
-        '@type': 'Product',
+        '@type': 'FloorPlan',
         name: p.title,
         description: p.description,
         image: `${SITE}${p.exterior}`,
-        category: 'Custom Home Floor Plan',
-        brand: { '@type': 'Brand', name: 'Homefront Builders' },
-        additionalProperty: [
-          { '@type': 'PropertyValue', name: 'Bedrooms', value: p.beds },
-          { '@type': 'PropertyValue', name: 'Bathrooms', value: p.baths },
-          { '@type': 'PropertyValue', name: 'Square Feet', value: p.sqft, description: 'Starting at' },
-        ],
+        layoutImage: `${SITE}${p.blueprints[0]}`,
+        numberOfBedrooms: p.beds,
+        numberOfBathroomsTotal: p.baths,
+        floorSize: {
+          '@type': 'QuantitativeValue',
+          value: Number(p.sqft.replace(/,/g, '')),
+          unitCode: 'FTK',
+          unitText: 'sq ft',
+        },
       },
     })),
   },

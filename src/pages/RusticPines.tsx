@@ -112,27 +112,32 @@ const schema = {
   itemListElement: lots.map((l, i) => ({
     '@type': 'ListItem',
     position: i + 1,
+    // An Offer on a Place, not a Product: land isn't a shippable retail good, and
+    // Product markup made Google Merchant listings demand GTIN, shipping, returns,
+    // and reviews that don't apply to real estate.
     item: {
-      '@type': 'Product',
+      '@type': 'Offer',
       name: `Lot ${l.number}, ${NAME}`,
-      description: `${l.acres}-acre wooded homesite in Phase ${l.phase} of ${NAME}, Stewart County, Tennessee.`,
-      image: OG_URL,
-      category: 'Land',
-      additionalProperty: [
-        { '@type': 'PropertyValue', name: 'Lot size', value: l.acres, unitCode: 'ACR', unitText: 'acres' },
-        { '@type': 'PropertyValue', name: 'Phase', value: l.phase },
-      ],
-      offers: {
-        '@type': 'Offer',
-        price: l.price,
-        priceCurrency: 'USD',
-        availability:
-          l.status === 'sold'
-            ? 'https://schema.org/SoldOut'
-            : l.status === 'pending'
-              ? 'https://schema.org/LimitedAvailability'
-              : 'https://schema.org/InStock',
-        url: PAGE_URL,
+      price: l.price,
+      priceCurrency: 'USD',
+      availability:
+        l.status === 'sold'
+          ? 'https://schema.org/SoldOut'
+          : l.status === 'pending'
+            ? 'https://schema.org/LimitedAvailability'
+            : 'https://schema.org/InStock',
+      url: PAGE_URL,
+      seller: { '@type': 'Organization', name: 'Homefront Builders', url: SITE },
+      itemOffered: {
+        '@type': 'Place',
+        name: `Lot ${l.number}, ${NAME}`,
+        description: `${l.acres}-acre wooded homesite in Phase ${l.phase} of ${NAME}, Stewart County, Tennessee.`,
+        image: OG_URL,
+        address: { '@type': 'PostalAddress', addressLocality: 'Dover', addressRegion: 'TN', addressCountry: 'US' },
+        additionalProperty: [
+          { '@type': 'PropertyValue', name: 'Lot size', value: l.acres, unitCode: 'ACR', unitText: 'acres' },
+          { '@type': 'PropertyValue', name: 'Phase', value: l.phase },
+        ],
       },
     },
   })),
