@@ -482,7 +482,7 @@ export default function Navbar() {
               </span>
             </motion.button>
 
-            <nav aria-label="Menu" className="flex flex-col gap-6 text-center mt-20 w-full overflow-y-auto pb-32">
+            <nav aria-label="Menu" className="flex flex-col gap-6 text-center mt-20 w-full overflow-y-auto pb-16">
               {[HOME as NavItem, ...NAV_ITEMS, CONTACT as NavItem].map((item, i) => {
                 const active = itemActive(pathname, item);
                 return (
@@ -506,10 +506,14 @@ export default function Navbar() {
                       </Link>
                     ) : (
                       <div className="w-full">
-                        <div className="font-serif text-3xl md:text-4xl text-white/90 cursor-default mb-4 flex items-center justify-center gap-2">
-                          {item.name} <ChevronDown size={20} className="opacity-50" aria-hidden="true" />
+                        {/* Section name as a small gold label, its pages in the serif face:
+                            the same pairing as the desktop dropdown. */}
+                        <div className="mb-3 flex items-center justify-center gap-3 font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-[#c9a96e] cursor-default">
+                          <span className="h-px w-6 bg-[#c9a96e]/40" aria-hidden="true" />
+                          {item.name}
+                          <span className="h-px w-6 bg-[#c9a96e]/40" aria-hidden="true" />
                         </div>
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-0.5">
                           {item.dropdown?.map((dropItem) => {
                             const here = isActive(pathname, dropItem.href);
                             return (
@@ -518,25 +522,45 @@ export default function Navbar() {
                                 to={dropItem.href}
                                 aria-current={here ? 'page' : undefined}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className={`inline-flex items-center justify-center gap-2 py-2 font-sans text-sm tracking-[0.2em] uppercase transition-colors ${
-                                  here ? 'text-white' : 'text-[#c9a96e] hover:text-white'
+                                className={`inline-flex items-center justify-center gap-2 py-1.5 font-serif text-2xl md:text-3xl transition-colors ${
+                                  here ? 'italic text-[#c9a96e]' : 'text-white hover:text-[#c9a96e]'
                                 }`}
                               >
-                                {here && <span className="h-1.5 w-1.5 rounded-full bg-[#c9a96e]" aria-hidden="true" />}
                                 {dropItem.name}
                               </Link>
                             );
                           })}
                         </div>
+                        {/* Homes leads with the Rustic Pines card, as on desktop. */}
+                        {item.name === 'Homes' && item.featured?.[0]?.href === '/rustic-pines' && (
+                          <Link
+                            to={item.featured[0].href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="group mx-auto mt-4 block w-[min(17rem,calc(100%-3rem))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]"
+                          >
+                            <span className="block aspect-[2/1] overflow-hidden rounded-xl ring-1 ring-white/10">
+                              <img
+                                src={item.featured[0].image}
+                                alt=""
+                                width={960}
+                                height={480}
+                                loading="lazy"
+                                decoding="async"
+                                className="h-full w-full object-cover"
+                              />
+                            </span>
+                            <span className="mt-2 block font-serif text-base leading-snug text-white/75 group-hover:text-[#c9a96e]">
+                              {item.featured[0].title}
+                            </span>
+                          </Link>
+                        )}
                       </div>
                     )}
                   </motion.div>
                 );
               })}
-            </nav>
-
             <motion.div
-              className="absolute bottom-12 flex gap-3 text-accent"
+              className="mt-4 flex justify-center gap-3 text-accent"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8, duration: 0.5 }}
@@ -545,6 +569,7 @@ export default function Navbar() {
                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none" className="mt-2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </motion.div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
