@@ -75,7 +75,7 @@ const NAV_ITEMS: NavItem[] = [
     featuredLabel: RUSTIC_PINES_LIVE ? 'Now selling' : 'Featured',
     featured: [
       ...(RUSTIC_PINES_LIVE
-        ? [{ title: 'Rustic Pines at Paris Landing: lots from $79,000', href: '/rustic-pines', image: '/assets/menu/rustic-pines.webp' }]
+        ? [{ title: 'Rustic Pines at Paris Landing: lots from $79,000', href: '/rustic-pines', image: '/assets/menu/rustic-pines-logo.webp' }]
         : []),
       { title: 'The Harmony: 4 bedrooms, 3.5 baths, from 2,860 sq ft', href: '/floorplans', image: '/assets/menu/harmony.webp' },
     ],
