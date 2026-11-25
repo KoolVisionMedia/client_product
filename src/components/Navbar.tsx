@@ -193,7 +193,7 @@ export default function Navbar() {
     );
 
   const linkCls =
-    'relative isolate flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 xl:px-3.5 py-2 font-sans text-sm text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]/70';
+    'relative isolate flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 xl:px-3.5 py-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/80 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]/70';
 
   const overlayOrigin = burgerBox ? `${burgerBox.left + 22}px ${burgerBox.top + 22}px` : '40px 40px';
 
@@ -330,7 +330,7 @@ export default function Navbar() {
               </a>
               <a
                 href={PHONE.href}
-                className="hidden xl:inline-flex rounded-lg px-3 py-2 font-sans text-sm text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]/70"
+                className="hidden xl:inline-flex rounded-lg px-3 py-2 font-sans text-[0.8rem] tracking-[0.06em] text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]/70"
                 onMouseEnter={() => setOpenMenu(null)}
               >
                 {PHONE.label}
@@ -343,7 +343,7 @@ export default function Navbar() {
                   setHovered(null);
                   setOpenMenu(null);
                 }}
-                className="btn-glow group hidden lg:inline-flex items-center gap-2 rounded-lg bg-[#c9a96e] px-5 py-2.5 font-sans text-sm font-medium text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
+                className="btn-glow group hidden lg:inline-flex items-center gap-2 rounded-lg bg-[#c9a96e] px-5 py-2.5 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#1b2518] hover:bg-[#d8bb84] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b2518]"
               >
                 <ButtonGlow />
                 {CONTACT.name}
@@ -395,12 +395,12 @@ export default function Navbar() {
                             aria-current={here ? 'page' : undefined}
                             className="group block rounded-xl px-4 py-3 transition-colors duration-300 hover:bg-white focus-visible:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]"
                           >
-                            <span className="flex items-center gap-2 font-sans text-base font-medium text-primary transition-colors group-hover:text-accent-dark">
+                            <span className="flex items-center gap-2 font-serif text-xl leading-tight text-primary transition-colors group-hover:text-accent-dark">
                               {d.name}
                               {here && <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />}
                             </span>
                             {d.desc && (
-                              <span className="mt-1 block font-sans text-sm leading-snug text-primary-light">{d.desc}</span>
+                              <span className="mt-1.5 block font-sans text-[0.8rem] leading-relaxed text-primary-light">{d.desc}</span>
                             )}
                           </Link>
                         </motion.li>
@@ -409,7 +409,7 @@ export default function Navbar() {
                   </ul>
 
                   <div className="col-span-8">
-                    <p className="mb-4 font-sans text-sm text-primary-light">{openItem.featuredLabel}</p>
+                    <p className="mb-4 font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-accent">{openItem.featuredLabel}</p>
                     <ul className="grid grid-cols-2 gap-6">
                       {openItem.featured!.map((f, i) => (
                         <motion.li
@@ -435,7 +435,7 @@ export default function Navbar() {
                                 className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                               />
                             </span>
-                            <span className="mt-3 block font-sans text-[0.9375rem] font-medium leading-snug text-primary transition-colors group-hover:text-accent-dark">
+                            <span className="mt-3 block font-serif text-lg leading-snug text-primary transition-colors group-hover:text-accent-dark">
                               {f.title}
                             </span>
                           </Link>
