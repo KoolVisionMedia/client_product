@@ -18,8 +18,10 @@ const H = MAP_VIEWBOX.height;
 
 const aerial = (w: number) => `/assets/rustic-pines/aerial-${w}.webp`;
 const MAP_SRCSET = [1000, 1400, 1800, 2400].map((w) => `${aerial(w)} ${w}w`).join(', ');
-const HERO_SRC = '/assets/rustic-pines/hero-1400.webp';
-const HERO_SRCSET = '/assets/rustic-pines/hero-800.webp 800w, /assets/rustic-pines/hero-1400.webp 1400w';
+// The hero still is the first frame of hero clip 1, so nothing different flashes before the video.
+const HERO_SRC = '/assets/rustic-pines/hero-video/clip-1-still-1400.webp';
+const HERO_SRCSET =
+  '/assets/rustic-pines/hero-video/clip-1-still-800.webp 800w, /assets/rustic-pines/hero-video/clip-1-still-1400.webp 1400w';
 const SITE = 'https://www.homefrontbuilderstn.com';
 const PAGE_URL = `${SITE}${PATH}`;
 const OG_URL = `${SITE}/assets/rustic-pines/rustic-pines-og-logo.jpg`;
@@ -648,7 +650,9 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
 
 const HERO_CLIPS = [1, 2, 3].map((n) => ({
   src: `/assets/rustic-pines/hero-video/clip-${n}.mp4`,
-  poster: `/assets/rustic-pines/hero-video/clip-${n}.webp`,
+  // Clip 1's poster is its exact first frame (the same image as the page's still), so the
+  // hand-off from still to video is invisible; the others are only seen while crossfading.
+  poster: n === 1 ? HERO_SRC : `/assets/rustic-pines/hero-video/clip-${n}.webp`,
 }));
 
 /**
@@ -1161,10 +1165,10 @@ export default function RusticPines() {
           src={HERO_SRC}
           srcSet={HERO_SRCSET}
           sizes="100vw"
-          alt="Aerial view of the wooded Rustic Pines at Paris Landing subdivision in Stewart County, Tennessee"
+          alt="A cleared, wooded homesite ready to build on at Rustic Pines at Paris Landing in Stewart County, Tennessee"
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-cover scale-110"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <HeroVideo />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1b2518]/80 via-[#1b2518]/55 to-[#1b2518]" />
