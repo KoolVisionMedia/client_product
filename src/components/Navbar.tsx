@@ -531,29 +531,6 @@ export default function Navbar() {
                             );
                           })}
                         </div>
-                        {/* Homes leads with the Rustic Pines card, as on desktop. */}
-                        {item.name === 'Homes' && item.featured?.[0]?.href === '/rustic-pines' && (
-                          <Link
-                            to={item.featured[0].href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="group mx-auto mt-4 block w-[min(17rem,calc(100%-3rem))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a96e]"
-                          >
-                            <span className="block aspect-[2/1] overflow-hidden rounded-xl ring-1 ring-white/10">
-                              <img
-                                src={item.featured[0].image}
-                                alt=""
-                                width={960}
-                                height={480}
-                                loading="lazy"
-                                decoding="async"
-                                className="h-full w-full object-cover"
-                              />
-                            </span>
-                            <span className="mt-2 block font-serif text-base leading-snug text-white/75 group-hover:text-[#c9a96e]">
-                              {item.featured[0].title}
-                            </span>
-                          </Link>
-                        )}
                       </div>
                     )}
                   </motion.div>
