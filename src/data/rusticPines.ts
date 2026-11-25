@@ -131,7 +131,7 @@ export const realtracsUrl = (id: string) => `https://www.realtracs.com/listings/
  * Rustic Pines line of public/llms.txt.
  */
 export const RUSTIC_PINES_SITE = {
-  url: 'https://rusticpinesparislanding.com/',
+  url: 'https://www.rusticpinesparislanding.com/',
 };
 /** Hostname shown to visitors, e.g. "rusticpinesparislanding.com". */
 export const rusticPinesSiteHost = new URL(RUSTIC_PINES_SITE.url).hostname.replace(/^www\./, '');
