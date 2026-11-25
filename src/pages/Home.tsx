@@ -70,7 +70,9 @@ export default function Home() {
             /rustic-pines page so it never points at a hidden page. The scroll
             thread routes its own curve through it (see ScrollThreadLine). */}
         {RUSTIC_PINES_LIVE && <RusticPinesIntro />}
-        {/* Topographic background behind "The Homefront Process" (CoreValues) only.
+        <CoreValues />
+        <Process />
+        {/* Topographic background behind "Featured Floor Plans" (Portfolio) only.
             The canvas is one viewport tall and sticky, so it stays put like a fixed backdrop
             while this stretch scrolls (a canvas spanning several screens would be far too
             costly to shade). -z-20 keeps it under the thread line (-z-10); the gradients
@@ -83,10 +85,8 @@ export default function Home() {
             <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-surface to-transparent" />
             <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-surface to-transparent" />
           </div>
-          <CoreValues />
+          <Portfolio />
         </div>
-        <Process />
-        <Portfolio />
         <CustomCare />
         <StayConnected />
       </div>
