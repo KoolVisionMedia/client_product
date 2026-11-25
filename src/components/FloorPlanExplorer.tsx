@@ -265,7 +265,7 @@ export default function FloorPlanExplorer({ initialPlan, onRequestBooklet }: Pro
         <header className="mx-auto mb-10 max-w-3xl text-center md:mb-12">
           <span className="mb-4 block font-sans text-[10px] uppercase tracking-[0.3em] text-[#c9a96e] md:text-xs">The Plan Explorer</span>
           <h2 id="plan-explorer-h" className="mb-5 font-serif text-4xl leading-tight md:text-6xl">
-            Featured Floorplans. <em className="font-light text-[#c9a96e]">Step inside.</em>
+            Custom Home Plans in 3D. <em className="font-light text-[#c9a96e]">Step inside.</em>
           </h2>
           <p className="font-sans text-base leading-relaxed text-white/75 md:text-lg">
             Pick a plan, then explore it your way: turn the 3D model with the roof lifted off, study the layout
