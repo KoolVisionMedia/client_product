@@ -664,9 +664,12 @@ function HeroVideo() {
   const [enabled, setEnabled] = useState(false);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const [ready, setReady] = useState(false);
-  // The clip being faded out. It stays fully opaque UNDER the incoming one until the fade is
-  // done, so the still photo never shows through mid-crossfade (that read as a flash).
+  // The clip that is actually playing (has frames) and so may be shown. The incoming clip
+  // only starts fading in once it fires `playing`; until then it stays invisible.
+  const [live, setLive] = useState<number | null>(null);
+  // The clip being faded out. It stays fully opaque UNDER the incoming one until the incoming
+  // clip has finished fading in (its transitionend), so the still photo never shows through
+  // between clips (that read as a slow flash).
   const [prev, setPrev] = useState<number | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const videos = useRef<(HTMLVideoElement | null)[]>([]);
@@ -691,12 +694,13 @@ function HeroVideo() {
     if (!userPaused.current && onScreen.current) v.play().catch(() => {});
   }, [index, enabled]);
 
-  // Drop the outgoing clip once the incoming one has finished fading in.
+  // Safety net: if the incoming clip's transitionend never arrives (e.g. it never loads), don't
+  // leave the outgoing clip frozen forever. Only starts counting once the incoming clip is live.
   useEffect(() => {
-    if (prev === null) return;
-    const t = window.setTimeout(() => setPrev(null), 1300);
+    if (prev === null || live !== index) return;
+    const t = window.setTimeout(() => setPrev(null), 6000);
     return () => window.clearTimeout(t);
-  }, [prev]);
+  }, [prev, live, index]);
 
   // Nothing visible, nothing to decode: pause once the hero is fully off screen (with a margin,
   // so normal scrolling near the top never stops and restarts it), resume on return. One
@@ -749,7 +753,10 @@ function HeroVideo() {
             autoPlay={i === 0}
             preload={i === index || i === next ? 'auto' : 'none'}
             poster={clip.poster}
-            onPlaying={i === index ? () => { setPlaying(true); setReady(true); } : undefined}
+            onPlaying={i === index ? () => { setPlaying(true); setLive(i); } : undefined}
+            onTransitionEnd={(e) => {
+              if (e.propertyName === 'opacity' && i === indexRef.current && i === live) setPrev(null);
+            }}
             onPause={i === index ? () => setPlaying(false) : undefined}
             onEnded={() => {
               if (i !== indexRef.current) return;
@@ -758,7 +765,7 @@ function HeroVideo() {
             }}
             className={`absolute inset-0 w-full h-full object-cover ${i === index ? 'transition-opacity duration-[1200ms]' : ''}`}
             style={{
-              opacity: ready && (i === index || i === prev) ? 1 : 0,
+              opacity: (i === index && live === i) || i === prev ? 1 : 0,
               zIndex: i === index ? 2 : i === prev ? 1 : 0,
             }}
           >
