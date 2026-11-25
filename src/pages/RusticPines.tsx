@@ -22,8 +22,8 @@ const HERO_SRC = '/assets/rustic-pines/hero-1400.webp';
 const HERO_SRCSET = '/assets/rustic-pines/hero-800.webp 800w, /assets/rustic-pines/hero-1400.webp 1400w';
 const SITE = 'https://www.homefrontbuilderstn.com';
 const PAGE_URL = `${SITE}${PATH}`;
-const OG_URL = `${SITE}/assets/rustic-pines/rustic-pines-og.jpg`;
-const OG_ALT = 'Aerial site plan of Rustic Pines at Paris Landing in Stewart County, Tennessee';
+const OG_URL = `${SITE}/assets/rustic-pines/rustic-pines-og-logo.jpg`;
+const OG_ALT = 'Rustic Pines at Paris Landing logo over an aerial view of the wooded homesites in Stewart County, Tennessee';
 /** Phone/tablet zoom level for the map (desktop never zooms). */
 const ZOOM = 2.3;
 
