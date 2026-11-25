@@ -85,21 +85,22 @@ body {
 }
 
 /* ==========================================================================
-   Pencil cursor (a blue drafting pencil)
-   The pencil is a native cursor (no lag, never freezes); the graphite line it
-   leaves is drawn by components/PencilCursor.tsx. Mouse / trackpad only.
-   The point is the hotspot (5 27). Cursors stay 32px: browsers drop
-   bigger ones near the window edge.
+   Builder's square cursor (a gold speed square: right angle, degree arc inside)
+   A native cursor (no lag, never freezes); the graphite line that follows it
+   is drawn by components/PencilCursor.tsx. Mouse / trackpad only.
+   The right-angle corner is the hotspot (3 3). Cursors stay 32px: browsers
+   drop bigger ones near the window edge. Source art: public/cursors/square*.svg
+   (re-export the PNGs at 32px and 64px after editing).
    ========================================================================== */
 @media (hover: hover) and (pointer: fine) {
   html,
   .cursor-default {
-    cursor: url("/cursors/pencil.svg") 5 27, auto;
-    cursor: -webkit-image-set(url("/cursors/pencil.png") 1x, url("/cursors/pencil-2x.png") 2x) 5 27, auto;
-    cursor: image-set(url("/cursors/pencil.png") 1x, url("/cursors/pencil-2x.png") 2x) 5 27, auto;
+    cursor: url("/cursors/square.svg") 3 3, auto;
+    cursor: -webkit-image-set(url("/cursors/square.png") 1x, url("/cursors/square-2x.png") 2x) 3 3, auto;
+    cursor: image-set(url("/cursors/square.png") 1x, url("/cursors/square-2x.png") 2x) 3 3, auto;
   }
 
-  /* Anything clickable: the same pencil with a gold ring round the tip. */
+  /* Anything clickable: the same square with a ring round the corner. */
   a[href],
   button:not(:disabled),
   [role="button"],
@@ -110,9 +111,9 @@ body {
   input[type="radio"],
   input[type="submit"],
   .cursor-pointer {
-    cursor: url("/cursors/pencil-point.svg") 5 27, pointer;
-    cursor: -webkit-image-set(url("/cursors/pencil-point.png") 1x, url("/cursors/pencil-point-2x.png") 2x) 5 27, pointer;
-    cursor: image-set(url("/cursors/pencil-point.png") 1x, url("/cursors/pencil-point-2x.png") 2x) 5 27, pointer;
+    cursor: url("/cursors/square-point.svg") 3 3, pointer;
+    cursor: -webkit-image-set(url("/cursors/square-point.png") 1x, url("/cursors/square-point-2x.png") 2x) 3 3, pointer;
+    cursor: image-set(url("/cursors/square-point.png") 1x, url("/cursors/square-point-2x.png") 2x) 3 3, pointer;
   }
 }
 
