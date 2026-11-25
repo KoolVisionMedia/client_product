@@ -100,7 +100,7 @@ export default function Hero() {
         </div>
 
         {/* Content - Left Aligned to match Patterson */}
-        <div className="relative z-20 h-full flex flex-col items-start justify-center text-left px-6 md:px-24">
+        <div className="relative z-20 h-full flex flex-col items-start justify-center text-left px-6 md:px-24 translate-y-8 md:translate-y-14">
           <motion.h1 
             className="font-serif text-5xl md:text-7xl lg:text-[6rem] text-white mb-6 max-w-4xl leading-[1.1]"
             initial={{ opacity: 0, y: 40 }}
