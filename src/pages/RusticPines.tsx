@@ -3,7 +3,7 @@ import type { CSSProperties, FormEvent, PointerEvent as ReactPointerEvent } from
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from 'motion/react';
 import type { MotionValue } from 'motion/react';
-import { ArrowRight, BedDouble, ExternalLink, Home, Layers, MapPin, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowRight, BedDouble, ExternalLink, Home, Layers, MapPin, Pause, Play, Ruler, Send, Tag, Trees, X, ZoomIn, ZoomOut } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { lots, MAP_VIEWBOX, realtracsUrl, RUSTIC_PINES_SITE, rusticPinesSiteHost } from '../data/rusticPines';
@@ -644,6 +644,113 @@ function InquiryModal({ lotNumber, onClose }: { lotNumber: number; onClose: () =
   );
 }
 
+// ─── Hero video ────────────────────────────────────────────────────────────────
+
+const HERO_CLIPS = [1, 2, 3].map((n) => ({
+  src: `/assets/rustic-pines/hero-video/clip-${n}.mp4`,
+  poster: `/assets/rustic-pines/hero-video/clip-${n}.webp`,
+}));
+
+/**
+ * Three muted clips that play one after another behind the title, crossfading, and loop.
+ * Like the home page hero: desktop/tablet only and only when motion is allowed (phones keep the
+ * still photo, no multi-MB download), paused while off screen, with a pause button (WCAG 2.2.2).
+ */
+function HeroVideo() {
+  const [enabled, setEnabled] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [ready, setReady] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const videos = useRef<(HTMLVideoElement | null)[]>([]);
+  const userPaused = useRef(false);
+
+  useEffect(() => {
+    setEnabled(
+      window.matchMedia('(min-width: 768px)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    );
+  }, []);
+
+  // Start the active clip from the top whenever it changes.
+  useEffect(() => {
+    if (!enabled) return;
+    const v = videos.current[index];
+    if (!v) return;
+    v.currentTime = 0;
+    if (!userPaused.current) v.play().catch(() => {});
+  }, [index, enabled]);
+
+  // Nothing visible, nothing to decode: pause off screen, resume on return.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!enabled || !wrap) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const v = videos.current[index];
+        if (!v) return;
+        if (entry.isIntersecting) {
+          if (!userPaused.current) v.play().catch(() => {});
+        } else v.pause();
+      },
+      { threshold: 0.05 },
+    );
+    io.observe(wrap);
+    return () => io.disconnect();
+  }, [enabled, index]);
+
+  if (!enabled) return null;
+
+  const toggle = () => {
+    const v = videos.current[index];
+    if (!v) return;
+    if (v.paused) {
+      userPaused.current = false;
+      v.play().catch(() => {});
+    } else {
+      userPaused.current = true;
+      v.pause();
+    }
+  };
+
+  const next = (index + 1) % HERO_CLIPS.length;
+
+  return (
+    <>
+      <div ref={wrapRef} className="absolute inset-0" aria-hidden="true">
+        {HERO_CLIPS.map((clip, i) => (
+          <video
+            key={clip.src}
+            ref={(el) => {
+              videos.current[i] = el;
+            }}
+            muted
+            playsInline
+            autoPlay={i === 0}
+            preload={i === index || i === next ? 'auto' : 'none'}
+            poster={clip.poster}
+            onPlaying={i === index ? () => { setPlaying(true); setReady(true); } : undefined}
+            onPause={i === index ? () => setPlaying(false) : undefined}
+            onEnded={() => setIndex((c) => (c === i ? (i + 1) % HERO_CLIPS.length : c))}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms]"
+            style={{ opacity: ready && i === index ? 1 : 0 }}
+          >
+            <source src={clip.src} type="video/mp4" />
+          </video>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={playing ? 'Pause background video' : 'Play background video'}
+        className="absolute bottom-6 left-6 md:left-10 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white ring-1 ring-white/30 transition-colors hover:bg-[#c9a96e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+      >
+        {playing ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
+      </button>
+    </>
+  );
+}
+
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 type SortKey = 'number' | 'acres' | 'price';
@@ -1059,6 +1166,7 @@ export default function RusticPines() {
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover scale-110"
         />
+        <HeroVideo />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1b2518]/80 via-[#1b2518]/55 to-[#1b2518]" />
         <div className="relative z-10 w-full flex items-center justify-center pt-32 pb-12 md:pt-20 md:pb-0 px-6">
           <motion.div
