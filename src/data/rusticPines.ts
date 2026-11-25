@@ -127,14 +127,13 @@ export const realtracsUrl = (id: string) => `https://www.realtracs.com/listings/
  * "The Community" callout, and the page's structured data). It links back to
  * homefrontbuilderstn.com, so the two sites reference each other.
  *
- * TEMPORARY address while that site is being finished: when its real domain is
- * live, change `url` here, and the same address in the Rustic Pines line of
- * public/llms.txt.
+ * If the domain ever changes, update `url` here, and the same address in the
+ * Rustic Pines line of public/llms.txt.
  */
 export const RUSTIC_PINES_SITE = {
-  url: 'https://rustic-pines-demo.vercel.app/',
+  url: 'https://www.rusticpinesparislanding.com/',
 };
-/** Hostname shown to visitors, e.g. "rustic-pines-demo.vercel.app". */
+/** Hostname shown to visitors, e.g. "rusticpinesparislanding.com". */
 export const rusticPinesSiteHost = new URL(RUSTIC_PINES_SITE.url).hostname.replace(/^www\./, '');
 
 for (const lot of lots) {
